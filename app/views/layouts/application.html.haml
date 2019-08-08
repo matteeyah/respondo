@@ -1,0 +1,33 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Respondo
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    .navbar.navbar-default
+      .container
+        .navbar-header
+          .navbar-brand Respondo
+        %ul.nav.navbar-nav
+          %li= link_to 'Respondo', root_path
+          - if logged_in?
+            %li= link_to 'Respondo', root_path
+        %p.navbar-text.navbar-right
+          - if logged_in?
+            - if current_user.image_url
+              = image_tag current_user.image_url, class: 'img-circle', width: 24
+            %span
+              = current_user.name
+               
+              = link_to '(logout)', logout_path
+          - else
+            = link_to 'Login', login_path
+    .container
+      - if flash.any?
+        - flash.each do |type, message|
+          %div{:class => "alert alert-#{type}"}= message
+      = yield
