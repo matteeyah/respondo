@@ -1,0 +1,16 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+    - 'db/fixtures/**/*'
+    - 'db/schema.rb'
+    - 'tmp/**/*'
+    - 'bin/**/*'
+
+Metrics/LineLength:
+  IgnoredPatterns: ['(\A|\s)#']
+
+Style/Documentation:
+  Enabled: false
