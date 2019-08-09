@@ -14,18 +14,16 @@
           .navbar-brand Respondo
         %ul.nav.navbar-nav
           %li= link_to 'Respondo', root_path
-          - if logged_in?
+          - if user_signed_in?
             %li= link_to 'Respondo', root_path
         %p.navbar-text.navbar-right
-          - if logged_in?
-            - if current_user.image_url
-              = image_tag current_user.image_url, class: 'img-circle', width: 24
+          - if user_signed_in?
             %span
               = current_user.name
                
-              = link_to '(logout)', logout_path
+              = link_to '(logout)', destroy_user_session_path, method: :delete
           - else
-            = link_to 'Login', login_path
+            = link_to 'Login', user_google_oauth2_omniauth_authorize_path
     .container
       - if flash.any?
         - flash.each do |type, message|
