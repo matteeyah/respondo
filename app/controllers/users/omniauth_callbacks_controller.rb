@@ -15,5 +15,18 @@ module Users
         redirect_to root_path
       end
     end
+
+    def twitter
+      @brand = Brand.from_omniauth(request.env['omniauth.auth'], current_user)
+
+      if @brand.persisted?
+        set_flash_message(:notice, :success, kind: 'Twitter')
+      else
+        session['devise.twitter_data'] = request.env['omniauth.auth']
+        set_flash_message(:notice, :failure, kind: 'Twitter', reason: 'the authentication failed')
+      end
+
+      redirect_to root_path
+    end
   end
 end

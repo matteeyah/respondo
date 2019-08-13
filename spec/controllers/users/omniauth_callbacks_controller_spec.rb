@@ -46,4 +46,40 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
       it { is_expected.to redirect_to(root_path) }
     end
   end
+
+  describe '#twitter' do
+    subject { get :twitter }
+
+    before do
+      request.env['devise.mapping'] = Devise.mappings[:user]
+    end
+
+    context 'when brand is sourced' do
+      let(:brand) { FactoryBot.create(:brand) }
+
+      before do
+        allow(Brand).to receive(:from_omniauth).and_return(brand)
+      end
+
+      it 'is expected to set the notice flash' do
+        subject
+
+        expect(controller).to set_flash[:notice]
+      end
+    end
+
+    context 'when brand creation fails' do
+      before do
+        allow(Brand).to receive(:from_omniauth).and_return(Brand.new)
+      end
+
+      it 'is expected to set the notice flash' do
+        subject
+
+        expect(controller).to set_flash[:notice]
+      end
+
+      it { is_expected.to redirect_to(root_path) }
+    end
+  end
 end

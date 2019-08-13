@@ -5,14 +5,16 @@ RSpec.describe Brand, type: :model do
 
   describe '.from_omniauth' do
     let(:auth_hash) { JSON.parse(file_fixture('twitter_brand_oauth_hash.json').read, object_class: OpenStruct) }
+    let(:user) { FactoryBot.build(:user) }
 
-    subject { Brand.from_omniauth(auth_hash) }
+    subject { Brand.from_omniauth(auth_hash, user) }
 
     context 'when there is no matching brand' do
       it 'creates a brand' do
         expect { subject }.to change { Brand.count }.from(0).to(1)
         expect(subject).to be_persisted
         expect(subject).to have_attributes(external_uid: auth_hash.uid, nickname: auth_hash.info.nickname)
+        expect(subject.users).to include(user)
       end
     end
 

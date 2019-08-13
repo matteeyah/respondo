@@ -2,11 +2,11 @@
 
 class Brand < ApplicationRecord
   has_many :users
-  devise :omniauthable, omniauth_providers: %i[twitter]
 
-  def self.from_omniauth(auth)
+  def self.from_omniauth(auth, initial_user)
     where(external_uid: auth.uid).first_or_create do |brand|
       brand.nickname = auth.info.nickname
+      brand.users << initial_user
     end
   end
 
