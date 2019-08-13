@@ -10,6 +10,7 @@ AllCops:
     - 'bin/**/*'
 
 Metrics/LineLength:
+  Max: 130
   IgnoredPatterns: ['(\A|\s)#']
 
 Style/Documentation:

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe HomeController, type: :controller do
+Rspec.describe HomeController, type: :controller do
   describe 'GET index' do
     subject { get :index }
 

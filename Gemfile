@@ -44,6 +44,8 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # Use rspec for testing
   gem 'rspec-rails', '~> 3.8'
+  # Use factory_bot
+  gem 'factory_bot_rails', '~> 5.0.2'
 end
 
 group :development do
@@ -67,6 +69,8 @@ group :test do
   gem 'webdrivers'
   # JS runtime for execjs
   gem 'mini_racer', '~> 0.2.6'
+  # One-liner matchers
+  gem 'shoulda-matchers', '~> 4.1.2'
 end
 
 group :production do

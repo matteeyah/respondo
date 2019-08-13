@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  belongs_to :brand
+  belongs_to :brand, optional: true
   devise :omniauthable, omniauth_providers: %i[google_oauth2]
 
   def self.from_omniauth(auth)
