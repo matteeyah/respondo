@@ -12,10 +12,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_809_000_537) do
+ActiveRecord::Schema.define(version: 20_190_813_173_340) do
+  create_table 'brands', force: :cascade do |t|
+    t.string 'external_uid'
+    t.string 'nickname'
+  end
+
   create_table 'users', force: :cascade do |t|
     t.string 'external_uid'
     t.string 'name'
     t.string 'email'
+    t.integer 'brand_id'
+    t.index ['brand_id'], name: 'index_users_on_brand_id'
   end
 end
