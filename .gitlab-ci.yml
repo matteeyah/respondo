@@ -1,0 +1,27 @@
+image: ruby:2.6.3
+
+cache:
+  paths:
+    - vendor/ruby
+
+before_script:
+  - ruby -v
+  - bundle install -j $(nproc) --path vendor
+
+test:
+  stage: test
+  script:
+    - bundle exec rspec
+
+rubocop:
+  stage: test
+  script:
+    - bundle exec rubocop
+
+deploy:
+  stage: deploy
+  environment: production
+  script:
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_PRODUCTION_KEY
+

@@ -64,6 +64,8 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
+  # JS runtime for execjs
+  gem 'mini_racer', '~> 0.2.6'
 end
 
 group :production do
