@@ -2,6 +2,9 @@
 
 ### Environment variables
 
+- Rails
+  - RAILS_MASTER_KEY
+
 - Google OAuth
     - GOOGLE_CLIENT_ID
     - GOOGLE_CLIENT_SECRET
