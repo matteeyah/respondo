@@ -6,9 +6,9 @@ module Users
       @user = User.from_omniauth(request.env['omniauth.auth'])
 
       if @user.persisted?
-        sign_in_and_redirect @user, event: :authentication
-
         set_flash_message(:notice, :success, kind: 'Google OAuth2')
+
+        sign_in_and_redirect @user, event: :authentication
       else
         session['devise.google_oauth2_data'] = request.env['omniauth.auth']
         set_flash_message(:notice, :failure, kind: 'Google OAuth2', reason: 'the authentication failed')

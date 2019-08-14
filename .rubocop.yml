@@ -9,16 +9,19 @@ AllCops:
     - 'tmp/**/*'
     - 'bin/**/*'
 
-Metrics/LineLength:
-  Max: 135
-  IgnoredPatterns: ['(\A|\s)#']
+Metrics/AbcSize:
+  Max: 20
 
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
 
-Metrics/AbcSize:
-  Max: 20
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/LineLength:
+  Max: 135
+  IgnoredPatterns: ['(\A|\s)#']
 
 Style/Documentation:
   Enabled: false

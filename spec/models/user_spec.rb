@@ -12,6 +12,9 @@ RSpec.describe User, type: :model do
       it 'creates a user' do
         expect { subject }.to change { User.count }.from(0).to(1)
         expect(subject).to be_persisted
+      end
+
+      it 'creates a user entity with correct info' do
         expect(subject).to have_attributes(external_uid: auth_hash.uid, email: auth_hash.info.email, name: auth_hash.info.name)
       end
     end
@@ -21,6 +24,10 @@ RSpec.describe User, type: :model do
 
       it 'returns the matching user' do
         expect(subject).to eq(user)
+      end
+
+      it 'does not create new user entities' do
+        expect { subject }.not_to change { User.count }.from(1)
       end
     end
   end

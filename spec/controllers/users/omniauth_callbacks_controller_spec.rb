@@ -17,7 +17,7 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
         allow(User).to receive(:from_omniauth).and_return(user)
       end
 
-      it 'is expected to set the notice flash' do
+      it 'sets the notice flash' do
         subject
 
         expect(controller).to set_flash[:notice]
@@ -26,6 +26,8 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
       it 'logins the user' do
         expect { subject }.to change { controller.current_user }.from(nil).to(user)
       end
+
+      it { is_expected.to redirect_to(root_path) }
     end
 
     context 'when user creation fails' do
@@ -33,7 +35,7 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
         allow(User).to receive(:from_omniauth).and_return(User.new)
       end
 
-      it 'is expected to set the notice flash' do
+      it 'sets the notice flash' do
         subject
 
         expect(controller).to set_flash[:notice]
@@ -57,11 +59,13 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
         allow(Brand).to receive(:from_omniauth).and_return(brand)
       end
 
-      it 'is expected to set the notice flash' do
+      it 'sets the notice flash' do
         subject
 
         expect(controller).to set_flash[:notice]
       end
+
+      it { is_expected.to redirect_to(root_path) }
     end
 
     context 'when brand creation fails' do
@@ -69,7 +73,7 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
         allow(Brand).to receive(:from_omniauth).and_return(Brand.new)
       end
 
-      it 'is expected to set the notice flash' do
+      it 'sets the notice flash' do
         subject
 
         expect(controller).to set_flash[:notice]
