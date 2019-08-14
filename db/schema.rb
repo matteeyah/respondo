@@ -16,10 +16,12 @@ ActiveRecord::Schema.define(version: 20_190_814_144_724) do
   create_table 'brands', force: :cascade do |t|
     t.string 'external_uid'
     t.string 'nickname'
-    t.string 'access_token'
-    t.string 'access_token_secret'
-    t.string 'token'
-    t.string 'secret'
+    t.string 'encrypted_token'
+    t.string 'encrypted_token_iv'
+    t.string 'encrypted_secret'
+    t.string 'encrypted_secret_iv'
+    t.index ['encrypted_secret_iv'], name: 'index_brands_on_encrypted_secret_iv', unique: true
+    t.index ['encrypted_token_iv'], name: 'index_brands_on_encrypted_token_iv', unique: true
   end
 
   create_table 'users', force: :cascade do |t|

@@ -3,6 +3,9 @@
 class Brand < ApplicationRecord
   has_many :users
 
+  attr_encrypted :token, key: Rails.application.secrets.secret_key_base.first(32)
+  attr_encrypted :secret, key: Rails.application.secrets.secret_key_base.first(32)
+
   def self.from_omniauth(auth, initial_user)
     where(external_uid: auth.uid).first_or_create do |brand|
       brand.nickname = auth.info.nickname
