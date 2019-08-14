@@ -26,4 +26,34 @@ RSpec.describe Brand, type: :model do
       end
     end
   end
+
+  describe '#threaded_mentions' do
+    let(:parent_tweet) { Brand::ThreadedTweet.new(1, nil, 'matteeyah', 'test', []) }
+    let(:child_tweet) { Brand::ThreadedTweet.new(2, 1, 'matteeyah', 'second_test', []) }
+    let(:brand) { FactoryBot.build(:brand) }
+    let(:tweets) { [parent_tweet, child_tweet] }
+
+    subject { brand.threaded_mentions }
+
+    before do
+      allow(brand).to receive(:mentions).and_return(tweets)
+    end
+
+    it 'threads the tweets' do
+      expect(subject.count).to eq(1)
+      expect(subject.first.replies).to contain_exactly(child_tweet)
+    end
+
+    context 'when there is skip threading' do
+      let(:skip_parent) { Brand::ThreadedTweet.new(3, 5, 'matteeyah', 'third_test', []) }
+      let(:skip_child) { Brand::ThreadedTweet.new(4, 3, 'matteeyah', 'fourth_test', []) }
+
+      let(:tweets) { [skip_parent, skip_child] }
+
+      it 'threads the tweets' do
+        expect(subject.count).to eq(1)
+        expect(subject.first.replies).to contain_exactly(skip_child)
+      end
+    end
+  end
 end

@@ -15,8 +15,8 @@ RSpec.describe 'home/index' do
 
       let(:mentions) do
         [
-          OpenStruct.new(text: 'Hello', user: OpenStruct.new(screen_name: 'matija')),
-          OpenStruct.new(text: 'World', user: OpenStruct.new(screen_name: 'other'))
+          Brand::ThreadedTweet.new(1, nil, 'matija', 'Hello', []),
+          Brand::ThreadedTweet.new(2, nil, 'other', 'World', [])
         ]
       end
 
