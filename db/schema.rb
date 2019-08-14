@@ -14,8 +14,8 @@
 
 ActiveRecord::Schema.define(version: 20_190_814_144_724) do
   create_table 'brands', force: :cascade do |t|
-    t.string 'external_uid'
-    t.string 'nickname'
+    t.string 'external_uid', null: false
+    t.string 'nickname', null: false
     t.string 'encrypted_token'
     t.string 'encrypted_token_iv'
     t.string 'encrypted_secret'
@@ -25,9 +25,9 @@ ActiveRecord::Schema.define(version: 20_190_814_144_724) do
   end
 
   create_table 'users', force: :cascade do |t|
-    t.string 'external_uid'
-    t.string 'name'
-    t.string 'email'
+    t.string 'external_uid', null: false
+    t.string 'name', null: false
+    t.string 'email', null: false
     t.integer 'brand_id'
     t.index ['brand_id'], name: 'index_users_on_brand_id'
   end
