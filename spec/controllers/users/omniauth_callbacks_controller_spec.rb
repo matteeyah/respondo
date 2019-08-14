@@ -3,12 +3,12 @@
 RSpec.describe Users::OmniauthCallbacksController, type: :controller do
   include Devise::Test::ControllerHelpers
 
+  before do
+    request.env['devise.mapping'] = Devise.mappings[:user]
+  end
+
   describe '#google_oauth2' do
     subject { get :google_oauth2 }
-
-    before do
-      request.env['devise.mapping'] = Devise.mappings[:user]
-    end
 
     context 'when user is sourced' do
       let(:user) { FactoryBot.create(:user) }
@@ -49,10 +49,6 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
 
   describe '#twitter' do
     subject { get :twitter }
-
-    before do
-      request.env['devise.mapping'] = Devise.mappings[:user]
-    end
 
     context 'when brand is sourced' do
       let(:brand) { FactoryBot.create(:brand) }

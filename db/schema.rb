@@ -12,10 +12,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_813_173_340) do
+ActiveRecord::Schema.define(version: 20_190_814_144_724) do
   create_table 'brands', force: :cascade do |t|
     t.string 'external_uid'
     t.string 'nickname'
+    t.string 'access_token'
+    t.string 'access_token_secret'
+    t.string 'token'
+    t.string 'secret'
   end
 
   create_table 'users', force: :cascade do |t|

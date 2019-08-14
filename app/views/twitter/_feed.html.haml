@@ -1,0 +1,5 @@
+%span Tweets
+%ul
+  - tweets.each do |tweet|
+    %li
+      %p #{tweet.user.screen_name}: #{tweet.text}
