@@ -59,6 +59,8 @@ group :development do
   gem 'sqlite3', '~> 1.4'
   # Rubocop
   gem 'rubocop', '~> 0.74.0', require: false
+  # .env
+  gem 'dotenv-rails', '~> 2.7.5'
 end
 
 group :test do
