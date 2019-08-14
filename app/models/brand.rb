@@ -54,7 +54,9 @@ class Brand < ApplicationRecord
     twitter.mentions_timeline.map do |tweet|
       Brand::ThreadedTweet.new(
         tweet.id,
-        tweet.in_reply_to_tweet_id,
+        # `Twitter::NullObject#presence` returned another `Twitter::NullObject`
+        # https://github.com/sferik/twitter/issues/959
+        tweet.in_reply_to_tweet_id.nil? ? nil : tweet.in_reply_to_tweet_id,
         tweet.user.screen_name,
         tweet.text,
         []
