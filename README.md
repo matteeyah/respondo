@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Environment variables
 
-Things you may want to cover:
+- Google OAuth
+    - GOOGLE_CLIENT_ID
+    - GOOGLE_CLIENT_SECRET
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- Twitter OAuth
+    - TWITTER_API_KEY
+    - TWITTER_API_SECRET

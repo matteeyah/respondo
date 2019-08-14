@@ -37,12 +37,21 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Omniauth
 gem 'devise', '~> 4.6.2'
 gem 'omniauth-google-oauth2', '~> 0.6.0'
+gem 'omniauth-twitter', '~> 1.4.0'
+
+# Twitter
+gem 'twitter', '~> 6.2.0'
+
+# encrypted attributes
+gem 'attr_encrypted', '~> 3.1.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # Use rspec for testing
   gem 'rspec-rails', '~> 3.8'
+  # Use factory_bot
+  gem 'factory_bot_rails', '~> 5.0.2'
 end
 
 group :development do
@@ -56,6 +65,10 @@ group :development do
   gem 'sqlite3', '~> 1.4'
   # Rubocop
   gem 'rubocop', '~> 0.74.0', require: false
+  # .env
+  gem 'dotenv-rails', '~> 2.7.5'
+  # pry
+  gem 'pry-rails', '~> 0.3.9'
 end
 
 group :test do
@@ -66,6 +79,10 @@ group :test do
   gem 'webdrivers'
   # JS runtime for execjs
   gem 'mini_racer', '~> 0.2.6'
+  # One-liner matchers
+  gem 'shoulda-matchers', '~> 4.1.2'
+  # pry
+  gem 'pry-byebug', '~> 3.7.0'
 end
 
 group :production do

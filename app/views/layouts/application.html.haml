@@ -18,6 +18,9 @@
             %li= link_to 'Respondo', root_path
         %p.navbar-text.navbar-right
           - if user_signed_in?
+            - if current_user.brand.nil?
+              %span
+                = link_to 'Login Brand', user_twitter_omniauth_authorize_path
             %span
               = current_user.name
                
