@@ -61,6 +61,8 @@ group :development do
   gem 'rubocop', '~> 0.74.0', require: false
   # .env
   gem 'dotenv-rails', '~> 2.7.5'
+  # pry
+  gem 'pry-rails', '~> 0.3.9'
 end
 
 group :test do
@@ -73,6 +75,8 @@ group :test do
   gem 'mini_racer', '~> 0.2.6'
   # One-liner matchers
   gem 'shoulda-matchers', '~> 4.1.2'
+  # pry
+  gem 'pry-byebug', '~> 3.7.0'
 end
 
 group :production do
