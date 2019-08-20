@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Brand < ApplicationRecord
-  attr_encrypted :token, key: Rails.application.credentials.secret_key_base.first(32)
-  attr_encrypted :secret, key: Rails.application.credentials.secret_key_base.first(32)
+  attr_encrypted :token, key: attr_encrypted_encryption_key
+  attr_encrypted :secret, key: attr_encrypted_encryption_key
 
   has_many :users
 
