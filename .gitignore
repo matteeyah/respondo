@@ -36,3 +36,6 @@ yarn-debug.log*
 
 # Ignore .env file
 .env
+
+# Ignore coverage data
+coverage
