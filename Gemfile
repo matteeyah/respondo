@@ -83,6 +83,8 @@ group :test do
   gem 'shoulda-matchers', '~> 4.1.2'
   # pry
   gem 'pry-byebug', '~> 3.7.0'
+  # Coverage
+  gem 'simplecov', '~> 0.16.1', require: false
 end
 
 group :production do
