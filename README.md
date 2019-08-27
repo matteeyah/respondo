@@ -17,6 +17,14 @@
 
 ### Docker
 
+#### Build
+
+To build the respondo image run
+
+```
+docker build . -t respondo
+```
+
 #### Development
 
 To standup an instance of respondo for development purposes run
