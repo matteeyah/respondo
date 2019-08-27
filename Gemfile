@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.0.rc2'
+gem 'rails', '~> 6.0.0'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
@@ -35,7 +35,7 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 # Omniauth
-gem 'devise', '~> 4.6.2'
+gem 'devise', '~> 4.7.0'
 gem 'omniauth-google-oauth2', '~> 0.6.0'
 gem 'omniauth-twitter', '~> 1.4.0'
 
