@@ -52,6 +52,10 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.8'
   # Use factory_bot
   gem 'factory_bot_rails', '~> 5.0.2'
+  # Use sqlite3 as the database for Active Record
+  gem 'sqlite3', '~> 1.4'
+  # Rubocop
+  gem 'rubocop', '~> 0.74.0', require: false
 end
 
 group :development do
@@ -61,10 +65,6 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  # Use sqlite3 as the database for Active Record
-  gem 'sqlite3', '~> 1.4'
-  # Rubocop
-  gem 'rubocop', '~> 0.74.0', require: false
   # .env
   gem 'dotenv-rails', '~> 2.7.5'
   # pry

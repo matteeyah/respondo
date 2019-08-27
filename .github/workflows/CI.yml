@@ -5,31 +5,21 @@ on: [push]
 jobs:
   rspec:
     runs-on: ubuntu-latest
+    container: ruby:2.6.3
     steps:
       - uses: actions/checkout@v1
-      - name: ruby
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.6.3
       - name: dependencies
-        run: |
-          sudo apt update && sudo apt install --assume-yes libsqlite3-dev
-          gem install bundler -v 1.17.3
-          bundle install --without production --jobs 4 --retry 3
+        run: bundle install --without development --jobs 4 --retry 3
       - name: rspec
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bundle exec rspec
   rubocop:
     runs-on: ubuntu-latest
+    container: ruby:2.6.3
     steps:
       - uses: actions/checkout@v1
-      - name: ruby
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.6.3
       - name: dependencies
-        run: |
-          sudo apt update && sudo apt install --assume-yes libsqlite3-dev
-          gem install bundler -v 1.17.3
-          bundle install --without production --jobs 4 --retry 3
+        run: bundle install --without development --jobs 4 --retry 3
       - name: rubocop
         run: bundle exec rubocop

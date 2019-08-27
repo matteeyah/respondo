@@ -6,9 +6,9 @@ cache:
 
 before_script:
   - ruby -v
-  - bundle install -j $(nproc) --path vendor
+  - bundle install --without development --jobs $(nproc) --path vendor
 
-test:
+rspec:
   stage: test
   script:
     - bundle exec rspec
