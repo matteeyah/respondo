@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'home/index' do
+RSpec.describe 'home/index', type: :view do
   include Devise::Test::ControllerHelpers
 
   context 'when user is signed in' do
@@ -13,35 +13,25 @@ RSpec.describe 'home/index' do
     context 'when user has associated brand' do
       let(:brand) { FactoryBot.build(:brand) }
 
-      let(:mentions) do
-        [
-          Brand::ThreadedTweet.new(1, nil, 'matija', 'Hello', []),
-          Brand::ThreadedTweet.new(2, nil, 'other', 'World', [])
-        ]
-      end
-
       before do
-        allow(brand).to receive(:mentions).and_return(mentions)
         user.brand = brand
       end
 
-      it 'displays all the tweets' do
-        assign(:brand, brand)
+      it 'renders the twitter feed' do
+        expect(render).to render_template('home/index', partial: 'twitter/_feed')
+      end
+    end
 
-        render
-
-        expect(rendered).to have_text 'Tweets'
-        expect(rendered).to have_text 'matija: Hello'
-        expect(rendered).to have_text 'other: World'
+    context 'when user does not have associated brand' do
+      it 'does not render the twitter feed' do
+        expect(render).not_to render_template(partial: 'twitter/_feed')
       end
     end
   end
 
   context 'when user is not signed in' do
-    it 'does not display tweets' do
-      render
-
-      expect(rendered).not_to have_text 'Tweets'
+    it 'does not render the twitter feed' do
+      expect(render).not_to render_template(partial: 'twitter/_feed')
     end
   end
 end

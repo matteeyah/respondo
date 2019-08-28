@@ -45,11 +45,14 @@ gem 'twitter', '~> 6.2.0'
 # encrypted attributes
 gem 'attr_encrypted', '~> 3.1.0'
 
+# Pagination
+gem 'pagy', '~> 3.5'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # Use rspec for testing
-  gem 'rspec-rails', '~> 3.8'
+  gem 'rspec-rails', '4.0.0.beta2'
   # Use factory_bot
   gem 'factory_bot_rails', '~> 5.0.2'
   # Use sqlite3 as the database for Active Record
@@ -85,6 +88,8 @@ group :test do
   gem 'pry-byebug', '~> 3.7.0'
   # Coverage
   gem 'simplecov', '~> 0.16.1', require: false
+  # Controller Testing
+  gem 'rails-controller-testing', '~> 1.0'
 end
 
 group :production do

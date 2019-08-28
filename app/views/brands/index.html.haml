@@ -1,0 +1,6 @@
+%ul
+  - @brands.each do |brand|
+    %li
+      %p= link_to brand.nickname, brand_path(brand)
+
+!= pagy_nav(@pagy)
