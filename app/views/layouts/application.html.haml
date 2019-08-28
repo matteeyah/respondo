@@ -14,8 +14,7 @@
           .navbar-brand Respondo
         %ul.nav.navbar-nav
           %li= link_to 'Respondo', root_path
-          - if user_signed_in?
-            %li= link_to 'Respondo', root_path
+          %li= link_to 'Brands', brands_path
         %p.navbar-text.navbar-right
           - if user_signed_in?
             - if current_user.brand.nil?
