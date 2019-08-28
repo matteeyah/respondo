@@ -1,3 +1,2 @@
-- if @brand
-  %span Tweets
-  = render partial: 'twitter/feed', locals: { tweets: @brand.threaded_mentions }
+%span Tweets
+= render partial: 'twitter/feed', locals: { tweets: @brand.threaded_mentions }
