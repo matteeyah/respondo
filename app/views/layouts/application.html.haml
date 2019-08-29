@@ -17,9 +17,12 @@
           %li= link_to 'Brands', brands_path
         %p.navbar-text.navbar-right
           - if user_signed_in?
-            - if current_user.brand.nil?
+            - if @user_brand.nil?
               %span
                 = link_to 'Login Brand', user_twitter_omniauth_authorize_path
+            - else
+              %span
+                = link_to 'Edit Brand', edit_brand_path(@user_brand)
             %span
               = current_user.name
                
