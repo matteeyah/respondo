@@ -5,7 +5,7 @@ class BrandsController < ApplicationController
 
   before_action :brand, except: [:index]
   before_action :user, only: %i[add_user remove_user]
-  before_action :authorize!, only: [:edit]
+  before_action :authorize!, only: %i[edit add_user remove_user]
 
   def index
     @pagy, @brands = pagy(Brand.all)
@@ -36,8 +36,6 @@ class BrandsController < ApplicationController
   def authorize!
     return if @brand == @user_brand
 
-    redirect_to root_path,
-                status: :forbidden,
-                alert: 'You are not allowed to edit the Brand.'
+    redirect_back fallback_location: root_path, alert: 'You are not allowed to edit the Brand.'
   end
 end

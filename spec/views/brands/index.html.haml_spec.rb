@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe 'brands/index', type: :view do
-  include Pagy::Backend
-
   let(:brands) { FactoryBot.create_list(:brand, 2) }
 
   before do
