@@ -1,7 +1,5 @@
 # README
 
-![coverage](https://gitlab.com/matteeyah/respondo/badges/master/coverage.svg)
-
 ### Environment variables
 
 - Rails
