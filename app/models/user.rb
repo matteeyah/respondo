@@ -5,6 +5,8 @@ class User < ApplicationRecord
 
   belongs_to :brand, optional: true
 
+  scope :not_in_brand, ->(brand_id) { where.not(brand_id: brand_id).or(where(brand_id: nil)) }
+
   class << self
     def from_omniauth(auth)
       where(external_uid: auth.uid).first_or_create do |user|
