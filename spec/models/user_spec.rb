@@ -3,6 +3,22 @@
 RSpec.describe User, type: :model do
   it { is_expected.to belong_to(:brand).optional }
 
+  describe '.not_in_brand' do
+    let(:brand) { FactoryBot.create(:brand) }
+    let(:user_in_brand) { FactoryBot.create(:user) }
+    let!(:user_outside_brand) { FactoryBot.create(:user) }
+
+    subject { User.not_in_brand(brand.id) }
+
+    before do
+      brand.users << user_in_brand
+    end
+
+    it 'returns just the user outside brand' do
+      expect(subject).to contain_exactly(user_outside_brand)
+    end
+  end
+
   describe '.from_omniauth' do
     let(:auth_hash) { JSON.parse(file_fixture('google_user_oauth_hash.json').read, object_class: OpenStruct) }
 
