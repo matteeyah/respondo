@@ -7,11 +7,13 @@ class Ticket < ApplicationRecord
   belongs_to :parent, class_name: 'Ticket', optional: true
   has_many :replies, class_name: 'Ticket', foreign_key: :parent_id
 
+  scope :root, ->() { where(parent: nil) }
+
   class << self
     def from_tweet(tweet, brand)
       # Setting the parent inside #first_or_create results in weirdness.
       # Most likely due to the scope being manipulated by `#unscoped`.
-      twitter_ticket = first_or_create(external_uid: tweet.id) do |ticket|
+      twitter_ticket = find_or_create_by(external_uid: tweet.id) do |ticket|
         ticket.content = tweet.text
         ticket.brand = brand
         ticket.author = Author.from_twitter_user(tweet.user)

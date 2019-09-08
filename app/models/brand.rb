@@ -7,11 +7,9 @@ class Brand < ApplicationRecord
   has_many :users
   has_many :tickets
 
-  ThreadedTweet = Struct.new(:id, :parent_id, :user, :text, :replies)
-
   class << self
     def from_omniauth(auth, initial_user)
-      where(external_uid: auth.uid).first_or_create do |brand|
+      find_or_create_by(external_uid: auth.uid) do |brand|
         brand.screen_name = auth.info.nickname
         brand.token = auth.credentials.token
         brand.secret = auth.credentials.secret

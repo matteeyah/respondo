@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   class << self
     def from_omniauth(auth)
-      where(external_uid: auth.uid).first_or_create do |user|
+      find_or_create_by(external_uid: auth.uid) do |user|
         user.email = auth.info.email
         user.name = auth.info.name
       end
