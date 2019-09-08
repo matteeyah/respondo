@@ -5,6 +5,7 @@ class Brand < ApplicationRecord
   attr_encrypted :secret, key: attr_encrypted_encryption_key
 
   has_many :users
+  has_many :tickets
 
   ThreadedTweet = Struct.new(:id, :parent_id, :user, :text, :replies)
 

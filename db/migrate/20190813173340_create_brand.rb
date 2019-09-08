@@ -7,6 +7,6 @@ class CreateBrand < ActiveRecord::Migration[6.0]
       t.string :nickname, null: false
     end
 
-    add_reference :users, :brand, index: true
+    add_reference :users, :brand, index: true, null: true
   end
 end

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_814_144_724) do
+ActiveRecord::Schema.define(version: 20_190_908_153_710) do
   create_table 'brands', force: :cascade do |t|
     t.string 'external_uid', null: false
     t.string 'nickname', null: false
@@ -22,6 +22,14 @@ ActiveRecord::Schema.define(version: 20_190_814_144_724) do
     t.string 'encrypted_secret_iv'
     t.index ['encrypted_secret_iv'], name: 'index_brands_on_encrypted_secret_iv', unique: true
     t.index ['encrypted_token_iv'], name: 'index_brands_on_encrypted_token_iv', unique: true
+  end
+
+  create_table 'tickets', force: :cascade do |t|
+    t.bigint 'external_uid', null: false
+    t.string 'user', null: false
+    t.text 'content', null: false
+    t.integer 'brand_id', null: false
+    t.index ['brand_id'], name: 'index_tickets_on_brand_id'
   end
 
   create_table 'users', force: :cascade do |t|
