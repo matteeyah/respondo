@@ -23,6 +23,10 @@ class BrandsController < ApplicationController
     @brand.users.delete(@user)
   end
 
+  def refresh_tickets
+    LoadTicketsJob.perform_now(@brand.id)
+  end
+
   private
 
   def brand

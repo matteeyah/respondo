@@ -7,7 +7,7 @@ class Ticket < ApplicationRecord
   belongs_to :parent, class_name: 'Ticket', optional: true
   has_many :replies, class_name: 'Ticket', foreign_key: :parent_id
 
-  scope :root, ->() { where(parent: nil) }
+  scope :root, -> { where(parent: nil) }
 
   class << self
     def from_tweet(tweet, brand)

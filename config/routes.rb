@@ -13,5 +13,6 @@ Rails.application.routes.draw do
   resources :brands, only: %i[show index edit] do
     post :add_user
     post :remove_user
+    post :refresh_tickets
   end
 end
