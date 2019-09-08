@@ -7,6 +7,7 @@ class CreateTickets < ActiveRecord::Migration[6.0]
       t.text :content, null: false
       t.references :brand, index: true, null: false
       t.references :author, index: true, null: false
+      t.references :parent, index: true, null: true
     end
   end
 end

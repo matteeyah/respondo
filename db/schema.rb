@@ -34,8 +34,10 @@ ActiveRecord::Schema.define(version: 20_190_908_155_138) do
     t.text 'content', null: false
     t.integer 'brand_id', null: false
     t.integer 'author_id', null: false
+    t.integer 'parent_id'
     t.index ['author_id'], name: 'index_tickets_on_author_id'
     t.index ['brand_id'], name: 'index_tickets_on_brand_id'
+    t.index ['parent_id'], name: 'index_tickets_on_parent_id'
   end
 
   create_table 'users', force: :cascade do |t|
