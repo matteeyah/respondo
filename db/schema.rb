@@ -14,8 +14,8 @@
 
 ActiveRecord::Schema.define(version: 20_190_908_155_138) do
   create_table 'authors', force: :cascade do |t|
-    t.string 'external_uid'
-    t.string 'username'
+    t.string 'external_uid', null: false
+    t.string 'username', null: false
   end
 
   create_table 'brands', force: :cascade do |t|

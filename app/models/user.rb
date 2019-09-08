@@ -3,6 +3,10 @@
 class User < ApplicationRecord
   devise :omniauthable, omniauth_providers: %i[google_oauth2 twitter]
 
+  validates :external_uid, presence: true, allow_blank: false
+  validates :name, presence: true, allow_blank: false
+  validates :email, presence: true, allow_blank: false
+
   belongs_to :brand, optional: true
 
   scope :not_in_brand, ->(brand_id) { where.not(brand_id: brand_id).or(where(brand_id: nil)) }

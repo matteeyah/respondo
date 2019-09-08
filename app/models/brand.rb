@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Brand < ApplicationRecord
+  validates :external_uid, presence: true, allow_blank: false
+  validates :screen_name, presence: true, allow_blank: false
+
   attr_encrypted :token, key: attr_encrypted_encryption_key
   attr_encrypted :secret, key: attr_encrypted_encryption_key
 

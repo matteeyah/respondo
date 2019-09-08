@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Ticket < ApplicationRecord
+  validates :external_uid, presence: true, allow_blank: false
+  validates :content, presence: true, allow_blank: false
+
   belongs_to :author
   belongs_to :brand
 

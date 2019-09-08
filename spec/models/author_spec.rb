@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe Author, type: :model do
+  it { is_expected.to validate_presence_of(:external_uid) }
+  it { is_expected.to validate_presence_of(:username) }
+
   it { is_expected.to have_many(:tickets) }
 
   describe '.from_twitter_user' do
