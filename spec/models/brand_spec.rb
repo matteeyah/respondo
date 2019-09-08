@@ -2,6 +2,7 @@
 
 RSpec.describe Brand, type: :model do
   it { is_expected.to have_many(:users) }
+  it { is_expected.to have_many(:tickets) }
 
   describe '.from_omniauth' do
     let(:auth_hash) { JSON.parse(file_fixture('twitter_brand_oauth_hash.json').read, object_class: OpenStruct) }

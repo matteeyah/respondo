@@ -12,7 +12,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_908_153_710) do
+ActiveRecord::Schema.define(version: 20_190_908_155_138) do
+  create_table 'authors', force: :cascade do |t|
+    t.string 'external_uid'
+    t.string 'username'
+  end
+
   create_table 'brands', force: :cascade do |t|
     t.string 'external_uid', null: false
     t.string 'nickname', null: false
@@ -25,10 +30,11 @@ ActiveRecord::Schema.define(version: 20_190_908_153_710) do
   end
 
   create_table 'tickets', force: :cascade do |t|
-    t.bigint 'external_uid', null: false
-    t.string 'user', null: false
+    t.string 'external_uid', null: false
     t.text 'content', null: false
     t.integer 'brand_id', null: false
+    t.integer 'author_id', null: false
+    t.index ['author_id'], name: 'index_tickets_on_author_id'
     t.index ['brand_id'], name: 'index_tickets_on_brand_id'
   end
 
