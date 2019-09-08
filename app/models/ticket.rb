@@ -19,7 +19,9 @@ class Ticket < ApplicationRecord
         ticket.author = Author.from_twitter_user(tweet.user)
       end
 
-      twitter_ticket.tap { |ticket| ticket.parent = find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id)) }
+      twitter_ticket.tap do |ticket|
+        ticket.update(parent: find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id)))
+      end
     end
 
     private
