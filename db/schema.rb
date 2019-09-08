@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20_190_908_155_138) do
 
   create_table 'brands', force: :cascade do |t|
     t.string 'external_uid', null: false
-    t.string 'nickname', null: false
+    t.string 'screen_name', null: false
     t.string 'encrypted_token'
     t.string 'encrypted_token_iv'
     t.string 'encrypted_secret'

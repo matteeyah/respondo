@@ -12,7 +12,7 @@ class Brand < ApplicationRecord
   class << self
     def from_omniauth(auth, initial_user)
       where(external_uid: auth.uid).first_or_create do |brand|
-        brand.nickname = auth.info.nickname
+        brand.screen_name = auth.info.nickname
         brand.token = auth.credentials.token
         brand.secret = auth.credentials.secret
         brand.users << initial_user
@@ -22,7 +22,7 @@ class Brand < ApplicationRecord
     def new_with_session(params, session)
       super.tap do |brand|
         if (data = session['devise.twitter_data']&.dig('extra', 'raw_info'))
-          brand.nickname = data['email'] if brand.nickname.blank?
+          brand.screen_name = data['email'] if brand.screen_name.blank?
         end
       end
     end

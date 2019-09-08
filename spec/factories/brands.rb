@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :brand do
     external_uid { generate(:external_uid) }
-    nickname { generate(:nickname) }
+    screen_name { generate(:screen_name) }
   end
 end

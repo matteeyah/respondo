@@ -17,7 +17,7 @@ RSpec.describe Brand, type: :model do
       end
 
       it 'creats a brand entity with correct info' do
-        expect(subject).to have_attributes(external_uid: auth_hash.uid, nickname: auth_hash.info.nickname)
+        expect(subject).to have_attributes(external_uid: auth_hash.uid, screen_name: auth_hash.info.nickname)
       end
 
       it 'assigns the initial user' do
