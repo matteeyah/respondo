@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :brand do
     external_uid { generate(:external_uid) }
-    screen_name { generate(:screen_name) }
+    screen_name { Faker::Internet.domain_word }
   end
 end

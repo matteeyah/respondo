@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :author do
     external_uid { generate(:external_uid) }
-    username { generate(:screen_name) }
+    username { Faker::Internet.username }
   end
 end

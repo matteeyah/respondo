@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :user do
     external_uid { generate(:external_uid) }
-    name { generate(:name) }
-    email { generate(:email) }
+    name { Faker::Name.name }
+    email { Faker::Internet.safe_email }
   end
 end

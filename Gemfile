@@ -59,6 +59,8 @@ group :development, :test do
   gem 'sqlite3', '~> 1.4'
   # Rubocop
   gem 'rubocop', '~> 0.74.0', require: false
+  # Sample data
+  gem 'faker', '~> 2.2.2'
 end
 
 group :development do

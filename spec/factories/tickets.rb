@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :ticket do
     external_uid { generate(:external_uid) }
-    content { 'Sample content.' }
+    content { Faker::Lorem.sentence }
 
     brand
     author
