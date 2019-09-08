@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
 RSpec.describe User, type: :model do
-  it { is_expected.to validate_presence_of(:external_uid) }
-  it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to validate_presence_of(:email) }
+  describe 'Validations' do
+    it { is_expected.to validate_presence_of(:external_uid) }
+    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_presence_of(:email) }
+  end
 
-  it { is_expected.to belong_to(:brand).optional }
+  describe 'Relations' do
+    it { is_expected.to belong_to(:brand).optional }
+  end
 
   describe '.not_in_brand' do
     let(:brand) { FactoryBot.create(:brand) }

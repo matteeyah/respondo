@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe Author, type: :model do
-  it { is_expected.to validate_presence_of(:external_uid) }
-  it { is_expected.to validate_presence_of(:username) }
+  describe 'Validations' do
+    it { is_expected.to validate_presence_of(:external_uid) }
+    it { is_expected.to validate_presence_of(:username) }
+  end
 
-  it { is_expected.to have_many(:tickets) }
+  describe 'Relations' do
+    it { is_expected.to have_many(:tickets) }
+  end
 
   describe '.from_twitter_user' do
     let(:twitter_user) { OpenStruct.new(id: '1', screen_name: 'helloworld') }

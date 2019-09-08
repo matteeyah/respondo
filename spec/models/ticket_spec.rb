@@ -1,13 +1,28 @@
 # frozen_string_literal: true
 
 RSpec.describe Ticket, type: :model do
-  it { is_expected.to validate_presence_of(:external_uid) }
-  it { is_expected.to validate_presence_of(:content) }
+  describe 'Validations' do
+    it { is_expected.to validate_presence_of(:external_uid) }
+    it { is_expected.to validate_presence_of(:content) }
+  end
 
-  it { is_expected.to belong_to(:author) }
-  it { is_expected.to belong_to(:brand) }
-  it { is_expected.to belong_to(:parent).optional }
-  it { is_expected.to have_many(:replies) }
+  describe 'Relations' do
+    it { is_expected.to belong_to(:author) }
+    it { is_expected.to belong_to(:brand) }
+    it { is_expected.to belong_to(:parent).optional }
+    it { is_expected.to have_many(:replies) }
+  end
+
+  describe '.root' do
+    let(:parentless_ticket) { FactoryBot.create(:ticket) }
+    let!(:child_ticket) { FactoryBot.create(:ticket, parent: parentless_ticket) }
+
+    subject { described_class.root }
+
+    it 'only returns parentless tickets' do
+      expect(subject).to contain_exactly(parentless_ticket)
+    end
+  end
 
   describe '.from_tweet' do
     let(:brand) { FactoryBot.create(:brand) }
