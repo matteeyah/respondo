@@ -17,21 +17,21 @@ RSpec.describe 'home/index', type: :view do
         user.brand = brand
       end
 
-      it 'renders the twitter feed' do
-        expect(render).to render_template('home/index', partial: 'twitter/_feed')
+      it 'renders the brand tickets' do
+        expect(render).to render_template('home/index', partial: 'brands/_tickets')
       end
     end
 
     context 'when user does not have associated brand' do
-      it 'does not render the twitter feed' do
-        expect(render).not_to render_template(partial: 'twitter/_feed')
+      it 'does not render the brand tickets' do
+        expect(render).not_to render_template(partial: 'brands/_tickets')
       end
     end
   end
 
   context 'when user is not signed in' do
-    it 'does not render the twitter feed' do
-      expect(render).not_to render_template(partial: 'twitter/_feed')
+    it 'does not render the brand tickets' do
+      expect(render).not_to render_template(partial: 'brands/_tickets')
     end
   end
 end

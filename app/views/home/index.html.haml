@@ -1,3 +1,2 @@
 - if @user_brand
-  %span Tweets
-  = render partial: 'twitter/feed', locals: { tweets: @user_brand.tickets }
+  = render partial: 'brands/tickets', locals: { brand: @user_brand }

@@ -1,4 +1,1 @@
-= button_to 'Refresh Tickets', brand_refresh_tickets_path(@brand)
-
-%span Tweets
-= render partial: 'twitter/feed', locals: { tweets: @brand.tickets.root }
+= render partial: 'brands/tickets', locals: { brand: @brand }

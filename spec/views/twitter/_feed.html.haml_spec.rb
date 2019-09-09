@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'twitter/feed', type: :view do
+RSpec.describe 'twitter/_feed', type: :view do
   let(:brand) { FactoryBot.create(:brand) }
   let(:tweets) { FactoryBot.create_list(:ticket, 2, brand: brand) }
 

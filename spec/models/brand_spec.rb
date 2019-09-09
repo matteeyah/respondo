@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Brand, type: :model do
+  let(:brand) { FactoryBot.create(:brand) }
+
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:screen_name) }
@@ -10,8 +12,6 @@ RSpec.describe Brand, type: :model do
     it { is_expected.to have_many(:users) }
     it { is_expected.to have_many(:tickets) }
   end
-
-  let(:brand) { FactoryBot.create(:brand) }
 
   describe '.from_omniauth' do
     let(:auth_hash) { JSON.parse(file_fixture('twitter_brand_oauth_hash.json').read, object_class: OpenStruct) }

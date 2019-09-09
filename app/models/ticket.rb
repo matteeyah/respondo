@@ -14,14 +14,14 @@ class Ticket < ApplicationRecord
 
   class << self
     def from_tweet(tweet, brand)
-      # Setting the parent inside #first_or_create results in weirdness.
-      # Most likely due to the scope being manipulated by `#unscoped`.
       twitter_ticket = find_or_create_by(external_uid: tweet.id) do |ticket|
         ticket.content = tweet.text
         ticket.brand = brand
         ticket.author = Author.from_twitter_user(tweet.user)
       end
 
+      # Setting the parent inside #find_or_create_by results in weirdness.
+      # Most likely due to inheriting scope when attempting to find_by.
       twitter_ticket.tap do |ticket|
         ticket.update(parent: find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id)))
       end

@@ -8,7 +8,7 @@ RSpec.describe 'brands/show', type: :view do
     assign(:brand, brand)
   end
 
-  it 'renders the twitter feed' do
-    expect(render).to render_template(partial: 'twitter/_feed')
+  it 'renders the brand tickets' do
+    expect(render).to render_template(partial: 'brands/_tickets')
   end
 end
