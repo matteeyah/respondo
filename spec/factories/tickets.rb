@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :brand do
+  factory :ticket do
     external_uid { generate(:external_uid) }
-    screen_name { Faker::Internet.domain_word }
+    content { Faker::Lorem.sentence }
+
+    brand
+    author
   end
 end

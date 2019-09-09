@@ -1,6 +1,6 @@
 %ul
   - tweets.each do |tweet|
     %li
-      %p #{tweet.user}: #{tweet.text}
+      %p #{tweet.author.username}: #{tweet.content}
       - if tweet.replies.any?
         = render partial: 'twitter/feed', locals: { tweets: tweet.replies }

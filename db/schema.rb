@@ -12,16 +12,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_814_144_724) do
+ActiveRecord::Schema.define(version: 20_190_908_155_138) do
+  create_table 'authors', force: :cascade do |t|
+    t.string 'external_uid', null: false
+    t.string 'username', null: false
+  end
+
   create_table 'brands', force: :cascade do |t|
     t.string 'external_uid', null: false
-    t.string 'nickname', null: false
+    t.string 'screen_name', null: false
     t.string 'encrypted_token'
     t.string 'encrypted_token_iv'
     t.string 'encrypted_secret'
     t.string 'encrypted_secret_iv'
     t.index ['encrypted_secret_iv'], name: 'index_brands_on_encrypted_secret_iv', unique: true
     t.index ['encrypted_token_iv'], name: 'index_brands_on_encrypted_token_iv', unique: true
+  end
+
+  create_table 'tickets', force: :cascade do |t|
+    t.string 'external_uid', null: false
+    t.text 'content', null: false
+    t.integer 'brand_id', null: false
+    t.integer 'author_id', null: false
+    t.integer 'parent_id'
+    t.index ['author_id'], name: 'index_tickets_on_author_id'
+    t.index ['brand_id'], name: 'index_tickets_on_brand_id'
+    t.index ['parent_id'], name: 'index_tickets_on_parent_id'
   end
 
   create_table 'users', force: :cascade do |t|

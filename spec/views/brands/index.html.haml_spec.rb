@@ -10,8 +10,8 @@ RSpec.describe 'brands/index', type: :view do
   end
 
   it 'renders all brands' do
-    expect(render).to have_text(brands.first.nickname)
-    expect(render).to have_text(brands.second.nickname)
+    expect(render).to have_text(brands.first.screen_name)
+    expect(render).to have_text(brands.second.screen_name)
   end
 
   it 'renders the pagination navigation' do
