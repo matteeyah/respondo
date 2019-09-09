@@ -13,6 +13,17 @@
     - TWITTER_API_KEY
     - TWITTER_API_SECRET
 
+### Heroku
+
+#### Reset the database
+
+After changing the schema in a way that's not migratable from the previous
+state you need to reset the database.
+
+- `heroku pg:reset DATABASE_URL`
+- `heroku run rails db:migrate`
+- `heroku restart`
+
 ### Docker
 
 #### Build
