@@ -19,7 +19,7 @@ RSpec.describe 'brands/edit', type: :view do
     expect(render).to have_select('add-user', options: [user_outside_brand.name])
   end
 
-  it 'has the remove user select box' do
-    expect(render).to have_select('remove-user', options: [user_in_brand.name])
+  it 'has the remove user link' do
+    expect(render).to have_link('Remove User', href: brand_user_path(brand, user_in_brand.id))
   end
 end

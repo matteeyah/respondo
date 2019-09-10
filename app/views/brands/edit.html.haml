@@ -1,8 +1,4 @@
-= form_with url: brand_remove_user_path(@brand) do |remove_user_form|
-  = remove_user_form.select :user_id, options_for_select(remove_users_dropdown_options), {}, id: 'remove-user'
-  = remove_user_form.submit 'Remove User'
-
-= form_with url: brand_add_user_path(@brand) do |remove_user_form|
+= form_with url: brand_users_path(@brand), method: :post do |remove_user_form|
   = remove_user_form.select :user_id, options_for_select(add_users_dropdown_options), {}, id: 'add-user'
   = remove_user_form.submit 'Add User'
 
@@ -10,4 +6,4 @@
 
 %ul
   - @brand.users.each do |user|
-    %li= user.name
+    %li #{user.name} - #{link_to 'Remove User', brand_user_path(@brand, user.id), method: :delete}
