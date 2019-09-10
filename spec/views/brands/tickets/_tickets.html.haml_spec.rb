@@ -29,7 +29,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
   context 'when user is authorized' do
     before do
-      assign(:user_brand, brand)
+      allow(view).to receive(:authorized?).and_return(true)
     end
 
     it 'displays response forms' do
@@ -41,6 +41,10 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
   end
 
   context 'when user is not authorized' do
+    before do
+      allow(view).to receive(:authorized?).and_return(false)
+    end
+
     it 'does not display response forms' do
       subject
 

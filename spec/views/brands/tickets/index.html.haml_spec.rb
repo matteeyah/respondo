@@ -14,7 +14,7 @@ RSpec.describe 'brands/tickets/index', type: :view do
 
   context 'when user is authorized' do
     before do
-      assign(:user_brand, brand)
+      allow(view).to receive(:authorized?).and_return(true)
     end
 
     it 'renders the refresh button' do
@@ -23,6 +23,10 @@ RSpec.describe 'brands/tickets/index', type: :view do
   end
 
   context 'when user is not authorized' do
+    before do
+      allow(view).to receive(:authorized?).and_return(false)
+    end
+
     it 'does not render the refresh button' do
       expect(render).not_to have_button('Refresh Tickets')
     end
