@@ -48,17 +48,34 @@ RSpec.describe Brand, type: :model do
   end
 
   describe '#new_mentions' do
+    let(:twitter_client) { double('Twitter') }
+
     subject { brand.new_mentions }
 
     before do
       allow(brand).to receive(:last_ticket_id).and_return(1)
+      allow(brand).to receive(:twitter).and_return(twitter_client)
     end
 
     it 'queries the twitter client' do
-      twitter_client = double('Twitter Client')
-
-      expect(brand).to receive(:twitter).and_return(twitter_client)
       expect(twitter_client).to receive(:mentions_timeline).with(since: 1)
+
+      subject
+    end
+  end
+
+  describe '#reply' do
+    let(:twitter_client) { double('Twitter') }
+
+    subject { brand.reply('does not matter', 'tweet_id') }
+
+    before do
+      allow(brand).to receive(:twitter).and_return(twitter_client)
+    end
+
+    it 'queries the twitter client' do
+      expect(twitter_client).to receive(:update)
+        .with('does not matter', in_reply_to_status_id: 'tweet_id', auto_populate_reply_metadata: true)
 
       subject
     end

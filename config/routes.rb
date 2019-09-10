@@ -10,9 +10,17 @@ Rails.application.routes.draw do
     delete 'sign_out', to: 'devise/sessions#destroy', as: :destroy_user_session
   end
 
-  resources :brands, only: %i[show index edit] do
-    post :add_user
-    post :remove_user
-    post :refresh_tickets
+  resources :brands, only: %i[index edit] do
+    scope module: :brands do
+      resources :tickets, only: [:index] do
+        post :reply
+
+        collection do
+          post :refresh
+        end
+      end
+
+      resources :users, only: %i[create destroy]
+    end
   end
 end

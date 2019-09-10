@@ -1,6 +1,6 @@
 %ul
   - @brands.each do |brand|
     %li
-      %p= link_to brand.screen_name, brand_path(brand)
+      %p= link_to brand.screen_name, brand_tickets_path(brand)
 
 != pagy_nav(@pagy)

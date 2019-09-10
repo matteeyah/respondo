@@ -33,6 +33,10 @@ class Brand < ApplicationRecord
     twitter.mentions_timeline(since: last_ticket_id)
   end
 
+  def reply(response_text, tweet_id)
+    twitter.update(response_text, in_reply_to_status_id: tweet_id, auto_populate_reply_metadata: true)
+  end
+
   private
 
   def last_ticket_id

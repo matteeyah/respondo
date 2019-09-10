@@ -1,0 +1,5 @@
+- if authorized?
+  = button_to 'Refresh Tickets', refresh_brand_tickets_path(@brand)
+
+%span Tweets
+= render partial: 'brands/tickets/tickets', locals: { tickets: @tickets }
