@@ -7,11 +7,11 @@ module Brands
     before_action :authorize!, only: [:refresh]
 
     def index
-      @pagy, @tickets = pagy(@brand.tickets.root)
+      @pagy, @tickets = pagy(brand.tickets.root)
     end
 
     def refresh
-      LoadNewTicketsJob.perform_now(@brand.id)
+      LoadNewTicketsJob.perform_now(brand.id)
     end
   end
 end

@@ -6,11 +6,11 @@ module Brands
     before_action :authorize!
 
     def create
-      @brand.users << @user
+      brand.users << user
     end
 
     def destroy
-      @brand.users.delete(@user)
+      brand.users.delete(user)
     end
 
     private
