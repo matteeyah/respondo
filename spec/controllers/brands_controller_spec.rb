@@ -30,22 +30,6 @@ RSpec.describe BrandsController, type: :controller do
     end
   end
 
-  describe 'GET show' do
-    let(:brand) { FactoryBot.create(:brand) }
-
-    subject { get :show, params: { id: brand.id } }
-
-    it 'sets the brand' do
-      subject
-
-      expect(assigns(:brand)).to eq(brand)
-    end
-
-    it 'renders the show template' do
-      expect(subject).to render_template('brands/show', partial: 'twitter/_feed')
-    end
-  end
-
   describe 'GET edit' do
     let(:brand) { FactoryBot.create(:brand) }
 

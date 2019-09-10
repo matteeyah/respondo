@@ -1,2 +1,4 @@
+Hello World
+
 - if @user_brand
-  = render partial: 'brands/tickets', locals: { brand: @user_brand }
+  = link_to 'Brand Tickets', brand_tickets_path(@user_brand)
