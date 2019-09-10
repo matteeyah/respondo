@@ -1,0 +1,10 @@
+%ul
+  - tickets.each do |ticket|
+    %li
+      %p #{ticket.author.username}: #{ticket.content}
+      = form_with url: brand_ticket_reply_path(@brand, ticket) do |reply_form|
+        = reply_form.text_field :response_text
+        = reply_form.submit 'Reply'
+
+      - if ticket.replies.any?
+        = render partial: 'tickets', locals: { tickets: ticket.replies }

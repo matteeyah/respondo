@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   resources :brands, only: %i[index edit] do
     scope module: :brands do
       resources :tickets, only: [:index] do
+        post :reply
+
         collection do
           post :refresh
         end

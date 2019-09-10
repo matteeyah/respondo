@@ -8,8 +8,8 @@ RSpec.describe 'brands/tickets/index', type: :view do
     assign(:tickets, [])
   end
 
-  it 'renders the twitter feed' do
-    expect(render).to render_template(partial: 'twitter/_feed')
+  it 'renders the tickets' do
+    expect(render).to render_template(partial: 'brands/tickets/_tickets')
   end
 
   it 'renders the refresh button' do
