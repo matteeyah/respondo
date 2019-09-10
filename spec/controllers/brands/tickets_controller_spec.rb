@@ -36,7 +36,7 @@ RSpec.describe Brands::TicketsController, type: :controller do
       end
 
       it 'calls the background worker' do
-        expect(LoadTicketsJob).to receive(:perform_now)
+        expect(LoadNewTicketsJob).to receive(:perform_now)
 
         subject
       end

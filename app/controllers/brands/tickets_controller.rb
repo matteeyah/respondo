@@ -11,7 +11,7 @@ module Brands
     end
 
     def refresh
-      LoadTicketsJob.perform_now(@brand.id)
+      LoadNewTicketsJob.perform_now(@brand.id)
     end
   end
 end
