@@ -25,6 +25,7 @@ RSpec.describe Brands::TicketsController, type: :controller do
 
   describe 'POST reply' do
     let!(:ticket) { FactoryBot.create(:ticket) }
+
     let(:tweet) do
       double('Ticket', id: '1', text: 'does not matter', in_reply_to_tweet_id: ticket.external_uid,
                        user: double('Author', id: '2', screen_name: 'test'))
