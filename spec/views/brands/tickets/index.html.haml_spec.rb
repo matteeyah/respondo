@@ -12,7 +12,19 @@ RSpec.describe 'brands/tickets/index', type: :view do
     expect(render).to render_template(partial: 'brands/tickets/_tickets')
   end
 
-  it 'renders the refresh button' do
-    expect(render).to have_button('Refresh Tickets')
+  context 'when user is authorized' do
+    before do
+      assign(:user_brand, brand)
+    end
+
+    it 'renders the refresh button' do
+      expect(render).to have_button('Refresh Tickets')
+    end
+  end
+
+  context 'when user is not authorized' do
+    it 'does not render the refresh button' do
+      expect(render).not_to have_button('Refresh Tickets')
+    end
   end
 end

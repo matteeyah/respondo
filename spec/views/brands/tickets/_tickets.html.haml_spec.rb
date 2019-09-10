@@ -17,13 +17,6 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
     expect(rendered).to have_text "#{tickets.second.author.username}: #{tickets.second.content}"
   end
 
-  it 'displays response forms' do
-    subject
-
-    expect(rendered).to have_field(:response_text, count: 2)
-    expect(rendered).to have_button('Reply', count: 2)
-  end
-
   context 'with nested tickets' do
     let(:nested_tickets) { FactoryBot.create_list(:ticket, 2, brand: brand, parent: tickets.first) }
 
@@ -31,6 +24,28 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       subject
 
       expect(rendered).to render_template(partial: 'brands/tickets/_tickets')
+    end
+  end
+
+  context 'when user is authorized' do
+    before do
+      assign(:user_brand, brand)
+    end
+
+    it 'displays response forms' do
+      subject
+
+      expect(rendered).to have_field(:response_text, count: 2)
+      expect(rendered).to have_button('Reply', count: 2)
+    end
+  end
+
+  context 'when user is not authorized' do
+    it 'does not display response forms' do
+      subject
+
+      expect(rendered).not_to have_field(:response_text)
+      expect(rendered).not_to have_button('Reply')
     end
   end
 end
