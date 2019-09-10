@@ -22,4 +22,34 @@ RSpec.describe Brands::TicketsController, type: :controller do
       expect(subject).to render_template('brands/tickets/index', partial: 'twitter/_feed')
     end
   end
+
+  describe 'POST refresh' do
+    subject { post :refresh, params: { brand_id: brand.id } }
+
+    context 'when user is authorized' do
+      let(:user) { FactoryBot.create(:user) }
+
+      before do
+        brand.users << user
+
+        sign_in(user)
+      end
+
+      it 'calls the background worker' do
+        expect(LoadTicketsJob).to receive(:perform_now)
+
+        subject
+      end
+    end
+
+    context 'when user is not authorized' do
+      it 'sets the flash' do
+        expect(subject.request).to set_flash[:alert]
+      end
+
+      it 'redirects the user' do
+        expect(subject).to redirect_to(root_path)
+      end
+    end
+  end
 end

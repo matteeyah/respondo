@@ -11,10 +11,13 @@ Rails.application.routes.draw do
   end
 
   resources :brands, only: %i[index edit] do
-    post :refresh_tickets
+    scope module: :brands do
+      resources :tickets, only: [:index] do
+        collection do
+          post :refresh
+        end
+      end
 
-    scope module: 'brands' do
-      resources :tickets, only: [:index]
       resources :users, only: %i[create destroy]
     end
   end

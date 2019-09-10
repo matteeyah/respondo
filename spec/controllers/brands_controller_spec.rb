@@ -65,16 +65,4 @@ RSpec.describe BrandsController, type: :controller do
       end
     end
   end
-
-  describe 'POST refresh_tickets' do
-    let(:brand) { FactoryBot.create(:brand) }
-
-    subject { post :refresh_tickets, params: { brand_id: brand.id } }
-
-    it 'calls the background worker' do
-      expect(LoadTicketsJob).to receive(:perform_now)
-
-      subject
-    end
-  end
 end
