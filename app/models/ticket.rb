@@ -4,6 +4,8 @@ class Ticket < ApplicationRecord
   validates :external_uid, presence: true, allow_blank: false
   validates :content, presence: true, allow_blank: false
 
+  before_save :cascade_status
+
   belongs_to :author
   belongs_to :brand
 
@@ -36,5 +38,13 @@ class Ticket < ApplicationRecord
       # https://github.com/sferik/twitter/issues/959
       tweet_id.nil? ? nil : tweet_id
     end
+  end
+
+  private
+
+  def cascade_status
+    return unless status_changed?
+
+    replies.update(status: status)
   end
 end

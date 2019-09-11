@@ -13,6 +13,33 @@ RSpec.describe Ticket, type: :model do
     it { is_expected.to have_many(:replies) }
   end
 
+  describe 'Callbacks' do
+    describe 'before_save' do
+      let(:parent) { FactoryBot.create(:ticket, status: :open) }
+      let(:reply) { FactoryBot.create(:ticket, status: :open, parent: parent) }
+      let(:nested_reply) { FactoryBot.create(:ticket, status: :open, parent: reply) }
+
+      subject(:execute_callback) { parent.run_callbacks :save }
+
+      context 'when status changes' do
+        it 'cascades change to replies' do
+          parent.status = 'solved'
+
+          expect { execute_callback }.to change { reply.reload.status }.from('open').to('solved')
+            .and change { nested_reply.reload.status }.from('open').to('solved')
+        end
+      end
+
+      context 'when status does not change' do
+        it 'does not cascade change to replies' do
+          parent.content = 'hello world'
+
+          expect { execute_callback }.not_to change { reply.reload.status }.from('open')
+        end
+      end
+    end
+  end
+
   describe '.root' do
     let(:parentless_ticket) { FactoryBot.create(:ticket) }
     let!(:child_ticket) { FactoryBot.create(:ticket, parent: parentless_ticket) }
