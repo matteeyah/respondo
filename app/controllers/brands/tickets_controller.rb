@@ -3,7 +3,7 @@
 module Brands
   class TicketsController < ApplicationController
     before_action :ticket, except: %i[index refresh]
-    before_action :authorize!, only: %i[refresh reply]
+    before_action :authorize!, only: %i[refresh reply invert_status]
 
     def index
       @open_tickets = brand.tickets.root.open
@@ -13,6 +13,15 @@ module Brands
     def reply
       tweet = brand.reply(params[:response_text], ticket.external_uid)
       Ticket.from_tweet(tweet, brand)
+    end
+
+    def invert_status
+      case ticket.status
+      when 'open'
+        ticket.update(status: 'solved')
+      when 'solved'
+        ticket.update(status: 'open')
+      end
     end
 
     def refresh

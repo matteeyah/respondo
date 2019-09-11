@@ -77,6 +77,57 @@ RSpec.describe Brands::TicketsController, type: :controller do
     end
   end
 
+  describe 'POST invert_status' do
+    let(:ticket) { FactoryBot.create(:ticket) }
+
+    subject { post :invert_status, params: { brand_id: brand.id, ticket_id: ticket.id } }
+
+    before do
+      allow(controller).to receive(:brand).and_return(brand)
+      allow(controller).to receive(:ticket).and_return(ticket)
+    end
+
+    context 'when user is authorized' do
+      let(:user) { FactoryBot.create(:user) }
+
+      before do
+        brand.users << user
+
+        sign_in(user)
+      end
+
+      context 'when the ticket is open' do
+        before do
+          ticket.status = 'open'
+        end
+
+        it 'solves the ticket' do
+          expect { subject }.to change { ticket.status }.from('open').to('solved')
+        end
+      end
+
+      context 'when the ticket is solved' do
+        before do
+          ticket.status = 'solved'
+        end
+
+        it 'opens the ticket' do
+          expect { subject }.to change { ticket.status }.from('solved').to('open')
+        end
+      end
+    end
+
+    context 'when user is not authorized' do
+      it 'sets the flash' do
+        expect(subject.request).to set_flash[:alert]
+      end
+
+      it 'redirects the user' do
+        expect(subject).to redirect_to(root_path)
+      end
+    end
+  end
+
   describe 'POST refresh' do
     subject { post :refresh, params: { brand_id: brand.id } }
 
