@@ -12,6 +12,8 @@ class Ticket < ApplicationRecord
 
   scope :root, -> { where(parent: nil) }
 
+  enum status: %i[open solved]
+
   class << self
     def from_tweet(tweet, brand)
       twitter_ticket = find_or_create_by(external_uid: tweet.id) do |ticket|
