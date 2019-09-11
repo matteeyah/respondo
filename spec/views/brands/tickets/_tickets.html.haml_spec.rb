@@ -5,11 +5,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
   let(:ticket) { FactoryBot.create(:ticket, brand: brand, status: :open) }
   let!(:nested_ticket) { FactoryBot.create(:ticket, brand: brand, parent: ticket, status: :solved) }
 
-  subject { render partial: 'brands/tickets/tickets', locals: { tickets: [ticket] } }
-
-  before do
-    assign(:brand, brand)
-  end
+  subject { render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: [ticket] } }
 
   it 'displays the tickets' do
     subject
@@ -31,8 +27,10 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
     end
 
     it 'displays the status buttons' do
-      expect(rendered).not_to have_button('Open')
-      expect(rendered).not_to have_button('Solve')
+      subject
+
+      expect(rendered).to have_button('Open')
+      expect(rendered).to have_button('Solve')
     end
   end
 
@@ -49,6 +47,8 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
     end
 
     it 'does not display the status button' do
+      subject
+
       expect(rendered).not_to have_button('Open')
       expect(rendered).not_to have_button('Solve')
     end

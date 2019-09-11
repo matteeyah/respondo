@@ -25,7 +25,8 @@ RSpec.describe Ticket, type: :model do
         it 'cascades change to replies' do
           parent.status = 'solved'
 
-          expect { execute_callback }.to change { reply.reload.status }.from('open').to('solved')
+          expect { execute_callback }
+            .to change { reply.reload.status }.from('open').to('solved')
             .and change { nested_reply.reload.status }.from('open').to('solved')
         end
       end

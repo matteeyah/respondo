@@ -11,6 +11,6 @@
 
 .tab-content
   .tab-pane#open-tickets{ role: 'tabpanel' }
-    = render partial: 'brands/tickets/tickets', locals: { tickets: @open_tickets }
+    = render partial: 'brands/tickets/tickets', locals: { brand: @brand, tickets: @open_tickets }
   .tab-pane#solved-tickets{ role: 'tabpanel' }
-    = render partial: 'brands/tickets/tickets', locals: { tickets: @solved_tickets }
+    = render partial: 'brands/tickets/tickets', locals: { brand: @brand, tickets: @solved_tickets }

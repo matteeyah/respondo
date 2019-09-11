@@ -23,3 +23,6 @@ Metrics/LineLength:
 
 Style/Documentation:
   Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
