@@ -57,8 +57,10 @@ group :development, :test do
   gem 'factory_bot_rails', '~> 5.0.2'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3', '~> 1.4'
-  # Rubocop
+  # Ruby linter
   gem 'rubocop', '~> 0.74.0', require: false
+  # Haml linter
+  gem 'haml_lint', '~> 0.33.0', require: false
   # Sample data
   gem 'faker', '~> 2.2.2'
 end
