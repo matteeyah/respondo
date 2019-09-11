@@ -5,7 +5,7 @@ on: [push]
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    container: ruby:2.6.3
+    container: ruby:2.6.4
     steps:
       - uses: actions/checkout@v1
       - name: dependencies
@@ -16,10 +16,19 @@ jobs:
         run: bundle exec rspec
   rubocop:
     runs-on: ubuntu-latest
-    container: ruby:2.6.3
+    container: ruby:2.6.4
     steps:
       - uses: actions/checkout@v1
       - name: dependencies
         run: bundle install --without development --jobs 4 --retry 3
       - name: rubocop
         run: bundle exec rubocop
+  haml-lint:
+    runs-on: ubuntu-latest
+    container: ruby:2.6.4
+    steps:
+      - uses: actions/checkout@v1
+      - name: dependencies
+        run: bundle install --without development --jobs 4 --retry 3
+      - name: haml-lint
+        run: bundle exec haml-lint

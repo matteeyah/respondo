@@ -9,13 +9,20 @@ RSpec.describe Brands::TicketsController, type: :controller do
     subject { get :index, params: { brand_id: brand.id } }
 
     before do
-      FactoryBot.create_list(:ticket, 2, brand: brand)
+      FactoryBot.create(:ticket, status: :open, brand: brand)
+      FactoryBot.create(:ticket, status: :solved, brand: brand)
     end
 
-    it 'sets the tickets' do
+    it 'sets open tickets' do
       subject
 
-      expect(assigns(:tickets)).to eq(brand.tickets.root)
+      expect(assigns(:open_tickets)).to eq(brand.tickets.root.open)
+    end
+
+    it 'sets solved tickets' do
+      subject
+
+      expect(assigns(:solved_tickets)).to eq(brand.tickets.root.solved)
     end
 
     it 'renders the index template' do
@@ -56,6 +63,57 @@ RSpec.describe Brands::TicketsController, type: :controller do
       it 'creates a reply ticket' do
         expect { subject }.to change { Ticket.count }.from(1).to(2)
         expect(Ticket.last).to have_attributes(parent: ticket, content: 'does not matter')
+      end
+    end
+
+    context 'when user is not authorized' do
+      it 'sets the flash' do
+        expect(subject.request).to set_flash[:alert]
+      end
+
+      it 'redirects the user' do
+        expect(subject).to redirect_to(root_path)
+      end
+    end
+  end
+
+  describe 'POST invert_status' do
+    let(:ticket) { FactoryBot.create(:ticket) }
+
+    subject { post :invert_status, params: { brand_id: brand.id, ticket_id: ticket.id } }
+
+    before do
+      allow(controller).to receive(:brand).and_return(brand)
+      allow(controller).to receive(:ticket).and_return(ticket)
+    end
+
+    context 'when user is authorized' do
+      let(:user) { FactoryBot.create(:user) }
+
+      before do
+        brand.users << user
+
+        sign_in(user)
+      end
+
+      context 'when the ticket is open' do
+        before do
+          ticket.status = 'open'
+        end
+
+        it 'solves the ticket' do
+          expect { subject }.to change { ticket.status }.from('open').to('solved')
+        end
+      end
+
+      context 'when the ticket is solved' do
+        before do
+          ticket.status = 'solved'
+        end
+
+        it 'opens the ticket' do
+          expect { subject }.to change { ticket.status }.from('solved').to('open')
+        end
       end
     end
 

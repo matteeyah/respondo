@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_908_155_138) do
+ActiveRecord::Schema.define(version: 20_190_911_205_639) do
   create_table 'authors', force: :cascade do |t|
     t.string 'external_uid', null: false
     t.string 'username', null: false
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20_190_908_155_138) do
     t.integer 'brand_id', null: false
     t.integer 'author_id', null: false
     t.integer 'parent_id'
+    t.integer 'status', default: 0, null: false
     t.index ['author_id'], name: 'index_tickets_on_author_id'
     t.index ['brand_id'], name: 'index_tickets_on_brand_id'
     t.index ['parent_id'], name: 'index_tickets_on_parent_id'

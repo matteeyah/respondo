@@ -2,4 +2,15 @@
   = button_to 'Refresh Tickets', refresh_brand_tickets_path(@brand)
 
 %span Tweets
-= render partial: 'brands/tickets/tickets', locals: { tickets: @tickets }
+
+%ul.nav.nav-tabs
+  %li.nav-item
+    %a.nav-link{ 'data-toggle': 'tab', href: '#open-tickets' } Open
+  %li.nav-item
+    %a.nav-link{ 'data-toggle': 'tab', href: '#solved-tickets' } Solved
+
+.tab-content
+  .tab-pane#open-tickets{ role: 'tabpanel' }
+    = render partial: 'brands/tickets/tickets', locals: { brand: @brand, tickets: @open_tickets }
+  .tab-pane#solved-tickets{ role: 'tabpanel' }
+    = render partial: 'brands/tickets/tickets', locals: { brand: @brand, tickets: @solved_tickets }

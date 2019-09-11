@@ -2,29 +2,16 @@
 
 RSpec.describe 'brands/tickets/_tickets', type: :view do
   let(:brand) { FactoryBot.create(:brand) }
-  let(:tickets) { FactoryBot.create_list(:ticket, 2, brand: brand) }
+  let(:ticket) { FactoryBot.create(:ticket, brand: brand, status: :open) }
+  let!(:nested_ticket) { FactoryBot.create(:ticket, brand: brand, parent: ticket, status: :solved) }
 
-  subject { render partial: 'brands/tickets/tickets', locals: { tickets: tickets } }
+  subject { render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: [ticket] } }
 
-  before do
-    assign(:brand, brand)
-  end
-
-  it 'displays all the tickets' do
+  it 'displays the tickets' do
     subject
 
-    expect(rendered).to have_text "#{tickets.first.author.username}: #{tickets.first.content}"
-    expect(rendered).to have_text "#{tickets.second.author.username}: #{tickets.second.content}"
-  end
-
-  context 'with nested tickets' do
-    let(:nested_tickets) { FactoryBot.create_list(:ticket, 2, brand: brand, parent: tickets.first) }
-
-    it 'renders the partial recursively' do
-      subject
-
-      expect(rendered).to render_template(partial: 'brands/tickets/_tickets')
-    end
+    expect(rendered).to have_text "#{ticket.author.username}: #{ticket.content}"
+    expect(rendered).to have_text "#{nested_ticket.author.username}: #{nested_ticket.content}"
   end
 
   context 'when user is authorized' do
@@ -38,6 +25,13 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       expect(rendered).to have_field(:response_text, count: 2)
       expect(rendered).to have_button('Reply', count: 2)
     end
+
+    it 'displays the status buttons' do
+      subject
+
+      expect(rendered).to have_button('Open')
+      expect(rendered).to have_button('Solve')
+    end
   end
 
   context 'when user is not authorized' do
@@ -50,6 +44,13 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
       expect(rendered).not_to have_field(:response_text)
       expect(rendered).not_to have_button('Reply')
+    end
+
+    it 'does not display the status button' do
+      subject
+
+      expect(rendered).not_to have_button('Open')
+      expect(rendered).not_to have_button('Solve')
     end
   end
 end

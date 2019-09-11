@@ -2,14 +2,17 @@
 
 RSpec.describe 'brands/tickets/index', type: :view do
   let(:brand) { FactoryBot.create(:brand) }
+  let(:open_ticket) { FactoryBot.create(:ticket, status: :open) }
+  let(:solved_ticket) { FactoryBot.create(:ticket, status: :solved) }
 
   before do
     assign(:brand, brand)
-    assign(:tickets, [])
+    assign(:open_tickets, [open_ticket])
+    assign(:solved_tickets, [solved_ticket])
   end
 
-  it 'renders the tickets' do
-    expect(render).to render_template(partial: 'brands/tickets/_tickets')
+  it 'renders both open and solved tickets' do
+    expect(render).to render_template(partial: 'brands/tickets/_tickets', count: 2)
   end
 
   context 'when user is authorized' do
