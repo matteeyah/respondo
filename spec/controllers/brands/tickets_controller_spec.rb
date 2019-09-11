@@ -9,13 +9,20 @@ RSpec.describe Brands::TicketsController, type: :controller do
     subject { get :index, params: { brand_id: brand.id } }
 
     before do
-      FactoryBot.create_list(:ticket, 2, brand: brand)
+      FactoryBot.create(:ticket, status: :open, brand: brand)
+      FactoryBot.create(:ticket, status: :solved, brand: brand)
     end
 
-    it 'sets the tickets' do
+    it 'sets open tickets' do
       subject
 
-      expect(assigns(:tickets)).to eq(brand.tickets.root)
+      expect(assigns(:open_tickets)).to eq(brand.tickets.root.open)
+    end
+
+    it 'sets solved tickets' do
+      subject
+
+      expect(assigns(:solved_tickets)).to eq(brand.tickets.root.solved)
     end
 
     it 'renders the index template' do

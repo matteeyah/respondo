@@ -2,13 +2,12 @@
 
 module Brands
   class TicketsController < ApplicationController
-    include Pagy::Backend
-
     before_action :ticket, except: %i[index refresh]
     before_action :authorize!, only: %i[refresh reply]
 
     def index
-      @pagy, @tickets = pagy(brand.tickets.root)
+      @open_tickets = brand.tickets.root.open
+      @solved_tickets = brand.tickets.root.solved
     end
 
     def reply
