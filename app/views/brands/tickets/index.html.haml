@@ -10,7 +10,7 @@
     %a.nav-link{ 'data-toggle': 'tab', href: '#solved-tickets' } Solved
 
 .tab-content
-  #open-tickets.tab-pane{ role: 'tabpanel' }
+  .tab-pane#open-tickets{ role: 'tabpanel' }
     = render partial: 'brands/tickets/tickets', locals: { tickets: @open_tickets }
-  #solved-tickets.tab-pane{ role: 'tabpanel' }
+  .tab-pane#solved-tickets{ role: 'tabpanel' }
     = render partial: 'brands/tickets/tickets', locals: { tickets: @solved_tickets }
