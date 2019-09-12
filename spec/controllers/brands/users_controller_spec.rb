@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
+require './spec/support/sign_in_out_helpers.rb'
+
 RSpec.describe Brands::UsersController, type: :controller do
+  include SignInOutHelpers
+
   let(:brand) { FactoryBot.create(:brand) }
 
   describe 'POST create' do

@@ -2,16 +2,19 @@
 
 RSpec.describe SessionsController, type: :controller do
   describe 'GET create' do
+    let(:user) { double('User', id: 1, persisted?: true) }
+
     subject(:get_create) { get :create, params: { provider: provider } }
+
+    before do
+      allow(User).to receive(:from_omniauth).and_return(user)
+    end
 
     context 'when oauth is from google' do
       let(:provider) { 'google_oauth2' }
-      let(:user) { FactoryBot.create(:user) }
 
       before do
         request.env['omniauth.auth'] = JSON.parse(file_fixture('google_user_oauth_hash.json').read, object_class: OpenStruct)
-
-        allow(User).to receive(:from_omniauth).and_return(user)
       end
 
       it 'procures a user model' do
@@ -43,8 +46,7 @@ RSpec.describe SessionsController, type: :controller do
       before do
         request.env['omniauth.auth'] = JSON.parse(file_fixture('twitter_brand_oauth_hash.json').read, object_class: OpenStruct)
 
-        brand = FactoryBot.create(:brand)
-        user = FactoryBot.create(:user)
+        brand = double('Brand', persisted?: true)
         allow(Brand).to receive(:from_omniauth).and_return(brand)
         allow(controller).to receive(:current_user).and_return(user)
       end

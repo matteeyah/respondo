@@ -7,8 +7,6 @@ module Brands
     private
 
     def brand
-      return unless params[:brand_id] || params[:id]
-
       @brand ||= Brand.find(params[:brand_id] || params[:id])
     end
 
