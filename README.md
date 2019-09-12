@@ -4,14 +4,24 @@
 
 - Rails
     - `RAILS_MASTER_KEY`
+        - TEST
+        - PRODUCTION
 
 - Google OAuth
     - `GOOGLE_CLIENT_ID`
+        - DEVELOPMENT
+        - PRODUCTION
     - `GOOGLE_CLIENT_SECRET`
+        - DEVELOPMENT
+        - PRODUCTION
 
 - Twitter OAuth
     - `TWITTER_API_KEY`
+        - DEVELOPMENT
+        - PRODUCTION
     - `TWITTER_API_SECRET`
+        - DEVELOPMENT
+        - PRODUCTION
 
 ### Heroku
 
