@@ -19,14 +19,6 @@ class Brand < ApplicationRecord
         brand.users << initial_user
       end
     end
-
-    def new_with_session(params, session)
-      super.tap do |brand|
-        if (data = session['devise.twitter_data']&.dig('extra', 'raw_info'))
-          brand.screen_name = data['email'] if brand.screen_name.blank?
-        end
-      end
-    end
   end
 
   def new_mentions
