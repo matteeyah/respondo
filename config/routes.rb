@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   delete 'logout', to: 'sessions#destroy', as: 'logout'
-  get 'auth/:provider/callback', to: 'sessions#create'
+  get 'auth/:provider/callback', to: 'sessions#create', as: 'login'
   get 'auth/failure', to: redirect('/')
 
   resources :brands, only: %i[index edit] do
