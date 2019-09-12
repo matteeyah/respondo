@@ -1,4 +1,4 @@
 Hello World
 
-- if @user_brand
-  = link_to 'Brand Tickets', brand_tickets_path(@user_brand)
+- if current_brand
+  = link_to 'Brand Tickets', brand_tickets_path(current_brand)

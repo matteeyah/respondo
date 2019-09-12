@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require './spec/support/sign_in_out_helpers.rb'
+
 RSpec.describe BrandsController, type: :controller do
-  include Devise::Test::ControllerHelpers
+  include SignInOutHelpers
 
   describe 'GET index' do
     let!(:brands) { FactoryBot.create_list(:brand, 2) }

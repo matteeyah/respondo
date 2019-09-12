@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require './spec/support/sign_in_out_helpers.rb'
+
 RSpec.describe Brands::TicketsController, type: :controller do
-  include Devise::Test::ControllerHelpers
+  include SignInOutHelpers
 
   let(:brand) { FactoryBot.create(:brand) }
 

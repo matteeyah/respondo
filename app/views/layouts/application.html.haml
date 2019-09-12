@@ -17,18 +17,18 @@
           %li= link_to 'Brands', brands_path
         %p.navbar-text.navbar-right
           - if user_signed_in?
-            - if @user_brand.nil?
+            - if brand_signed_in?
               %span
-                = link_to 'Login Brand', user_twitter_omniauth_authorize_path
+                = link_to 'Edit Brand', edit_brand_path(current_brand)
             - else
               %span
-                = link_to 'Edit Brand', edit_brand_path(@user_brand)
+                = link_to 'Login Brand', login_twitter_path
             %span
               = current_user.name
                
-              = link_to '(logout)', destroy_user_session_path, method: :delete
+              = link_to '(logout)', logout_path, method: :delete
           - else
-            = link_to 'Login', user_google_oauth2_omniauth_authorize_path
+            = link_to 'Login', login_google_path
     .container
       - if flash.any?
         - flash.each do |type, message|

@@ -4,6 +4,7 @@ module Brands
   class TicketsController < ApplicationController
     before_action :ticket, except: %i[index refresh]
     before_action :authorize!, only: %i[refresh reply invert_status]
+    skip_before_action :brand, only: [:refresh]
 
     def index
       @open_tickets = brand.tickets.root.open
