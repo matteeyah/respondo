@@ -35,7 +35,7 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 # Omniauth
-gem 'devise', '~> 4.7.0'
+gem 'devise', '~> 4.7.1'
 gem 'omniauth-google-oauth2', '~> 0.6.0'
 gem 'omniauth-twitter', '~> 1.4.0'
 
