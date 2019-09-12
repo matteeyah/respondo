@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
   def create
     case request.env['omniauth.auth'].provider
@@ -28,13 +30,13 @@ class SessionsController < ApplicationController
     end
   end
 
-  def login_brand(auth_has)
+  def login_brand(auth_hash)
     brand = Brand.from_omniauth(auth_hash, current_user)
 
-    if brand.persisted?
-      flash[:notice] = 'Successfully logged in brand.'
-    else
-      flash[:notice] = 'Did not log in brand.'
-    end
+    flash[:notice] = if brand.persisted?
+                       'Successfully logged in brand.'
+                     else
+                       flash[:notice] = 'Did not log in brand.'
+                     end
   end
 end

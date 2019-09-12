@@ -22,10 +22,10 @@ class ApplicationController < ActionController::Base
 
   def user_signed_in?
     # converts current_user to a boolean by negating the negation
-    !!current_user
+    !current_user.nil?
   end
 
   def brand_signed_in?
-    !!current_brand
+    !current_brand.nil?
   end
 end
