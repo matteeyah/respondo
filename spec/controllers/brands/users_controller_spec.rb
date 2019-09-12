@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Brands::UsersController, type: :controller do
-  include Devise::Test::ControllerHelpers
-
   let(:brand) { FactoryBot.create(:brand) }
 
   describe 'POST create' do

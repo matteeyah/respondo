@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Brands::TicketsController, type: :controller do
-  include Devise::Test::ControllerHelpers
-
   let(:brand) { FactoryBot.create(:brand) }
 
   describe 'GET index' do
