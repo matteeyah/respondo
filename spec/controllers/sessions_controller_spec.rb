@@ -2,13 +2,7 @@
 
 RSpec.describe SessionsController, type: :controller do
   describe 'GET create' do
-    let(:user) { double('User', id: 1, persisted?: true) }
-
     subject(:get_create) { get :create, params: { provider: provider } }
-
-    before do
-      allow(User).to receive(:from_omniauth).and_return(user)
-    end
 
     context 'when oauth is from google' do
       let(:provider) { 'google_oauth2' }
@@ -17,17 +11,11 @@ RSpec.describe SessionsController, type: :controller do
         request.env['omniauth.auth'] = JSON.parse(file_fixture('google_user_oauth_hash.json').read, object_class: OpenStruct)
       end
 
-      it 'procures a user model' do
-        expect(User).to receive(:from_omniauth).once
-
-        get_create
-      end
-
       it 'logs the user in' do
-        expect { get_create }.to change { session[:user_id] }.from(nil).to(user.id)
+        expect { get_create }.to change { controller.send(:user_signed_in?) }.from(false).to(true)
       end
 
-      it 'sets a flash' do
+      it 'sets the flash' do
         get_create
 
         expect(controller).to set_flash[:notice]
@@ -45,28 +33,46 @@ RSpec.describe SessionsController, type: :controller do
 
       before do
         request.env['omniauth.auth'] = JSON.parse(file_fixture('twitter_brand_oauth_hash.json').read, object_class: OpenStruct)
-
-        brand = double('Brand', persisted?: true)
-        allow(Brand).to receive(:from_omniauth).and_return(brand)
-        allow(controller).to receive(:current_user).and_return(user)
       end
 
-      it 'procures a brand model' do
-        expect(Brand).to receive(:from_omniauth).once
+      context 'when the user is signed in' do
+        before do
+          allow(controller).to receive(:current_user).and_return(FactoryBot.create(:user))
+        end
 
-        get_create
+        it 'logs the brand in' do
+          expect { get_create }.to change { controller.send(:brand_signed_in?) }.from(false).to(true)
+        end
+
+        it 'sets the flash' do
+          get_create
+
+          expect(controller).to set_flash[:notice]
+        end
+
+        it 'redirects to root' do
+          get_create
+
+          expect(controller).to redirect_to(root_path)
+        end
       end
 
-      it 'sets a flash' do
-        get_create
+      context 'when the user is not signed in' do
+        it 'does not log the brand in' do
+          expect { get_create }.not_to change { controller.send(:brand_signed_in?) }.from(false)
+        end
 
-        expect(controller).to set_flash[:notice]
-      end
+        it 'does not set the flash' do
+          get_create
 
-      it 'redirects to root' do
-        get_create
+          expect(controller).not_to set_flash[:notice]
+        end
 
-        expect(controller).to redirect_to(root_path)
+        it 'redirects to root' do
+          get_create
+
+          expect(controller).to redirect_to(root_path)
+        end
       end
     end
   end

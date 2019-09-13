@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,40 +10,54 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_911_205_639) do
-  create_table 'authors', force: :cascade do |t|
-    t.string 'external_uid', null: false
-    t.string 'username', null: false
+ActiveRecord::Schema.define(version: 2019_09_12_173327) do
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "external_uid", null: false
+    t.string "email", null: false
+    t.integer "provider", default: 0, null: false
+    t.string "encrypted_token"
+    t.string "encrypted_token_iv"
+    t.string "ecnrypted_secret"
+    t.string "encrypted_secret_iv"
+    t.integer "user_id", null: false
+    t.index ["encrypted_secret_iv"], name: "index_accounts_on_encrypted_secret_iv", unique: true
+    t.index ["encrypted_token_iv"], name: "index_accounts_on_encrypted_token_iv", unique: true
+    t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
-  create_table 'brands', force: :cascade do |t|
-    t.string 'external_uid', null: false
-    t.string 'screen_name', null: false
-    t.string 'encrypted_token'
-    t.string 'encrypted_token_iv'
-    t.string 'encrypted_secret'
-    t.string 'encrypted_secret_iv'
-    t.index ['encrypted_secret_iv'], name: 'index_brands_on_encrypted_secret_iv', unique: true
-    t.index ['encrypted_token_iv'], name: 'index_brands_on_encrypted_token_iv', unique: true
+  create_table "authors", force: :cascade do |t|
+    t.string "external_uid", null: false
+    t.string "username", null: false
   end
 
-  create_table 'tickets', force: :cascade do |t|
-    t.string 'external_uid', null: false
-    t.text 'content', null: false
-    t.integer 'brand_id', null: false
-    t.integer 'author_id', null: false
-    t.integer 'parent_id'
-    t.integer 'status', default: 0, null: false
-    t.index ['author_id'], name: 'index_tickets_on_author_id'
-    t.index ['brand_id'], name: 'index_tickets_on_brand_id'
-    t.index ['parent_id'], name: 'index_tickets_on_parent_id'
+  create_table "brands", force: :cascade do |t|
+    t.string "external_uid", null: false
+    t.string "screen_name", null: false
+    t.string "encrypted_token"
+    t.string "encrypted_token_iv"
+    t.string "encrypted_secret"
+    t.string "encrypted_secret_iv"
+    t.index ["encrypted_secret_iv"], name: "index_brands_on_encrypted_secret_iv", unique: true
+    t.index ["encrypted_token_iv"], name: "index_brands_on_encrypted_token_iv", unique: true
   end
 
-  create_table 'users', force: :cascade do |t|
-    t.string 'external_uid', null: false
-    t.string 'name', null: false
-    t.string 'email', null: false
-    t.integer 'brand_id'
-    t.index ['brand_id'], name: 'index_users_on_brand_id'
+  create_table "tickets", force: :cascade do |t|
+    t.string "external_uid", null: false
+    t.text "content", null: false
+    t.integer "brand_id", null: false
+    t.integer "author_id", null: false
+    t.integer "parent_id"
+    t.integer "status", default: 0, null: false
+    t.index ["author_id"], name: "index_tickets_on_author_id"
+    t.index ["brand_id"], name: "index_tickets_on_brand_id"
+    t.index ["parent_id"], name: "index_tickets_on_parent_id"
   end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "brand_id"
+    t.index ["brand_id"], name: "index_users_on_brand_id"
+  end
+
 end
