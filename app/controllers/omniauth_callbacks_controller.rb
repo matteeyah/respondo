@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SessionsController < ApplicationController
+class OmniauthCallbacksController < ApplicationController
   def create
     case request.env['omniauth.auth'].provider
     when 'google_oauth2'

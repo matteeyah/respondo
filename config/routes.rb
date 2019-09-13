@@ -6,10 +6,10 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   # OmniAuth routing
-  delete :logout, to: 'sessions#destroy'
+  delete :logout, to: 'omniauth_callbacks#destroy'
   get :login_google, to: redirect('/auth/google_oauth2')
   get :login_twitter, to: redirect('/auth/twitter')
-  get 'auth/:provider/callback', to: 'sessions#create'
+  get 'auth/:provider/callback', to: 'omniauth_callbacks#create'
   get 'auth/failure', to: redirect('/')
 
   resources :brands, only: %i[index edit] do

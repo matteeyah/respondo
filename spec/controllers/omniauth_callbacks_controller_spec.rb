@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SessionsController, type: :controller do
+RSpec.describe OmniauthCallbacksController, type: :controller do
   describe 'GET create' do
     subject(:get_create) { get :create, params: { provider: provider } }
 
