@@ -2,7 +2,7 @@
 
 class Account < ApplicationRecord
   validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: :provider }
-  validates :email, presence: true, allow_blank: false
+  validates :email, presence: true, allow_blank: false, allow_nil: true
 
   enum provider: %i[twitter google_oauth2]
 
@@ -11,18 +11,17 @@ class Account < ApplicationRecord
   attr_encrypted :token, key: attr_encrypted_encryption_key
   attr_encrypted :secret, key: attr_encrypted_encryption_key
 
-  def self.from_omniauth(auth, user_params = {})
-    account = find_or_initialize_by(external_uid: auth.uid, provider: auth.provider) do |account|
-      account.token = auth.credentials.token
-      account.secret = auth.credentials.secret
-    end
+  def self.from_omniauth(auth)
+    find_or_initialize_by(external_uid: auth.uid, provider: auth.provider).tap do |account|
+      account.token ||= auth.credentials.token
+      account.secret ||= auth.credentials.secret
+      account.email = auth.info.email if auth.info.email
 
-    account.tap do |account|
-      account.email = auth.info.email
-      account.create_user!(user_params)
-      binding.pry
+      account.user ||= account.build_user
+      account.user.name ||= auth.info.name if auth.info.name
+
       account.save!
-    end unless account.persisted?
+    end
   end
 
   def client

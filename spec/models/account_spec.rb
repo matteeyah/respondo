@@ -3,7 +3,7 @@
 RSpec.describe Account, type: :model do
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:external_uid) }
-    it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to validate_presence_of(:email).allow_nil }
 
     it do
       FactoryBot.create(:account)
@@ -18,25 +18,53 @@ RSpec.describe Account, type: :model do
   it { is_expected.to define_enum_for(:provider).with_values(%i[twitter google_oauth2]) }
 
   describe '.from_omniauth' do
-    let(:auth_hash) { JSON.parse(file_fixture('twitter_brand_oauth_hash.json').read, object_class: OpenStruct) }
+    %w[twitter google_oauth2].each do |provider|
+      context "when provider is #{provider}" do
+        let(:auth_hash) do
+          fixture_name = case provider
+                         when 'twitter'
+                           'twitter_oauth_hash.json'
+                         when 'google_oauth2'
+                           'google_oauth_hash.json'
+                         end
+          JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)
+        end
 
-    subject(:from_omniauth) { Account.from_omniauth(auth_hash, name: 'Hello') }
+        subject(:from_omniauth) { Account.from_omniauth(auth_hash) }
 
-    context 'when there is no matching account' do
-      it 'creates an account' do
-        expect { from_omniauth }.to change { Account.count }.from(0).to(1)
-      end
+        context 'when there is no matching account' do
+          it 'creates an account' do
+            expect { from_omniauth }.to change { Account.count }.from(0).to(1)
+          end
 
-      it 'creates an account entity with correct info' do
-        expect(from_omniauth).to have_attributes(external_uid: auth_hash.uid, email: auth_hash.info.email)
-      end
-    end
+          it 'creates an account entity with correct info' do
+            expect(from_omniauth).to have_attributes(external_uid: auth_hash.uid)
+          end
 
-    context 'when there is a matching account' do
-      let!(:account) { FactoryBot.create(:account, external_uid: auth_hash.uid, provider: auth_hash.provider) }
+          it 'creates a user' do
+            expect { from_omniauth }.to change { User.count }.from(0).to(1)
+          end
+        end
 
-      it 'returns the matching account' do
-        expect(from_omniauth).to eq(account)
+        context 'when there is a matching account' do
+          let!(:account) { FactoryBot.create(:account, external_uid: auth_hash.uid, provider: auth_hash.provider) }
+
+          it 'returns the matching account' do
+            expect(from_omniauth).to eq(account)
+          end
+
+          context 'when the auth has more info' do
+            let(:email) { Faker::Internet.safe_email }
+
+            before do
+              auth_hash.info.email = email
+            end
+
+            it 'updates the record with extra information' do
+              expect { from_omniauth }.to change { account.reload.email }.from(nil).to(email)
+            end
+          end
+        end
       end
     end
   end
