@@ -22,13 +22,13 @@
                 = link_to 'Edit Brand', edit_brand_path(current_brand)
             - else
               %span
-                = link_to 'Login Brand', login_twitter_path
+                = link_to 'Login Brand', auth_twitter_path(action: 'login')
             %span
               = current_user.name
                
               = link_to '(logout)', logout_path, method: :delete
           - else
-            = link_to 'Login', login_google_path
+            = link_to 'Login', auth_google_oauth2_path(action: 'login')
     .container
       - if flash.any?
         - flash.each do |type, message|

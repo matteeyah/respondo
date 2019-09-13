@@ -2,11 +2,17 @@
 
 class OmniauthCallbacksController < ApplicationController
   def create
-    case request.env['omniauth.auth'].provider
-    when 'google_oauth2'
-      authenticate_user(request.env['omniauth.auth'])
-    when 'twitter'
-      authenticate_brand(request.env['omniauth.auth'])
+    omniauth_hash = request.env['omniauth.auth']
+    action = request.env['omniauth.params']['action']
+
+    case action
+    when 'login'
+      case omniauth_hash.provider
+      when 'google_oauth2'
+        authenticate_user(omniauth_hash)
+      when 'twitter'
+        authenticate_brand(omniauth_hash)
+      end
     end
 
     redirect_to root_path
@@ -26,9 +32,9 @@ class OmniauthCallbacksController < ApplicationController
 
     if user.persisted?
       sign_in(user)
-      flash[:notice] = 'Successfully logged in user.'
+      flash[:notice] = 'Successfully authenticated user.'
     else
-      flash[:notice] = 'Did not log in user.'
+      flash[:notice] = 'Did not authenticate user.'
     end
   end
 
@@ -38,9 +44,9 @@ class OmniauthCallbacksController < ApplicationController
     brand = Brand.from_omniauth(auth_hash, current_user)
 
     flash[:notice] = if brand.persisted?
-                       'Successfully logged in brand.'
+                       'Successfully authenticated brand.'
                      else
-                       flash[:notice] = 'Did not log in brand.'
+                       'Did not authenticate brand.'
                      end
   end
 end

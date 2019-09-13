@@ -4,6 +4,10 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
   describe 'GET create' do
     subject(:get_create) { get :create, params: { provider: provider } }
 
+    before do
+      request.env['omniauth.params'] = { 'action' => 'login' }
+    end
+
     context 'when oauth is from google' do
       let(:provider) { 'google_oauth2' }
 

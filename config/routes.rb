@@ -6,11 +6,9 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   # OmniAuth routing
-  delete :logout, to: 'omniauth_callbacks#destroy'
-  get :login_google, to: redirect('/auth/google_oauth2')
-  get :login_twitter, to: redirect('/auth/twitter')
-  get 'auth/:provider/callback', to: 'omniauth_callbacks#create'
+  get 'auth/:provider/callback', to: 'omniauth_callbacks#create', constraints: { provider: /twitter|google_oauth2/ }
   get 'auth/failure', to: redirect('/')
+  delete :logout, to: 'omniauth_callbacks#destroy'
 
   resources :brands, only: %i[index edit] do
     scope module: :brands do
