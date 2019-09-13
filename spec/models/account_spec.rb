@@ -4,6 +4,11 @@ RSpec.describe Account, type: :model do
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:email) }
+
+    it do
+      FactoryBot.create(:account)
+      is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider)
+    end
   end
 
   describe 'Relations' do
@@ -15,14 +20,14 @@ RSpec.describe Account, type: :model do
   describe '.from_omniauth' do
     let(:auth_hash) { JSON.parse(file_fixture('twitter_brand_oauth_hash.json').read, object_class: OpenStruct) }
 
-    subject(:from_omniauth) { Account.from_omniauth(auth_hash) }
+    subject(:from_omniauth) { Account.from_omniauth(auth_hash, name: 'Hello') }
 
     context 'when there is no matching account' do
-      it 'initializes an account' do
-        expect(from_omniauth).to be_an_instance_of(Account)
+      it 'creates an account' do
+        expect { from_omniauth }.to change { Account.count }.from(0).to(1)
       end
 
-      it 'creats a brand entity with correct info' do
+      it 'creates an account entity with correct info' do
         expect(from_omniauth).to have_attributes(external_uid: auth_hash.uid, email: auth_hash.info.email)
       end
     end

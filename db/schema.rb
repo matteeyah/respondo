@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
     t.integer "user_id", null: false
     t.index ["encrypted_secret_iv"], name: "index_accounts_on_encrypted_secret_iv", unique: true
     t.index ["encrypted_token_iv"], name: "index_accounts_on_encrypted_token_iv", unique: true
+    t.index ["external_uid", "provider"], name: "index_accounts_on_external_uid_and_provider", unique: true
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
