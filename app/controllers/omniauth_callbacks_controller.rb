@@ -1,25 +1,16 @@
 # frozen_string_literal: true
 
 class OmniauthCallbacksController < ApplicationController
-  def create
+  def authenticate
     omniauth_hash = request.env['omniauth.auth']
-    action = request.env['omniauth.params']['action']
+    model = request.env['omniauth.params']['model']
 
-    case action
-    when 'login'
-      case omniauth_hash.provider
-      when 'google_oauth2'
-        authenticate_user(omniauth_hash)
-      when 'twitter'
-        authenticate_brand(omniauth_hash)
-      end
+    case model
+    when 'user'
+      authenticate_user(omniauth_hash)
+    when 'brand'
+      authenticate_brand(omniauth_hash)
     end
-
-    redirect_to root_path
-  end
-
-  def destroy
-    sign_out
 
     redirect_to root_path
   end
@@ -27,15 +18,15 @@ class OmniauthCallbacksController < ApplicationController
   private
 
   def authenticate_user(auth_hash)
-    account = Account.from_omniauth(auth_hash)
-    user = account.user || account.create_user(name: auth_hash.info.name)
+    account = Account.from_omniauth(auth_hash, name: auth_hash.info.name)
 
-    if user.persisted?
-      sign_in(user)
-      flash[:notice] = 'Successfully authenticated user.'
-    else
-      flash[:notice] = 'Did not authenticate user.'
-    end
+    flash[:notice] = if account.user.persisted?
+                       'Successfully authenticated user.'
+                     else
+                       'Did not authenticate user.'
+                     end
+
+    sign_in(account.user) unless user_signed_in?
   end
 
   def authenticate_brand(auth_hash)

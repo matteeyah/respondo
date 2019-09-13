@@ -1,99 +1,110 @@
 # frozen_string_literal: true
 
 RSpec.describe OmniauthCallbacksController, type: :controller do
-  describe 'GET create' do
-    subject(:get_create) { get :create, params: { provider: provider } }
+  describe 'GET authenticate' do
+    let(:auth_hash) { JSON.parse(file_fixture('google_user_oauth_hash.json').read, object_class: OpenStruct) }
+    let(:session) { { } }
+
+    subject(:get_authenticate) { get :authenticate, params: { provider: provider }, session: session }
 
     before do
-      request.env['omniauth.params'] = { 'action' => 'login' }
+      request.env['omniauth.auth'] = auth_hash
+      request.env['omniauth.params'] = { 'model' => model }
     end
 
-    context 'when oauth is from google' do
-      let(:provider) { 'google_oauth2' }
+    context 'when model is user' do
+      let(:model) { 'user' }
 
-      before do
-        request.env['omniauth.auth'] = JSON.parse(file_fixture('google_user_oauth_hash.json').read, object_class: OpenStruct)
-      end
+      ['twitter', 'google_oauth2'].each do |provider_param|
+        context "when provider is #{provider_param}" do
+          let(:provider) { provider_param }
 
-      it 'logs the user in' do
-        expect { get_create }.to change { controller.send(:user_signed_in?) }.from(false).to(true)
-      end
+          before do
+            request.env['omniauth.auth'].provider = provider
+          end
 
-      it 'sets the flash' do
-        get_create
+          it 'redirects to root' do
+            get_authenticate
 
-        expect(controller).to set_flash[:notice]
-      end
+            expect(controller).to redirect_to(root_path)
+          end
 
-      it 'redirects to root' do
-        get_create
+          it 'sets the flash' do
+            get_authenticate
 
-        expect(controller).to redirect_to(root_path)
-      end
-    end
+            expect(controller).to set_flash[:notice]
+          end
 
-    context 'when oauth is from twitter' do
-      let(:provider) { 'twitter' }
+          context 'when there is no account' do
+            it 'creates a new account' do
+              expect { get_authenticate }.to change { Account.count }.from(0).to(1)
+            end
+          end
 
-      before do
-        request.env['omniauth.auth'] = JSON.parse(file_fixture('twitter_brand_oauth_hash.json').read, object_class: OpenStruct)
-      end
+          context 'when there is an account' do
+            before do
+              FactoryBot.create(:account, external_uid: auth_hash.uid, provider: provider)
+            end
 
-      context 'when the user is signed in' do
-        before do
-          allow(controller).to receive(:current_user).and_return(FactoryBot.create(:user))
-        end
+            it 'does not create a new account' do
+              expect { get_authenticate }.not_to change { Account.count }.from(1)
+            end
+          end
 
-        it 'logs the brand in' do
-          expect { get_create }.to change { controller.send(:brand_signed_in?) }.from(false).to(true)
-        end
-
-        it 'sets the flash' do
-          get_create
-
-          expect(controller).to set_flash[:notice]
-        end
-
-        it 'redirects to root' do
-          get_create
-
-          expect(controller).to redirect_to(root_path)
-        end
-      end
-
-      context 'when the user is not signed in' do
-        it 'does not log the brand in' do
-          expect { get_create }.not_to change { controller.send(:brand_signed_in?) }.from(false)
-        end
-
-        it 'does not set the flash' do
-          get_create
-
-          expect(controller).not_to set_flash[:notice]
-        end
-
-        it 'redirects to root' do
-          get_create
-
-          expect(controller).to redirect_to(root_path)
+          context 'when the user is not logged in' do
+            it 'logs the user in' do
+              expect { get_authenticate }.to change { controller.send(:user_signed_in?) }.from(false).to(true)
+            end
+          end
         end
       end
     end
-  end
 
-  describe 'DELETE destroy' do
-    subject(:delete_destroy) { delete :destroy }
+    context 'when model is brand' do
+      let(:model) { 'brand' }
 
-    before do
-      session[:user_id] = 1
-    end
+      ['twitter', 'google_oauth2'].each do |provider_param|
+        context "when provider is #{provider_param}" do
+          let(:provider) { provider_param }
 
-    it 'redirects back to root' do
-      expect(delete_destroy).to redirect_to(root_path)
-    end
+          before do
+            request.env['omniauth.auth'].provider = provider
+          end
 
-    it 'logs the user out' do
-      expect { delete_destroy }.to change { session[:user_id] }.from(1).to(nil)
+          context 'when user is logged in' do
+            let(:user) { FactoryBot.create(:user) }
+            let(:session) { { user_id: user.id } }
+
+            it 'redirects to root' do
+              get_authenticate
+
+              expect(controller).to redirect_to(root_path)
+            end
+
+            it 'sets the flash' do
+              get_authenticate
+
+              expect(controller).to set_flash[:notice]
+            end
+
+            context 'when brand does not exist' do
+              it 'creates a new brand' do
+                expect { get_authenticate }.to change { Brand.count }.from(0).to(1)
+              end
+            end
+
+            context 'when brand exists' do
+              before do
+                FactoryBot.create(:brand, external_uid: auth_hash.uid)
+              end
+
+              it 'does not create a new brand' do
+                expect { get_authenticate }.not_to change { Brand.count }.from(1)
+              end
+            end
+          end
+        end
+      end
     end
   end
 end

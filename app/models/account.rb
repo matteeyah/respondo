@@ -11,11 +11,13 @@ class Account < ApplicationRecord
   attr_encrypted :token, key: attr_encrypted_encryption_key
   attr_encrypted :secret, key: attr_encrypted_encryption_key
 
-  def self.from_omniauth(auth)
-    find_or_initialize_by(external_uid: auth.uid, provider: auth.provider) do |account|
+  def self.from_omniauth(auth, user_params)
+    find_or_create_by(external_uid: auth.uid, provider: auth.provider) do |account|
       account.email = auth.info.email
       account.token = auth.credentials.token
       account.secret = auth.credentials.secret
+
+      account.create_user(user_params)
     end
   end
 
