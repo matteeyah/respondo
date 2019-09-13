@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "external_uid", null: false
-    t.string "email", null: false
+    t.string "email"
     t.integer "provider", default: 0, null: false
     t.string "encrypted_token"
     t.string "encrypted_token_iv"
@@ -46,10 +46,10 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
   create_table "tickets", force: :cascade do |t|
     t.string "external_uid", null: false
     t.text "content", null: false
+    t.integer "status", default: 0, null: false
     t.integer "brand_id", null: false
     t.integer "author_id", null: false
     t.integer "parent_id"
-    t.integer "status", default: 0, null: false
     t.index ["author_id"], name: "index_tickets_on_author_id"
     t.index ["brand_id"], name: "index_tickets_on_brand_id"
     t.index ["parent_id"], name: "index_tickets_on_parent_id"
