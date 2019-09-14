@@ -3,6 +3,7 @@
 class Account < ApplicationRecord
   validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: :provider }
   validates :email, presence: true, allow_blank: false, allow_nil: true
+  validates :provider, presence: true
 
   enum provider: %i[twitter google_oauth2]
 

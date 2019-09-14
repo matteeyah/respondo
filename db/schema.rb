@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
   create_table "accounts", force: :cascade do |t|
     t.string "external_uid", null: false
     t.string "email"
-    t.integer "provider", default: 0, null: false
+    t.integer "provider", null: false
     t.string "encrypted_token"
     t.string "encrypted_token_iv"
     t.string "ecnrypted_secret"
@@ -29,7 +29,9 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
 
   create_table "authors", force: :cascade do |t|
     t.string "external_uid", null: false
+    t.integer "provider", null: false
     t.string "username", null: false
+    t.index ["external_uid", "provider"], name: "index_authors_on_external_uid_and_provider", unique: true
   end
 
   create_table "brands", force: :cascade do |t|
@@ -45,6 +47,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
 
   create_table "tickets", force: :cascade do |t|
     t.string "external_uid", null: false
+    t.integer "provider", null: false
     t.text "content", null: false
     t.integer "status", default: 0, null: false
     t.integer "brand_id", null: false
@@ -52,6 +55,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
     t.integer "parent_id"
     t.index ["author_id"], name: "index_tickets_on_author_id"
     t.index ["brand_id"], name: "index_tickets_on_brand_id"
+    t.index ["external_uid", "provider", "brand_id"], name: "index_tickets_on_external_uid_and_provider_and_brand_id", unique: true
     t.index ["parent_id"], name: "index_tickets_on_parent_id"
   end
 

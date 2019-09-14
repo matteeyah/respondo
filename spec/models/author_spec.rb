@@ -4,6 +4,7 @@ RSpec.describe Author, type: :model do
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:username) }
+    it { is_expected.to validate_presence_of(:provider) }
   end
 
   describe 'Relations' do

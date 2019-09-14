@@ -4,6 +4,7 @@ RSpec.describe Account, type: :model do
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:email).allow_nil }
+    it { is_expected.to validate_presence_of(:provider) }
 
     it do
       FactoryBot.create(:account)
