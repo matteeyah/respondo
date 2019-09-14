@@ -25,7 +25,7 @@
                 = link_to 'Login Brand', auth_twitter_path(model: 'brand')
             %span
               = current_user.name
-               
+              = link_to 'Edit User', edit_user_path(current_user)
               = link_to '(logout)', logout_path, method: :delete
           - else
             = link_to 'Login User', auth_google_oauth2_path(model: 'user')

@@ -8,6 +8,8 @@ RSpec.describe User, type: :model do
   describe 'Relations' do
     it { is_expected.to belong_to(:brand).optional }
     it { is_expected.to have_many(:accounts) }
+    it { is_expected.to have_one(:twitter_account) }
+    it { is_expected.to have_one(:google_oauth2_account) }
   end
 
   describe '.not_in_brand' do

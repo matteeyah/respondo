@@ -4,6 +4,12 @@ RSpec.describe Author, type: :model do
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:username) }
+    it { is_expected.to validate_presence_of(:provider) }
+
+    it do
+      FactoryBot.create(:author)
+      is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider)
+    end
   end
 
   describe 'Relations' do

@@ -9,6 +9,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
   before do
     allow(view).to receive(:authorized?).and_return(false)
+    allow(view).to receive(:user_has_account_for?).and_return(false)
   end
 
   it 'displays the tickets' do
@@ -39,18 +40,44 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
   end
 
   context 'when user is not authorized' do
-    it 'does not display response forms' do
-      subject
+    context 'when user does not have account' do
+      before do
+        allow(view).to receive(:user_has_account_for?).and_return(false)
+      end
 
-      expect(rendered).not_to have_field(:response_text)
-      expect(rendered).not_to have_button('Reply')
+      it 'does not display response forms' do
+        subject
+
+        expect(rendered).not_to have_field(:response_text)
+        expect(rendered).not_to have_button('Reply')
+      end
+
+      it 'does not display the status button' do
+        subject
+
+        expect(rendered).not_to have_button('Open')
+        expect(rendered).not_to have_button('Solve')
+      end
     end
 
-    it 'does not display the status button' do
-      subject
+    context 'when user has account' do
+      before do
+        allow(view).to receive(:user_has_account_for?).and_return(true)
+      end
 
-      expect(rendered).not_to have_button('Open')
-      expect(rendered).not_to have_button('Solve')
+      it 'displays response forms' do
+        subject
+
+        expect(rendered).to have_field(:response_text, count: 2)
+        expect(rendered).to have_button('Reply', count: 2)
+      end
+
+      it 'does not display the status button' do
+        subject
+
+        expect(rendered).not_to have_button('Open')
+        expect(rendered).not_to have_button('Solve')
+      end
     end
   end
 end

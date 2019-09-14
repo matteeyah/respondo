@@ -13,6 +13,7 @@ RSpec.describe 'brands/tickets/index', type: :view do
 
   before do
     allow(view).to receive(:authorized?).and_return(false)
+    allow(view).to receive(:user_has_account_for?).and_return(false)
   end
 
   it 'renders both open and solved tickets' do

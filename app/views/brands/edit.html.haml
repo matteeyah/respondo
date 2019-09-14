@@ -6,4 +6,4 @@
 
 %ul
   - @brand.users.each do |user|
-    %li #{user.name} - #{link_to 'Remove User', brand_user_path(@brand, user.id), method: :delete}
+    %li #{user.name} - #{link_to 'Remove User', brand_user_path(@brand, user), method: :delete}

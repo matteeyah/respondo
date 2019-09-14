@@ -4,5 +4,6 @@ FactoryBot.define do
   factory :author do
     external_uid { generate(:external_uid) }
     username { Faker::Internet.username }
+    provider { 'twitter' }
   end
 end

@@ -33,31 +33,40 @@ RSpec.describe Brands::TicketsController, type: :controller do
   end
 
   describe 'POST reply' do
-    let!(:ticket) { FactoryBot.create(:ticket) }
+    let!(:ticket) { FactoryBot.create(:ticket, brand: brand) }
 
     let(:tweet) do
       double('Ticket', id: '1', text: 'does not matter', in_reply_to_tweet_id: ticket.external_uid,
                        user: double('Author', id: '2', screen_name: 'test'))
     end
 
+    let(:client) do
+      double('Client')
+    end
+
     subject { post :reply, params: { brand_id: brand.id, ticket_id: ticket.id, response_text: 'does not matter' } }
 
     before do
       allow(controller).to receive(:brand).and_return(brand)
-      allow(brand).to receive(:reply).and_return(tweet)
+      allow(controller).to receive(:client).and_return(client)
+      allow(client).to receive(:reply).and_return(tweet)
     end
 
     context 'when user is authorized' do
       let(:user) { FactoryBot.create(:user) }
 
       before do
+        FactoryBot.create(:account, user: user)
+
+        allow(controller).to receive(:current_user).and_return(user)
+
         brand.users << user
 
         sign_in(user)
       end
 
       it 'replies to the ticket' do
-        expect(brand).to receive(:reply).with('does not matter', ticket.external_uid)
+        expect(client).to receive(:reply).with('does not matter', ticket.external_uid)
 
         subject
       end
@@ -143,7 +152,7 @@ RSpec.describe Brands::TicketsController, type: :controller do
       end
 
       it 'calls the background worker' do
-        expect(LoadNewTicketsJob).to receive(:perform_now)
+        expect(LoadNewTweetsJob).to receive(:perform_now)
 
         subject
       end

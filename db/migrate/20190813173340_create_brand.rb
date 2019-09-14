@@ -3,7 +3,7 @@
 class CreateBrand < ActiveRecord::Migration[6.0]
   def change
     create_table :brands do |t|
-      t.string :external_uid, null: false
+      t.string :external_uid, null: false, index: { unique: true }
       t.string :screen_name, null: false
 
       t.string :encrypted_token

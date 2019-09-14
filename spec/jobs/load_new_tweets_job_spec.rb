@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe LoadNewTicketsJob, type: :job do
+RSpec.describe LoadNewTweetsJob, type: :job do
   let(:brand) { FactoryBot.create(:brand) }
   let(:mentions) { [double('Mention#1'), double('Mention#2')] }
 

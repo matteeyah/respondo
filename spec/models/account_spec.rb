@@ -4,10 +4,16 @@ RSpec.describe Account, type: :model do
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:email).allow_nil }
+    it { is_expected.to validate_presence_of(:provider) }
 
     it do
       FactoryBot.create(:account)
       is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider)
+    end
+
+    it do
+      FactoryBot.create(:account)
+      is_expected.to validate_uniqueness_of(:user_id).scoped_to(:provider)
     end
   end
 
@@ -18,6 +24,8 @@ RSpec.describe Account, type: :model do
   it { is_expected.to define_enum_for(:provider).with_values(%i[twitter google_oauth2]) }
 
   describe '.from_omniauth' do
+    let(:user) { nil }
+
     %w[twitter google_oauth2].each do |provider|
       context "when provider is #{provider}" do
         let(:auth_hash) do
@@ -30,7 +38,7 @@ RSpec.describe Account, type: :model do
           JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)
         end
 
-        subject(:from_omniauth) { Account.from_omniauth(auth_hash) }
+        subject(:from_omniauth) { Account.from_omniauth(auth_hash, user) }
 
         context 'when there is no matching account' do
           it 'creates an account' do
@@ -43,6 +51,18 @@ RSpec.describe Account, type: :model do
 
           it 'creates a user' do
             expect { from_omniauth }.to change { User.count }.from(0).to(1)
+          end
+
+          context 'when user is specified' do
+            let!(:user) { FactoryBot.create(:user) }
+
+            it 'does not create a user' do
+              expect { from_omniauth }.not_to change { User.count }.from(1)
+            end
+
+            it 'associates the account to the user' do
+              expect(from_omniauth.user).to eq(user)
+            end
           end
         end
 
@@ -79,7 +99,7 @@ RSpec.describe Account, type: :model do
         account.provider = 'twitter'
       end
 
-      it { is_expected.to be_an_instance_of(Twitter::REST::Client) }
+      it { is_expected.to be_an_instance_of(Clients::Twitter) }
     end
 
     context 'when provider is not supported' do
