@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Brands
-  class ApplicationController < ApplicationController
+  class ApplicationController < ::ApplicationController
     before_action :brand
 
     private
