@@ -33,7 +33,7 @@ RSpec.describe Brands::TicketsController, type: :controller do
   end
 
   describe 'POST reply' do
-    let!(:ticket) { FactoryBot.create(:ticket) }
+    let!(:ticket) { FactoryBot.create(:ticket, brand: brand) }
 
     let(:tweet) do
       double('Ticket', id: '1', text: 'does not matter', in_reply_to_tweet_id: ticket.external_uid,
@@ -41,7 +41,7 @@ RSpec.describe Brands::TicketsController, type: :controller do
     end
 
     let(:client) do
-      double('Client', reply: tweet)
+      double('Client')
     end
 
     subject { post :reply, params: { brand_id: brand.id, ticket_id: ticket.id, response_text: 'does not matter' } }
@@ -49,15 +49,17 @@ RSpec.describe Brands::TicketsController, type: :controller do
     before do
       allow(controller).to receive(:brand).and_return(brand)
       allow(controller).to receive(:client).and_return(client)
+      allow(client).to receive(:reply).and_return(tweet)
     end
 
     context 'when user is authorized' do
       let(:user) { FactoryBot.create(:user) }
 
       before do
+        FactoryBot.create(:account, user: user)
+
         allow(controller).to receive(:current_user).and_return(user)
 
-        FactoryBot.create(:account, user: user)
         brand.users << user
 
         sign_in(user)

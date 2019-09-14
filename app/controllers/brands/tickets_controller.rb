@@ -38,12 +38,12 @@ module Brands
       @client ||= if current_brand == brand
                     brand.twitter
                   else
-                    current_user.accounts.find_by(provider: ticket.provider).client
+                    current_user.client_for(ticket.provider)
                   end
     end
 
     def authorize_reply!
-      return if (current_brand == brand) || current_user&.accounts&.find_by(provider: ticket.provider)
+      return if (current_brand == brand) || current_user&.client_for(ticket.provider)
 
       redirect_back fallback_location: root_path, alert: 'You are not allowed to reply to the Brand.'
     end

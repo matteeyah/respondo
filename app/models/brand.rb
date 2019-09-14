@@ -16,7 +16,9 @@ class Brand < ApplicationRecord
         brand.screen_name ||= auth.info.nickname
         brand.token ||= auth.credentials.token
         brand.secret ||= auth.credentials.secret
+
         brand.users << initial_user
+
         brand.save!
       end
     end
