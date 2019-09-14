@@ -40,24 +40,31 @@ RSpec.describe Brands::TicketsController, type: :controller do
                        user: double('Author', id: '2', screen_name: 'test'))
     end
 
+    let(:client) do
+      double('Client', reply: tweet)
+    end
+
     subject { post :reply, params: { brand_id: brand.id, ticket_id: ticket.id, response_text: 'does not matter' } }
 
     before do
       allow(controller).to receive(:brand).and_return(brand)
-      allow(brand).to receive(:reply).and_return(tweet)
+      allow(controller).to receive(:client).and_return(client)
     end
 
     context 'when user is authorized' do
       let(:user) { FactoryBot.create(:user) }
 
       before do
+        allow(controller).to receive(:current_user).and_return(user)
+
+        FactoryBot.create(:account, user: user)
         brand.users << user
 
         sign_in(user)
       end
 
       it 'replies to the ticket' do
-        expect(brand).to receive(:reply).with('does not matter', ticket.external_uid)
+        expect(client).to receive(:reply).with('does not matter', ticket.external_uid)
 
         subject
       end

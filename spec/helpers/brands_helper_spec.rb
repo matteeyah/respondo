@@ -52,4 +52,28 @@ RSpec.describe BrandsHelper, type: :helper do
       it { is_expected.to eq(true) }
     end
   end
+
+  describe '#user_has_account_for?' do
+    let(:user) { FactoryBot.create(:user) }
+
+    subject(:user_has_account_for?) { helper.user_has_account_for?('twitter') }
+
+    before do
+      without_partial_double_verification do
+        allow(helper).to receive(:current_user).and_return(user)
+      end
+    end
+
+    context 'when user has account' do
+      before do
+        FactoryBot.create(:account, user: user)
+      end
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when user does not have account' do
+      it { is_expected.to eq(false) }
+    end
+  end
 end

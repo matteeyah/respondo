@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Account < ApplicationRecord
+  validates :user_id, uniqueness: { scope: :provider }
   validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: :provider }
   validates :email, presence: true, allow_blank: false, allow_nil: true
   validates :provider, presence: true
@@ -36,7 +37,7 @@ class Account < ApplicationRecord
 
   def twitter_client
     @twitter_client ||=
-      Twitter::REST::Client.new do |config|
+      Clients::Twitter.new do |config|
         config.consumer_key        = ENV['TWITTER_API_KEY']
         config.consumer_secret     = ENV['TWITTER_API_SECRET']
         config.access_token        = token

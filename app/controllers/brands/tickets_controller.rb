@@ -3,7 +3,8 @@
 module Brands
   class TicketsController < ApplicationController
     before_action :ticket, except: %i[index refresh]
-    before_action :authorize!, only: %i[refresh reply invert_status]
+    before_action :authorize!, only: %i[refresh invert_status]
+    before_action :authorize_reply!, only: [:reply]
     skip_before_action :brand, only: [:refresh]
 
     def index
@@ -12,7 +13,9 @@ module Brands
     end
 
     def reply
-      tweet = brand.reply(params[:response_text], ticket.external_uid)
+      return unless client
+
+      tweet = client.reply(params[:response_text], ticket.external_uid)
       Ticket.from_tweet(tweet, brand)
     end
 
@@ -30,6 +33,20 @@ module Brands
     end
 
     private
+
+    def client
+      @client ||= if current_brand == brand
+                    brand.twitter
+                  else
+                    current_user.accounts.find_by(provider: ticket.provider).client
+                  end
+    end
+
+    def authorize_reply!
+      return if (current_brand == brand) || current_user&.accounts&.find_by(provider: ticket.provider)
+
+      redirect_back fallback_location: root_path, alert: 'You are not allowed to reply to the Brand.'
+    end
 
     def ticket
       @ticket ||= Ticket.find(params[:ticket_id] || params[:id])

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Author < ApplicationRecord
-  validates :external_uid, presence: true, allow_blank: false
+  validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: :provider }
   validates :username, presence: true, allow_blank: false
   validates :provider, presence: true
 

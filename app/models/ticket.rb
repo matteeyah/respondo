@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Ticket < ApplicationRecord
-  validates :external_uid, presence: true, allow_blank: false
+  validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: %i[provider brand_id] }
   validates :content, presence: true, allow_blank: false
   validates :provider, presence: true
 
@@ -20,9 +20,8 @@ class Ticket < ApplicationRecord
 
   class << self
     def from_tweet(tweet, brand)
-      twitter_ticket = find_or_create_by(external_uid: tweet.id, provider: 'twitter') do |ticket|
+      twitter_ticket = brand.tickets.find_or_create_by(external_uid: tweet.id, provider: 'twitter') do |ticket|
         ticket.content = tweet.text
-        ticket.brand = brand
         ticket.author = Author.from_twitter_user(tweet.user)
       end
 

@@ -5,6 +5,11 @@ RSpec.describe Ticket, type: :model do
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:content) }
     it { is_expected.to validate_presence_of(:provider) }
+
+    it do
+      FactoryBot.create(:ticket)
+      is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider, :brand_id)
+    end
   end
 
   describe 'Relations' do
@@ -72,7 +77,7 @@ RSpec.describe Ticket, type: :model do
     end
 
     context 'when ticket exists' do
-      let!(:ticket) { FactoryBot.create(:ticket, external_uid: '2', provider: 'twitter') }
+      let!(:ticket) { FactoryBot.create(:ticket, external_uid: '2', provider: 'twitter', brand: brand) }
 
       it 'returns the existing ticket' do
         expect(subject).to eq(ticket)

@@ -6,6 +6,11 @@ RSpec.describe Brand, type: :model do
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:screen_name) }
+
+    it do
+      FactoryBot.create(:brand)
+      is_expected.to validate_uniqueness_of(:external_uid)
+    end
   end
 
   describe 'Relations' do
@@ -64,20 +69,9 @@ RSpec.describe Brand, type: :model do
     end
   end
 
-  describe '#reply' do
-    let(:twitter_client) { double('Twitter') }
+  describe '#twitter' do
+    subject(:twitter) { brand.twitter }
 
-    subject { brand.reply('does not matter', 'tweet_id') }
-
-    before do
-      allow(brand).to receive(:twitter).and_return(twitter_client)
-    end
-
-    it 'queries the twitter client' do
-      expect(twitter_client).to receive(:update)
-        .with('does not matter', in_reply_to_status_id: 'tweet_id', auto_populate_reply_metadata: true)
-
-      subject
-    end
+    it { is_expected.to be_an_instance_of(Clients::Twitter) }
   end
 end

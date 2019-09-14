@@ -10,4 +10,8 @@ module BrandsHelper
   def authorized?
     current_brand == @brand
   end
+
+  def user_has_account_for?(provider)
+    current_user&.accounts&.exists?(provider: provider)
+  end
 end

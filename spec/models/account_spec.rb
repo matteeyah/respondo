@@ -10,6 +10,11 @@ RSpec.describe Account, type: :model do
       FactoryBot.create(:account)
       is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider)
     end
+
+    it do
+      FactoryBot.create(:account)
+      is_expected.to validate_uniqueness_of(:user_id).scoped_to(:provider)
+    end
   end
 
   describe 'Relations' do
@@ -94,7 +99,7 @@ RSpec.describe Account, type: :model do
         account.provider = 'twitter'
       end
 
-      it { is_expected.to be_an_instance_of(Twitter::REST::Client) }
+      it { is_expected.to be_an_instance_of(Clients::Twitter) }
     end
 
     context 'when provider is not supported' do
