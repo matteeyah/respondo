@@ -29,7 +29,7 @@ module Brands
     end
 
     def refresh
-      LoadNewTicketsJob.perform_now(brand.id)
+      LoadNewTweetsJob.perform_now(brand.id)
     end
 
     private

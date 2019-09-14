@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LoadNewTicketsJob < ApplicationJob
+class LoadNewTweetsJob < ApplicationJob
   queue_as :default
 
   def perform(brand_id)
