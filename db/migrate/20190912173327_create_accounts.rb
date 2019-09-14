@@ -8,11 +8,12 @@ class CreateAccounts < ActiveRecord::Migration[6.0]
       t.integer :provider, null: false
       t.string :encrypted_token
       t.string :encrypted_token_iv, index: { unique: true }
-      t.string :ecnrypted_secret
+      t.string :encrypted_secret
       t.string :encrypted_secret_iv, index: { unique: true }
       t.references :user, null: false
     end
 
+    add_index :accounts, %i[user_id provider], unique: true
     add_index :accounts, %i[external_uid provider], unique: true
   end
 end
