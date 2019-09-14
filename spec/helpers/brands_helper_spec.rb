@@ -21,4 +21,35 @@ RSpec.describe BrandsHelper, type: :helper do
       expect(subject).to contain_exactly([user_outside_brand.name, user_outside_brand.id])
     end
   end
+
+  describe '#authorized?' do
+    subject(:authorized?) { helper.authorized? }
+
+    before do
+      # The helper does not implement current_brand so we can not mock it
+      # It's inherited as a helper method from the ApplicationController
+      # Tets use an anonymous controller which is why it's not there
+      without_partial_double_verification do
+        allow(helper).to receive(:current_brand).and_return(logged_in_brand)
+      end
+    end
+
+    context 'when thre is no logged in brand' do
+      let(:logged_in_brand) { nil }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context 'when the logged in brand is not the current one' do
+      let(:logged_in_brand) { FactoryBot.create(:brand) }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context 'when the logged in brand is the current one' do
+      let(:logged_in_brand) { brand }
+
+      it { is_expected.to eq(true) }
+    end
+  end
 end

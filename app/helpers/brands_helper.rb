@@ -8,6 +8,6 @@ module BrandsHelper
   end
 
   def authorized?
-    @user_brand == @brand
+    current_brand == @brand
   end
 end

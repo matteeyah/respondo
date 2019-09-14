@@ -7,6 +7,10 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
   subject { render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: [ticket] } }
 
+  before do
+    allow(view).to receive(:authorized?).and_return(false)
+  end
+
   it 'displays the tickets' do
     subject
 
@@ -35,10 +39,6 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
   end
 
   context 'when user is not authorized' do
-    before do
-      allow(view).to receive(:authorized?).and_return(false)
-    end
-
     it 'does not display response forms' do
       subject
 

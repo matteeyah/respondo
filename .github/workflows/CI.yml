@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: dependencies
-        run: bundle install --without development --jobs 4 --retry 3
+        run: bundle install --without development production --jobs 4 --retry 3
       - name: rspec
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: dependencies
-        run: bundle install --without development --jobs 4 --retry 3
+        run: bundle install --without development production --jobs 4 --retry 3
       - name: rubocop
         run: bundle exec rubocop
   haml-lint:
@@ -29,6 +29,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: dependencies
-        run: bundle install --without development --jobs 4 --retry 3
+        run: bundle install --without development production --jobs 4 --retry 3
       - name: haml-lint
         run: bundle exec haml-lint

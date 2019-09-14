@@ -14,7 +14,7 @@ RSpec.describe Brand, type: :model do
   end
 
   describe '.from_omniauth' do
-    let(:auth_hash) { JSON.parse(file_fixture('twitter_brand_oauth_hash.json').read, object_class: OpenStruct) }
+    let(:auth_hash) { JSON.parse(file_fixture('twitter_oauth_hash.json').read, object_class: OpenStruct) }
     let(:user) { FactoryBot.build(:user) }
 
     subject { Brand.from_omniauth(auth_hash, user) }

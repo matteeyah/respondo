@@ -8,7 +8,7 @@ AllCops:
     - 'bin/**/*'
 
 Metrics/AbcSize:
-  Max: 20
+  Max: 24
 
 Metrics/BlockLength:
   Exclude:
