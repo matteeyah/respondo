@@ -11,6 +11,10 @@ RSpec.describe 'brands/tickets/index', type: :view do
     assign(:solved_tickets, [solved_ticket])
   end
 
+  before do
+    allow(view).to receive(:authorized?).and_return(false)
+  end
+
   it 'renders both open and solved tickets' do
     expect(render).to render_template(partial: 'brands/tickets/_tickets', count: 2)
   end
@@ -26,10 +30,6 @@ RSpec.describe 'brands/tickets/index', type: :view do
   end
 
   context 'when user is not authorized' do
-    before do
-      allow(view).to receive(:authorized?).and_return(false)
-    end
-
     it 'does not render the refresh button' do
       expect(render).not_to have_button('Refresh Tickets')
     end
