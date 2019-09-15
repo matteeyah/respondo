@@ -13,6 +13,10 @@ RSpec.describe BrandsHelper, type: :helper do
 
     before do
       brand.users << user_in_brand
+
+      without_partial_double_verification do
+        allow(helper).to receive(:current_brand).and_return(brand)
+      end
     end
 
     subject { helper.add_users_dropdown_options }
@@ -22,8 +26,8 @@ RSpec.describe BrandsHelper, type: :helper do
     end
   end
 
-  describe '#authorized?' do
-    subject(:authorized?) { helper.authorized? }
+  describe '#authorized_for?' do
+    subject(:authorized_for?) { helper.authorized_for?(brand) }
 
     before do
       # The helper does not implement current_brand so we can not mock it

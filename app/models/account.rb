@@ -6,7 +6,7 @@ class Account < ApplicationRecord
   validates :email, presence: true, allow_blank: false, allow_nil: true
   validates :provider, presence: true
 
-  enum provider: %i[twitter google_oauth2]
+  enum provider: { twitter: 0, google_oauth2: 1 }
 
   belongs_to :user
 

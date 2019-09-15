@@ -9,6 +9,10 @@ RSpec.describe 'brands/edit', type: :view do
     brand.users << user_in_brand
 
     assign(:brand, brand)
+
+    without_partial_double_verification do
+      allow(view).to receive(:current_brand).and_return(brand)
+    end
   end
 
   it 'renders all users' do

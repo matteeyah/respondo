@@ -11,12 +11,12 @@ class Ticket < ApplicationRecord
   belongs_to :brand
 
   belongs_to :parent, class_name: 'Ticket', optional: true
-  has_many :replies, class_name: 'Ticket', foreign_key: :parent_id
+  has_many :replies, class_name: 'Ticket', foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
 
   scope :root, -> { where(parent: nil) }
 
-  enum status: %i[open solved]
-  enum provider: %i[twitter google_oauth2]
+  enum status: { open: 0, solved: 1 }
+  enum provider: { twitter: 0, google_oauth2: 1 }
 
   class << self
     def from_tweet(tweet, brand)

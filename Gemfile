@@ -59,6 +59,7 @@ group :development, :test do
   # Ruby linter
   gem 'rubocop', '~> 0.74.0', require: false
   gem 'rubocop-rspec', '~> 1.35.0', require: false
+  gem 'rubocop-rails', '~> 2.3.2', require: false
   # Haml linter
   gem 'haml_lint', '~> 0.33.0', require: false
   # Sample data

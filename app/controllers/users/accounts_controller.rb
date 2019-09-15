@@ -7,6 +7,8 @@ module Users
 
     def destroy
       account.destroy
+
+      flash[:notice] = 'Successfully deleted account.'
     end
 
     private
