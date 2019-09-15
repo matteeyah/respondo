@@ -7,9 +7,12 @@ class CreateTickets < ActiveRecord::Migration[6.0]
       t.integer :provider, null: false
       t.text :content, null: false
       t.integer :status, null: false, default: 0
+
       t.references :brand, index: true, null: false
       t.references :author, index: true, null: false
       t.references :parent, index: true, null: true
+
+      t.timestamps
     end
 
     add_index :tickets, %i[external_uid provider brand_id], unique: true
