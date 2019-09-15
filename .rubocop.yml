@@ -31,3 +31,6 @@ Style/Documentation:
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
+
+RSpec/NestedGroups:
+  Max: 5
