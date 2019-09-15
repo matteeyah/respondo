@@ -8,9 +8,9 @@ RSpec.describe Users::AccountsController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
 
   describe 'DELETE destroy' do
-    let(:account) { FactoryBot.create(:account, user: user) }
+    subject(:delete_destroy) { delete :destroy, params: { user_id: user.id, id: account.id } }
 
-    subject { delete :destroy, params: { user_id: user.id, id: account.id } }
+    let(:account) { FactoryBot.create(:account, user: user) }
 
     context 'when user is authorized' do
       before do
@@ -20,7 +20,7 @@ RSpec.describe Users::AccountsController, type: :controller do
       it 'removes the user from the brand' do
         expect(user.accounts).to include(account)
 
-        subject
+        delete_destroy
 
         expect(user.reload.accounts).not_to include(account)
       end
@@ -28,11 +28,11 @@ RSpec.describe Users::AccountsController, type: :controller do
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(subject.request).to set_flash[:alert]
+        expect(delete_destroy.request).to set_flash[:alert]
       end
 
       it 'redirects the user' do
-        expect(subject).to redirect_to(root_path)
+        expect(delete_destroy).to redirect_to(root_path)
       end
     end
   end

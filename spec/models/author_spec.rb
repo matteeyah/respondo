@@ -17,26 +17,26 @@ RSpec.describe Author, type: :model do
   end
 
   describe '.from_twitter_user' do
-    let(:twitter_user) { OpenStruct.new(id: '1', screen_name: 'helloworld') }
+    subject(:from_twitter_user) { described_class.from_twitter_user(twitter_user) }
 
-    subject { described_class.from_twitter_user(twitter_user) }
+    let(:twitter_user) { OpenStruct.new(id: '1', screen_name: 'helloworld') }
 
     context 'when author exists' do
       let!(:author) { FactoryBot.create(:author, external_uid: '1') }
 
       it 'returns the existing author' do
-        expect(subject).to eq(author)
+        expect(from_twitter_user).to eq(author)
       end
     end
 
     context 'when author does not exist' do
       it 'creates a new author' do
-        expect { subject }.to change { Author.count }.from(0).to(1)
+        expect { from_twitter_user }.to change { described_class.count }.from(0).to(1)
       end
 
       it 'returns a new author' do
-        expect(subject).to be_instance_of(Author)
-        expect(subject).to have_attributes(external_uid: '1', username: 'helloworld')
+        expect(from_twitter_user).to be_instance_of(described_class)
+        expect(from_twitter_user).to have_attributes(external_uid: '1', username: 'helloworld')
       end
     end
   end

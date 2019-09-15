@@ -2,6 +2,8 @@
 
 RSpec.describe OmniauthCallbacksController, type: :controller do
   describe 'GET authenticate' do
+    subject(:get_authenticate) { get :authenticate, params: { provider: provider }, session: session }
+
     let(:session) { {} }
 
     let(:auth_hash) do
@@ -13,8 +15,6 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
                      end
       JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)
     end
-
-    subject(:get_authenticate) { get :authenticate, params: { provider: provider }, session: session }
 
     before do
       request.env['omniauth.auth'] = auth_hash

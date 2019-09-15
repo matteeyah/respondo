@@ -8,7 +8,7 @@ RSpec.describe Brands::TicketsController, type: :controller do
   let(:brand) { FactoryBot.create(:brand) }
 
   describe 'GET index' do
-    subject { get :index, params: { brand_id: brand.id } }
+    subject(:get_index) { get :index, params: { brand_id: brand.id } }
 
     before do
       FactoryBot.create(:ticket, status: :open, brand: brand)
@@ -16,23 +16,25 @@ RSpec.describe Brands::TicketsController, type: :controller do
     end
 
     it 'sets open tickets' do
-      subject
+      get_index
 
       expect(assigns(:open_tickets)).to eq(brand.tickets.root.open)
     end
 
     it 'sets solved tickets' do
-      subject
+      get_index
 
       expect(assigns(:solved_tickets)).to eq(brand.tickets.root.solved)
     end
 
     it 'renders the index template' do
-      expect(subject).to render_template('brands/tickets/index', partial: 'twitter/_feed')
+      expect(get_index).to render_template('brands/tickets/index', partial: 'twitter/_feed')
     end
   end
 
   describe 'POST reply' do
+    subject(:post_reply) { post :reply, params: { brand_id: brand.id, ticket_id: ticket.id, response_text: 'does not matter' } }
+
     let!(:ticket) { FactoryBot.create(:ticket, brand: brand) }
 
     let(:tweet) do
@@ -43,8 +45,6 @@ RSpec.describe Brands::TicketsController, type: :controller do
     let(:client) do
       double('Client')
     end
-
-    subject { post :reply, params: { brand_id: brand.id, ticket_id: ticket.id, response_text: 'does not matter' } }
 
     before do
       allow(controller).to receive(:brand).and_return(brand)
@@ -68,30 +68,30 @@ RSpec.describe Brands::TicketsController, type: :controller do
       it 'replies to the ticket' do
         expect(client).to receive(:reply).with('does not matter', ticket.external_uid)
 
-        subject
+        post_reply
       end
 
       it 'creates a reply ticket' do
-        expect { subject }.to change { Ticket.count }.from(1).to(2)
+        expect { post_reply }.to change { Ticket.count }.from(1).to(2)
         expect(Ticket.last).to have_attributes(parent: ticket, content: 'does not matter')
       end
     end
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(subject.request).to set_flash[:alert]
+        expect(post_reply.request).to set_flash[:alert]
       end
 
       it 'redirects the user' do
-        expect(subject).to redirect_to(root_path)
+        expect(post_reply).to redirect_to(root_path)
       end
     end
   end
 
   describe 'POST invert_status' do
-    let(:ticket) { FactoryBot.create(:ticket) }
+    subject(:post_invert_status) { post :invert_status, params: { brand_id: brand.id, ticket_id: ticket.id } }
 
-    subject { post :invert_status, params: { brand_id: brand.id, ticket_id: ticket.id } }
+    let(:ticket) { FactoryBot.create(:ticket) }
 
     before do
       allow(controller).to receive(:brand).and_return(brand)
@@ -113,7 +113,7 @@ RSpec.describe Brands::TicketsController, type: :controller do
         end
 
         it 'solves the ticket' do
-          expect { subject }.to change { ticket.status }.from('open').to('solved')
+          expect { post_invert_status }.to change { ticket.status }.from('open').to('solved')
         end
       end
 
@@ -123,24 +123,24 @@ RSpec.describe Brands::TicketsController, type: :controller do
         end
 
         it 'opens the ticket' do
-          expect { subject }.to change { ticket.status }.from('solved').to('open')
+          expect { post_invert_status }.to change { ticket.status }.from('solved').to('open')
         end
       end
     end
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(subject.request).to set_flash[:alert]
+        expect(post_invert_status.request).to set_flash[:alert]
       end
 
       it 'redirects the user' do
-        expect(subject).to redirect_to(root_path)
+        expect(post_invert_status).to redirect_to(root_path)
       end
     end
   end
 
   describe 'POST refresh' do
-    subject { post :refresh, params: { brand_id: brand.id } }
+    subject(:post_refresh) { post :refresh, params: { brand_id: brand.id } }
 
     context 'when user is authorized' do
       let(:user) { FactoryBot.create(:user) }
@@ -154,17 +154,17 @@ RSpec.describe Brands::TicketsController, type: :controller do
       it 'calls the background worker' do
         expect(LoadNewTweetsJob).to receive(:perform_now)
 
-        subject
+        post_refresh
       end
     end
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(subject.request).to set_flash[:alert]
+        expect(post_refresh.request).to set_flash[:alert]
       end
 
       it 'redirects the user' do
-        expect(subject).to redirect_to(root_path)
+        expect(post_refresh).to redirect_to(root_path)
       end
     end
   end

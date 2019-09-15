@@ -28,6 +28,8 @@ RSpec.describe Account, type: :model do
 
     %w[twitter google_oauth2].each do |provider|
       context "when provider is #{provider}" do
+        subject(:from_omniauth) { described_class.from_omniauth(auth_hash, user) }
+
         let(:auth_hash) do
           fixture_name = case provider
                          when 'twitter'
@@ -38,11 +40,9 @@ RSpec.describe Account, type: :model do
           JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)
         end
 
-        subject(:from_omniauth) { Account.from_omniauth(auth_hash, user) }
-
         context 'when there is no matching account' do
           it 'creates an account' do
-            expect { from_omniauth }.to change { Account.count }.from(0).to(1)
+            expect { from_omniauth }.to change { described_class.count }.from(0).to(1)
           end
 
           it 'creates an account entity with correct info' do
@@ -90,9 +90,9 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#client' do
-    let(:account) { FactoryBot.build(:account) }
-
     subject(:client) { account.client }
+
+    let(:account) { FactoryBot.build(:account) }
 
     context 'when provider is twitter' do
       before do

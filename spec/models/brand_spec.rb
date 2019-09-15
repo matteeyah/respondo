@@ -19,23 +19,23 @@ RSpec.describe Brand, type: :model do
   end
 
   describe '.from_omniauth' do
+    subject(:from_omniauth) { described_class.from_omniauth(auth_hash, user) }
+
     let(:auth_hash) { JSON.parse(file_fixture('twitter_oauth_hash.json').read, object_class: OpenStruct) }
     let(:user) { FactoryBot.build(:user) }
 
-    subject { Brand.from_omniauth(auth_hash, user) }
-
     context 'when there is no matching brand' do
       it 'creates a brand' do
-        expect { subject }.to change { Brand.count }.from(0).to(1)
-        expect(subject).to be_persisted
+        expect { from_omniauth }.to change { described_class.count }.from(0).to(1)
+        expect(from_omniauth).to be_persisted
       end
 
       it 'creats a brand entity with correct info' do
-        expect(subject).to have_attributes(external_uid: auth_hash.uid, screen_name: auth_hash.info.nickname)
+        expect(from_omniauth).to have_attributes(external_uid: auth_hash.uid, screen_name: auth_hash.info.nickname)
       end
 
       it 'assigns the initial user' do
-        expect(subject.users).to contain_exactly(user)
+        expect(from_omniauth.users).to contain_exactly(user)
       end
     end
 
@@ -43,19 +43,19 @@ RSpec.describe Brand, type: :model do
       let!(:brand) { FactoryBot.create(:brand, external_uid: auth_hash.uid) }
 
       it 'returns the matching brand' do
-        expect(subject).to eq(brand)
+        expect(from_omniauth).to eq(brand)
       end
 
       it 'does not created new brand entities' do
-        expect { subject }.not_to change { Brand.count }.from(1)
+        expect { from_omniauth }.not_to change { described_class.count }.from(1)
       end
     end
   end
 
   describe '#new_mentions' do
-    let(:twitter_client) { double('Twitter') }
+    subject(:new_mentions) { brand.new_mentions }
 
-    subject { brand.new_mentions }
+    let(:twitter_client) { double('Twitter') }
 
     before do
       allow(brand).to receive(:last_ticket_id).and_return(1)
@@ -65,7 +65,7 @@ RSpec.describe Brand, type: :model do
     it 'queries the twitter client' do
       expect(twitter_client).to receive(:mentions_timeline).with(since: 1)
 
-      subject
+      new_mentions
     end
   end
 
