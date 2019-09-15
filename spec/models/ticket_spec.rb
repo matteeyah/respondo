@@ -2,14 +2,12 @@
 
 RSpec.describe Ticket, type: :model do
   describe 'Validations' do
+    subject(:ticket) { FactoryBot.create(:ticket) }
+
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:content) }
     it { is_expected.to validate_presence_of(:provider) }
-
-    it do
-      FactoryBot.create(:ticket)
-      is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider, :brand_id)
-    end
+    it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider, :brand_id) }
   end
 
   describe 'Relations' do
@@ -51,7 +49,10 @@ RSpec.describe Ticket, type: :model do
     subject(:root) { described_class.root }
 
     let(:parentless_ticket) { FactoryBot.create(:ticket) }
-    let!(:child_ticket) { FactoryBot.create(:ticket, parent: parentless_ticket) }
+
+    before do
+      FactoryBot.create(:ticket, parent: parentless_ticket)
+    end
 
     it 'only returns parentless tickets' do
       expect(root).to contain_exactly(parentless_ticket)
@@ -86,11 +87,14 @@ RSpec.describe Ticket, type: :model do
 
     context 'when ticket does not exist' do
       it 'creates a new ticket' do
-        expect { from_tweet }.to change { described_class.count }.from(0).to(1)
+        expect { from_tweet }.to change(described_class, :count).from(0).to(1)
       end
 
       it 'returns a new ticket' do
         expect(from_tweet).to be_instance_of(described_class)
+      end
+
+      it 'returns a ticket with matching attributes' do
         expect(from_tweet).to have_attributes(external_uid: '2', content: 'helloworld', brand: brand)
       end
 

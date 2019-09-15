@@ -10,7 +10,7 @@ RSpec.describe Users::AccountsController, type: :controller do
   describe 'DELETE destroy' do
     subject(:delete_destroy) { delete :destroy, params: { user_id: user.id, id: account.id } }
 
-    let(:account) { FactoryBot.create(:account, user: user) }
+    let!(:account) { FactoryBot.create(:account, user: user) }
 
     context 'when user is authorized' do
       before do
@@ -18,11 +18,7 @@ RSpec.describe Users::AccountsController, type: :controller do
       end
 
       it 'removes the user from the brand' do
-        expect(user.accounts).to include(account)
-
-        delete_destroy
-
-        expect(user.reload.accounts).not_to include(account)
+        expect { delete_destroy }.to change(Account, :count).from(1).to(0)
       end
     end
 

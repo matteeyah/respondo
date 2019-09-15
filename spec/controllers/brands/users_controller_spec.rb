@@ -22,11 +22,7 @@ RSpec.describe Brands::UsersController, type: :controller do
       end
 
       it 'adds the user to the brand' do
-        expect(brand.users).not_to include(user)
-
-        post_create
-
-        expect(brand.reload.users).to include(user)
+        expect { post_create }.to change { user.reload.brand_id }.from(nil).to(brand.id)
       end
     end
 
@@ -60,11 +56,7 @@ RSpec.describe Brands::UsersController, type: :controller do
       end
 
       it 'removes the user from the brand' do
-        expect(brand.users).to include(user)
-
-        delete_destroy
-
-        expect(brand.reload.users).not_to include(user)
+        expect { delete_destroy }.to change { user.reload.brand_id }.from(brand.id).to(nil)
       end
     end
 

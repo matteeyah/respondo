@@ -15,8 +15,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
   it 'displays the tickets' do
     render_tickets_partial
 
-    expect(rendered).to have_text "#{ticket.author.username}: #{ticket.content}"
-    expect(rendered).to have_text "#{nested_ticket.author.username}: #{nested_ticket.content}"
+    expect(rendered).to have_text("#{ticket.author.username}: #{ticket.content}").and have_text("#{nested_ticket.author.username}: #{nested_ticket.content}")
   end
 
   context 'when user is authorized' do
@@ -27,15 +26,13 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
     it 'displays response forms' do
       render_tickets_partial
 
-      expect(rendered).to have_field(:response_text, count: 2)
-      expect(rendered).to have_button('Reply', count: 2)
+      expect(rendered).to have_field(:response_text, count: 2).and have_button('Reply', count: 2)
     end
 
     it 'displays the status buttons' do
       render_tickets_partial
 
-      expect(rendered).to have_button('Open')
-      expect(rendered).to have_button('Solve')
+      expect(rendered).to have_button('Open').and have_button('Solve')
     end
   end
 
@@ -45,17 +42,27 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         allow(view).to receive(:user_has_account_for?).and_return(false)
       end
 
-      it 'does not display response forms' do
+      it 'does not display response textbox' do
         render_tickets_partial
 
         expect(rendered).not_to have_field(:response_text)
+      end
+
+      it 'does not display response button' do
+        render_tickets_partial
+
         expect(rendered).not_to have_button('Reply')
       end
 
-      it 'does not display the status button' do
+      it 'does not display open buttons' do
         render_tickets_partial
 
         expect(rendered).not_to have_button('Open')
+      end
+
+      it 'does not display solve buttons' do
+        render_tickets_partial
+
         expect(rendered).not_to have_button('Solve')
       end
     end
@@ -68,14 +75,18 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       it 'displays response forms' do
         render_tickets_partial
 
-        expect(rendered).to have_field(:response_text, count: 2)
-        expect(rendered).to have_button('Reply', count: 2)
+        expect(rendered).to have_field(:response_text, count: 2).and have_button('Reply', count: 2)
       end
 
-      it 'does not display the status button' do
+      it 'does not display open buttons' do
         render_tickets_partial
 
         expect(rendered).not_to have_button('Open')
+      end
+
+      it 'does not display solve buttons' do
+        render_tickets_partial
+
         expect(rendered).not_to have_button('Solve')
       end
     end

@@ -38,18 +38,17 @@ RSpec.describe Brands::TicketsController, type: :controller do
     let!(:ticket) { FactoryBot.create(:ticket, brand: brand) }
 
     let(:tweet) do
-      double('Ticket', id: '1', text: 'does not matter', in_reply_to_tweet_id: ticket.external_uid,
-                       user: double('Author', id: '2', screen_name: 'test'))
+      instance_double(Twitter::Tweet, id: '1', text: 'does not matter', in_reply_to_tweet_id: ticket.external_uid,
+                                      user: instance_double(Twitter::User, id: '2', screen_name: 'test'))
     end
 
     let(:client) do
-      double('Client')
+      instance_spy(Clients::Twitter, reply: tweet)
     end
 
     before do
       allow(controller).to receive(:brand).and_return(brand)
       allow(controller).to receive(:client).and_return(client)
-      allow(client).to receive(:reply).and_return(tweet)
     end
 
     context 'when user is authorized' do
@@ -66,13 +65,18 @@ RSpec.describe Brands::TicketsController, type: :controller do
       end
 
       it 'replies to the ticket' do
-        expect(client).to receive(:reply).with('does not matter', ticket.external_uid)
-
         post_reply
+
+        expect(client).to have_received(:reply).with('does not matter', ticket.external_uid)
       end
 
       it 'creates a reply ticket' do
-        expect { post_reply }.to change { Ticket.count }.from(1).to(2)
+        expect { post_reply }.to change(Ticket, :count).from(1).to(2)
+      end
+
+      it 'creates a reply ticket with matching attributes' do
+        post_reply
+
         expect(Ticket.last).to have_attributes(parent: ticket, content: 'does not matter')
       end
     end
@@ -113,7 +117,7 @@ RSpec.describe Brands::TicketsController, type: :controller do
         end
 
         it 'solves the ticket' do
-          expect { post_invert_status }.to change { ticket.status }.from('open').to('solved')
+          expect { post_invert_status }.to change(ticket, :status).from('open').to('solved')
         end
       end
 
@@ -123,7 +127,7 @@ RSpec.describe Brands::TicketsController, type: :controller do
         end
 
         it 'opens the ticket' do
-          expect { post_invert_status }.to change { ticket.status }.from('solved').to('open')
+          expect { post_invert_status }.to change(ticket, :status).from('solved').to('open')
         end
       end
     end
@@ -142,6 +146,8 @@ RSpec.describe Brands::TicketsController, type: :controller do
   describe 'POST refresh' do
     subject(:post_refresh) { post :refresh, params: { brand_id: brand.id } }
 
+    let(:load_new_tweets_job_class) { class_spy(LoadNewTweetsJob) }
+
     context 'when user is authorized' do
       let(:user) { FactoryBot.create(:user) }
 
@@ -149,12 +155,14 @@ RSpec.describe Brands::TicketsController, type: :controller do
         brand.users << user
 
         sign_in(user)
+
+        stub_const('LoadNewTweetsJob', load_new_tweets_job_class)
       end
 
       it 'calls the background worker' do
-        expect(LoadNewTweetsJob).to receive(:perform_now)
-
         post_refresh
+
+        expect(load_new_tweets_job_class).to have_received(:perform_now)
       end
     end
 

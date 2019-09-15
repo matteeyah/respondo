@@ -27,7 +27,6 @@ RSpec.describe BrandsController, type: :controller do
         get_index
 
         expect(assigns(:brands)).to contain_exactly(*brands, *extra_brands.first(18))
-        expect(assigns(:pagy)).not_to be_nil
       end
     end
   end

@@ -2,19 +2,13 @@
 
 RSpec.describe Account, type: :model do
   describe 'Validations' do
+    subject(:account) { FactoryBot.create(:account) }
+
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:email).allow_nil }
     it { is_expected.to validate_presence_of(:provider) }
-
-    it do
-      FactoryBot.create(:account)
-      is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider)
-    end
-
-    it do
-      FactoryBot.create(:account)
-      is_expected.to validate_uniqueness_of(:user_id).scoped_to(:provider)
-    end
+    it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider) }
+    it { is_expected.to validate_uniqueness_of(:user_id).scoped_to(:provider) }
   end
 
   describe 'Relations' do
@@ -42,7 +36,7 @@ RSpec.describe Account, type: :model do
 
         context 'when there is no matching account' do
           it 'creates an account' do
-            expect { from_omniauth }.to change { described_class.count }.from(0).to(1)
+            expect { from_omniauth }.to change(described_class, :count).from(0).to(1)
           end
 
           it 'creates an account entity with correct info' do
@@ -50,14 +44,14 @@ RSpec.describe Account, type: :model do
           end
 
           it 'creates a user' do
-            expect { from_omniauth }.to change { User.count }.from(0).to(1)
+            expect { from_omniauth }.to change(User, :count).from(0).to(1)
           end
 
           context 'when user is specified' do
             let!(:user) { FactoryBot.create(:user) }
 
             it 'does not create a user' do
-              expect { from_omniauth }.not_to change { User.count }.from(1)
+              expect { from_omniauth }.not_to change(User, :count).from(1)
             end
 
             it 'associates the account to the user' do

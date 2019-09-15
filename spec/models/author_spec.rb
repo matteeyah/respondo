@@ -2,14 +2,12 @@
 
 RSpec.describe Author, type: :model do
   describe 'Validations' do
+    subject(:author) { FactoryBot.create(:author) }
+
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:username) }
     it { is_expected.to validate_presence_of(:provider) }
-
-    it do
-      FactoryBot.create(:author)
-      is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider)
-    end
+    it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider) }
   end
 
   describe 'Relations' do
@@ -31,11 +29,14 @@ RSpec.describe Author, type: :model do
 
     context 'when author does not exist' do
       it 'creates a new author' do
-        expect { from_twitter_user }.to change { described_class.count }.from(0).to(1)
+        expect { from_twitter_user }.to change(described_class, :count).from(0).to(1)
       end
 
       it 'returns a new author' do
         expect(from_twitter_user).to be_instance_of(described_class)
+      end
+
+      it 'returns an author with matching attributes' do
         expect(from_twitter_user).to have_attributes(external_uid: '1', username: 'helloworld')
       end
     end

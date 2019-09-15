@@ -46,7 +46,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
 
           context 'when there is no account' do
             it 'creates a new account' do
-              expect { get_authenticate }.to change { Account.count }.from(0).to(1)
+              expect { get_authenticate }.to change(Account, :count).from(0).to(1)
             end
           end
 
@@ -56,7 +56,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
             end
 
             it 'does not create a new account' do
-              expect { get_authenticate }.not_to change { Account.count }.from(1)
+              expect { get_authenticate }.not_to change(Account, :count).from(1)
             end
           end
 
@@ -97,7 +97,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
 
           context 'when brand does not exist' do
             it 'creates a new brand' do
-              expect { get_authenticate }.to change { Brand.count }.from(0).to(1)
+              expect { get_authenticate }.to change(Brand, :count).from(0).to(1)
             end
           end
 
@@ -107,7 +107,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
             end
 
             it 'does not create a new brand' do
-              expect { get_authenticate }.not_to change { Brand.count }.from(1)
+              expect { get_authenticate }.not_to change(Brand, :count).from(1)
             end
           end
         end
