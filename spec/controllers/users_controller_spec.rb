@@ -6,12 +6,12 @@ RSpec.describe UsersController, type: :controller do
   include SignInOutHelpers
 
   describe 'GET edit' do
+    subject(:get_edit) { get :edit, params: { id: user.id } }
+
     let(:user) { FactoryBot.create(:user) }
 
-    subject { get :edit, params: { id: user.id } }
-
     it 'sets the user' do
-      subject
+      get_edit
 
       expect(assigns(:user)).to eq(user)
     end
@@ -22,17 +22,17 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'renders the edit template' do
-        expect(subject).to render_template('users/edit')
+        expect(get_edit).to render_template('users/edit')
       end
     end
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(subject.request).to set_flash[:alert]
+        expect(get_edit.request).to set_flash[:alert]
       end
 
       it 'redirects the user' do
-        expect(subject).to redirect_to(root_path)
+        expect(get_edit).to redirect_to(root_path)
       end
     end
   end

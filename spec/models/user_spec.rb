@@ -13,17 +13,17 @@ RSpec.describe User, type: :model do
   end
 
   describe '.not_in_brand' do
+    subject(:not_in_brand) { described_class.not_in_brand(brand.id) }
+
     let(:brand) { FactoryBot.create(:brand) }
     let!(:user_outside_brand) { FactoryBot.create(:user) }
-
-    subject { User.not_in_brand(brand.id) }
 
     before do
       brand.users << FactoryBot.create(:user)
     end
 
     it 'returns just the user outside brand' do
-      expect(subject).to contain_exactly(user_outside_brand)
+      expect(not_in_brand).to contain_exactly(user_outside_brand)
     end
   end
 end

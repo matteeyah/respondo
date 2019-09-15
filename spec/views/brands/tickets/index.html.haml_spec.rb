@@ -9,10 +9,8 @@ RSpec.describe 'brands/tickets/index', type: :view do
     assign(:brand, brand)
     assign(:open_tickets, [open_ticket])
     assign(:solved_tickets, [solved_ticket])
-  end
 
-  before do
-    allow(view).to receive(:authorized?).and_return(false)
+    allow(view).to receive(:authorized_for?).and_return(false)
     allow(view).to receive(:user_has_account_for?).and_return(false)
   end
 
@@ -22,7 +20,7 @@ RSpec.describe 'brands/tickets/index', type: :view do
 
   context 'when user is authorized' do
     before do
-      allow(view).to receive(:authorized?).and_return(true)
+      allow(view).to receive(:authorized_for?).and_return(true)
     end
 
     it 'renders the refresh button' do

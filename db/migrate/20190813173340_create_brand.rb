@@ -10,6 +10,8 @@ class CreateBrand < ActiveRecord::Migration[6.0]
       t.string :encrypted_token_iv, index: { unique: true }
       t.string :encrypted_secret
       t.string :encrypted_secret_iv, index: { unique: true }
+
+      t.timestamps
     end
 
     add_reference :users, :brand, index: true, null: true

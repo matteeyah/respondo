@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
     t.string "encrypted_secret"
     t.string "encrypted_secret_iv"
     t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["encrypted_secret_iv"], name: "index_accounts_on_encrypted_secret_iv", unique: true
     t.index ["encrypted_token_iv"], name: "index_accounts_on_encrypted_token_iv", unique: true
     t.index ["external_uid", "provider"], name: "index_accounts_on_external_uid_and_provider", unique: true
@@ -32,6 +34,8 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
     t.string "external_uid", null: false
     t.integer "provider", null: false
     t.string "username", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["external_uid", "provider"], name: "index_authors_on_external_uid_and_provider", unique: true
   end
 
@@ -42,6 +46,8 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
     t.string "encrypted_token_iv"
     t.string "encrypted_secret"
     t.string "encrypted_secret_iv"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["encrypted_secret_iv"], name: "index_brands_on_encrypted_secret_iv", unique: true
     t.index ["encrypted_token_iv"], name: "index_brands_on_encrypted_token_iv", unique: true
     t.index ["external_uid"], name: "index_brands_on_external_uid", unique: true
@@ -55,6 +61,8 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
     t.integer "brand_id", null: false
     t.integer "author_id", null: false
     t.integer "parent_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["author_id"], name: "index_tickets_on_author_id"
     t.index ["brand_id"], name: "index_tickets_on_brand_id"
     t.index ["external_uid", "provider", "brand_id"], name: "index_tickets_on_external_uid_and_provider_and_brand_id", unique: true
@@ -63,6 +71,8 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.integer "brand_id"
     t.index ["brand_id"], name: "index_users_on_brand_id"
   end

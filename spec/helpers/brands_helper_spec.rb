@@ -8,22 +8,26 @@ RSpec.describe BrandsHelper, type: :helper do
   end
 
   describe '#add_users_dropdown_options' do
+    subject(:add_users_dropdown_options) { helper.add_users_dropdown_options }
+
     let!(:user_in_brand) { FactoryBot.create(:user) }
     let!(:user_outside_brand) { FactoryBot.create(:user) }
 
     before do
       brand.users << user_in_brand
+
+      without_partial_double_verification do
+        allow(helper).to receive(:current_brand).and_return(brand)
+      end
     end
 
-    subject { helper.add_users_dropdown_options }
-
     it 'returns just users outside brand' do
-      expect(subject).to contain_exactly([user_outside_brand.name, user_outside_brand.id])
+      expect(add_users_dropdown_options).to contain_exactly([user_outside_brand.name, user_outside_brand.id])
     end
   end
 
-  describe '#authorized?' do
-    subject(:authorized?) { helper.authorized? }
+  describe '#authorized_for?' do
+    subject(:authorized_for?) { helper.authorized_for?(brand) }
 
     before do
       # The helper does not implement current_brand so we can not mock it
@@ -54,9 +58,9 @@ RSpec.describe BrandsHelper, type: :helper do
   end
 
   describe '#user_has_account_for?' do
-    let(:user) { FactoryBot.create(:user) }
-
     subject(:user_has_account_for?) { helper.user_has_account_for?('twitter') }
+
+    let(:user) { FactoryBot.create(:user) }
 
     before do
       without_partial_double_verification do

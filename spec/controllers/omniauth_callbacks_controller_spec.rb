@@ -2,6 +2,8 @@
 
 RSpec.describe OmniauthCallbacksController, type: :controller do
   describe 'GET authenticate' do
+    subject(:get_authenticate) { get :authenticate, params: { provider: provider }, session: session }
+
     let(:session) { {} }
 
     let(:auth_hash) do
@@ -13,8 +15,6 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
                      end
       JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)
     end
-
-    subject(:get_authenticate) { get :authenticate, params: { provider: provider }, session: session }
 
     before do
       request.env['omniauth.auth'] = auth_hash
@@ -46,7 +46,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
 
           context 'when there is no account' do
             it 'creates a new account' do
-              expect { get_authenticate }.to change { Account.count }.from(0).to(1)
+              expect { get_authenticate }.to change(Account, :count).from(0).to(1)
             end
           end
 
@@ -56,7 +56,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
             end
 
             it 'does not create a new account' do
-              expect { get_authenticate }.not_to change { Account.count }.from(1)
+              expect { get_authenticate }.not_to change(Account, :count).from(1)
             end
           end
 
@@ -72,43 +72,41 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
     context 'when model is brand' do
       let(:model) { 'brand' }
 
-      context 'when provider is twitter' do
-        let(:provider) { 'twitter' }
+      let(:provider) { 'twitter' }
 
-        before do
-          request.env['omniauth.auth'].provider = provider
+      before do
+        request.env['omniauth.auth'].provider = provider
+      end
+
+      context 'when user is logged in' do
+        let(:user) { FactoryBot.create(:user) }
+        let(:session) { { user_id: user.id } }
+
+        it 'redirects to root' do
+          get_authenticate
+
+          expect(controller).to redirect_to(root_path)
         end
 
-        context 'when user is logged in' do
-          let(:user) { FactoryBot.create(:user) }
-          let(:session) { { user_id: user.id } }
+        it 'sets the flash' do
+          get_authenticate
 
-          it 'redirects to root' do
-            get_authenticate
+          expect(controller).to set_flash[:notice]
+        end
 
-            expect(controller).to redirect_to(root_path)
+        context 'when brand does not exist' do
+          it 'creates a new brand' do
+            expect { get_authenticate }.to change(Brand, :count).from(0).to(1)
+          end
+        end
+
+        context 'when brand exists' do
+          before do
+            FactoryBot.create(:brand, external_uid: auth_hash.uid)
           end
 
-          it 'sets the flash' do
-            get_authenticate
-
-            expect(controller).to set_flash[:notice]
-          end
-
-          context 'when brand does not exist' do
-            it 'creates a new brand' do
-              expect { get_authenticate }.to change { Brand.count }.from(0).to(1)
-            end
-          end
-
-          context 'when brand exists' do
-            before do
-              FactoryBot.create(:brand, external_uid: auth_hash.uid)
-            end
-
-            it 'does not create a new brand' do
-              expect { get_authenticate }.not_to change { Brand.count }.from(1)
-            end
+          it 'does not create a new brand' do
+            expect { get_authenticate }.not_to change(Brand, :count).from(1)
           end
         end
       end

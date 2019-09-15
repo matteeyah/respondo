@@ -8,9 +8,9 @@ RSpec.describe Brands::UsersController, type: :controller do
   let(:brand) { FactoryBot.create(:brand) }
 
   describe 'POST create' do
-    let(:user) { FactoryBot.create(:user) }
+    subject(:post_create) { post :create, params: { brand_id: brand.id, user_id: user.id } }
 
-    subject { post :create, params: { brand_id: brand.id, user_id: user.id } }
+    let(:user) { FactoryBot.create(:user) }
 
     context 'when user is authorized' do
       let(:browsing_user) { FactoryBot.create(:user) }
@@ -22,33 +22,29 @@ RSpec.describe Brands::UsersController, type: :controller do
       end
 
       it 'adds the user to the brand' do
-        expect(brand.users).not_to include(user)
-
-        subject
-
-        expect(brand.reload.users).to include(user)
+        expect { post_create }.to change { user.reload.brand_id }.from(nil).to(brand.id)
       end
     end
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(subject.request).to set_flash[:alert]
+        expect(post_create.request).to set_flash[:alert]
       end
 
       it 'redirects the user' do
-        expect(subject).to redirect_to(root_path)
+        expect(post_create).to redirect_to(root_path)
       end
     end
   end
 
   describe 'DELETE destroy' do
+    subject(:delete_destroy) { delete :destroy, params: { brand_id: brand.id, id: user.id } }
+
     let(:user) { FactoryBot.create(:user) }
 
     before do
       brand.users << user
     end
-
-    subject { delete :destroy, params: { brand_id: brand.id, id: user.id } }
 
     context 'when user is authorized' do
       let(:browsing_user) { FactoryBot.create(:user) }
@@ -60,21 +56,17 @@ RSpec.describe Brands::UsersController, type: :controller do
       end
 
       it 'removes the user from the brand' do
-        expect(brand.users).to include(user)
-
-        subject
-
-        expect(brand.reload.users).not_to include(user)
+        expect { delete_destroy }.to change { user.reload.brand_id }.from(brand.id).to(nil)
       end
     end
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(subject.request).to set_flash[:alert]
+        expect(delete_destroy.request).to set_flash[:alert]
       end
 
       it 'redirects the user' do
-        expect(subject).to redirect_to(root_path)
+        expect(delete_destroy).to redirect_to(root_path)
       end
     end
   end

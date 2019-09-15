@@ -2,19 +2,13 @@
 
 RSpec.describe Account, type: :model do
   describe 'Validations' do
+    subject(:account) { FactoryBot.create(:account) }
+
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:email).allow_nil }
     it { is_expected.to validate_presence_of(:provider) }
-
-    it do
-      FactoryBot.create(:account)
-      is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider)
-    end
-
-    it do
-      FactoryBot.create(:account)
-      is_expected.to validate_uniqueness_of(:user_id).scoped_to(:provider)
-    end
+    it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider) }
+    it { is_expected.to validate_uniqueness_of(:user_id).scoped_to(:provider) }
   end
 
   describe 'Relations' do
@@ -28,6 +22,8 @@ RSpec.describe Account, type: :model do
 
     %w[twitter google_oauth2].each do |provider|
       context "when provider is #{provider}" do
+        subject(:from_omniauth) { described_class.from_omniauth(auth_hash, user) }
+
         let(:auth_hash) do
           fixture_name = case provider
                          when 'twitter'
@@ -38,11 +34,9 @@ RSpec.describe Account, type: :model do
           JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)
         end
 
-        subject(:from_omniauth) { Account.from_omniauth(auth_hash, user) }
-
         context 'when there is no matching account' do
           it 'creates an account' do
-            expect { from_omniauth }.to change { Account.count }.from(0).to(1)
+            expect { from_omniauth }.to change(described_class, :count).from(0).to(1)
           end
 
           it 'creates an account entity with correct info' do
@@ -50,14 +44,14 @@ RSpec.describe Account, type: :model do
           end
 
           it 'creates a user' do
-            expect { from_omniauth }.to change { User.count }.from(0).to(1)
+            expect { from_omniauth }.to change(User, :count).from(0).to(1)
           end
 
           context 'when user is specified' do
             let!(:user) { FactoryBot.create(:user) }
 
             it 'does not create a user' do
-              expect { from_omniauth }.not_to change { User.count }.from(1)
+              expect { from_omniauth }.not_to change(User, :count).from(1)
             end
 
             it 'associates the account to the user' do
@@ -90,9 +84,9 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#client' do
-    let(:account) { FactoryBot.build(:account) }
-
     subject(:client) { account.client }
+
+    let(:account) { FactoryBot.build(:account) }
 
     context 'when provider is twitter' do
       before do

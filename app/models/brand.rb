@@ -7,8 +7,8 @@ class Brand < ApplicationRecord
   attr_encrypted :token, key: attr_encrypted_encryption_key
   attr_encrypted :secret, key: attr_encrypted_encryption_key
 
-  has_many :users
-  has_many :tickets
+  has_many :users, dependent: :nullify
+  has_many :tickets, dependent: :restrict_with_error
 
   class << self
     def from_omniauth(auth, initial_user)
