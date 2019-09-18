@@ -7,23 +7,32 @@ RSpec.describe User, type: :model do
 
   describe 'Relations' do
     it { is_expected.to belong_to(:brand).optional }
-    it { is_expected.to have_many(:accounts) }
-    it { is_expected.to have_one(:twitter_account) }
-    it { is_expected.to have_one(:google_oauth2_account) }
+    it { is_expected.to have_many(:accounts).dependent(:destroy) }
+
+    Account.providers.keys.each do |provider|
+      it { is_expected.to have_one(:"#{provider}_account") }
+    end
   end
 
-  describe '.not_in_brand' do
-    subject(:not_in_brand) { described_class.not_in_brand(brand.id) }
+  describe '#client_for_provider' do
+    subject(:client_for_provider) { user.client_for_provider(provider) }
 
-    let(:brand) { FactoryBot.create(:brand) }
-    let!(:user_outside_brand) { FactoryBot.create(:user) }
+    let(:user) { FactoryBot.create(:user) }
 
-    before do
-      brand.users << FactoryBot.create(:user)
-    end
+    Account.providers.keys.each do |provider_name|
+      context "when provider is #{provider_name}" do
+        let(:provider) { provider_name }
 
-    it 'returns just the user outside brand' do
-      expect(not_in_brand).to contain_exactly(user_outside_brand)
+        context 'when account for provider exists' do
+          let!(:account) { FactoryBot.create(:account, user: user, provider: provider) }
+
+          it { is_expected.to be_an_instance_of(account.client.class) }
+        end
+
+        context 'when account for provider does not exist' do
+          it { is_expected.to eq(nil) }
+        end
+      end
     end
   end
 end
