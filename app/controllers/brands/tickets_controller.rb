@@ -16,7 +16,7 @@ module Brands
       return unless client
 
       tweet = client.reply(params[:response_text], ticket.external_uid)
-      Ticket.from_tweet(tweet, brand)
+      Ticket.create_from_tweet(tweet, brand)
     end
 
     def invert_status
