@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Brand, type: :model do
-  let(:brand) { FactoryBot.create(:brand) }
-
   describe 'Validations' do
     subject(:brand) { FactoryBot.create(:brand) }
 
@@ -12,8 +10,8 @@ RSpec.describe Brand, type: :model do
   end
 
   describe 'Relations' do
-    it { is_expected.to have_many(:users) }
-    it { is_expected.to have_many(:tickets) }
+    it { is_expected.to have_many(:users).dependent(:nullify) }
+    it { is_expected.to have_many(:tickets).dependent(:restrict_with_error) }
   end
 
   describe '.from_omniauth' do
@@ -23,28 +21,59 @@ RSpec.describe Brand, type: :model do
     let(:user) { FactoryBot.build(:user) }
 
     context 'when there is no matching brand' do
-      it 'creates a brand' do
-        expect(from_omniauth).to be_an_instance_of(described_class).and be_persisted
+      it 'creates a new brand' do
+        expect { from_omniauth }.to change(described_class, :count).from(0).to(1)
       end
 
-      it 'creats a brand entity with correct info' do
-        expect(from_omniauth).to have_attributes(external_uid: auth_hash.uid, screen_name: auth_hash.info.nickname)
+      it 'returns a new brand' do
+        expect(from_omniauth).to be_an_instance_of(described_class)
+      end
+
+      it 'builds a brand entity with correct information' do
+        expect(from_omniauth).to have_attributes(
+          external_uid: auth_hash.uid, screen_name: auth_hash.info.nickname,
+          token: auth_hash.credentials.token, secret: auth_hash.credentials.secret
+        )
       end
 
       it 'assigns the initial user' do
         expect(from_omniauth.users).to contain_exactly(user)
       end
+
+      it 'persists the new brand' do
+        expect(from_omniauth).to be_persisted
+      end
     end
 
     context 'when there is a matching brand' do
-      let!(:brand) { FactoryBot.create(:brand, external_uid: auth_hash.uid) }
+      let!(:brand) do
+        FactoryBot.create(:brand, screen_name: 'helloworld',
+                                  external_uid: auth_hash.uid,
+                                  token: 'token', secret: 'secret')
+      end
 
       it 'returns the matching brand' do
         expect(from_omniauth).to eq(brand)
       end
 
-      it 'does not created new brand entities' do
+      it 'does not create new brand entities' do
         expect { from_omniauth }.not_to change(described_class, :count).from(1)
+      end
+
+      it 'does not change brand screen name' do
+        expect { from_omniauth }.not_to change { brand.reload.screen_name }.from('helloworld')
+      end
+
+      it 'does not change brand token' do
+        expect { from_omniauth }.not_to change { brand.reload.token }.from('token')
+      end
+
+      it 'does not change brand secret' do
+        expect { from_omniauth }.not_to change { brand.reload.secret }.from('secret')
+      end
+
+      it 'does not add the initial user' do
+        expect(from_omniauth.users).not_to include(user)
       end
     end
   end
@@ -52,22 +81,38 @@ RSpec.describe Brand, type: :model do
   describe '#new_mentions' do
     subject(:new_mentions) { brand.new_mentions }
 
+    let(:brand) { FactoryBot.build(:brand) }
     let(:twitter_client) { instance_spy(Clients::Twitter) }
 
     before do
-      allow(brand).to receive(:last_ticket_id).and_return(1)
       allow(brand).to receive(:twitter).and_return(twitter_client)
     end
 
-    it 'queries the twitter client' do
-      new_mentions
+    context 'when brand has at least one ticket' do
+      before do
+        FactoryBot.create(:ticket, brand: brand)
+      end
 
-      expect(twitter_client).to have_received(:mentions_timeline).with(since: 1)
+      it 'queries the twitter client with last ticket id' do
+        new_mentions
+
+        expect(twitter_client).to have_received(:mentions_timeline).with(since: an_instance_of(String))
+      end
+    end
+
+    context 'when brand has no tickets' do
+      it 'queries the twitter client without last ticket id' do
+        new_mentions
+
+        expect(twitter_client).to have_received(:mentions_timeline).with(since: nil)
+      end
     end
   end
 
   describe '#twitter' do
     subject(:twitter) { brand.twitter }
+
+    let(:brand) { FactoryBot.build(:brand) }
 
     it { is_expected.to be_an_instance_of(Clients::Twitter) }
   end

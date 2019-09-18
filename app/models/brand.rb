@@ -12,14 +12,12 @@ class Brand < ApplicationRecord
 
   class << self
     def from_omniauth(auth, initial_user)
-      find_or_initialize_by(external_uid: auth.uid).tap do |brand|
-        brand.screen_name ||= auth.info.nickname
-        brand.token ||= auth.credentials.token
-        brand.secret ||= auth.credentials.secret
+      find_or_create_by(external_uid: auth.uid) do |brand|
+        brand.screen_name = auth.info.nickname
+        brand.token = auth.credentials.token
+        brand.secret = auth.credentials.secret
 
         brand.users << initial_user
-
-        brand.save!
       end
     end
   end
