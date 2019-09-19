@@ -11,6 +11,7 @@ SimpleCov.start do
   add_group 'Models',      'app/models'
   add_group 'Helpers',     'app/helpers'
   add_group 'Jobs',        'app/jobs'
+  add_group 'Clients',     'lib/clients'
 end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
