@@ -56,13 +56,13 @@ RSpec.describe Author, type: :model do
           author.update(username: twitter_user.screen_name)
         end
 
-        it 'does not update author username' do
+        it 'does not update username' do
           expect { from_twitter_user }.not_to change { author.reload.username }.from(twitter_user.screen_name)
         end
       end
 
       context 'when username changes' do
-        it 'updates author username' do
+        it 'updates username' do
           expect { from_twitter_user }.to change { author.reload.username }.to(twitter_user.screen_name)
         end
       end

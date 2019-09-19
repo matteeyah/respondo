@@ -56,13 +56,13 @@ RSpec.describe Brand, type: :model do
           brand.update(screen_name: auth_hash.info.nickname)
         end
 
-        it 'does not update brand screen name' do
+        it 'does not update screen name' do
           expect { from_omniauth }.not_to change { brand.reload.screen_name }.from(auth_hash.info.nickname)
         end
       end
 
       context 'when screen name changes' do
-        it 'updates brand screen name' do
+        it 'updates screen name' do
           expect { from_omniauth }.to change { brand.reload.screen_name }.to(auth_hash.info.nickname)
         end
       end
@@ -72,21 +72,21 @@ RSpec.describe Brand, type: :model do
           brand.update(token: auth_hash.credentials.token, secret: auth_hash.credentials.secret)
         end
 
-        it 'does not update brand token' do
+        it 'does not update token' do
           expect { from_omniauth }.not_to change { brand.reload.token }.from(auth_hash.credentials.token)
         end
 
-        it 'does not update brand secret' do
+        it 'does not update secret' do
           expect { from_omniauth }.not_to change { brand.reload.secret }.from(auth_hash.credentials.secret)
         end
       end
 
       context 'when credentials change' do
-        it 'updates brand token' do
+        it 'updates token' do
           expect { from_omniauth }.to change { brand.reload.token }.to(auth_hash.credentials.token)
         end
 
-        it 'updates brand secret' do
+        it 'updates secret' do
           expect { from_omniauth }.to change { brand.reload.secret }.to(auth_hash.credentials.secret)
         end
       end
