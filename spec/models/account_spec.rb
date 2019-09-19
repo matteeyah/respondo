@@ -11,18 +11,16 @@ RSpec.describe Account, type: :model do
     it { is_expected.to validate_uniqueness_of(:user_id).scoped_to(:provider) }
   end
 
+  it { is_expected.to define_enum_for(:provider).with_values(%i[twitter google_oauth2]) }
+
   describe 'Relations' do
     it { is_expected.to belong_to(:user) }
   end
 
-  it { is_expected.to define_enum_for(:provider).with_values(%i[twitter google_oauth2]) }
-
   describe '.from_omniauth' do
-    let(:user) { nil }
-
     %w[twitter google_oauth2].each do |provider|
       context "when provider is #{provider}" do
-        subject(:from_omniauth) { described_class.from_omniauth(auth_hash, user) }
+        subject(:from_omniauth) { described_class.from_omniauth(auth_hash) }
 
         let(:auth_hash) do
           fixture_name = case provider
@@ -31,32 +29,21 @@ RSpec.describe Account, type: :model do
                          when 'google_oauth2'
                            'google_oauth_hash.json'
                          end
+
           JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)
         end
 
         context 'when there is no matching account' do
-          it 'creates an account' do
-            expect { from_omniauth }.to change(described_class, :count).from(0).to(1)
+          it 'returns a new account' do
+            expect(from_omniauth).to be_an_instance_of(described_class)
           end
 
-          it 'creates an account entity with correct info' do
-            expect(from_omniauth).to have_attributes(external_uid: auth_hash.uid)
-          end
-
-          it 'creates a user' do
-            expect { from_omniauth }.to change(User, :count).from(0).to(1)
-          end
-
-          context 'when user is specified' do
-            let!(:user) { FactoryBot.create(:user) }
-
-            it 'does not create a user' do
-              expect { from_omniauth }.not_to change(User, :count).from(1)
-            end
-
-            it 'associates the account to the user' do
-              expect(from_omniauth.user).to eq(user)
-            end
+          it 'builds an account entity with correct information' do
+            expect(from_omniauth).to have_attributes(
+              external_uid: auth_hash.uid, provider: provider,
+              token: auth_hash.credentials.token, secret: auth_hash.credentials.secret,
+              email: auth_hash.info.email
+            )
           end
         end
 
@@ -67,15 +54,63 @@ RSpec.describe Account, type: :model do
             expect(from_omniauth).to eq(account)
           end
 
-          context 'when the auth has more info' do
-            let(:email) { Faker::Internet.safe_email }
+          it 'does not create new account entities' do
+            expect { from_omniauth }.not_to change(described_class, :count).from(1)
+          end
 
+          context 'when email does not change' do
             before do
-              auth_hash.info.email = email
+              account.update(email: auth_hash.info.email)
             end
 
-            it 'updates the record with extra information' do
-              expect { from_omniauth }.to change { account.reload.email }.from(nil).to(email)
+            it 'does not update email' do
+              expect { from_omniauth }.not_to change { account.reload.email }.from(auth_hash.info.email)
+            end
+          end
+
+          context 'when email changes' do
+            before do
+              auth_hash.info.email = 'hello@world.com'
+            end
+
+            it 'updates email ' do
+              expect { from_omniauth }.to change { account.reload.email }.to(auth_hash.info.email)
+            end
+          end
+
+          context 'when token does not change' do
+            before do
+              account.update(token: auth_hash.credentials.token)
+            end
+
+            it 'does not update token' do
+              expect { from_omniauth }.not_to change { account.reload.token }.from(auth_hash.credentials.token)
+            end
+          end
+
+          context 'when token changes' do
+            it 'updates token' do
+              expect { from_omniauth }.to change { account.reload.token }.to(auth_hash.credentials.token)
+            end
+          end
+
+          context 'when secret does not change' do
+            before do
+              account.update(secret: auth_hash.credentials.secret)
+            end
+
+            it 'does not update secret' do
+              expect { from_omniauth }.not_to change { account.reload.secret }.from(auth_hash.credentials.secret)
+            end
+          end
+
+          context 'when secret changes' do
+            before do
+              auth_hash.credentials.secret = 'top_secret'
+            end
+
+            it 'updates secret' do
+              expect { from_omniauth }.to change { account.reload.secret }.to(auth_hash.credentials.secret)
             end
           end
         end

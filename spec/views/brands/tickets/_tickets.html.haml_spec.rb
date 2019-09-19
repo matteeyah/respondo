@@ -15,7 +15,8 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
   it 'displays the tickets' do
     render_tickets_partial
 
-    expect(rendered).to have_text("#{ticket.author.username}: #{ticket.content}").and have_text("#{nested_ticket.author.username}: #{nested_ticket.content}")
+    expect(rendered).to have_text("#{ticket.author.username}: #{ticket.content}")
+      .and have_text("#{nested_ticket.author.username}: #{nested_ticket.content}")
   end
 
   context 'when user is authorized' do

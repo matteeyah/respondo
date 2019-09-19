@@ -7,27 +7,22 @@ RSpec.describe Author, type: :model do
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:username) }
     it { is_expected.to validate_presence_of(:provider) }
+
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider) }
   end
 
+  it { is_expected.to define_enum_for(:provider).with_values([:twitter]) }
+
   describe 'Relations' do
-    it { is_expected.to have_many(:tickets) }
+    it { is_expected.to have_many(:tickets).dependent(:restrict_with_error) }
   end
 
   describe '.from_twitter_user' do
     subject(:from_twitter_user) { described_class.from_twitter_user(twitter_user) }
 
-    let(:twitter_user) { OpenStruct.new(id: '1', screen_name: 'helloworld') }
+    let(:twitter_user) { instance_double('Twitter::User', id: '1', screen_name: 'helloworld') }
 
-    context 'when author exists' do
-      let!(:author) { FactoryBot.create(:author, external_uid: '1') }
-
-      it 'returns the existing author' do
-        expect(from_twitter_user).to eq(author)
-      end
-    end
-
-    context 'when author does not exist' do
+    context 'when there is no matching author' do
       it 'creates a new author' do
         expect { from_twitter_user }.to change(described_class, :count).from(0).to(1)
       end
@@ -36,8 +31,40 @@ RSpec.describe Author, type: :model do
         expect(from_twitter_user).to be_instance_of(described_class)
       end
 
-      it 'returns an author with matching attributes' do
-        expect(from_twitter_user).to have_attributes(external_uid: '1', username: 'helloworld')
+      it 'builds an author entity with correct information' do
+        expect(from_twitter_user).to have_attributes(external_uid: twitter_user.id, username: twitter_user.screen_name)
+      end
+
+      it 'persists the new author' do
+        expect(from_twitter_user).to be_persisted
+      end
+    end
+
+    context 'when author exists' do
+      let!(:author) { FactoryBot.create(:author, external_uid: twitter_user.id, provider: 'twitter') }
+
+      it 'returns the matching author' do
+        expect(from_twitter_user).to eq(author)
+      end
+
+      it 'does not create new author entities' do
+        expect { from_twitter_user }.not_to change(described_class, :count).from(1)
+      end
+
+      context 'when username does not change' do
+        before do
+          author.update(username: twitter_user.screen_name)
+        end
+
+        it 'does not update username' do
+          expect { from_twitter_user }.not_to change { author.reload.username }.from(twitter_user.screen_name)
+        end
+      end
+
+      context 'when username changes' do
+        it 'updates username' do
+          expect { from_twitter_user }.to change { author.reload.username }.to(twitter_user.screen_name)
+        end
       end
     end
   end

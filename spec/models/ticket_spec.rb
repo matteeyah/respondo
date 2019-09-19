@@ -10,25 +10,30 @@ RSpec.describe Ticket, type: :model do
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider, :brand_id) }
   end
 
+  it { is_expected.to define_enum_for(:status).with_values(%i[open solved]) }
+  it { is_expected.to define_enum_for(:provider).with_values([:twitter]) }
+
   describe 'Relations' do
     it { is_expected.to belong_to(:author) }
     it { is_expected.to belong_to(:brand) }
     it { is_expected.to belong_to(:parent).optional }
-    it { is_expected.to have_many(:replies) }
+    it { is_expected.to have_many(:replies).dependent(:destroy) }
   end
 
   describe 'Callbacks' do
-    describe 'before_save' do
-      subject(:execute_callback) { parent.run_callbacks :save }
+    describe 'cascade_status' do
+      subject(:execute_callback) { parent.run_callbacks(:save) }
 
       let(:parent) { FactoryBot.create(:ticket, status: :open) }
       let(:reply) { FactoryBot.create(:ticket, status: :open, parent: parent) }
       let(:nested_reply) { FactoryBot.create(:ticket, status: :open, parent: reply) }
 
       context 'when status changes' do
-        it 'cascades change to replies' do
+        before do
           parent.status = 'solved'
+        end
 
+        it 'cascades change to replies' do
           expect { execute_callback }
             .to change { reply.reload.status }.from('open').to('solved')
             .and change { nested_reply.reload.status }.from('open').to('solved')
@@ -36,9 +41,11 @@ RSpec.describe Ticket, type: :model do
       end
 
       context 'when status does not change' do
-        it 'does not cascade change to replies' do
+        before do
           parent.content = 'hello world'
+        end
 
+        it 'does not cascade change to replies' do
           expect { execute_callback }.not_to change { reply.reload.status }.from('open')
         end
       end
@@ -59,51 +66,49 @@ RSpec.describe Ticket, type: :model do
     end
   end
 
-  describe '.from_tweet' do
-    subject(:from_tweet) { described_class.from_tweet(tweet, brand) }
+  describe '.create_from_tweet' do
+    subject(:create_from_tweet) { described_class.create_from_tweet(tweet, brand) }
 
     let(:brand) { FactoryBot.create(:brand) }
+    let(:author) { FactoryBot.create(:author) }
 
     let(:tweet) do
-      OpenStruct.new(
-        id: '2',
-        text: 'helloworld',
-        user: 'does not matter',
-        in_reply_to_tweet_id: '1'
-      )
+      instance_double('Twitter::Tweet',
+                      id: '2',
+                      text: 'helloworld',
+                      user: 'does not matter',
+                      in_reply_to_tweet_id: '1')
     end
 
     before do
-      allow(Author).to receive(:from_twitter_user).and_return(FactoryBot.create(:author))
+      allow(Author).to receive(:from_twitter_user).with(tweet.user).and_return(author)
     end
 
-    context 'when ticket exists' do
-      let!(:ticket) { FactoryBot.create(:ticket, external_uid: '2', provider: 'twitter', brand: brand) }
-
-      it 'returns the existing ticket' do
-        expect(from_tweet).to eq(ticket)
-      end
+    it 'creates a new ticket' do
+      expect { create_from_tweet }.to change(described_class, :count).from(0).to(1)
     end
 
-    context 'when ticket does not exist' do
-      it 'creates a new ticket' do
-        expect { from_tweet }.to change(described_class, :count).from(0).to(1)
-      end
+    it 'returns a new ticket' do
+      expect(create_from_tweet).to be_instance_of(described_class)
+    end
 
-      it 'returns a new ticket' do
-        expect(from_tweet).to be_instance_of(described_class)
-      end
+    it 'builds a brand ticket with correct information' do
+      expect(create_from_tweet).to have_attributes(
+        external_uid: tweet.id, provider: 'twitter',
+        content: tweet.text,
+        brand: brand, parent: nil, author: author
+      )
+    end
 
-      it 'returns a ticket with matching attributes' do
-        expect(from_tweet).to have_attributes(external_uid: '2', content: 'helloworld', brand: brand)
-      end
+    it 'persists the new ticket' do
+      expect(create_from_tweet).to be_persisted
+    end
 
-      context 'when parent exists' do
-        let!(:parent) { FactoryBot.create(:ticket, external_uid: '1') }
+    context 'when parent exists' do
+      let!(:parent) { FactoryBot.create(:ticket, external_uid: tweet.in_reply_to_tweet_id) }
 
-        it 'sets the ticket parent' do
-          expect(from_tweet.parent).to eq(parent)
-        end
+      it 'sets the ticket parent' do
+        expect(create_from_tweet.parent).to eq(parent)
       end
     end
   end

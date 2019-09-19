@@ -17,7 +17,7 @@ RSpec.describe LoadNewTweetsJob, type: :job do
     it 'creates tickets' do
       perform_now
 
-      expect(ticket_class).to have_received(:from_tweet).with(anything, brand).twice
+      expect(ticket_class).to have_received(:create_from_tweet).with(anything, brand).twice
     end
   end
 end

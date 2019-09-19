@@ -6,12 +6,11 @@ class User < ApplicationRecord
   belongs_to :brand, optional: true
   has_many :accounts, dependent: :destroy
 
-  has_one :twitter_account, -> { where(provider: 'twitter') }, class_name: 'Account', inverse_of: :user
-  has_one :google_oauth2_account, -> { where(provider: 'google_oauth2') }, class_name: 'Account', inverse_of: :user
+  Account.providers.each do |provider, value|
+    has_one :"#{provider}_account", -> { where(provider: value) }, class_name: 'Account', inverse_of: :user
+  end
 
-  scope :not_in_brand, ->(brand_id) { where.not(brand_id: brand_id).or(where(brand_id: nil)) }
-
-  def client_for(provider)
-    accounts.find_by(provider)&.client
+  def client_for_provider(provider)
+    accounts.find_by(provider: provider)&.client
   end
 end
