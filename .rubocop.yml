@@ -12,19 +12,16 @@ AllCops:
     - 'tmp/**/*'
     - 'bin/**/*'
 
-Metrics/AbcSize:
-  Max: 24
-
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
 
 Metrics/MethodLength:
-  Max: 15
+  Exclude:
+    - 'db/migrate/*'
 
 Metrics/LineLength:
   Max: 135
-  IgnoredPatterns: ['(\A|\s)#']
 
 Style/Documentation:
   Enabled: false
