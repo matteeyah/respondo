@@ -32,9 +32,7 @@ class OmniauthCallbacksController < ApplicationController
   def authenticate_brand(auth_hash)
     return unless user_signed_in?
 
-    brand = Brand.from_omniauth(auth_hash, current_user)
-
-    flash[:notice] = if brand.persisted?
+    flash[:notice] = if current_user.update(brand: Brand.from_omniauth(auth_hash))
                        'Successfully authenticated brand.'
                      else
                        'Did not authenticate brand.'

@@ -15,10 +15,9 @@ RSpec.describe Brand, type: :model do
   end
 
   describe '.from_omniauth' do
-    subject(:from_omniauth) { described_class.from_omniauth(auth_hash, user) }
+    subject(:from_omniauth) { described_class.from_omniauth(auth_hash) }
 
     let(:auth_hash) { JSON.parse(file_fixture('twitter_oauth_hash.json').read, object_class: OpenStruct) }
-    let(:user) { FactoryBot.build(:user) }
 
     context 'when there is no matching brand' do
       it 'creates a new brand' do
@@ -36,21 +35,13 @@ RSpec.describe Brand, type: :model do
         )
       end
 
-      it 'assigns the initial user' do
-        expect(from_omniauth.users).to contain_exactly(user)
-      end
-
       it 'persists the new brand' do
         expect(from_omniauth).to be_persisted
       end
     end
 
     context 'when there is a matching brand' do
-      let!(:brand) do
-        FactoryBot.create(:brand, screen_name: 'helloworld',
-                                  external_uid: auth_hash.uid,
-                                  token: 'token', secret: 'secret')
-      end
+      let!(:brand) { FactoryBot.create(:brand, external_uid: auth_hash.uid) }
 
       it 'returns the matching brand' do
         expect(from_omniauth).to eq(brand)
@@ -60,20 +51,44 @@ RSpec.describe Brand, type: :model do
         expect { from_omniauth }.not_to change(described_class, :count).from(1)
       end
 
-      it 'does not change brand screen name' do
-        expect { from_omniauth }.not_to change { brand.reload.screen_name }.from('helloworld')
+      context 'when screen name does not change' do
+        before do
+          brand.update(screen_name: auth_hash.info.nickname)
+        end
+
+        it 'does not update brand screen name' do
+          expect { from_omniauth }.not_to change { brand.reload.screen_name }.from(auth_hash.info.nickname)
+        end
       end
 
-      it 'does not change brand token' do
-        expect { from_omniauth }.not_to change { brand.reload.token }.from('token')
+      context 'when screen name changes' do
+        it 'updates brand screen name' do
+          expect { from_omniauth }.to change { brand.reload.screen_name }.to(auth_hash.info.nickname)
+        end
       end
 
-      it 'does not change brand secret' do
-        expect { from_omniauth }.not_to change { brand.reload.secret }.from('secret')
+      context 'when credentials do not change' do
+        before do
+          brand.update(token: auth_hash.credentials.token, secret: auth_hash.credentials.secret)
+        end
+
+        it 'does not update brand token' do
+          expect { from_omniauth }.not_to change { brand.reload.token }.from(auth_hash.credentials.token)
+        end
+
+        it 'does not update brand secret' do
+          expect { from_omniauth }.not_to change { brand.reload.secret }.from(auth_hash.credentials.secret)
+        end
       end
 
-      it 'does not add the initial user' do
-        expect(from_omniauth.users).not_to include(user)
+      context 'when credentials change' do
+        it 'updates brand token' do
+          expect { from_omniauth }.to change { brand.reload.token }.to(auth_hash.credentials.token)
+        end
+
+        it 'updates brand secret' do
+          expect { from_omniauth }.to change { brand.reload.secret }.to(auth_hash.credentials.secret)
+        end
       end
     end
   end
