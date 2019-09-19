@@ -8,7 +8,7 @@ class Ticket < ApplicationRecord
   before_save :cascade_status
 
   enum status: { open: 0, solved: 1 }
-  enum provider: { twitter: 0, google_oauth2: 1 }
+  enum provider: { twitter: 0 }
 
   scope :root, -> { where(parent: nil) }
 

@@ -5,7 +5,7 @@ class Author < ApplicationRecord
   validates :username, presence: true, allow_blank: false
   validates :provider, presence: true
 
-  enum provider: { twitter: 0, google_oauth2: 1 }
+  enum provider: { twitter: 0 }
 
   has_many :tickets, dependent: :restrict_with_error
 
