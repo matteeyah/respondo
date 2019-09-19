@@ -41,7 +41,7 @@ RSpec.describe Author, type: :model do
     end
 
     context 'when author exists' do
-      let!(:author) { FactoryBot.create(:author, external_uid: twitter_user.id, provider: 'twitter', username: 'username') }
+      let!(:author) { FactoryBot.create(:author, external_uid: twitter_user.id, provider: 'twitter') }
 
       it 'returns the matching author' do
         expect(from_twitter_user).to eq(author)
@@ -51,8 +51,20 @@ RSpec.describe Author, type: :model do
         expect { from_twitter_user }.not_to change(described_class, :count).from(1)
       end
 
-      it 'does not change author username' do
-        expect { from_twitter_user }.not_to change { author.reload.username }.from('username')
+      context 'when username does not change' do
+        before do
+          author.update(username: twitter_user.screen_name)
+        end
+
+        it 'does not update author username' do
+          expect { from_twitter_user }.not_to change { author.reload.username }.from(twitter_user.screen_name)
+        end
+      end
+
+      context 'when username changes' do
+        it 'updates author username' do
+          expect { from_twitter_user }.to change { author.reload.username }.to(twitter_user.screen_name)
+        end
       end
     end
   end
