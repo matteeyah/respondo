@@ -11,7 +11,10 @@ module BrandsHelper
     current_brand == brand
   end
 
-  def user_has_account_for?(provider)
-    current_user&.accounts&.exists?(provider: provider)
+  def user_can_reply_to?(user, provider)
+    # Twitter::REST::Client implements #blank?
+    # This prevents using rails' blank? or present? implementations
+    # https://github.com/sferik/twitter/issues/960
+    !user.client_for_provider(provider).nil?
   end
 end

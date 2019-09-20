@@ -57,26 +57,32 @@ RSpec.describe BrandsHelper, type: :helper do
     end
   end
 
-  describe '#user_has_account_for?' do
-    subject(:user_has_account_for?) { helper.user_has_account_for?('twitter') }
+  describe '#user_can_reply_to?' do
+    subject(:user_can_reply_to?) { helper.user_can_reply_to?(user, provider) }
 
     let(:user) { FactoryBot.create(:user) }
 
-    before do
-      without_partial_double_verification do
-        allow(helper).to receive(:current_user).and_return(user)
-      end
-    end
-
     context 'when user has account' do
       before do
-        FactoryBot.create(:account, user: user)
+        FactoryBot.create(:account, provider: provider, user: user)
       end
 
-      it { is_expected.to eq(true) }
+      context 'when account has client' do
+        let(:provider) { 'twitter' }
+
+        it { is_expected.to eq(true) }
+      end
+
+      context 'when account does not have client' do
+        let(:provider) { 'google_oauth2' }
+
+        it { is_expected.to eq(false) }
+      end
     end
 
     context 'when user does not have account' do
+      let(:provider) { 'something_else' }
+
       it { is_expected.to eq(false) }
     end
   end

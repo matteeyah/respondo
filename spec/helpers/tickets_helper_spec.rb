@@ -2,7 +2,7 @@
 
 RSpec.describe TicketsHelper, type: :helper do
   describe '#invert_status_action' do
-    subject { helper.invert_status_action(status) }
+    subject(:invert_status_action) { helper.invert_status_action(status) }
 
     context 'when status is open' do
       let(:status) { 'open' }

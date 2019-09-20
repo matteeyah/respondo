@@ -10,8 +10,11 @@ RSpec.describe 'brands/tickets/index', type: :view do
     assign(:open_tickets, [open_ticket])
     assign(:solved_tickets, [solved_ticket])
 
+    without_partial_double_verification do
+      allow(view).to receive(:current_user).and_return(FactoryBot.build(:user))
+    end
     allow(view).to receive(:authorized_for?).and_return(false)
-    allow(view).to receive(:user_has_account_for?).and_return(false)
+    allow(view).to receive(:user_can_reply_to?).and_return(false)
   end
 
   it 'renders both open and solved tickets' do

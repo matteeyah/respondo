@@ -8,8 +8,11 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
   let!(:nested_ticket) { FactoryBot.create(:ticket, brand: brand, parent: ticket, status: :solved) }
 
   before do
+    without_partial_double_verification do
+      allow(view).to receive(:current_user).and_return(FactoryBot.build(:user))
+    end
     allow(view).to receive(:authorized_for?).and_return(false)
-    allow(view).to receive(:user_has_account_for?).and_return(false)
+    allow(view).to receive(:user_can_reply_to?).and_return(false)
   end
 
   it 'displays the tickets' do
@@ -40,7 +43,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
   context 'when user is not authorized' do
     context 'when user does not have account' do
       before do
-        allow(view).to receive(:user_has_account_for?).and_return(false)
+        allow(view).to receive(:user_can_reply_to?).and_return(false)
       end
 
       it 'does not display response textbox' do
@@ -70,7 +73,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
     context 'when user has account' do
       before do
-        allow(view).to receive(:user_has_account_for?).and_return(true)
+        allow(view).to receive(:user_can_reply_to?).and_return(true)
       end
 
       it 'displays response forms' do
