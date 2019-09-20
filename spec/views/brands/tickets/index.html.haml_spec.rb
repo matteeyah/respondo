@@ -13,7 +13,7 @@ RSpec.describe 'brands/tickets/index', type: :view do
     without_partial_double_verification do
       allow(view).to receive(:current_user).and_return(FactoryBot.build(:user))
     end
-    allow(view).to receive(:authorized_for?).and_return(false)
+    allow(view).to receive(:user_authorized_for?).and_return(false)
     allow(view).to receive(:user_can_reply_to?).and_return(false)
   end
 
@@ -23,7 +23,7 @@ RSpec.describe 'brands/tickets/index', type: :view do
 
   context 'when user is authorized' do
     before do
-      allow(view).to receive(:authorized_for?).and_return(true)
+      allow(view).to receive(:user_authorized_for?).and_return(true)
     end
 
     it 'renders the refresh button' do
