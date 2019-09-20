@@ -1,4 +1,4 @@
-- if authorized_for?(@brand)
+- if user_authorized_for?(current_user, @brand)
   = button_to 'Refresh Tickets', refresh_brand_tickets_path(@brand)
 
 %span Tweets

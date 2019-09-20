@@ -1,5 +1,5 @@
 = form_with url: brand_users_path(@brand), method: :post do |remove_user_form|
-  = remove_user_form.select :user_id, options_for_select(add_users_dropdown_options), {}, id: 'add-user'
+  = remove_user_form.select :user_id, options_for_select(add_users_dropdown_options_for(@brand)), {}, id: 'add-user'
   = remove_user_form.submit 'Add User'
 
 %hr
