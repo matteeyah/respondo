@@ -5,7 +5,9 @@ RSpec.describe 'users/edit', type: :view do
   let!(:account) { FactoryBot.create(:account, provider: 'google_oauth2', user: user) }
 
   before do
-    assign(:user, user)
+    without_partial_double_verification do
+      allow(view).to receive(:user).and_return(user)
+    end
   end
 
   it 'renders all accounts' do
