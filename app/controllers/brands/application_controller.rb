@@ -12,7 +12,7 @@ module Brands
     def authorize!
       return if brand == current_brand
 
-      redirect_back fallback_location: root_path, alert: 'You are not allowed to edit the Brand.'
+      redirect_back fallback_location: root_path, alert: 'You are not allowed to edit the brand.'
     end
   end
 end

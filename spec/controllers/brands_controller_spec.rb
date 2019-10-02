@@ -18,7 +18,7 @@ RSpec.describe BrandsController, type: :controller do
       it 'sets the flash' do
         get_index
 
-        expect(controller).to set_flash[:alert]
+        expect(controller).to set_flash[:alert].to('You are not logged in.')
       end
     end
 
@@ -76,7 +76,7 @@ RSpec.describe BrandsController, type: :controller do
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(get_edit.request).to set_flash[:alert]
+        expect(get_edit.request).to set_flash[:alert].to('You are not allowed to edit the brand.')
       end
 
       it 'redirects the user' do

@@ -28,7 +28,7 @@ RSpec.describe UsersController, type: :controller do
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(get_edit.request).to set_flash[:alert]
+        expect(get_edit.request).to set_flash[:alert].to('You are not allowed to edit the user.')
       end
 
       it 'redirects the user' do

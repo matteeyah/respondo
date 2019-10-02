@@ -16,7 +16,7 @@ RSpec.describe SessionsController, type: :controller do
       it 'sets the flash' do
         delete_destroy
 
-        expect(controller).to set_flash[:alert]
+        expect(controller).to set_flash[:alert].to('You are not logged in.')
       end
     end
 

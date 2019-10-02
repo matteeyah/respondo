@@ -28,7 +28,7 @@ RSpec.describe Brands::UsersController, type: :controller do
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(post_create.request).to set_flash[:alert]
+        expect(post_create.request).to set_flash[:alert].to('You are not allowed to edit the brand.')
       end
 
       it 'redirects the user' do
@@ -62,7 +62,7 @@ RSpec.describe Brands::UsersController, type: :controller do
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(delete_destroy.request).to set_flash[:alert]
+        expect(delete_destroy.request).to set_flash[:alert].to('You are not allowed to edit the brand.')
       end
 
       it 'redirects the user' do

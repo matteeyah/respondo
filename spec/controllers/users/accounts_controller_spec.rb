@@ -17,14 +17,34 @@ RSpec.describe Users::AccountsController, type: :controller do
         sign_in(user)
       end
 
-      it 'removes the user from the brand' do
+      it 'destroys the account' do
         expect { delete_destroy }.to change(Account, :count).from(1).to(0)
+      end
+
+      it 'sets the flash' do
+        delete_destroy
+
+        expect(controller).to set_flash[:notice].to('Successfully deleted the account.')
+      end
+
+      context 'when account removal fails' do
+        let(:account_double) { instance_double(Account, id: 1, destroy: false) }
+
+        before do
+          allow(controller).to receive(:account).and_return(account_double)
+        end
+
+        it 'sets the flash' do
+          delete_destroy
+
+          expect(controller).to set_flash[:notice].to('There was a problem destroying the account.')
+        end
       end
     end
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(delete_destroy.request).to set_flash[:alert]
+        expect(delete_destroy.request).to set_flash[:alert].to('You are not allowed to edit the user.')
       end
 
       it 'redirects the user' do
