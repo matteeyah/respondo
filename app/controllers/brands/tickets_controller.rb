@@ -2,10 +2,8 @@
 
 module Brands
   class TicketsController < ApplicationController
-    before_action :ticket, except: %i[index refresh]
     before_action :authorize!, only: %i[refresh invert_status]
     before_action :authorize_reply!, only: [:reply]
-    skip_before_action :brand, only: [:refresh]
 
     def index
       @open_tickets = brand.tickets.root.open
@@ -51,5 +49,6 @@ module Brands
     def ticket
       @ticket ||= Ticket.find(params[:ticket_id] || params[:id])
     end
+    helper_method :ticket
   end
 end

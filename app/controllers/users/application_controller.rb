@@ -2,13 +2,12 @@
 
 module Users
   class ApplicationController < ::ApplicationController
-    before_action :user
-
     private
 
     def user
       @user ||= User.find(params[:user_id] || params[:id])
     end
+    helper_method :user
 
     def authorize!
       return if user == current_user

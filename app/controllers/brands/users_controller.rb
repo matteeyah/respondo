@@ -2,7 +2,6 @@
 
 module Brands
   class UsersController < ApplicationController
-    before_action :user
     before_action :authorize!
 
     def create
@@ -18,5 +17,6 @@ module Brands
     def user
       @user ||= User.find(params[:user_id] || params[:id])
     end
+    helper_method :user
   end
 end

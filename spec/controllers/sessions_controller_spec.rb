@@ -8,16 +8,30 @@ RSpec.describe SessionsController, type: :controller do
   describe 'DELETE destroy' do
     subject(:delete_destroy) { delete :destroy }
 
-    before do
-      sign_in(FactoryBot.create(:user))
+    context 'when user is not signed in' do
+      it 'redirects the user' do
+        expect(delete_destroy).to redirect_to(root_path)
+      end
+
+      it 'sets the flash' do
+        delete_destroy
+
+        expect(controller).to set_flash[:alert]
+      end
     end
 
-    it 'redirects back to root' do
-      expect(delete_destroy).to redirect_to(root_path)
-    end
+    context 'when user is signed in' do
+      before do
+        sign_in(FactoryBot.create(:user))
+      end
 
-    it 'logs the user out' do
-      expect { delete_destroy }.to change { controller.send(:user_signed_in?) }.from(true).to(false)
+      it 'redirects back to root' do
+        expect(delete_destroy).to redirect_to(root_path)
+      end
+
+      it 'logs the user out' do
+        expect { delete_destroy }.to change { controller.send(:user_signed_in?) }.from(true).to(false)
+      end
     end
   end
 end

@@ -2,7 +2,6 @@
 
 module Users
   class AccountsController < ApplicationController
-    before_action :account
     before_action :authorize!, only: [:destroy]
 
     def destroy
@@ -16,5 +15,6 @@ module Users
     def account
       @account ||= Account.find(params[:account_id] || params[:id])
     end
+    helper_method :account
   end
 end

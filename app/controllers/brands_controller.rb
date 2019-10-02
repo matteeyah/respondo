@@ -3,8 +3,8 @@
 class BrandsController < Brands::ApplicationController
   include Pagy::Backend
 
+  before_action :authenticate!, only: [:index]
   before_action :authorize!, only: [:edit]
-  skip_before_action :brand, only: [:index]
 
   def index
     @pagy, @brands = pagy(Brand.all)
