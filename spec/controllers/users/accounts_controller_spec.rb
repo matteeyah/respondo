@@ -44,7 +44,9 @@ RSpec.describe Users::AccountsController, type: :controller do
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(delete_destroy.request).to set_flash[:alert].to('You are not allowed to edit the user.')
+        delete_destroy
+
+        expect(controller).to set_flash[:alert].to('You are not allowed to edit the user.')
       end
 
       it 'redirects the user' do

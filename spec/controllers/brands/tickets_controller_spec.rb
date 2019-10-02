@@ -83,7 +83,9 @@ RSpec.describe Brands::TicketsController, type: :controller do
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(post_reply.request).to set_flash[:alert].to('You are not allowed to reply to the ticket.')
+        post_reply
+
+        expect(controller).to set_flash[:alert].to('You are not allowed to reply to the ticket.')
       end
 
       it 'redirects the user' do
@@ -134,7 +136,9 @@ RSpec.describe Brands::TicketsController, type: :controller do
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(post_invert_status.request).to set_flash[:alert].to('You are not allowed to edit the brand.')
+        post_invert_status
+
+        expect(controller).to set_flash[:alert].to('You are not allowed to edit the brand.')
       end
 
       it 'redirects the user' do
@@ -168,7 +172,9 @@ RSpec.describe Brands::TicketsController, type: :controller do
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(post_refresh.request).to set_flash[:alert].to('You are not allowed to edit the brand.')
+        post_refresh
+
+        expect(controller).to set_flash[:alert].to('You are not allowed to edit the brand.')
       end
 
       it 'redirects the user' do

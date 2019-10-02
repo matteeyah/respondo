@@ -10,12 +10,6 @@ RSpec.describe UsersController, type: :controller do
 
     let(:user) { FactoryBot.create(:user) }
 
-    it 'sets the user' do
-      get_edit
-
-      expect(assigns(:user)).to eq(user)
-    end
-
     context 'when user is authorized' do
       before do
         sign_in(user)
@@ -28,7 +22,9 @@ RSpec.describe UsersController, type: :controller do
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(get_edit.request).to set_flash[:alert].to('You are not allowed to edit the user.')
+        get_edit
+
+        expect(controller).to set_flash[:alert].to('You are not allowed to edit the user.')
       end
 
       it 'redirects the user' do
