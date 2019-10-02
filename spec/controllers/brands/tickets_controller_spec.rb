@@ -42,7 +42,7 @@ RSpec.describe Brands::TicketsController, type: :controller do
 
       let(:tweet) do
         instance_double(Twitter::Tweet, id: '1', text: 'does not matter', in_reply_to_tweet_id: ticket.external_uid,
-                        user: instance_double(Twitter::User, id: '2', screen_name: 'test'))
+                                        user: instance_double(Twitter::User, id: '2', screen_name: 'test'))
       end
 
       let(:client) do

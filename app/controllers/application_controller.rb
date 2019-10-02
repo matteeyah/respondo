@@ -33,9 +33,4 @@ class ApplicationController < ActionController::Base
     !current_user.nil?
   end
   helper_method :user_signed_in?
-
-  def brand_signed_in?
-    !current_brand.nil?
-  end
-  helper_method :brand_signed_in?
 end
