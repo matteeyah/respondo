@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
+  before_action :authenticate!, only: [:destroy]
+
   def destroy
     sign_out
 

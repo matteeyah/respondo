@@ -2,13 +2,14 @@
 
 module Users
   class AccountsController < ApplicationController
-    before_action :account
     before_action :authorize!, only: [:destroy]
 
     def destroy
-      account.destroy
-
-      flash[:notice] = 'Successfully deleted account.'
+      flash[:notice] = if account.destroy
+                         'Successfully deleted the account.'
+                       else
+                         'There was a problem destroying the account.'
+                       end
     end
 
     private
@@ -16,5 +17,6 @@ module Users
     def account
       @account ||= Account.find(params[:account_id] || params[:id])
     end
+    helper_method :account
   end
 end

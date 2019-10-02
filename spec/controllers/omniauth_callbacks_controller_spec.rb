@@ -41,7 +41,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
           it 'sets the flash' do
             get_authenticate
 
-            expect(controller).to set_flash[:notice]
+            expect(controller).to set_flash[:notice].to('Successfully authenticated user.')
           end
 
           context 'when there is no account' do
@@ -91,7 +91,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
         it 'sets the flash' do
           get_authenticate
 
-          expect(controller).to set_flash[:notice]
+          expect(controller).to set_flash[:notice].to('Successfully authenticated brand.')
         end
 
         context 'when brand does not exist' do

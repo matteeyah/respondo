@@ -10,23 +10,47 @@ RSpec.describe BrandsController, type: :controller do
 
     let!(:brands) { FactoryBot.create_list(:brand, 2) }
 
-    it 'sets the brands' do
-      get_index
+    context 'when user is not logged in' do
+      it 'redirects the user' do
+        expect(get_index).to redirect_to(root_path)
+      end
 
-      expect(assigns(:brands)).to contain_exactly(*brands)
-    end
-
-    it 'renders the index template' do
-      expect(get_index).to render_template('brands/index')
-    end
-
-    context 'when pagination is required' do
-      let!(:extra_brands) { FactoryBot.create_list(:brand, 19) }
-
-      it 'paginates brands' do
+      it 'sets the flash' do
         get_index
 
-        expect(assigns(:brands)).to contain_exactly(*brands, *extra_brands.first(18))
+        expect(controller).to set_flash[:alert].to('You are not logged in.')
+      end
+    end
+
+    context 'when user is logged in' do
+      before do
+        sign_in(FactoryBot.create(:user))
+      end
+
+      it 'sets the brands' do
+        get_index
+
+        expect(assigns(:brands)).to contain_exactly(*brands)
+      end
+
+      it 'sets the paginator' do
+        get_index
+
+        expect(assigns(:pagy)).not_to be_nil
+      end
+
+      it 'renders the index template' do
+        expect(get_index).to render_template('brands/index')
+      end
+
+      context 'when pagination is required' do
+        let!(:extra_brands) { FactoryBot.create_list(:brand, 19) }
+
+        it 'paginates brands' do
+          get_index
+
+          expect(assigns(:brands)).to contain_exactly(*brands, *extra_brands.first(18))
+        end
       end
     end
   end
@@ -35,12 +59,6 @@ RSpec.describe BrandsController, type: :controller do
     subject(:get_edit) { get :edit, params: { id: brand.id } }
 
     let(:brand) { FactoryBot.create(:brand) }
-
-    it 'sets the brand' do
-      get_edit
-
-      expect(assigns(:brand)).to eq(brand)
-    end
 
     context 'when user is authorized' do
       let(:user) { FactoryBot.create(:user) }
@@ -58,7 +76,9 @@ RSpec.describe BrandsController, type: :controller do
 
     context 'when user is not authorized' do
       it 'sets the flash' do
-        expect(get_edit.request).to set_flash[:alert]
+        get_edit
+
+        expect(controller).to set_flash[:alert].to('You are not allowed to edit the brand.')
       end
 
       it 'redirects the user' do
