@@ -2,13 +2,13 @@
 
 require './spec/support/sign_in_out_helpers.rb'
 
-RSpec.describe UsersController, type: :controller do
+RSpec.describe UsersController, type: :request do
   include SignInOutHelpers
 
   describe 'GET edit' do
-    subject(:get_edit) { get :edit, params: { id: user.id } }
+    subject(:get_edit) { get "/users/#{user.id}/edit" }
 
-    let(:user) { FactoryBot.create(:user) }
+    let(:user) { FactoryBot.create(:user, :with_account) }
 
     context 'when user is authorized' do
       before do
@@ -23,8 +23,9 @@ RSpec.describe UsersController, type: :controller do
     context 'when user is not authorized' do
       it 'sets the flash' do
         get_edit
+        follow_redirect!
 
-        expect(controller).to set_flash[:alert].to('You are not allowed to edit the user.')
+        expect(response.body).to include('You are not allowed to edit the user.')
       end
 
       it 'redirects the user' do
