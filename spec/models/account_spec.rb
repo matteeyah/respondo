@@ -20,7 +20,7 @@ RSpec.describe Account, type: :model do
   describe '.from_omniauth' do
     %w[twitter google_oauth2].each do |provider|
       context "when provider is #{provider}" do
-        subject(:from_omniauth) { described_class.from_omniauth(auth_hash) }
+        subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_user) }
 
         let(:auth_hash) do
           fixture_name = case provider
@@ -34,6 +34,8 @@ RSpec.describe Account, type: :model do
         end
 
         context 'when there is no matching account' do
+          let(:current_user) { nil }
+
           it 'returns a new account' do
             expect(from_omniauth).to be_an_instance_of(described_class)
           end
@@ -45,10 +47,31 @@ RSpec.describe Account, type: :model do
               email: auth_hash.info.email
             )
           end
+
+          it 'persists the new account' do
+            expect(from_omniauth).to be_persisted
+          end
+
+          it 'creates a new user' do
+            expect { from_omniauth }.to change(User, :count).from(0).to(1)
+          end
+
+          context 'when adding the account to existing user' do
+            let!(:current_user) { FactoryBot.create(:user) }
+
+            it 'does not create new users' do
+              expect { from_omniauth }.not_to change(User, :count).from(1)
+            end
+
+            it 'adds the account to the specified user' do
+              expect(current_user.accounts).to include(from_omniauth)
+            end
+          end
         end
 
         context 'when there is a matching account' do
           let!(:account) { FactoryBot.create(:account, external_uid: auth_hash.uid, provider: auth_hash.provider) }
+          let(:current_user) { account.user }
 
           it 'returns the matching account' do
             expect(from_omniauth).to eq(account)
@@ -56,6 +79,10 @@ RSpec.describe Account, type: :model do
 
           it 'does not create new account entities' do
             expect { from_omniauth }.not_to change(described_class, :count).from(1)
+          end
+
+          it 'does not change the account owner' do
+            expect { from_omniauth }.not_to change { account.reload.user }.from(account.user)
           end
 
           context 'when email does not change' do
@@ -111,6 +138,20 @@ RSpec.describe Account, type: :model do
 
             it 'updates secret' do
               expect { from_omniauth }.to change { account.reload.secret }.to(auth_hash.credentials.secret)
+            end
+          end
+
+          context 'when switching account from different user' do
+            let!(:current_user) { FactoryBot.create(:user) }
+
+            it 'removes the account from existing user' do
+              previous_user = account.user
+
+              expect { from_omniauth }.to change { previous_user.reload.public_send("#{provider}_account") }.from(account).to(nil)
+            end
+
+            it 'associates the account to current user' do
+              expect(from_omniauth.user).to eq(current_user)
             end
           end
         end

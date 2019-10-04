@@ -13,14 +13,16 @@ class Account < ApplicationRecord
   attr_encrypted :token, key: attr_encrypted_encryption_key
   attr_encrypted :secret, key: attr_encrypted_encryption_key
 
-  def self.from_omniauth(auth)
+  def self.from_omniauth(auth, current_user)
     find_or_initialize_by(external_uid: auth.uid, provider: auth.provider).tap do |account|
       account.email = auth.info.email
 
       account.token = auth.credentials.token
       account.secret = auth.credentials.secret
 
-      account.save! if account.persisted?
+      account.user = current_user || account.user || User.new(name: auth.info.name)
+
+      account.save!
     end
   end
 
