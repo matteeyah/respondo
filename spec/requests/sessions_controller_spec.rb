@@ -2,11 +2,11 @@
 
 require './spec/support/sign_in_out_helpers.rb'
 
-RSpec.describe SessionsController, type: :controller do
+RSpec.describe SessionsController, type: :request do
   include SignInOutHelpers
 
   describe 'DELETE destroy' do
-    subject(:delete_destroy) { delete :destroy }
+    subject(:delete_destroy) { delete '/logout' }
 
     context 'when user is not signed in' do
       it 'redirects the user' do
@@ -15,14 +15,15 @@ RSpec.describe SessionsController, type: :controller do
 
       it 'sets the flash' do
         delete_destroy
+        follow_redirect!
 
-        expect(controller).to set_flash[:alert].to('You are not logged in.')
+        expect(response.body).to include('You are not logged in.')
       end
     end
 
     context 'when user is signed in' do
       before do
-        sign_in(FactoryBot.create(:user))
+        sign_in(FactoryBot.create(:user, :with_account))
       end
 
       it 'redirects back to root' do
