@@ -5,11 +5,9 @@ module Users
     before_action :authorize!, only: [:destroy]
 
     def destroy
-      flash[:notice] = if account.destroy
-                         'Successfully deleted the account.'
-                       else
-                         'There was a problem destroying the account.'
-                       end
+      return unless account.destroy
+
+      flash[:notice] = 'Successfully deleted the account.'
     end
 
     private

@@ -2,13 +2,13 @@
 
 require './spec/support/sign_in_out_helpers.rb'
 
-RSpec.describe Users::AccountsController, type: :controller do
+RSpec.describe Users::AccountsController, type: :request do
   include SignInOutHelpers
 
   let(:user) { FactoryBot.create(:user) }
 
   describe 'DELETE destroy' do
-    subject(:delete_destroy) { delete :destroy, params: { user_id: user.id, id: account.id } }
+    subject(:delete_destroy) { delete "/users/#{user.id}/accounts/#{account.id}" }
 
     let!(:account) { FactoryBot.create(:account, user: user) }
 
@@ -24,21 +24,7 @@ RSpec.describe Users::AccountsController, type: :controller do
       it 'sets the flash' do
         delete_destroy
 
-        expect(controller).to set_flash[:notice].to('Successfully deleted the account.')
-      end
-
-      context 'when account removal fails' do
-        let(:account_double) { instance_double(Account, id: 1, destroy: false) }
-
-        before do
-          allow(controller).to receive(:account).and_return(account_double)
-        end
-
-        it 'sets the flash' do
-          delete_destroy
-
-          expect(controller).to set_flash[:notice].to('There was a problem destroying the account.')
-        end
+        expect(controller.flash[:notice]).to eq('Successfully deleted the account.')
       end
     end
 
@@ -46,7 +32,7 @@ RSpec.describe Users::AccountsController, type: :controller do
       it 'sets the flash' do
         delete_destroy
 
-        expect(controller).to set_flash[:alert].to('You are not allowed to edit the user.')
+        expect(controller.flash[:alert]).to eq('You are not allowed to edit the user.')
       end
 
       it 'redirects the user' do
