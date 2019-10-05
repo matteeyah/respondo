@@ -17,7 +17,7 @@ RSpec.describe SessionsController, type: :request do
         delete_destroy
         follow_redirect!
 
-        expect(response.body).to include('You are not logged in.')
+        expect(controller.flash[:alert]).to eq('You are not logged in.')
       end
     end
 

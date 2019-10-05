@@ -18,7 +18,7 @@ RSpec.describe BrandsController, type: :request do
       it 'shows the first page of brands' do
         get_index
 
-        expect(response.body).to include(*brands.map(&:screen_name))
+        expect(assigns(:brands)).to contain_exactly(*brands)
       end
 
       it 'renders the index template' do
@@ -31,7 +31,7 @@ RSpec.describe BrandsController, type: :request do
         it 'paginates brands' do
           get_index
 
-          expect(response.body).to include(*brands.map(&:screen_name), *extra_brands.first(18).map(&:screen_name))
+          expect(assigns(:brands)).to contain_exactly(*brands, *extra_brands.first(18))
         end
       end
     end
@@ -41,7 +41,7 @@ RSpec.describe BrandsController, type: :request do
         get_index
         follow_redirect!
 
-        expect(response.body).to include('You are not logged in.')
+        expect(controller.flash[:alert]).to eq('You are not logged in.')
       end
 
       it 'redirects the user' do
@@ -74,7 +74,7 @@ RSpec.describe BrandsController, type: :request do
         get_edit
         follow_redirect!
 
-        expect(response.body).to include('You are not allowed to edit the brand.')
+        expect(controller.flash[:alert]).to eq('You are not allowed to edit the brand.')
       end
 
       it 'redirects the user' do

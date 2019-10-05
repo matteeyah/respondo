@@ -25,7 +25,7 @@ RSpec.describe UsersController, type: :request do
         get_edit
         follow_redirect!
 
-        expect(response.body).to include('You are not allowed to edit the user.')
+        expect(controller.flash[:alert]).to eq('You are not allowed to edit the user.')
       end
 
       it 'redirects the user' do
