@@ -2,41 +2,23 @@
 
 require './spec/support/sign_in_out_helpers.rb'
 
-RSpec.describe BrandsController, type: :controller do
+RSpec.describe BrandsController, type: :request do
   include SignInOutHelpers
 
   describe 'GET index' do
-    subject(:get_index) { get :index }
+    subject(:get_index) { get '/brands' }
 
     let!(:brands) { FactoryBot.create_list(:brand, 2) }
 
-    context 'when user is not logged in' do
-      it 'redirects the user' do
-        expect(get_index).to redirect_to(root_path)
-      end
-
-      it 'sets the flash' do
-        get_index
-
-        expect(controller).to set_flash[:alert].to('You are not logged in.')
-      end
-    end
-
-    context 'when user is logged in' do
+    context 'when user is authenticated' do
       before do
-        sign_in(FactoryBot.create(:user))
+        sign_in(FactoryBot.create(:user, :with_account))
       end
 
-      it 'sets the brands' do
+      it 'shows the first page of brands' do
         get_index
 
-        expect(assigns(:brands)).to contain_exactly(*brands)
-      end
-
-      it 'sets the paginator' do
-        get_index
-
-        expect(assigns(:pagy)).not_to be_nil
+        expect(response.body).to include(*brands.map(&:screen_name))
       end
 
       it 'renders the index template' do
@@ -49,19 +31,32 @@ RSpec.describe BrandsController, type: :controller do
         it 'paginates brands' do
           get_index
 
-          expect(assigns(:brands)).to contain_exactly(*brands, *extra_brands.first(18))
+          expect(response.body).to include(*brands.map(&:screen_name), *extra_brands.first(18).map(&:screen_name))
         end
+      end
+    end
+
+    context 'when user is not authenticated' do
+      it 'sets the flash' do
+        get_index
+        follow_redirect!
+
+        expect(response.body).to include('You are not logged in.')
+      end
+
+      it 'redirects the user' do
+        expect(get_index).to redirect_to(root_path)
       end
     end
   end
 
   describe 'GET edit' do
-    subject(:get_edit) { get :edit, params: { id: brand.id } }
+    subject(:get_edit) { get "/brands/#{brand.id}/edit" }
 
     let(:brand) { FactoryBot.create(:brand) }
 
     context 'when user is authorized' do
-      let(:user) { FactoryBot.create(:user) }
+      let(:user) { FactoryBot.create(:user, :with_account) }
 
       before do
         brand.users << user
@@ -77,8 +72,9 @@ RSpec.describe BrandsController, type: :controller do
     context 'when user is not authorized' do
       it 'sets the flash' do
         get_edit
+        follow_redirect!
 
-        expect(controller).to set_flash[:alert].to('You are not allowed to edit the brand.')
+        expect(response.body).to include('You are not allowed to edit the brand.')
       end
 
       it 'redirects the user' do
