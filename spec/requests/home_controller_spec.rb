@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe HomeController, type: :controller do
+RSpec.describe HomeController, type: :request do
   describe 'GET index' do
-    subject(:get_index) { get :index }
+    subject(:get_index) { get '/' }
 
     it 'renders the home page' do
       expect(get_index).to render_template('home/index')
