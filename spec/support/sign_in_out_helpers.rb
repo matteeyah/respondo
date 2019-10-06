@@ -11,11 +11,12 @@ module SignInOutHelpers
   end
 
   def sign_in(user)
-    OmniAuth.config.add_mock(:google_oauth2,
-                             uid: user.google_oauth2_account.external_uid,
-                             info: { name: user.name, email: user.google_oauth2_account.email },
+    account = user.accounts.first
+    OmniAuth.config.add_mock(account.provider.to_sym,
+                             uid: account.external_uid,
+                             info: { name: user.name, email: account.email },
                              credentials: {})
-    get '/auth/google_oauth2?model=user'
+    get "/auth/#{account.provider}?model=user"
     follow_redirect!
     follow_redirect!
   end
