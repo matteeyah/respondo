@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
-RSpec.describe OmniauthCallbacksController, type: :controller do
-  describe 'GET authenticate' do
-    subject(:get_authenticate) { get :authenticate, params: { provider: provider }, session: session }
+require './spec/support/sign_in_out_helpers.rb'
 
-    let(:session) { {} }
+RSpec.describe OmniauthCallbacksController, type: :request do
+  include SignInOutHelpers
+
+  describe 'GET authenticate' do
+    subject(:get_authenticate) do
+      get "/auth/#{provider}?model=#{model}"
+      follow_redirect!
+    end
 
     let(:auth_hash) do
       fixture_name = case provider
@@ -17,8 +22,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
     end
 
     before do
-      request.env['omniauth.auth'] = auth_hash
-      request.env['omniauth.params'] = { 'model' => model }
+      OmniAuth.config.add_mock(provider.to_sym, auth_hash)
     end
 
     context 'when model is user' do
@@ -27,10 +31,6 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
       %w[twitter google_oauth2].each do |provider_param|
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
-
-          before do
-            request.env['omniauth.auth'].provider = provider
-          end
 
           it 'redirects to root' do
             get_authenticate
@@ -41,7 +41,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
           it 'sets the flash' do
             get_authenticate
 
-            expect(controller).to set_flash[:notice].to('Successfully authenticated user.')
+            expect(controller.flash[:notice]).to eq('Successfully authenticated user.')
           end
 
           context 'when there is no account' do
@@ -62,7 +62,9 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
 
           context 'when the user is not logged in' do
             it 'logs the user in' do
-              expect { get_authenticate }.to change { controller.send(:user_signed_in?) }.from(false).to(true)
+              get_authenticate
+
+              expect(controller.send(:user_signed_in?)).to eq(true)
             end
           end
         end
@@ -71,16 +73,14 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
 
     context 'when model is brand' do
       let(:model) { 'brand' }
-
       let(:provider) { 'twitter' }
 
-      before do
-        request.env['omniauth.auth'].provider = provider
-      end
-
       context 'when user is logged in' do
-        let(:user) { FactoryBot.create(:user) }
-        let(:session) { { user_id: user.id } }
+        let(:user) { FactoryBot.create(:user, :with_account) }
+
+        before do
+          sign_in(user)
+        end
 
         it 'redirects to root' do
           get_authenticate
@@ -91,7 +91,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
         it 'sets the flash' do
           get_authenticate
 
-          expect(controller).to set_flash[:notice].to('Successfully authenticated brand.')
+          expect(controller.flash[:notice]).to eq('Successfully authenticated brand.')
         end
 
         context 'when brand does not exist' do
