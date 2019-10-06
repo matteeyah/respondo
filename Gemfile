@@ -94,8 +94,6 @@ group :test do
   gem 'pry-byebug', '~> 3.7.0'
   # Coverage
   gem 'simplecov', '~> 0.16.1', require: false
-  # Controller Testing
-  gem 'rails-controller-testing', '~> 1.0'
 end
 
 group :production do

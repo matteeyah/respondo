@@ -15,20 +15,16 @@ RSpec.describe Brands::TicketsController, type: :request do
       FactoryBot.create(:ticket, status: :solved, brand: brand)
     end
 
-    it 'sets open tickets' do
+    it 'renders open tickets' do
       get_index
 
-      expect(assigns(:open_tickets)).to eq(brand.tickets.root.open)
+      expect(response.body).to include(*brand.tickets.root.open.map(&:content))
     end
 
-    it 'sets solved tickets' do
+    it 'renders solved tickets' do
       get_index
 
-      expect(assigns(:solved_tickets)).to eq(brand.tickets.root.solved)
-    end
-
-    it 'renders the index template' do
-      expect(get_index).to render_template('brands/tickets/index', partial: 'twitter/_feed')
+      expect(response.body).to include(*brand.tickets.root.solved.map(&:content))
     end
   end
 

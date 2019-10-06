@@ -15,8 +15,16 @@ RSpec.describe UsersController, type: :request do
         sign_in(user)
       end
 
-      it 'renders the edit template' do
-        expect(get_edit).to render_template('users/edit')
+      it 'renders the user account' do
+        get_edit
+
+        expect(response.body).to include('google_oauth2')
+      end
+
+      it 'renders the twitter authorization link' do
+        get_edit
+
+        expect(response.body).to include('Authorize Twitter')
       end
     end
 

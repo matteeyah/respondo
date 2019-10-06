@@ -18,11 +18,7 @@ RSpec.describe BrandsController, type: :request do
       it 'shows the first page of brands' do
         get_index
 
-        expect(assigns(:brands)).to contain_exactly(*brands)
-      end
-
-      it 'renders the index template' do
-        expect(get_index).to render_template('brands/index')
+        expect(response.body).to include(*brands.map(&:screen_name))
       end
 
       context 'when pagination is required' do
@@ -31,7 +27,7 @@ RSpec.describe BrandsController, type: :request do
         it 'paginates brands' do
           get_index
 
-          expect(assigns(:brands)).to contain_exactly(*brands, *extra_brands.first(18))
+          expect(response.body).to include(*(brands + extra_brands.first(18)).map(&:screen_name))
         end
       end
     end
@@ -64,8 +60,22 @@ RSpec.describe BrandsController, type: :request do
         sign_in(user)
       end
 
-      it 'renders the edit template' do
-        expect(get_edit).to render_template('brands/edit')
+      it 'renders the users list' do
+        get_edit
+
+        expect(response.body).to include(*brand.users.map(&:name))
+      end
+
+      it 'renders the add user button' do
+        get_edit
+
+        expect(response.body).to include('Add User')
+      end
+
+      it 'renders the remove user link' do
+        get_edit
+
+        expect(response.body).to include('Remove User')
       end
     end
 

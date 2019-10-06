@@ -5,7 +5,9 @@ RSpec.describe HomeController, type: :request do
     subject(:get_index) { get '/' }
 
     it 'renders the home page' do
-      expect(get_index).to render_template('home/index')
+      get_index
+
+      expect(response.body).to include('Hello World')
     end
   end
 end
