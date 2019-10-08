@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :account do
     external_uid { generate(:external_uid) }
-    provider { 'twitter' }
+    provider { 'google_oauth2' }
 
     user
   end

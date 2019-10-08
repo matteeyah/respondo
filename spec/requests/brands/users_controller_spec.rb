@@ -2,18 +2,18 @@
 
 require './spec/support/sign_in_out_helpers.rb'
 
-RSpec.describe Brands::UsersController, type: :controller do
+RSpec.describe Brands::UsersController, type: :request do
   include SignInOutHelpers
 
   let(:brand) { FactoryBot.create(:brand) }
 
   describe 'POST create' do
-    subject(:post_create) { post :create, params: { brand_id: brand.id, user_id: user.id } }
+    subject(:post_create) { post "/brands/#{brand.id}/users", params: { user_id: user.id } }
 
     let(:user) { FactoryBot.create(:user) }
 
     context 'when user is authorized' do
-      let(:browsing_user) { FactoryBot.create(:user) }
+      let(:browsing_user) { FactoryBot.create(:user, :with_account) }
 
       before do
         brand.users << browsing_user
@@ -30,7 +30,7 @@ RSpec.describe Brands::UsersController, type: :controller do
       it 'sets the flash' do
         post_create
 
-        expect(controller).to set_flash[:alert].to('You are not allowed to edit the brand.')
+        expect(controller.flash[:alert]).to eq('You are not allowed to edit the brand.')
       end
 
       it 'redirects the user' do
@@ -40,7 +40,7 @@ RSpec.describe Brands::UsersController, type: :controller do
   end
 
   describe 'DELETE destroy' do
-    subject(:delete_destroy) { delete :destroy, params: { brand_id: brand.id, id: user.id } }
+    subject(:delete_destroy) { delete "/brands/#{brand.id}/users/#{user.id}" }
 
     let(:user) { FactoryBot.create(:user) }
 
@@ -49,7 +49,7 @@ RSpec.describe Brands::UsersController, type: :controller do
     end
 
     context 'when user is authorized' do
-      let(:browsing_user) { FactoryBot.create(:user) }
+      let(:browsing_user) { FactoryBot.create(:user, :with_account) }
 
       before do
         brand.users << browsing_user
@@ -66,7 +66,7 @@ RSpec.describe Brands::UsersController, type: :controller do
       it 'sets the flash' do
         delete_destroy
 
-        expect(controller).to set_flash[:alert].to('You are not allowed to edit the brand.')
+        expect(controller.flash[:alert]).to eq('You are not allowed to edit the brand.')
       end
 
       it 'redirects the user' do

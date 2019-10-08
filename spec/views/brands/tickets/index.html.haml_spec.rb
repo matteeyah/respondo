@@ -18,8 +18,12 @@ RSpec.describe 'brands/tickets/index', type: :view do
     allow(view).to receive(:user_can_reply_to?).and_return(false)
   end
 
-  it 'renders both open and solved tickets' do
-    expect(render).to render_template(partial: 'brands/tickets/_tickets', count: 2)
+  it 'renders open tickets' do
+    expect(render).to include(open_ticket.content)
+  end
+
+  it 'renders solved tickets' do
+    expect(render).to include(solved_ticket.content)
   end
 
   context 'when user is authorized' do

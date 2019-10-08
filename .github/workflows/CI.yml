@@ -8,7 +8,14 @@ jobs:
     container: ruby:2.6.4
     steps:
       - uses: actions/checkout@v1
-      - name: dependencies
+      - name: install yarn
+        run: |
+          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+          echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+          apt update && apt install -y yarn
+      - name: node dependencies
+        run: bin/yarn install
+      - name: rails dependencies
         run: bundle install --without development production --jobs 4 --retry 3
       - name: rspec
         env:
@@ -19,16 +26,20 @@ jobs:
     container: ruby:2.6.4
     steps:
       - uses: actions/checkout@v1
-      - name: dependencies
-        run: bundle install --without development production --jobs 4 --retry 3
+      - name: install rubocop
+        run: |
+          gem install rubocop -v '0.74.0'
+          gem install rubocop-performance -v '1.4.1'
+          gem install rubocop-rails -v '2.3.2'
+          gem install rubocop-rspec -v '1.35.0'
       - name: rubocop
-        run: bundle exec rubocop
+        run: rubocop
   haml-lint:
     runs-on: ubuntu-latest
     container: ruby:2.6.4
     steps:
       - uses: actions/checkout@v1
-      - name: dependencies
-        run: bundle install --without development production --jobs 4 --retry 3
+      - name: install haml-lint
+        run: gem install haml_lint -v '0.33.0'
       - name: haml-lint
-        run: bundle exec haml-lint
+        run: haml-lint

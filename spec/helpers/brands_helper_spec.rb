@@ -21,17 +21,26 @@ RSpec.describe BrandsHelper, type: :helper do
     subject(:user_authorized_for?) { helper.user_authorized_for?(user, brand) }
 
     let(:brand) { FactoryBot.build(:brand) }
-    let(:user) { FactoryBot.build(:user) }
 
-    context 'when user is part of the brand' do
-      before do
-        brand.users << user
+    context 'when user is not nil' do
+      let(:user) { FactoryBot.build(:user) }
+
+      context 'when user is part of the brand' do
+        before do
+          brand.users << user
+        end
+
+        it { is_expected.to eq(true) }
       end
 
-      it { is_expected.to eq(true) }
+      context 'when user is not part of the brand' do
+        it { is_expected.to eq(false) }
+      end
     end
 
-    context 'when user is not part of the brand' do
+    context 'when user is nil' do
+      let(:user) { nil }
+
       it { is_expected.to eq(false) }
     end
   end
@@ -39,27 +48,36 @@ RSpec.describe BrandsHelper, type: :helper do
   describe '#user_can_reply_to?' do
     subject(:user_can_reply_to?) { helper.user_can_reply_to?(user, provider) }
 
-    let(:user) { FactoryBot.create(:user) }
+    context 'when user is not nil' do
+      let(:user) { FactoryBot.create(:user) }
 
-    context 'when user has account' do
-      before do
-        FactoryBot.create(:account, provider: provider, user: user)
+      context 'when user has account' do
+        before do
+          FactoryBot.create(:account, provider: provider, user: user)
+        end
+
+        context 'when account has client' do
+          let(:provider) { 'twitter' }
+
+          it { is_expected.to eq(true) }
+        end
+
+        context 'when account does not have client' do
+          let(:provider) { 'google_oauth2' }
+
+          it { is_expected.to eq(false) }
+        end
       end
 
-      context 'when account has client' do
-        let(:provider) { 'twitter' }
-
-        it { is_expected.to eq(true) }
-      end
-
-      context 'when account does not have client' do
-        let(:provider) { 'google_oauth2' }
+      context 'when user does not have account' do
+        let(:provider) { 'something_else' }
 
         it { is_expected.to eq(false) }
       end
     end
 
-    context 'when user does not have account' do
+    context 'when user is nil' do
+      let(:user) { nil }
       let(:provider) { 'something_else' }
 
       it { is_expected.to eq(false) }
