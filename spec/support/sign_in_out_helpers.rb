@@ -4,8 +4,9 @@ module SignInOutHelpers
   def self.included(base)
     base.class_eval do
       after do
-        OmniAuth.config.mock_auth.delete(:twitter)
-        OmniAuth.config.mock_auth.delete(:google_oauth2)
+        Account.providers.keys.each do |provider|
+          OmniAuth.config.mock_auth.delete(provider.to_sym)
+        end
       end
     end
   end

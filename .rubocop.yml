@@ -12,9 +12,6 @@ AllCops:
     - 'tmp/**/*'
     - 'bin/**/*'
 
-Metrics/AbcSize:
-  Max: 16
-
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'

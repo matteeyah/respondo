@@ -13,7 +13,7 @@ class Account < ApplicationRecord
   attr_encrypted :token, key: attr_encrypted_encryption_key
   attr_encrypted :secret, key: attr_encrypted_encryption_key
 
-  def self.from_omniauth(auth, current_user)
+  def self.from_omniauth(auth, current_user) # rubocop:disable Metrics/AbcSize
     find_or_initialize_by(external_uid: auth.uid, provider: auth.provider).tap do |account|
       account.email = auth.info.email
 
