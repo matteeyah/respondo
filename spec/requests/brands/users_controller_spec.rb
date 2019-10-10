@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_helpers.rb'
+require './spec/support/unauthenticated_user_examples.rb'
 
 RSpec.describe Brands::UsersController, type: :request do
   include SignInOutHelpers
@@ -12,30 +13,38 @@ RSpec.describe Brands::UsersController, type: :request do
 
     let(:user) { FactoryBot.create(:user) }
 
-    context 'when user is authorized' do
+    context 'when user is signed in' do
       let(:browsing_user) { FactoryBot.create(:user, :with_account) }
 
       before do
-        brand.users << browsing_user
-
         sign_in(browsing_user)
       end
 
-      it 'adds the user to the brand' do
-        expect { post_create }.to change { user.reload.brand_id }.from(nil).to(brand.id)
+      context 'when user is authorized' do
+        before do
+          brand.users << browsing_user
+        end
+
+        it 'adds the user to the brand' do
+          expect { post_create }.to change { user.reload.brand_id }.from(nil).to(brand.id)
+        end
+      end
+
+      context 'when user is not authorized' do
+        it 'sets the flash' do
+          post_create
+
+          expect(controller.flash[:alert]).to eq('You are not allowed to edit the brand.')
+        end
+
+        it 'redirects the user' do
+          expect(post_create).to redirect_to(root_path)
+        end
       end
     end
 
-    context 'when user is not authorized' do
-      it 'sets the flash' do
-        post_create
-
-        expect(controller.flash[:alert]).to eq('You are not allowed to edit the brand.')
-      end
-
-      it 'redirects the user' do
-        expect(post_create).to redirect_to(root_path)
-      end
+    context 'when user is not signed in' do
+      include_examples 'unauthenticated user examples'
     end
   end
 
@@ -48,30 +57,38 @@ RSpec.describe Brands::UsersController, type: :request do
       brand.users << user
     end
 
-    context 'when user is authorized' do
+    context 'when user is signed in' do
       let(:browsing_user) { FactoryBot.create(:user, :with_account) }
 
       before do
-        brand.users << browsing_user
-
         sign_in(browsing_user)
       end
 
-      it 'removes the user from the brand' do
-        expect { delete_destroy }.to change { user.reload.brand_id }.from(brand.id).to(nil)
+      context 'when user is authorized' do
+        before do
+          brand.users << browsing_user
+        end
+
+        it 'removes the user from the brand' do
+          expect { delete_destroy }.to change { user.reload.brand_id }.from(brand.id).to(nil)
+        end
+      end
+
+      context 'when user is not authorized' do
+        it 'sets the flash' do
+          delete_destroy
+
+          expect(controller.flash[:alert]).to eq('You are not allowed to edit the brand.')
+        end
+
+        it 'redirects the user' do
+          expect(delete_destroy).to redirect_to(root_path)
+        end
       end
     end
 
-    context 'when user is not authorized' do
-      it 'sets the flash' do
-        delete_destroy
-
-        expect(controller.flash[:alert]).to eq('You are not allowed to edit the brand.')
-      end
-
-      it 'redirects the user' do
-        expect(delete_destroy).to redirect_to(root_path)
-      end
+    context 'when user is not signed in' do
+      include_examples 'unauthenticated user examples'
     end
   end
 end
