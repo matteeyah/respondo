@@ -5,7 +5,7 @@ on: [push]
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    container: ruby:2.6.4
+    container: ruby:2.6.5
     steps:
       - uses: actions/checkout@v1
       - name: install yarn
@@ -23,7 +23,7 @@ jobs:
         run: bundle exec rspec
   rubocop:
     runs-on: ubuntu-latest
-    container: ruby:2.6.4
+    container: ruby:2.6.5
     steps:
       - uses: actions/checkout@v1
       - name: install rubocop
@@ -36,7 +36,7 @@ jobs:
         run: rubocop
   haml-lint:
     runs-on: ubuntu-latest
-    container: ruby:2.6.4
+    container: ruby:2.6.5
     steps:
       - uses: actions/checkout@v1
       - name: install haml-lint
