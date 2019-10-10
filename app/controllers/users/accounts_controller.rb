@@ -2,7 +2,8 @@
 
 module Users
   class AccountsController < ApplicationController
-    before_action :authorize!, only: [:destroy]
+    before_action :authenticate!
+    before_action :authorize!
 
     def destroy
       return unless account.destroy

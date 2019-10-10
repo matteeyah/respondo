@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < Users::ApplicationController
-  before_action :authorize!, only: [:edit]
+  before_action :authenticate!
+  before_action :authorize!
 
   def edit; end
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_helpers.rb'
+require './spec/support/unauthenticated_user_examples.rb'
 
 RSpec.describe UsersController, type: :request do
   include SignInOutHelpers
@@ -10,35 +11,49 @@ RSpec.describe UsersController, type: :request do
 
     let(:user) { FactoryBot.create(:user, :with_account) }
 
-    context 'when user is authorized' do
+    context 'when user is signed in' do
+      let(:browsing_user) { FactoryBot.create(:user, :with_account) }
+
       before do
-        sign_in(user)
+        sign_in(browsing_user)
       end
 
-      it 'renders the user account' do
-        get_edit
+      context 'when user is authorized' do
+        before do
+          sign_out
 
-        expect(response.body).to include('google_oauth2')
+          sign_in(user)
+        end
+
+        it 'renders the user account' do
+          get_edit
+
+          expect(response.body).to include('google_oauth2')
+        end
+
+        it 'renders the twitter authorization link' do
+          get_edit
+
+          expect(response.body).to include('Authorize Twitter')
+        end
       end
 
-      it 'renders the twitter authorization link' do
-        get_edit
+      context 'when user is not authorized' do
+        it 'sets the flash' do
+          get_edit
+          follow_redirect!
 
-        expect(response.body).to include('Authorize Twitter')
+          expect(controller.flash[:alert]).to eq('You are not allowed to edit the user.')
+        end
+
+        it 'redirects the user' do
+          expect(get_edit).to redirect_to(root_path)
+        end
       end
     end
 
-    context 'when user is not authorized' do
-      it 'sets the flash' do
-        get_edit
-        follow_redirect!
-
-        expect(controller.flash[:alert]).to eq('You are not allowed to edit the user.')
-      end
-
-      it 'redirects the user' do
-        expect(get_edit).to redirect_to(root_path)
-      end
+    context 'when user is not signed in' do
+      include_examples 'unauthenticated user examples'
     end
   end
 end
