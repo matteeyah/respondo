@@ -21,4 +21,9 @@ module SignInOutHelpers
     follow_redirect!
     follow_redirect!
   end
+
+  def sign_out
+    delete '/logout'
+    follow_redirect!
+  end
 end
