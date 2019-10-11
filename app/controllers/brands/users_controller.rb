@@ -2,6 +2,7 @@
 
 module Brands
   class UsersController < ApplicationController
+    before_action :authenticate!
     before_action :authorize!
 
     def create

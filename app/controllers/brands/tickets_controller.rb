@@ -2,6 +2,7 @@
 
 module Brands
   class TicketsController < ApplicationController
+    before_action :authenticate!, except: [:index]
     before_action :authorize!, only: %i[refresh invert_status]
     before_action :authorize_reply!, only: [:reply]
 
