@@ -2,6 +2,7 @@
 
 require './spec/support/sign_in_out_helpers.rb'
 require './spec/support/unauthenticated_user_examples.rb'
+require './spec/support/unauthorized_user_examples.rb'
 
 RSpec.describe BrandsController, type: :request do
   include SignInOutHelpers
@@ -65,16 +66,7 @@ RSpec.describe BrandsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        it 'sets the flash' do
-          get_edit
-          follow_redirect!
-
-          expect(controller.flash[:alert]).to eq('You are not allowed to edit the brand.')
-        end
-
-        it 'redirects the user' do
-          expect(get_edit).to redirect_to(root_path)
-        end
+        include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
       end
     end
 

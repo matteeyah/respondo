@@ -2,6 +2,7 @@
 
 require './spec/support/sign_in_out_helpers.rb'
 require './spec/support/unauthenticated_user_examples.rb'
+require './spec/support/unauthorized_user_examples.rb'
 
 RSpec.describe Users::AccountsController, type: :request do
   include SignInOutHelpers
@@ -39,15 +40,7 @@ RSpec.describe Users::AccountsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        it 'sets the flash' do
-          delete_destroy
-
-          expect(controller.flash[:alert]).to eq('You are not allowed to edit the user.')
-        end
-
-        it 'redirects the user' do
-          expect(delete_destroy).to redirect_to(root_path)
-        end
+        include_examples 'unauthorized user examples', 'You are not allowed to edit the user.'
       end
     end
 

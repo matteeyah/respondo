@@ -2,6 +2,7 @@
 
 require './spec/support/sign_in_out_helpers.rb'
 require './spec/support/unauthenticated_user_examples.rb'
+require './spec/support/unauthorized_user_examples.rb'
 
 RSpec.describe Brands::TicketsController, type: :request do
   include SignInOutHelpers
@@ -100,15 +101,7 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        it 'sets the flash' do
-          post_reply
-
-          expect(controller.flash[:alert]).to eq('You are not allowed to reply to the ticket.')
-        end
-
-        it 'redirects the user' do
-          expect(post_reply).to redirect_to(root_path)
-        end
+        include_examples 'unauthorized user examples', 'You are not allowed to reply to the ticket.'
       end
     end
 
@@ -156,15 +149,7 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        it 'sets the flash' do
-          post_invert_status
-
-          expect(controller.flash[:alert]).to eq('You are not allowed to edit the brand.')
-        end
-
-        it 'redirects the user' do
-          expect(post_invert_status).to redirect_to(root_path)
-        end
+        include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
       end
     end
 
@@ -202,15 +187,7 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        it 'sets the flash' do
-          post_refresh
-
-          expect(controller.flash[:alert]).to eq('You are not allowed to edit the brand.')
-        end
-
-        it 'redirects the user' do
-          expect(post_refresh).to redirect_to(root_path)
-        end
+        include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
       end
     end
 
