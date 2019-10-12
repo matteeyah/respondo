@@ -63,4 +63,9 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # This prevents CSRF in Omniauth authentication requests
+  # It should be removed when upstream is fixed
+  # https://github.com/matteeyah/respondo/issues/68
+  OmniAuth.config.before_request_phase = OmniauthCsrfTokenVerifier.new
 end

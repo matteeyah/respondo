@@ -3,13 +3,11 @@
 require 'active_support/configurable'
 require 'action_controller'
 
-class TokenVerifier
+class OmniauthCsrfTokenVerifier
   include ActiveSupport::Configurable
   include ActionController::RequestForgeryProtection
 
   def call(env)
-    return if Rails.env.test?
-
     @request = ActionDispatch::Request.new(env.dup)
 
     raise ActionController::InvalidAuthenticityToken unless verified_request?
