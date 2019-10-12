@@ -6,8 +6,8 @@ RSpec.describe OmniauthCallbacksController, type: :request do
   include SignInOutHelpers
 
   describe 'GET authenticate' do
-    subject(:get_authenticate) do
-      get "/auth/#{provider}?model=#{model}"
+    subject(:post_authenticate) do
+      post "/auth/#{provider}?model=#{model}"
       follow_redirect!
     end
 
@@ -33,28 +33,28 @@ RSpec.describe OmniauthCallbacksController, type: :request do
           let(:provider) { provider_param }
 
           it 'redirects to root' do
-            get_authenticate
+            post_authenticate
 
             expect(controller).to redirect_to(root_path)
           end
 
           it 'sets the flash' do
-            get_authenticate
+            post_authenticate
 
             expect(controller.flash[:notice]).to eq('Successfully authenticated user.')
           end
 
           context 'when the account does not exist' do
             it 'creates a new account' do
-              expect { get_authenticate }.to change(Account, :count).from(0).to(1)
+              expect { post_authenticate }.to change(Account, :count).from(0).to(1)
             end
 
             it 'creates a new user' do
-              expect { get_authenticate }.to change(User, :count).from(0).to(1)
+              expect { post_authenticate }.to change(User, :count).from(0).to(1)
             end
 
             it 'logs the user in' do
-              get_authenticate
+              post_authenticate
 
               expect(controller.send(:user_signed_in?)).to eq(true)
             end
@@ -66,15 +66,15 @@ RSpec.describe OmniauthCallbacksController, type: :request do
             end
 
             it 'does not create a new account' do
-              expect { get_authenticate }.not_to change(Account, :count).from(1)
+              expect { post_authenticate }.not_to change(Account, :count).from(1)
             end
 
             it 'does not create a new user' do
-              expect { get_authenticate }.not_to change(User, :count).from(1)
+              expect { post_authenticate }.not_to change(User, :count).from(1)
             end
 
             it 'logs the user in' do
-              get_authenticate
+              post_authenticate
 
               expect(controller.send(:user_signed_in?)).to eq(true)
             end
@@ -101,15 +101,15 @@ RSpec.describe OmniauthCallbacksController, type: :request do
 
             context 'when account does not exist' do
               it 'creates a new account' do
-                expect { get_authenticate }.to change(Account, :count).from(1).to(2)
+                expect { post_authenticate }.to change(Account, :count).from(1).to(2)
               end
 
               it 'does not create a new user' do
-                expect { get_authenticate }.not_to change(User, :count).from(1)
+                expect { post_authenticate }.not_to change(User, :count).from(1)
               end
 
               it 'associates the account with the current user' do
-                expect { get_authenticate }.to change { user.reload.public_send("#{provider}_account") }
+                expect { post_authenticate }.to change { user.reload.public_send("#{provider}_account") }
                   .from(nil).to(an_instance_of(Account))
               end
             end
@@ -119,15 +119,15 @@ RSpec.describe OmniauthCallbacksController, type: :request do
                 let!(:account) { FactoryBot.create(:account, external_uid: auth_hash.uid, provider: provider) }
 
                 it 'does not create a new account' do
-                  expect { get_authenticate }.not_to change(Account, :count).from(2)
+                  expect { post_authenticate }.not_to change(Account, :count).from(2)
                 end
 
                 it 'does not create a new user' do
-                  expect { get_authenticate }.not_to change(User, :count).from(2)
+                  expect { post_authenticate }.not_to change(User, :count).from(2)
                 end
 
                 it 'associates the account with the current user' do
-                  expect { get_authenticate }.to change { account.reload.user }.from(account.user).to(user)
+                  expect { post_authenticate }.to change { account.reload.user }.from(account.user).to(user)
                 end
               end
 
@@ -137,11 +137,11 @@ RSpec.describe OmniauthCallbacksController, type: :request do
                 end
 
                 it 'does not create a new account' do
-                  expect { get_authenticate }.not_to change(Account, :count).from(2)
+                  expect { post_authenticate }.not_to change(Account, :count).from(2)
                 end
 
                 it 'does not create a new user' do
-                  expect { get_authenticate }.not_to change(User, :count).from(1)
+                  expect { post_authenticate }.not_to change(User, :count).from(1)
                 end
               end
             end
@@ -164,24 +164,24 @@ RSpec.describe OmniauthCallbacksController, type: :request do
         end
 
         it 'redirects to root' do
-          get_authenticate
+          post_authenticate
 
           expect(controller).to redirect_to(root_path)
         end
 
         it 'sets the flash' do
-          get_authenticate
+          post_authenticate
 
           expect(controller.flash[:notice]).to eq('Successfully authenticated brand.')
         end
 
         context 'when brand does not exist' do
           it 'creates a new brand' do
-            expect { get_authenticate }.to change(Brand, :count).from(0).to(1)
+            expect { post_authenticate }.to change(Brand, :count).from(0).to(1)
           end
 
           it 'associates the brand with the current user' do
-            expect { get_authenticate }.to change { user.reload.brand }.from(nil).to(an_instance_of(Brand))
+            expect { post_authenticate }.to change { user.reload.brand }.from(nil).to(an_instance_of(Brand))
           end
         end
 
@@ -189,24 +189,24 @@ RSpec.describe OmniauthCallbacksController, type: :request do
           let!(:brand) { FactoryBot.create(:brand, external_uid: auth_hash.uid) }
 
           it 'does not create a new brand' do
-            expect { get_authenticate }.not_to change(Brand, :count).from(1)
+            expect { post_authenticate }.not_to change(Brand, :count).from(1)
           end
 
           it 'associates the brand with the current user' do
-            expect { get_authenticate }.to change { user.reload.brand }.from(nil).to(brand)
+            expect { post_authenticate }.to change { user.reload.brand }.from(nil).to(brand)
           end
         end
       end
 
       context 'when user is not logged in' do
         it 'redirects to root' do
-          get_authenticate
+          post_authenticate
 
           expect(controller).to redirect_to(root_path)
         end
 
         it 'does not set the flash' do
-          get_authenticate
+          post_authenticate
 
           expect(controller.flash[:notice]).to be_nil
         end

@@ -19,7 +19,7 @@
           - if user_signed_in?
             - if current_brand.nil?
               %span
-                = link_to 'Login Brand', auth_twitter_path(model: 'brand')
+                = auth_twitter_link('Login Brand', 'brand')
             - else
               %span
                 = link_to 'Edit Brand', edit_brand_path(current_brand)
@@ -28,7 +28,7 @@
               = link_to 'Edit User', edit_user_path(current_user)
               = link_to '(logout)', logout_path, method: :delete
           - else
-            = link_to 'Login User', auth_google_oauth2_path(model: 'user')
+            = auth_google_link('Login User', 'user')
     .container
       - if flash.any?
         - flash.each do |type, message|
