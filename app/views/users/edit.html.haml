@@ -1,8 +1,8 @@
 - unless user.twitter_account
-  = link_to 'Authorize Twitter', auth_twitter_path(model: 'user')
+  = auth_twitter_link('Authorize Twitter', 'user')
 
 - unless user.google_oauth2_account
-  = link_to 'Authorize Google', auth_google_oauth2_path(model: 'user')
+  = auth_google_link('Authorize Google', 'user')
 
 %ul
 - user.accounts.each do |account|
