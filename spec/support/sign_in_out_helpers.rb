@@ -17,7 +17,7 @@ module SignInOutHelpers
                              uid: account.external_uid,
                              info: { name: user.name, email: account.email },
                              credentials: {})
-    get "/auth/#{account.provider}?model=user"
+    post "/auth/#{account.provider}?model=user"
     follow_redirect!
     follow_redirect!
   end
