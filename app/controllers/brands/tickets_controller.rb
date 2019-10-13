@@ -2,13 +2,16 @@
 
 module Brands
   class TicketsController < ApplicationController
+    include Pagy::Backend
+
     before_action :authenticate!, except: [:index]
     before_action :authorize!, only: %i[refresh invert_status]
     before_action :authorize_reply!, only: [:reply]
 
     def index
-      @open_tickets = brand.tickets.root.open
-      @solved_tickets = brand.tickets.root.solved
+      status = params[:status] || 'open'
+
+      @pagy, @tickets = pagy(brand.tickets.root.where(status: status))
     end
 
     def reply
@@ -16,6 +19,8 @@ module Brands
 
       tweet = client.reply(params[:response_text], ticket.external_uid)
       Ticket.create_from_tweet(tweet, brand)
+
+      redirect_back fallback_location: brand_tickets_path(brand)
     end
 
     def invert_status
@@ -25,10 +30,14 @@ module Brands
       when 'solved'
         ticket.update(status: 'open')
       end
+
+      redirect_back fallback_location: brand_tickets_path(brand)
     end
 
     def refresh
       LoadNewTweetsJob.perform_now(brand.id)
+
+      redirect_back fallback_location: brand_tickets_path(brand)
     end
 
     private

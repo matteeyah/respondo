@@ -10,23 +10,55 @@ RSpec.describe Brands::TicketsController, type: :request do
   let(:brand) { FactoryBot.create(:brand) }
 
   describe 'GET index' do
-    subject(:get_index) { get "/brands/#{brand.id}/tickets" }
+    subject(:get_index) { get "/brands/#{brand.id}/tickets", params: { status: status } }
 
-    before do
-      FactoryBot.create(:ticket, status: :open, brand: brand)
-      FactoryBot.create(:ticket, status: :solved, brand: brand)
+    let!(:open_ticket) { FactoryBot.create(:ticket, status: :open, brand: brand) }
+    let!(:solved_ticket) { FactoryBot.create(:ticket, status: :solved, brand: brand) }
+
+    context 'when status parameter is not specified' do
+      let(:status) { nil }
+
+      it 'renders open tickets' do
+        get_index
+
+        expect(response.body).to include(open_ticket.content)
+      end
     end
 
-    it 'renders open tickets' do
-      get_index
+    context 'when status parameter is open' do
+      let(:status) { 'open' }
 
-      expect(response.body).to include(*brand.tickets.root.open.map(&:content))
+      it 'renders open tickets' do
+        get_index
+
+        expect(response.body).to include(open_ticket.content)
+      end
     end
 
-    it 'renders solved tickets' do
-      get_index
+    context 'when status parameter is solved' do
+      let(:status) { 'solved' }
 
-      expect(response.body).to include(*brand.tickets.root.solved.map(&:content))
+      it 'renders solved tickets' do
+        get_index
+
+        expect(response.body).to include(solved_ticket.content)
+      end
+    end
+
+    context 'when pagination is required' do
+      let!(:open_tickets) { FactoryBot.create_list(:ticket, 20, status: :open, brand: brand) }
+
+      it 'paginates tickets' do
+        get_index
+
+        expect(response.body).to include(open_ticket.content, *open_tickets.first(19).map(&:content))
+      end
+
+      it 'does not show page two tickets' do
+        get_index
+
+        expect(response.body).not_to include(open_tickets.last.content)
+      end
     end
   end
 
@@ -75,6 +107,12 @@ RSpec.describe Brands::TicketsController, type: :request do
 
             expect(Ticket.find_by(external_uid: tweet.id)).to have_attributes(parent: ticket, content: 'does not matter')
           end
+
+          it 'redirects back' do
+            post_reply
+
+            expect(response).to redirect_to(brand_tickets_path(brand))
+          end
         end
 
         context 'when authorized as a user' do
@@ -96,6 +134,12 @@ RSpec.describe Brands::TicketsController, type: :request do
             post_reply
 
             expect(Ticket.find_by(external_uid: tweet.id)).to have_attributes(parent: ticket, content: 'does not matter')
+          end
+
+          it 'redirects back' do
+            post_reply
+
+            expect(response).to redirect_to(brand_tickets_path(brand))
           end
         end
       end
@@ -135,6 +179,12 @@ RSpec.describe Brands::TicketsController, type: :request do
           it 'solves the ticket' do
             expect { post_invert_status }.to change { ticket.reload.status }.from('open').to('solved')
           end
+
+          it 'redirects back' do
+            post_invert_status
+
+            expect(response).to redirect_to(brand_tickets_path(brand))
+          end
         end
 
         context 'when the ticket is solved' do
@@ -144,6 +194,12 @@ RSpec.describe Brands::TicketsController, type: :request do
 
           it 'opens the ticket' do
             expect { post_invert_status }.to change { ticket.reload.status }.from('solved').to('open')
+          end
+
+          it 'redirects back' do
+            post_invert_status
+
+            expect(response).to redirect_to(brand_tickets_path(brand))
           end
         end
       end
@@ -183,6 +239,12 @@ RSpec.describe Brands::TicketsController, type: :request do
           post_refresh
 
           expect(load_new_tweets_job_class).to have_received(:perform_now)
+        end
+
+        it 'redirects back' do
+          post_refresh
+
+          expect(response).to redirect_to(brand_tickets_path(brand))
         end
       end
 

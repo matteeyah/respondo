@@ -2,12 +2,10 @@
 
 RSpec.describe 'brands/tickets/index', type: :view do
   let(:brand) { FactoryBot.create(:brand) }
-  let(:open_ticket) { FactoryBot.create(:ticket, status: :open) }
-  let(:solved_ticket) { FactoryBot.create(:ticket, status: :solved) }
+  let(:ticket) { FactoryBot.create(:ticket, status: :open) }
 
   before do
-    assign(:open_tickets, [open_ticket])
-    assign(:solved_tickets, [solved_ticket])
+    assign(:tickets, [ticket])
 
     without_partial_double_verification do
       allow(view).to receive(:brand).and_return(brand)
@@ -16,14 +14,16 @@ RSpec.describe 'brands/tickets/index', type: :view do
 
     allow(view).to receive(:user_authorized_for?).and_return(false)
     allow(view).to receive(:user_can_reply_to?).and_return(false)
+    allow(view).to receive(:pagy_bootstrap_nav)
   end
 
-  it 'renders open tickets' do
-    expect(render).to include(open_ticket.content)
+  it 'renders tickets' do
+    expect(render).to include(ticket.content)
   end
 
-  it 'renders solved tickets' do
-    expect(render).to include(solved_ticket.content)
+  it 'renders ticket status links' do
+    expect(render).to have_link('Open Tickets', href: brand_tickets_path(brand, status: 'open'))
+      .and have_link('Solved Tickets', href: brand_tickets_path(brand, status: 'solved'))
   end
 
   context 'when user is authorized' do
