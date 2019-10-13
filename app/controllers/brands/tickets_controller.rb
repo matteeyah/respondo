@@ -10,8 +10,8 @@ module Brands
 
     def index
       status = params[:status] || 'open'
-
-      @pagy, @tickets = pagy(brand.tickets.root.where(status: status))
+      @pagy, tickets = pagy(brand.tickets.root.where(status: status))
+      @tickets = tickets.with_descendants_hash(:author)
     end
 
     def reply

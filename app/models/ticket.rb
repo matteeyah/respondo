@@ -25,6 +25,12 @@ class Ticket < ApplicationRecord
       brand.tickets.create(external_uid: tweet.id, provider: 'twitter', content: tweet.text, author: author, parent: parent)
     end
 
+    def with_descendants_hash(included_relations = nil)
+      all.map do |ticket|
+        ticket.self_with_descendants_hash(included_relations)
+      end.inject(&:merge) || {}
+    end
+
     private
 
     def parse_tweet_reply_id(tweet_id)
@@ -34,18 +40,21 @@ class Ticket < ApplicationRecord
     end
   end
 
+  def self_with_descendants_hash(included_relations = nil)
+    hash = {}.extend(Hashie::Extensions::DeepFind)
+    tickets = Ticket.unscoped.includes(included_relations).where(id: self_with_descendants_ids)
+
+    tickets.each do |ticket|
+      # This is used instead of ticket.parent to prevent an additional DB query
+      parent = tickets.find { |parent_ticket| parent_ticket.id == ticket.parent_id }
+      # Either add to the ticket hash key or create a root key for the ticket
+      hash.deep_find(parent)&.merge!(ticket => {}) || hash[ticket] = {}
+    end
+
+    hash
+  end
+
   private
-
-  def cascade_status
-    return unless status_changed?
-
-    ids = self_with_descendants_ids - [id]
-    Ticket.where(id: ids).update_all(status: status) # rubocop:disable Rails/SkipsModelValidations
-  end
-
-  def self_with_descendants_ids
-    ActiveRecord::Base.connection.execute(self_with_descendants_arel.to_sql).map(&:values).flatten
-  end
 
   def self_with_descendants_arel # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     # WITH RECURSIVE "ticket_tree" AS (
@@ -79,5 +88,16 @@ class Ticket < ApplicationRecord
       m.with(:recursive, as_statement)
       m.project(ticket_tree[:id])
     end
+  end
+
+  def self_with_descendants_ids
+    ActiveRecord::Base.connection.execute(self_with_descendants_arel.to_sql).map(&:values).flatten
+  end
+
+  def cascade_status
+    return unless status_changed?
+
+    ids = self_with_descendants_ids - [id]
+    Ticket.where(id: ids).update_all(status: status) # rubocop:disable Rails/SkipsModelValidations
   end
 end

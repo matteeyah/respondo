@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe 'brands/tickets/_tickets', type: :view do
-  subject(:render_tickets_partial) { render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: [ticket] } }
+  subject(:render_tickets_partial) do
+    render partial: 'brands/tickets/tickets', locals: {
+      brand: brand, tickets: brand.tickets.root.with_descendants_hash
+    }
+  end
 
   let(:brand) { FactoryBot.create(:brand) }
   let(:ticket) { FactoryBot.create(:ticket, brand: brand, status: :open) }

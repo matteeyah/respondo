@@ -2,10 +2,10 @@
 
 RSpec.describe 'brands/tickets/index', type: :view do
   let(:brand) { FactoryBot.create(:brand) }
-  let(:ticket) { FactoryBot.create(:ticket, status: :open) }
+  let!(:ticket) { FactoryBot.create(:ticket, status: :open, brand: brand) }
 
   before do
-    assign(:tickets, [ticket])
+    assign(:tickets, brand.tickets.root.with_descendants_hash)
 
     without_partial_double_verification do
       allow(view).to receive(:brand).and_return(brand)
