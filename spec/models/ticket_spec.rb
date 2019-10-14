@@ -125,26 +125,11 @@ RSpec.describe Ticket, type: :model do
       expect(with_descendants_hash).to be_an_instance_of(Hash)
     end
 
-    it 'maintinas the ticket structure' do
+    it 'maintains the ticket structure' do
       expect(with_descendants_hash).to include(
         first_root_ticket => { first_child_ticket => {} },
         second_root_ticket => { second_child_ticket => {} }
       )
-    end
-  end
-
-  describe '#self_with_descendants_hash' do
-    subject(:self_with_descendants_hash) { ticket.self_with_descendants_hash }
-
-    let(:ticket) { FactoryBot.create(:ticket) }
-    let!(:child_ticket) { FactoryBot.create(:ticket, parent: ticket) }
-
-    it 'returns tickets in hash format' do
-      expect(self_with_descendants_hash).to be_an_instance_of(Hash)
-    end
-
-    it 'maintains the ticket structure' do
-      expect(self_with_descendants_hash).to include(ticket => { child_ticket => {} })
     end
   end
 end
