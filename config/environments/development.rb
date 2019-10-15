@@ -82,5 +82,7 @@ Rails.application.configure do
     # that there is a user associated with the account and this triggers bullet
     # unused_eager_loading for some reason.
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Account', association: :user
+    # This doesn't have a Bullet Call Stack when triggering.
+    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'User', association: :brand
   end
 end
