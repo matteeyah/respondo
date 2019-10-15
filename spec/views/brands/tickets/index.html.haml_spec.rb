@@ -2,10 +2,12 @@
 
 RSpec.describe 'brands/tickets/index', type: :view do
   let(:brand) { FactoryBot.create(:brand) }
-  let!(:ticket) { FactoryBot.create(:ticket, status: :open, brand: brand) }
+  let(:ticket) { FactoryBot.create(:ticket, status: :open, brand: brand) }
+  let(:nested_ticket) { FactoryBot.create(:ticket, brand: brand, parent: ticket, status: :solved) }
+  let(:tickets) { { ticket => { nested_ticket => {} } } }
 
   before do
-    assign(:tickets, brand.tickets.root.with_descendants_hash)
+    assign(:tickets, tickets)
 
     without_partial_double_verification do
       allow(view).to receive(:brand).and_return(brand)
@@ -18,7 +20,7 @@ RSpec.describe 'brands/tickets/index', type: :view do
   end
 
   it 'renders tickets' do
-    expect(render).to include(ticket.content)
+    expect(render).to include(ticket.content, nested_ticket.content)
   end
 
   it 'renders ticket status links' do
