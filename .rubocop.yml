@@ -15,6 +15,7 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+    - 'config/environments/*'
 
 Metrics/MethodLength:
   Exclude:

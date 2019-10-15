@@ -81,6 +81,8 @@ group :development do
   gem 'dotenv-rails', '~> 2.7.5'
   # pry
   gem 'pry-rails', '~> 0.3.9'
+  # N+1 monitoring
+  gem 'bullet', '~> 6.0.2'
 end
 
 group :test do
