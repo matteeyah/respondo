@@ -44,6 +44,7 @@ group :development, :test do
   ## Haml linter
   gem 'haml_lint', '~> 0.33.0', require: false
   # Other
+  gem 'bullet', '~> 6.0.2' # N+1 monitoring
   gem 'factory_bot_rails', '~> 5.0.2' # Use factory_bot
   gem 'faker', '~> 2.2.2' # Sample data
   gem 'pry-byebug', '~> 3.7.0' # pry debugging
@@ -59,7 +60,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Other
-  gem 'bullet', '~> 6.0.2' # N+1 monitoring
   gem 'dotenv-rails', '~> 2.7.5' # .env
   gem 'pry-rails', '~> 0.3.9' # pry console
 end
