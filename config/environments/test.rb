@@ -53,9 +53,9 @@ Rails.application.configure do
 
   # Bullet N+1 monitoring
   config.after_initialize do
-    Bullet.enable        = true
+    Bullet.enable = true
     Bullet.bullet_logger = true
-    Bullet.raise         = true
+    Bullet.raise = true
 
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Account', association: :user
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'User', association: :brand

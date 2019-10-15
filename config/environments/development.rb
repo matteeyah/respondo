@@ -71,12 +71,12 @@ Rails.application.configure do
 
   # Bullet N+1 monitoring
   config.after_initialize do
-    Bullet.enable        = true
-    Bullet.alert         = true
+    Bullet.enable = true
+    Bullet.alert = true
     Bullet.bullet_logger = true
-    Bullet.console       = true
-    Bullet.rails_logger  = true
-    Bullet.add_footer    = true
+    Bullet.console = true
+    Bullet.rails_logger = true
+    Bullet.add_footer = true
 
     # This seems to come from AR itself - when saving an account AR verifies
     # that there is a user associated with the account and this triggers bullet
