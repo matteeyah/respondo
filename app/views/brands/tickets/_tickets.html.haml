@@ -1,5 +1,5 @@
 %ul
-  - tickets.each do |ticket|
+  - tickets.each do |ticket, replies|
     %li
       %p #{ticket.author.username}: #{ticket.content}
       - if user_authorized_for?(current_user, brand) || user_can_reply_to?(current_user, ticket.provider)
@@ -10,5 +10,5 @@
       - if user_authorized_for?(current_user, brand)
         = button_to invert_status_action(ticket.status), brand_ticket_invert_status_path(brand, ticket)
 
-      - if ticket.replies.any?
-        = render partial: 'tickets', locals: { brand: brand, tickets: ticket.replies }
+      - if replies.any?
+        = render partial: 'tickets', locals: { brand: brand, tickets: replies }

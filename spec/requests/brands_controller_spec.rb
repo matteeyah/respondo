@@ -26,6 +26,12 @@ RSpec.describe BrandsController, type: :request do
 
         expect(response.body).to include(*(brands + extra_brands.first(18)).map(&:screen_name))
       end
+
+      it 'does not show page two brands' do
+        get_index
+
+        expect(response.body).not_to include(extra_brands.last.screen_name)
+      end
     end
   end
 

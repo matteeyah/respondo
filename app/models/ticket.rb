@@ -25,7 +25,58 @@ class Ticket < ApplicationRecord
       brand.tickets.create(external_uid: tweet.id, provider: 'twitter', content: tweet.text, author: author, parent: parent)
     end
 
+    def with_descendants_hash(included_relations = nil)
+      ids_query = arel_table[:id].in(self_and_descendants_arel(all.select(:id).arel))
+      tickets = Ticket.unscoped.includes(included_relations).where(ids_query)
+      convert_ticket_array_to_hash(tickets)
+    end
+
+    def self_and_descendants_arel(ticket_ids) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+      # WITH RECURSIVE "ticket_tree" AS (
+      #   SELECT "tickets".* FROM "tickets" WHERE "tickets"."id" IN (TICKET_IDS)
+      #   UNION ALL
+      #   SELECT "tickets".* FROM "tickets" INNER JOIN "ticket_tree" ON "tickets"."parent_id" = "ticket_tree"."id"
+      # ) SELECT "ticket_tree"."id" FROM "ticket_tree"
+      # This recursive SQL allows us to get all descendant tickets given a ticket
+      # id. The method itself represents this recursive CTE SQL query in arel.
+      ticket_tree = Arel::Table.new(:ticket_tree)
+      select_manager = Arel::SelectManager.new(ActiveRecord::Base).freeze
+
+      non_recursive_term = select_manager.dup.tap do |m|
+        m.from(arel_table)
+        m.project(arel_table[Arel.star])
+        m.where(arel_table[:id].in(ticket_ids))
+      end
+
+      recursive_term = select_manager.dup.tap do |m|
+        m.from(arel_table)
+        m.join(ticket_tree)
+        m.on(arel_table[:parent_id].eq(ticket_tree[:id]))
+        m.project(arel_table[Arel.star])
+      end
+
+      union = non_recursive_term.union(:all, recursive_term)
+      as_statement = Arel::Nodes::As.new(ticket_tree, union)
+
+      select_manager.dup.tap do |m|
+        m.from(ticket_tree)
+        m.with(:recursive, as_statement)
+        m.project(ticket_tree[:id])
+      end
+    end
+
     private
+
+    def convert_ticket_array_to_hash(tickets)
+      {}.extend(Hashie::Extensions::DeepFind).tap do |hash|
+        tickets.each do |ticket|
+          # This is used instead of ticket.parent to prevent an additional DB query
+          parent = tickets.find { |parent_ticket| parent_ticket.id == ticket.parent_id }
+          # Either add to the ticket hash key or create a root key for the ticket
+          (hash.deep_find(parent) || hash).merge!(ticket => {})
+        end
+      end
+    end
 
     def parse_tweet_reply_id(tweet_id)
       # `Twitter::NullObject#presence` returned another `Twitter::NullObject`
@@ -36,9 +87,14 @@ class Ticket < ApplicationRecord
 
   private
 
+  def descendants_query
+    self.class.arel_table[:id].in(self.class.self_and_descendants_arel(id))
+      .and(self.class.arel_table[:id].not_eq(id))
+  end
+
   def cascade_status
     return unless status_changed?
 
-    replies.update(status: status)
+    Ticket.where(descendants_query).update_all(status: status) # rubocop:disable Rails/SkipsModelValidations
   end
 end

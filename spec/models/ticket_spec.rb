@@ -112,4 +112,24 @@ RSpec.describe Ticket, type: :model do
       end
     end
   end
+
+  describe '.with_descendants_hash' do
+    subject(:with_descendants_hash) { described_class.root.with_descendants_hash }
+
+    let(:first_root_ticket) { FactoryBot.create(:ticket) }
+    let(:second_root_ticket) { FactoryBot.create(:ticket) }
+    let!(:first_child_ticket) { FactoryBot.create(:ticket, parent: first_root_ticket) }
+    let!(:second_child_ticket) { FactoryBot.create(:ticket, parent: second_root_ticket) }
+
+    it 'returns tickets in hash format' do
+      expect(with_descendants_hash).to be_an_instance_of(Hash)
+    end
+
+    it 'maintains the ticket structure' do
+      expect(with_descendants_hash).to include(
+        first_root_ticket => { first_child_ticket => {} },
+        second_root_ticket => { second_child_ticket => {} }
+      )
+    end
+  end
 end

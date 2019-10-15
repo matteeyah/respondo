@@ -3,14 +3,10 @@
 
 %span Tweets
 
-%ul.nav.nav-tabs
-  %li.nav-item
-    %a.nav-link{ 'data-toggle': 'tab', href: '#open-tickets' } Open
-  %li.nav-item
-    %a.nav-link{ 'data-toggle': 'tab', href: '#solved-tickets' } Solved
+%ul
+  %li= link_to 'Open Tickets', brand_tickets_path(brand, status: 'open')
+  %li= link_to 'Solved Tickets', brand_tickets_path(brand, status: 'solved')
 
-.tab-content
-  .tab-pane#open-tickets{ role: 'tabpanel' }
-    = render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: @open_tickets }
-  .tab-pane#solved-tickets{ role: 'tabpanel' }
-    = render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: @solved_tickets }
+= render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: @tickets }
+
+!= pagy_bootstrap_nav(@pagy)
