@@ -9,6 +9,8 @@ module Users
       return unless account.destroy
 
       flash[:notice] = 'Successfully deleted the account.'
+
+      redirect_back fallback_location: edit_user_path(current_user)
     end
 
     private
