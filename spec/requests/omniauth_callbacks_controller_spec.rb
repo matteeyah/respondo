@@ -32,16 +32,16 @@ RSpec.describe OmniauthCallbacksController, type: :request do
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 
-          it 'redirects to root' do
-            post_authenticate
-
-            expect(controller).to redirect_to(root_path)
-          end
-
           it 'sets the flash' do
             post_authenticate
 
             expect(controller.flash[:notice]).to eq('Successfully authenticated user.')
+          end
+
+          it 'redirects to root' do
+            post_authenticate
+
+            expect(controller).to redirect_to(root_path)
           end
 
           context 'when the account does not exist' do
@@ -163,16 +163,16 @@ RSpec.describe OmniauthCallbacksController, type: :request do
           sign_in(user)
         end
 
-        it 'redirects to root' do
-          post_authenticate
-
-          expect(controller).to redirect_to(root_path)
-        end
-
         it 'sets the flash' do
           post_authenticate
 
           expect(controller.flash[:notice]).to eq('Successfully authenticated brand.')
+        end
+
+        it 'redirects to root' do
+          post_authenticate
+
+          expect(controller).to redirect_to(root_path)
         end
 
         context 'when brand does not exist' do

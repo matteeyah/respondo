@@ -108,7 +108,7 @@ RSpec.describe Brands::TicketsController, type: :request do
             expect(Ticket.find_by(external_uid: tweet.id)).to have_attributes(parent: ticket, content: 'does not matter')
           end
 
-          it 'redirects back' do
+          it 'redirects to brand tickets path' do
             post_reply
 
             expect(response).to redirect_to(brand_tickets_path(brand))
@@ -136,7 +136,7 @@ RSpec.describe Brands::TicketsController, type: :request do
             expect(Ticket.find_by(external_uid: tweet.id)).to have_attributes(parent: ticket, content: 'does not matter')
           end
 
-          it 'redirects back' do
+          it 'redirects to brand tickets path' do
             post_reply
 
             expect(response).to redirect_to(brand_tickets_path(brand))
@@ -180,7 +180,7 @@ RSpec.describe Brands::TicketsController, type: :request do
             expect { post_invert_status }.to change { ticket.reload.status }.from('open').to('solved')
           end
 
-          it 'redirects back' do
+          it 'redirects to brand tickets path' do
             post_invert_status
 
             expect(response).to redirect_to(brand_tickets_path(brand))
@@ -196,7 +196,7 @@ RSpec.describe Brands::TicketsController, type: :request do
             expect { post_invert_status }.to change { ticket.reload.status }.from('solved').to('open')
           end
 
-          it 'redirects back' do
+          it 'redirects to brand tickets path' do
             post_invert_status
 
             expect(response).to redirect_to(brand_tickets_path(brand))
@@ -241,7 +241,7 @@ RSpec.describe Brands::TicketsController, type: :request do
           expect(load_new_tweets_job_class).to have_received(:perform_now)
         end
 
-        it 'redirects back' do
+        it 'redirects to brand tickets path' do
           post_refresh
 
           expect(response).to redirect_to(brand_tickets_path(brand))

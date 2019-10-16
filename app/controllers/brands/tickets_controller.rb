@@ -20,7 +20,7 @@ module Brands
       tweet = client.reply(params[:response_text], ticket.external_uid)
       Ticket.create_from_tweet(tweet, brand)
 
-      redirect_back fallback_location: brand_tickets_path(brand)
+      redirect_to brand_tickets_path(brand)
     end
 
     def invert_status
@@ -31,13 +31,13 @@ module Brands
         ticket.update(status: 'open')
       end
 
-      redirect_back fallback_location: brand_tickets_path(brand)
+      redirect_to brand_tickets_path(brand)
     end
 
     def refresh
       LoadNewTweetsJob.perform_now(brand.id)
 
-      redirect_back fallback_location: brand_tickets_path(brand)
+      redirect_to brand_tickets_path(brand)
     end
 
     private

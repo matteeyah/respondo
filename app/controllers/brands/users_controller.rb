@@ -8,13 +8,13 @@ module Brands
     def create
       brand.users << user
 
-      redirect_back fallback_location: brand_users_path(brand)
+      redirect_to brand_users_path(brand)
     end
 
     def destroy
       brand.users.delete(user)
 
-      redirect_back fallback_location: brand_users_path(brand)
+      redirect_to brand_users_path(brand)
     end
 
     private

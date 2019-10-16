@@ -38,7 +38,7 @@ RSpec.describe Users::AccountsController, type: :request do
           expect(controller.flash[:notice]).to eq('Successfully deleted the account.')
         end
 
-        it 'redirects back' do
+        it 'redirects to edit user path' do
           delete_destroy
 
           expect(response).to redirect_to(edit_user_path(user))
