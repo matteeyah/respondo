@@ -30,10 +30,10 @@ RSpec.describe Brands::UsersController, type: :request do
           expect { post_create }.to change { user.reload.brand_id }.from(nil).to(brand.id)
         end
 
-        it 'redirects to brand users path' do
+        it 'redirects to edit brand path' do
           post_create
 
-          expect(response).to redirect_to(brand_users_path(brand))
+          expect(response).to redirect_to(edit_brand_path(brand))
         end
       end
 
@@ -72,10 +72,10 @@ RSpec.describe Brands::UsersController, type: :request do
           expect { delete_destroy }.to change { user.reload.brand_id }.from(brand.id).to(nil)
         end
 
-        it 'redirects to brand users path' do
+        it 'redirects to edit brand path' do
           delete_destroy
 
-          expect(response).to redirect_to(brand_users_path(brand))
+          expect(response).to redirect_to(edit_brand_path(brand))
         end
       end
 
