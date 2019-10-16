@@ -14,12 +14,12 @@ RSpec.describe SessionsController, type: :request do
         sign_in(FactoryBot.create(:user, :with_account))
       end
 
-      it 'redirects back to root' do
-        expect(delete_destroy).to redirect_to(root_path)
-      end
-
       it 'logs the user out' do
         expect { delete_destroy }.to change { controller.send(:user_signed_in?) }.from(true).to(false)
+      end
+
+      it 'redirects to root path' do
+        expect(delete_destroy).to redirect_to(root_path)
       end
     end
 

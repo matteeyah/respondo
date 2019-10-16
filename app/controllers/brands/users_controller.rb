@@ -7,10 +7,14 @@ module Brands
 
     def create
       brand.users << user
+
+      redirect_to edit_brand_path(brand)
     end
 
     def destroy
       brand.users.delete(user)
+
+      redirect_to edit_brand_path(brand)
     end
 
     private
