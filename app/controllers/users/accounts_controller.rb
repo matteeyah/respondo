@@ -8,9 +8,8 @@ module Users
     def destroy
       return unless account.destroy
 
-      flash[:notice] = 'Successfully deleted the account.'
-
-      redirect_to edit_user_path(user)
+      redirect_to edit_user_path(user),
+                  flash: { success: 'User account was successfully deleted.' }
     end
 
     private

@@ -20,7 +20,8 @@ module Brands
       tweet = client.reply(params[:response_text], ticket.external_uid)
       Ticket.create_from_tweet(tweet, brand)
 
-      redirect_to brand_tickets_path(brand)
+      redirect_to brand_tickets_path(brand),
+                  flash: { success: 'Response has been successfully submitted.' }
     end
 
     def invert_status
@@ -31,13 +32,15 @@ module Brands
         ticket.update(status: 'open')
       end
 
-      redirect_to brand_tickets_path(brand)
+      redirect_to brand_tickets_path(brand),
+                  flash: { success: 'Ticket status successfully changed.' }
     end
 
     def refresh
       LoadNewTweetsJob.perform_now(brand.id)
 
-      redirect_to brand_tickets_path(brand)
+      redirect_to brand_tickets_path(brand),
+                  flash: { success: 'Tickets refresh successfully initiated.' }
     end
 
     private
@@ -53,7 +56,7 @@ module Brands
     def authorize_reply!
       return if (current_brand == brand) || current_user&.client_for_provider(ticket.provider)
 
-      redirect_back fallback_location: root_path, alert: 'You are not allowed to reply to the ticket.'
+      redirect_back fallback_location: root_path, flash: { warning: 'You are not allowed to reply to the ticket.' }
     end
 
     def ticket

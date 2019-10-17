@@ -36,7 +36,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
             it 'sets the flash' do
               post_authenticate
 
-              expect(controller.flash[:notice]).to eq('Successfully authenticated user.')
+              expect(controller.flash[:success]).to eq('User was successfully authenticated.')
             end
 
             it 'redirects to root' do
@@ -124,7 +124,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
                 it 'sets the flash' do
                   post_authenticate
 
-                  expect(controller.flash[:notice]).to start_with('Could not authenticate user.')
+                  expect(controller.flash[:danger]).to start_with('Could not authenticate user.')
                 end
               end
             end
@@ -179,7 +179,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
         it 'sets the flash' do
           post_authenticate
 
-          expect(controller.flash[:notice]).to eq('Successfully authenticated brand.')
+          expect(controller.flash[:success]).to eq('Brand was successfully authenticated.')
         end
 
         it 'redirects to root' do
@@ -218,10 +218,10 @@ RSpec.describe OmniauthCallbacksController, type: :request do
           expect(controller).to redirect_to(root_path)
         end
 
-        it 'does not set the flash' do
+        it 'sets the flash' do
           post_authenticate
 
-          expect(controller.flash[:notice]).to be_nil
+          expect(controller.flash[:warning]).to eq('User is not logged in.')
         end
       end
     end

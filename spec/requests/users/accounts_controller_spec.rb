@@ -35,7 +35,7 @@ RSpec.describe Users::AccountsController, type: :request do
         it 'sets the flash' do
           delete_destroy
 
-          expect(controller.flash[:notice]).to eq('Successfully deleted the account.')
+          expect(controller.flash[:success]).to eq('User account was successfully deleted.')
         end
 
         it 'redirects to edit user path' do

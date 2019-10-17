@@ -5,7 +5,7 @@ RSpec.shared_examples 'unauthorized user examples' do |alert_message|
     subject
     follow_redirect!
 
-    expect(controller.flash[:alert]).to eq(alert_message)
+    expect(controller.flash[:warning]).to eq(alert_message)
   end
 
   it 'redirects the user back (to root)' do
