@@ -32,51 +32,53 @@ RSpec.describe OmniauthCallbacksController, type: :request do
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 
-          it 'sets the flash' do
-            post_authenticate
-
-            expect(controller.flash[:notice]).to eq('Successfully authenticated user.')
-          end
-
-          it 'redirects to root' do
-            post_authenticate
-
-            expect(controller).to redirect_to(root_path)
-          end
-
-          context 'when the account does not exist' do
-            it 'creates a new account' do
-              expect { post_authenticate }.to change(Account, :count).from(0).to(1)
-            end
-
-            it 'creates a new user' do
-              expect { post_authenticate }.to change(User, :count).from(0).to(1)
-            end
-
-            it 'logs the user in' do
+          context 'when the user is logged out' do
+            it 'sets the flash' do
               post_authenticate
 
-              expect(controller.send(:user_signed_in?)).to eq(true)
-            end
-          end
-
-          context 'when the account exists' do
-            before do
-              FactoryBot.create(:account, external_uid: auth_hash.uid, provider: provider)
+              expect(controller.flash[:notice]).to eq('Successfully authenticated user.')
             end
 
-            it 'does not create a new account' do
-              expect { post_authenticate }.not_to change(Account, :count).from(1)
-            end
-
-            it 'does not create a new user' do
-              expect { post_authenticate }.not_to change(User, :count).from(1)
-            end
-
-            it 'logs the user in' do
+            it 'redirects to root' do
               post_authenticate
 
-              expect(controller.send(:user_signed_in?)).to eq(true)
+              expect(controller).to redirect_to(root_path)
+            end
+
+            context 'when the account does not exist' do
+              it 'creates a new account' do
+                expect { post_authenticate }.to change(Account, :count).from(0).to(1)
+              end
+
+              it 'creates a new user' do
+                expect { post_authenticate }.to change(User, :count).from(0).to(1)
+              end
+
+              it 'logs the user in' do
+                post_authenticate
+
+                expect(controller.send(:user_signed_in?)).to eq(true)
+              end
+            end
+
+            context 'when the account exists' do
+              before do
+                FactoryBot.create(:account, external_uid: auth_hash.uid, provider: provider)
+              end
+
+              it 'does not create a new account' do
+                expect { post_authenticate }.not_to change(Account, :count).from(1)
+              end
+
+              it 'does not create a new user' do
+                expect { post_authenticate }.not_to change(User, :count).from(1)
+              end
+
+              it 'logs the user in' do
+                post_authenticate
+
+                expect(controller.send(:user_signed_in?)).to eq(true)
+              end
             end
           end
 
@@ -92,12 +94,9 @@ RSpec.describe OmniauthCallbacksController, type: :request do
             before do
               sign_in(user)
               # This is required since `sign_in` mocks the OAuth response for
-              # the current example but we want to test it instead.
+              # the current example but we want to test its behavior instead.
               OmniAuth.config.add_mock(provider.to_sym, auth_hash)
             end
-
-            # This is temporary until this spec is simplified
-            # rubocop:disable RSpec/NestedGroups
 
             context 'when account does not exist' do
               it 'creates a new account' do
@@ -111,6 +110,22 @@ RSpec.describe OmniauthCallbacksController, type: :request do
               it 'associates the account with the current user' do
                 expect { post_authenticate }.to change { user.reload.public_send("#{provider}_account") }
                   .from(nil).to(an_instance_of(Account))
+              end
+
+              context 'when user already has account for same provider' do
+                before do
+                  FactoryBot.create(:account, provider: provider, user: user)
+                end
+
+                it 'does not create a new account' do
+                  expect { post_authenticate }.not_to change(Account, :count).from(2)
+                end
+
+                it 'sets the flash' do
+                  post_authenticate
+
+                  expect(controller.flash[:notice]).to start_with('Could not authenticate user.')
+                end
               end
             end
 
@@ -145,8 +160,6 @@ RSpec.describe OmniauthCallbacksController, type: :request do
                 end
               end
             end
-
-            # rubocop:enable RSpec/NestedGroups
           end
         end
       end

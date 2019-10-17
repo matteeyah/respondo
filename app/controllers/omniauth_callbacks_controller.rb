@@ -20,9 +20,12 @@ class OmniauthCallbacksController < ApplicationController
   def authenticate_user(auth_hash)
     account = Account.from_omniauth(auth_hash, current_user)
 
-    flash[:notice] = 'Successfully authenticated user.'
-
-    sign_in(account.user) unless user_signed_in?
+    if account.persisted?
+      flash[:notice] = 'Successfully authenticated user.'
+      sign_in(account.user) unless user_signed_in?
+    else
+      flash[:notice] = "Could not authenticate user.\n#{account.errors.full_messages.join("\n")}"
+    end
   end
 
   def authenticate_brand(auth_hash)
