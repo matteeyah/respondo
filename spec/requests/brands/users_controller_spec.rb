@@ -89,6 +89,16 @@ RSpec.describe Brands::UsersController, type: :request do
 
           expect(response).to redirect_to(edit_brand_path(brand))
         end
+
+        context 'when user is removing self from brand' do
+          let(:user) { browsing_user }
+
+          it 'redirects to root path' do
+            delete_destroy
+
+            expect(response).to redirect_to(root_path)
+          end
+        end
       end
 
       context 'when user is not authorized' do
