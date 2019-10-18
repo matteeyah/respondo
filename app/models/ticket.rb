@@ -19,7 +19,7 @@ class Ticket < ApplicationRecord
   has_many :replies, class_name: 'Ticket', foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
 
   class << self
-    def create_from_tweet(tweet, brand)
+    def from_tweet(tweet, brand)
       author = Author.from_twitter_user(tweet.user)
       parent = find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id))
       brand.tickets.create(external_uid: tweet.id, provider: 'twitter', content: tweet.text, author: author, parent: parent)

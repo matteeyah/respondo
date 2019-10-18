@@ -16,7 +16,7 @@ RSpec.describe LoadNewTweetsJob, type: :job do
     it 'creates tickets' do
       perform_now
 
-      mentions.each { |mention| expect(ticket_class).to have_received(:create_from_tweet).with(mention, brand).once }
+      mentions.each { |mention| expect(ticket_class).to have_received(:from_tweet).with(mention, brand).once }
     end
   end
 end

@@ -66,8 +66,8 @@ RSpec.describe Ticket, type: :model do
     end
   end
 
-  describe '.create_from_tweet' do
-    subject(:create_from_tweet) { described_class.create_from_tweet(tweet, brand) }
+  describe '.from_tweet' do
+    subject(:from_tweet) { described_class.from_tweet(tweet, brand) }
 
     let(:brand) { FactoryBot.create(:brand) }
     let(:author) { FactoryBot.create(:author) }
@@ -86,15 +86,15 @@ RSpec.describe Ticket, type: :model do
 
     context 'when parent does not exist' do
       it 'creates a new ticket' do
-        expect { create_from_tweet }.to change(described_class, :count).from(0).to(1)
+        expect { from_tweet }.to change(described_class, :count).from(0).to(1)
       end
 
       it 'returns a new ticket' do
-        expect(create_from_tweet).to be_instance_of(described_class)
+        expect(from_tweet).to be_instance_of(described_class)
       end
 
       it 'builds a ticket with correct information' do
-        expect(create_from_tweet).to have_attributes(
+        expect(from_tweet).to have_attributes(
           external_uid: tweet.id, provider: 'twitter',
           content: tweet.text,
           brand: brand, parent: nil, author: author
@@ -102,7 +102,7 @@ RSpec.describe Ticket, type: :model do
       end
 
       it 'persists the new ticket' do
-        expect(create_from_tweet).to be_persisted
+        expect(from_tweet).to be_persisted
       end
     end
 
@@ -110,15 +110,15 @@ RSpec.describe Ticket, type: :model do
       let!(:parent) { FactoryBot.create(:ticket, external_uid: tweet.in_reply_to_tweet_id) }
 
       it 'creates a new ticket' do
-        expect { create_from_tweet }.to change(described_class, :count).from(1).to(2)
+        expect { from_tweet }.to change(described_class, :count).from(1).to(2)
       end
 
       it 'returns a new ticket' do
-        expect(create_from_tweet).to be_instance_of(described_class)
+        expect(from_tweet).to be_instance_of(described_class)
       end
 
       it 'builds a ticket with correct information' do
-        expect(create_from_tweet).to have_attributes(
+        expect(from_tweet).to have_attributes(
           external_uid: tweet.id, provider: 'twitter',
           content: tweet.text,
           brand: brand, parent: parent, author: author
@@ -126,7 +126,7 @@ RSpec.describe Ticket, type: :model do
       end
 
       it 'persists the new ticket' do
-        expect(create_from_tweet).to be_persisted
+        expect(from_tweet).to be_persisted
       end
     end
   end
