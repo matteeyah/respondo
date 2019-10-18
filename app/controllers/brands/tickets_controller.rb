@@ -60,8 +60,7 @@ module Brands
     end
 
     def ticket
-      @ticket ||= Ticket.find(params[:ticket_id] || params[:id])
+      @ticket ||= brand.tickets.find(params[:ticket_id] || params[:id])
     end
-    helper_method :ticket
   end
 end

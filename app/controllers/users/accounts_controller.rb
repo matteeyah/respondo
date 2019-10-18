@@ -6,7 +6,7 @@ module Users
     before_action :authorize!
 
     def destroy
-      if account.user.accounts.count == 1
+      if user.accounts.count == 1
         flash[:danger] = 'You can not remove your last account.'
       else
         account.destroy
@@ -19,8 +19,7 @@ module Users
     private
 
     def account
-      @account ||= Account.find(params[:account_id] || params[:id])
+      @account ||= user.accounts.find(params[:account_id] || params[:id])
     end
-    helper_method :account
   end
 end

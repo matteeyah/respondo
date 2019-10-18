@@ -169,7 +169,7 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'POST invert_status' do
     subject(:post_invert_status) { post "/brands/#{brand.id}/tickets/#{ticket.id}/invert_status" }
 
-    let(:ticket) { FactoryBot.create(:ticket) }
+    let(:ticket) { FactoryBot.create(:ticket, brand: brand) }
 
     context 'when user is signed in' do
       let(:user) { FactoryBot.create(:user, :with_account) }
