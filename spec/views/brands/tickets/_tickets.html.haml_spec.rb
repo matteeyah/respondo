@@ -21,16 +21,16 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
     allow(view).to receive(:user_can_reply_to?).and_return(false)
   end
 
-  it 'displays the tickets' do
-    render_tickets_partial
-
-    expect(rendered).to have_text("#{ticket.author.username}: #{ticket.content}")
-      .and have_text("#{nested_ticket.author.username}: #{nested_ticket.content}")
-  end
-
   context 'when user is authorized' do
     before do
       allow(view).to receive(:user_authorized_for?).and_return(true)
+    end
+
+    it 'displays the tickets' do
+      render_tickets_partial
+
+      expect(rendered).to have_text("#{ticket.author.username}: #{ticket.content}")
+        .and have_text("#{nested_ticket.author.username}: #{nested_ticket.content}")
     end
 
     it 'displays response forms' do
@@ -50,6 +50,13 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
     context 'when user does not have account' do
       before do
         allow(view).to receive(:user_can_reply_to?).and_return(false)
+      end
+
+      it 'displays the tickets' do
+        render_tickets_partial
+
+        expect(rendered).to have_text("#{ticket.author.username}: #{ticket.content}")
+          .and have_text("#{nested_ticket.author.username}: #{nested_ticket.content}")
       end
 
       it 'does not display response textbox' do
@@ -80,6 +87,13 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
     context 'when user has account' do
       before do
         allow(view).to receive(:user_can_reply_to?).and_return(true)
+      end
+
+      it 'displays the tickets' do
+        render_tickets_partial
+
+        expect(rendered).to have_text("#{ticket.author.username}: #{ticket.content}")
+          .and have_text("#{nested_ticket.author.username}: #{nested_ticket.content}")
       end
 
       it 'displays response forms' do

@@ -18,7 +18,7 @@ module Brands
       return unless client
 
       tweet = client.reply(params[:response_text], ticket.external_uid)
-      Ticket.create_from_tweet(tweet, brand)
+      Ticket.from_tweet(tweet, brand)
 
       redirect_to brand_tickets_path(brand),
                   flash: { success: 'Response has been successfully submitted.' }
@@ -60,8 +60,7 @@ module Brands
     end
 
     def ticket
-      @ticket ||= Ticket.find(params[:ticket_id] || params[:id])
+      @ticket ||= brand.tickets.find(params[:ticket_id] || params[:id])
     end
-    helper_method :ticket
   end
 end
