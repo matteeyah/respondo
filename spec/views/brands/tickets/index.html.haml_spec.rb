@@ -19,18 +19,18 @@ RSpec.describe 'brands/tickets/index', type: :view do
     allow(view).to receive(:pagy_bootstrap_nav)
   end
 
-  it 'renders tickets' do
-    expect(render).to include(ticket.content, nested_ticket.content)
-  end
-
-  it 'renders ticket status links' do
-    expect(render).to have_link('Open Tickets', href: brand_tickets_path(brand, status: 'open'))
-      .and have_link('Solved Tickets', href: brand_tickets_path(brand, status: 'solved'))
-  end
-
   context 'when user is authorized' do
     before do
       allow(view).to receive(:user_authorized_for?).and_return(true)
+    end
+
+    it 'renders tickets' do
+      expect(render).to include(ticket.content, nested_ticket.content)
+    end
+
+    it 'renders ticket status links' do
+      expect(render).to have_link('Open Tickets', href: brand_tickets_path(brand, status: 'open'))
+        .and have_link('Solved Tickets', href: brand_tickets_path(brand, status: 'solved'))
     end
 
     it 'renders the refresh button' do
@@ -39,6 +39,15 @@ RSpec.describe 'brands/tickets/index', type: :view do
   end
 
   context 'when user is not authorized' do
+    it 'renders tickets' do
+      expect(render).to include(ticket.content, nested_ticket.content)
+    end
+
+    it 'renders ticket status links' do
+      expect(render).to have_link('Open Tickets', href: brand_tickets_path(brand, status: 'open'))
+        .and have_link('Solved Tickets', href: brand_tickets_path(brand, status: 'solved'))
+    end
+
     it 'does not render the refresh button' do
       expect(render).not_to have_button('Refresh Tickets')
     end

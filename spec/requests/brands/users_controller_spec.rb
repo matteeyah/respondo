@@ -74,24 +74,36 @@ RSpec.describe Brands::UsersController, type: :request do
           brand.users << browsing_user
         end
 
-        it 'removes the user from the brand' do
-          expect { delete_destroy }.to change { user.reload.brand_id }.from(brand.id).to(nil)
-        end
+        context 'when removing other user from brand' do
+          it 'removes the user from the brand' do
+            expect { delete_destroy }.to change { user.reload.brand_id }.from(brand.id).to(nil)
+          end
 
-        it 'sets the flash' do
-          delete_destroy
+          it 'sets the flash' do
+            delete_destroy
 
-          expect(controller.flash[:success]).to eq('User was successfully removed from the brand.')
-        end
+            expect(controller.flash[:success]).to eq('User was successfully removed from the brand.')
+          end
 
-        it 'redirects to edit brand path' do
-          delete_destroy
+          it 'redirects to edit brand path' do
+            delete_destroy
 
-          expect(response).to redirect_to(edit_brand_path(brand))
+            expect(response).to redirect_to(edit_brand_path(brand))
+          end
         end
 
         context 'when user is removing self from brand' do
           let(:user) { browsing_user }
+
+          it 'removes the user from the brand' do
+            expect { delete_destroy }.to change { user.reload.brand_id }.from(brand.id).to(nil)
+          end
+
+          it 'sets the flash' do
+            delete_destroy
+
+            expect(controller.flash[:success]).to eq('User was successfully removed from the brand.')
+          end
 
           it 'redirects to root path' do
             delete_destroy

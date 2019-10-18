@@ -10,27 +10,29 @@ RSpec.describe BrandsController, type: :request do
   describe 'GET index' do
     subject(:get_index) { get '/brands' }
 
-    let!(:brands) { FactoryBot.create_list(:brand, 2) }
+    context 'when pagination is not required' do
+      let!(:brands) { FactoryBot.create_list(:brand, 2) }
 
-    it 'shows the first page of brands' do
-      get_index
+      it 'shows the first page of brands' do
+        get_index
 
-      expect(response.body).to include(*brands.map(&:screen_name))
+        expect(response.body).to include(*brands.map(&:screen_name))
+      end
     end
 
     context 'when pagination is required' do
-      let!(:extra_brands) { FactoryBot.create_list(:brand, 19) }
+      let!(:brands) { FactoryBot.create_list(:brand, 21) }
 
       it 'paginates brands' do
         get_index
 
-        expect(response.body).to include(*(brands + extra_brands.first(18)).map(&:screen_name))
+        expect(response.body).to include(*brands.first(20).map(&:screen_name))
       end
 
       it 'does not show page two brands' do
         get_index
 
-        expect(response.body).not_to include(extra_brands.last.screen_name)
+        expect(response.body).not_to include(brands.last.screen_name)
       end
     end
   end

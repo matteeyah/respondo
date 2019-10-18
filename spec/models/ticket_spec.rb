@@ -84,31 +84,49 @@ RSpec.describe Ticket, type: :model do
       allow(Author).to receive(:from_twitter_user).with(tweet.user).and_return(author)
     end
 
-    it 'creates a new ticket' do
-      expect { create_from_tweet }.to change(described_class, :count).from(0).to(1)
-    end
+    context 'when parent does not exist' do
+      it 'creates a new ticket' do
+        expect { create_from_tweet }.to change(described_class, :count).from(0).to(1)
+      end
 
-    it 'returns a new ticket' do
-      expect(create_from_tweet).to be_instance_of(described_class)
-    end
+      it 'returns a new ticket' do
+        expect(create_from_tweet).to be_instance_of(described_class)
+      end
 
-    it 'builds a brand ticket with correct information' do
-      expect(create_from_tweet).to have_attributes(
-        external_uid: tweet.id, provider: 'twitter',
-        content: tweet.text,
-        brand: brand, parent: nil, author: author
-      )
-    end
+      it 'builds a ticket with correct information' do
+        expect(create_from_tweet).to have_attributes(
+          external_uid: tweet.id, provider: 'twitter',
+          content: tweet.text,
+          brand: brand, parent: nil, author: author
+        )
+      end
 
-    it 'persists the new ticket' do
-      expect(create_from_tweet).to be_persisted
+      it 'persists the new ticket' do
+        expect(create_from_tweet).to be_persisted
+      end
     end
 
     context 'when parent exists' do
       let!(:parent) { FactoryBot.create(:ticket, external_uid: tweet.in_reply_to_tweet_id) }
 
-      it 'sets the ticket parent' do
-        expect(create_from_tweet.parent).to eq(parent)
+      it 'creates a new ticket' do
+        expect { create_from_tweet }.to change(described_class, :count).from(1).to(2)
+      end
+
+      it 'returns a new ticket' do
+        expect(create_from_tweet).to be_instance_of(described_class)
+      end
+
+      it 'builds a ticket with correct information' do
+        expect(create_from_tweet).to have_attributes(
+          external_uid: tweet.id, provider: 'twitter',
+          content: tweet.text,
+          brand: brand, parent: parent, author: author
+        )
+      end
+
+      it 'persists the new ticket' do
+        expect(create_from_tweet).to be_persisted
       end
     end
   end

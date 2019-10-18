@@ -12,46 +12,48 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'GET index' do
     subject(:get_index) { get "/brands/#{brand.id}/tickets", params: { status: status } }
 
-    let!(:open_ticket) { FactoryBot.create(:ticket, status: :open, brand: brand) }
-    let!(:solved_ticket) { FactoryBot.create(:ticket, status: :solved, brand: brand) }
+    context 'when pagination is not required' do
+      let!(:open_ticket) { FactoryBot.create(:ticket, status: :open, brand: brand) }
+      let!(:solved_ticket) { FactoryBot.create(:ticket, status: :solved, brand: brand) }
 
-    context 'when status parameter is not specified' do
-      let(:status) { nil }
+      context 'when status parameter is not specified' do
+        let(:status) { nil }
 
-      it 'renders open tickets' do
-        get_index
+        it 'renders open tickets' do
+          get_index
 
-        expect(response.body).to include(open_ticket.content)
+          expect(response.body).to include(open_ticket.content)
+        end
       end
-    end
 
-    context 'when status parameter is open' do
-      let(:status) { 'open' }
+      context 'when status parameter is open' do
+        let(:status) { 'open' }
 
-      it 'renders open tickets' do
-        get_index
+        it 'renders open tickets' do
+          get_index
 
-        expect(response.body).to include(open_ticket.content)
+          expect(response.body).to include(open_ticket.content)
+        end
       end
-    end
 
-    context 'when status parameter is solved' do
-      let(:status) { 'solved' }
+      context 'when status parameter is solved' do
+        let(:status) { 'solved' }
 
-      it 'renders solved tickets' do
-        get_index
+        it 'renders solved tickets' do
+          get_index
 
-        expect(response.body).to include(solved_ticket.content)
+          expect(response.body).to include(solved_ticket.content)
+        end
       end
     end
 
     context 'when pagination is required' do
-      let!(:open_tickets) { FactoryBot.create_list(:ticket, 20, status: :open, brand: brand) }
+      let!(:open_tickets) { FactoryBot.create_list(:ticket, 21, status: :open, brand: brand) }
 
       it 'paginates tickets' do
         get_index
 
-        expect(response.body).to include(open_ticket.content, *open_tickets.first(19).map(&:content))
+        expect(response.body).to include(*open_tickets.first(20).map(&:content))
       end
 
       it 'does not show page two tickets' do

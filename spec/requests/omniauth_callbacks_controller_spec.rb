@@ -33,18 +33,6 @@ RSpec.describe OmniauthCallbacksController, type: :request do
           let(:provider) { provider_param }
 
           context 'when the user is logged out' do
-            it 'sets the flash' do
-              post_authenticate
-
-              expect(controller.flash[:success]).to eq('User was successfully authenticated.')
-            end
-
-            it 'redirects to root' do
-              post_authenticate
-
-              expect(controller).to redirect_to(root_path)
-            end
-
             context 'when the account does not exist' do
               it 'creates a new account' do
                 expect { post_authenticate }.to change(Account, :count).from(0).to(1)
@@ -58,6 +46,18 @@ RSpec.describe OmniauthCallbacksController, type: :request do
                 post_authenticate
 
                 expect(controller.send(:user_signed_in?)).to eq(true)
+              end
+
+              it 'sets the flash' do
+                post_authenticate
+
+                expect(controller.flash[:success]).to eq('User was successfully authenticated.')
+              end
+
+              it 'redirects to root' do
+                post_authenticate
+
+                expect(controller).to redirect_to(root_path)
               end
             end
 
@@ -79,6 +79,18 @@ RSpec.describe OmniauthCallbacksController, type: :request do
 
                 expect(controller.send(:user_signed_in?)).to eq(true)
               end
+
+              it 'sets the flash' do
+                post_authenticate
+
+                expect(controller.flash[:success]).to eq('User was successfully authenticated.')
+              end
+
+              it 'redirects to root' do
+                post_authenticate
+
+                expect(controller).to redirect_to(root_path)
+              end
             end
           end
 
@@ -99,17 +111,19 @@ RSpec.describe OmniauthCallbacksController, type: :request do
             end
 
             context 'when account does not exist' do
-              it 'creates a new account' do
-                expect { post_authenticate }.to change(Account, :count).from(1).to(2)
-              end
+              context 'when user does not have account for provider' do
+                it 'creates a new account' do
+                  expect { post_authenticate }.to change(Account, :count).from(1).to(2)
+                end
 
-              it 'does not create a new user' do
-                expect { post_authenticate }.not_to change(User, :count).from(1)
-              end
+                it 'does not create a new user' do
+                  expect { post_authenticate }.not_to change(User, :count).from(1)
+                end
 
-              it 'associates the account with the current user' do
-                expect { post_authenticate }.to change { user.reload.public_send("#{provider}_account") }
-                  .from(nil).to(an_instance_of(Account))
+                it 'associates the account with the current user' do
+                  expect { post_authenticate }.to change { user.reload.public_send("#{provider}_account") }
+                    .from(nil).to(an_instance_of(Account))
+                end
               end
 
               context 'when user already has account for same provider' do
@@ -176,18 +190,6 @@ RSpec.describe OmniauthCallbacksController, type: :request do
           sign_in(user)
         end
 
-        it 'sets the flash' do
-          post_authenticate
-
-          expect(controller.flash[:success]).to eq('Brand was successfully authenticated.')
-        end
-
-        it 'redirects to root' do
-          post_authenticate
-
-          expect(controller).to redirect_to(root_path)
-        end
-
         context 'when brand does not exist' do
           it 'creates a new brand' do
             expect { post_authenticate }.to change(Brand, :count).from(0).to(1)
@@ -195,6 +197,18 @@ RSpec.describe OmniauthCallbacksController, type: :request do
 
           it 'associates the brand with the current user' do
             expect { post_authenticate }.to change { user.reload.brand }.from(nil).to(an_instance_of(Brand))
+          end
+
+          it 'sets the flash' do
+            post_authenticate
+
+            expect(controller.flash[:success]).to eq('Brand was successfully authenticated.')
+          end
+
+          it 'redirects to root' do
+            post_authenticate
+
+            expect(controller).to redirect_to(root_path)
           end
         end
 
@@ -207,6 +221,18 @@ RSpec.describe OmniauthCallbacksController, type: :request do
 
           it 'associates the brand with the current user' do
             expect { post_authenticate }.to change { user.reload.brand }.from(nil).to(brand)
+          end
+
+          it 'sets the flash' do
+            post_authenticate
+
+            expect(controller.flash[:success]).to eq('Brand was successfully authenticated.')
+          end
+
+          it 'redirects to root' do
+            post_authenticate
+
+            expect(controller).to redirect_to(root_path)
           end
         end
       end
