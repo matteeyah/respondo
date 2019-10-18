@@ -7,12 +7,11 @@ require './spec/support/unauthorized_user_examples.rb'
 RSpec.describe Users::AccountsController, type: :request do
   include SignInOutHelpers
 
-  let(:user) { FactoryBot.create(:user) }
-
   describe 'DELETE destroy' do
     subject(:delete_destroy) { delete "/users/#{user.id}/accounts/#{account.id}" }
 
-    let!(:account) { FactoryBot.create(:account, user: user) }
+    let(:user) { FactoryBot.create(:user) }
+    let!(:account) { FactoryBot.create(:account, provider: 'google_oauth2', user: user) }
 
     context 'when user is signed in' do
       let(:browsing_user) { FactoryBot.create(:user, :with_account) }
@@ -28,20 +27,44 @@ RSpec.describe Users::AccountsController, type: :request do
           sign_in(user)
         end
 
-        it 'destroys the account' do
-          expect { delete_destroy }.to change(Account, :count).from(2).to(1)
+        context 'when user has only one account' do
+          it 'does not destroy the account' do
+            expect { delete_destroy }.not_to change(Account, :count).from(2)
+          end
+
+          it 'sets the flash' do
+            delete_destroy
+
+            expect(controller.flash[:danger]).to eq('You can not remove your last account.')
+          end
+
+          it 'redirects to edit user path' do
+            delete_destroy
+
+            expect(response).to redirect_to(edit_user_path(user))
+          end
         end
 
-        it 'sets the flash' do
-          delete_destroy
+        context 'when user has multiple accounts' do
+          before do
+            FactoryBot.create(:account, provider: 'twitter', user: user)
+          end
 
-          expect(controller.flash[:success]).to eq('User account was successfully deleted.')
-        end
+          it 'destroys the account' do
+            expect { delete_destroy }.to change(Account, :count).from(3).to(2)
+          end
 
-        it 'redirects to edit user path' do
-          delete_destroy
+          it 'sets the flash' do
+            delete_destroy
 
-          expect(response).to redirect_to(edit_user_path(user))
+            expect(controller.flash[:success]).to eq('User account was successfully deleted.')
+          end
+
+          it 'redirects to edit user path' do
+            delete_destroy
+
+            expect(response).to redirect_to(edit_user_path(user))
+          end
         end
       end
 
