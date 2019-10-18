@@ -8,7 +8,7 @@ RSpec.describe Account, type: :model do
     it { is_expected.to validate_presence_of(:email).allow_nil }
     it { is_expected.to validate_presence_of(:provider) }
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider) }
-    it { is_expected.to validate_uniqueness_of(:user_id).scoped_to(:provider) }
+    it { is_expected.to validate_uniqueness_of(:provider).scoped_to(:user_id).ignoring_case_sensitivity }
   end
 
   it { is_expected.to define_enum_for(:provider).with_values(%i[twitter google_oauth2]) }
@@ -52,8 +52,10 @@ RSpec.describe Account, type: :model do
             expect(from_omniauth).to be_persisted
           end
 
-          it 'creates a new user' do
-            expect { from_omniauth }.to change(User, :count).from(0).to(1)
+          context 'when creating a new user' do
+            it 'creates a new user' do
+              expect { from_omniauth }.to change(User, :count).from(0).to(1)
+            end
           end
 
           context 'when adding the account to existing user' do
@@ -65,6 +67,20 @@ RSpec.describe Account, type: :model do
 
             it 'adds the account to the specified user' do
               expect(current_user.accounts).to include(from_omniauth)
+            end
+
+            context 'when existing user has account for provider' do
+              before do
+                FactoryBot.create(:account, provider: provider, user: current_user)
+              end
+
+              it 'does not persist the account' do
+                expect(from_omniauth).not_to be_persisted
+              end
+
+              it 'has an error about provider being taken' do
+                expect(from_omniauth.errors.details).to include(provider: array_including(a_hash_including(error: :taken)))
+              end
             end
           end
         end

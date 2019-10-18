@@ -30,6 +30,12 @@ RSpec.describe Brands::UsersController, type: :request do
           expect { post_create }.to change { user.reload.brand_id }.from(nil).to(brand.id)
         end
 
+        it 'sets the flash' do
+          post_create
+
+          expect(controller.flash[:success]).to eq('User was successfully added to the brand.')
+        end
+
         it 'redirects to edit brand path' do
           post_create
 
@@ -70,6 +76,12 @@ RSpec.describe Brands::UsersController, type: :request do
 
         it 'removes the user from the brand' do
           expect { delete_destroy }.to change { user.reload.brand_id }.from(brand.id).to(nil)
+        end
+
+        it 'sets the flash' do
+          delete_destroy
+
+          expect(controller.flash[:success]).to eq('User was successfully removed from the brand.')
         end
 
         it 'redirects to edit brand path' do

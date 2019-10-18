@@ -8,13 +8,15 @@ module Brands
     def create
       brand.users << user
 
-      redirect_to edit_brand_path(brand)
+      redirect_to edit_brand_path(brand),
+                  flash: { success: 'User was successfully added to the brand.' }
     end
 
     def destroy
       brand.users.delete(user)
 
-      redirect_to edit_brand_path(brand)
+      redirect_to edit_brand_path(brand),
+                  flash: { success: 'User was successfully removed from the brand.' }
     end
 
     private

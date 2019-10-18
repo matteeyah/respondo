@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   def authenticate!
     return if user_signed_in?
 
-    redirect_back fallback_location: root_path, alert: 'You are not logged in.'
+    redirect_back fallback_location: root_path, flash: { warning: 'You are not logged in.' }
   end
 
   def sign_in(user)

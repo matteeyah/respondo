@@ -4,7 +4,7 @@ class Account < ApplicationRecord
   validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: :provider }
   validates :email, presence: true, allow_blank: false, allow_nil: true
   validates :provider, presence: true
-  validates :user_id, uniqueness: { scope: :provider }
+  validates :provider, uniqueness: { scope: :user_id }
 
   enum provider: { twitter: 0, google_oauth2: 1 }
 
@@ -22,7 +22,7 @@ class Account < ApplicationRecord
 
       account.user = current_user || account.user || User.new(name: auth.info.name)
 
-      account.save!
+      account.save
     end
   end
 

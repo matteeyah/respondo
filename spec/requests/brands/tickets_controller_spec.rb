@@ -108,6 +108,12 @@ RSpec.describe Brands::TicketsController, type: :request do
             expect(Ticket.find_by(external_uid: tweet.id)).to have_attributes(parent: ticket, content: 'does not matter')
           end
 
+          it 'sets the flash' do
+            post_reply
+
+            expect(controller.flash[:success]).to eq('Response has been successfully submitted.')
+          end
+
           it 'redirects to brand tickets path' do
             post_reply
 
@@ -134,6 +140,12 @@ RSpec.describe Brands::TicketsController, type: :request do
             post_reply
 
             expect(Ticket.find_by(external_uid: tweet.id)).to have_attributes(parent: ticket, content: 'does not matter')
+          end
+
+          it 'sets the flash' do
+            post_reply
+
+            expect(controller.flash[:success]).to eq('Response has been successfully submitted.')
           end
 
           it 'redirects to brand tickets path' do
@@ -180,6 +192,12 @@ RSpec.describe Brands::TicketsController, type: :request do
             expect { post_invert_status }.to change { ticket.reload.status }.from('open').to('solved')
           end
 
+          it 'sets the flash' do
+            post_invert_status
+
+            expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
+          end
+
           it 'redirects to brand tickets path' do
             post_invert_status
 
@@ -194,6 +212,12 @@ RSpec.describe Brands::TicketsController, type: :request do
 
           it 'opens the ticket' do
             expect { post_invert_status }.to change { ticket.reload.status }.from('solved').to('open')
+          end
+
+          it 'sets the flash' do
+            post_invert_status
+
+            expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
           end
 
           it 'redirects to brand tickets path' do
@@ -239,6 +263,12 @@ RSpec.describe Brands::TicketsController, type: :request do
           post_refresh
 
           expect(load_new_tweets_job_class).to have_received(:perform_now)
+        end
+
+        it 'sets the flash' do
+          post_refresh
+
+          expect(controller.flash[:success]).to eq('Tickets refresh successfully initiated.')
         end
 
         it 'redirects to brand tickets path' do
