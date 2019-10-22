@@ -8,28 +8,27 @@
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   %body
-    .navbar.navbar-default
-      .container
-        .navbar-header
-          .navbar-brand Respondo
-        %ul.nav.navbar-nav
-          %li= link_to 'Respondo', root_path
-          %li= link_to 'Brands', brands_path
-        %p.navbar-text.navbar-right
-          - if user_signed_in?
-            - if current_brand.nil?
-              %span
-                = auth_twitter_link('Login Brand', 'brand')
+    %nav.navbar.navbar-expand-lg.navbar-light.bg-light.rounded
+      %button.navbar-toggler{ type: 'button', 'data-toggle' => 'collapse',
+        'data-target' => '#navbar-content', 'aria-controls' => 'navbar-content',
+        'aria-expanded' => 'false', 'aria-label' => 'Toggle navigation' }
+        %span.navbar-toggler-icon
+      = link_to 'Respondo', root_path, class: 'navbar-brand'
+      .collapse.navbar-collapse#navbar-content
+        %ul.navbar-nav.mr-auto
+          %li.nav-item= link_to 'Brands', brands_path, class: 'nav-link'
+        .mr-sm-2
+          %ul.navbar-nav
+            - if user_signed_in?
+              - if current_brand.nil?
+                %li.nav-item= auth_twitter_link('Login Brand', 'brand')
+              - else
+                %li.nav-item= link_to "Edit #{current_brand.screen_name}", edit_brand_path(current_brand), class: 'nav-link'
+              %li.nav-item= link_to "Edit #{current_user.name}", edit_user_path(current_user), class: 'nav-link'
+              %li.nav-item= link_to '(logout)', logout_path, method: :delete, class: 'nav-link'
             - else
-              %span
-                = link_to 'Edit Brand', edit_brand_path(current_brand)
-            %span
-              = current_user.name
-              = link_to 'Edit User', edit_user_path(current_user)
-              = link_to '(logout)', logout_path, method: :delete
-          - else
-            = auth_google_link('Login User', 'user')
-    .container
+              %li.nav-item= auth_google_link('Login User', 'user')
+    %main.container{ role: 'main' }
       - if flash.any?
         - flash.each do |type, message|
           %div{ class: "alert alert-#{type}" }= message
