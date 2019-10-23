@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UsersHelper
   def provider_human_name(provider)
     case provider

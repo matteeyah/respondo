@@ -21,13 +21,13 @@
           %ul.navbar-nav
             - if user_signed_in?
               - if current_brand.nil?
-                %li.nav-item= auth_twitter_link('Login Brand', 'brand')
+                %li.nav-item= auth_provider_link('Login Brand', 'twitter', 'brand', class: 'nav-link')
               - else
                 %li.nav-item= link_to "Edit #{current_brand.screen_name}", edit_brand_path(current_brand), class: 'nav-link'
               %li.nav-item= link_to "Edit #{current_user.name}", edit_user_path(current_user), class: 'nav-link'
               %li.nav-item= link_to '(logout)', logout_path, method: :delete, class: 'nav-link'
             - else
-              %li.nav-item= auth_google_link('Login User', 'user')
+              %li.nav-item= auth_provider_link('Login User', 'google_oauth2', 'user', class: 'nav-link')
     %main{ role: 'main' }
       - if flash.any?
         - flash.each do |type, message|

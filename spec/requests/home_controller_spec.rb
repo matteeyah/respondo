@@ -7,7 +7,7 @@ RSpec.describe HomeController, type: :request do
     it 'renders the home page' do
       get_index
 
-      expect(response.body).to include('Hello World')
+      expect(response.body).to include('Hello, world!')
     end
   end
 end
