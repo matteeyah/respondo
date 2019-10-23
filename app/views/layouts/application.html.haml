@@ -31,7 +31,10 @@
     %main.container{ role: 'main' }
       - if flash.any?
         - flash.each do |type, message|
-          %div{ class: "alert alert-#{type}" }= message
+          %div{ class: "alert alert-#{type} alert-dismissible fade show", role: 'alert' }
+            %span= message
+            %button.close{ 'data-dismiss' => 'alert' }
+              %span{ 'aria-hidden' => 'true' } &times;
       = yield
     %footer.container
       %hr
