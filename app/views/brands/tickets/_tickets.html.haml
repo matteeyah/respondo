@@ -1,14 +1,15 @@
-%ul
+%ul.list-group
   - tickets.each do |ticket, replies|
-    %li
-      %p #{ticket.author.username}: #{ticket.content}
+    %li.list-group-item
+      %p.lead #{ticket.author.username}: #{ticket.content}
       - if user_authorized_for?(current_user, brand) || user_can_reply_to?(current_user, ticket.provider)
         = form_with url: brand_ticket_reply_path(brand, ticket) do |reply_form|
-          = reply_form.text_field :response_text
-          = reply_form.submit 'Reply'
+          .form-group
+            = reply_form.text_field :response_text, class: 'form-control'
+          = reply_form.submit 'Reply', class: 'btn btn-primary'
 
       - if user_authorized_for?(current_user, brand)
-        = button_to invert_status_action(ticket.status), brand_ticket_invert_status_path(brand, ticket)
+        = button_to invert_status_action(ticket.status), brand_ticket_invert_status_path(brand, ticket), class: 'btn btn-primary'
 
       - if replies.any?
         = render partial: 'tickets', locals: { brand: brand, tickets: replies }

@@ -1,11 +1,11 @@
+%h3 Tweets
+
 - if user_authorized_for?(current_user, brand)
-  = button_to 'Refresh Tickets', refresh_brand_tickets_path(brand)
+  = button_to 'Refresh Tickets', refresh_brand_tickets_path(brand), class: 'btn btn-primary'
 
-%span Tweets
-
-%ul
-  %li= link_to 'Open Tickets', brand_tickets_path(brand, status: 'open')
-  %li= link_to 'Solved Tickets', brand_tickets_path(brand, status: 'solved')
+.list-group.list-group-horizontal
+  = link_to 'Open Tickets', brand_tickets_path(brand, status: 'open'), class: 'list-group-item list-group-item-action'
+  = link_to 'Solved Tickets', brand_tickets_path(brand, status: 'solved'), class: 'list-group-item list-group-item-action'
 
 = render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: @tickets }
 
