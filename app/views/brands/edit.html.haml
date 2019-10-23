@@ -12,6 +12,6 @@
 %h3 Users in Brand
 %p.lead Click to remove.
 
-%ul.list-group
+.list-group
   - brand.users.each do |user|
     = link_to "Remove #{user.name}", brand_user_path(brand, user), method: :delete, class: 'list-group-item list-group-item-action'
