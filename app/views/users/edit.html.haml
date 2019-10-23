@@ -1,19 +1,18 @@
-.container
-  %h3 New accounts
-  %p.lead Click to add.
+%h3 New accounts
+%p.lead Click to add.
 
-  .list-group.list-group-horizontal
-    - Account.providers.keys.each do |provider|
-      - unless user.account_for_provider?(provider)
-        = auth_provider_link("Authorize #{provider_human_name(provider)}",
-          provider, 'user', class: 'list-group-item list-group-item-action')
+.list-group.list-group-horizontal
+  - Account.providers.keys.each do |provider|
+    - unless user.account_for_provider?(provider)
+      = auth_provider_link("Authorize #{provider_human_name(provider)}",
+        provider, 'user', class: 'list-group-item list-group-item-action')
 
-  %hr
+%hr
 
-  %h3 Existing accounts
-  %p.lead Click to remove.
+%h3 Existing accounts
+%p.lead Click to remove.
 
-  .list-group
+.list-group
   - user.accounts.each do |account|
     = link_to "Remove #{provider_human_name(account.provider)}",
       user_account_path(user, account), method: :delete,

@@ -1,7 +1,6 @@
 %section.jumbotron
-  .container
-    %h1.display-4 Hello, world!
+  %h1.display-4 Hello, world!
 
-    - if current_brand
-      %p.lead
-        = link_to 'Brand Tickets', brand_tickets_path(current_brand), class: 'btn btn-primary btn-lg'
+  - if current_brand
+    %p.lead
+      = link_to 'Brand Tickets', brand_tickets_path(current_brand), class: 'btn btn-primary btn-lg'

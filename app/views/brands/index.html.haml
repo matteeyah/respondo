@@ -1,6 +1,5 @@
-%ul
+.list-group
   - @brands.each do |brand|
-    %li
-      %p= link_to brand.screen_name, brand_tickets_path(brand)
+    = link_to brand.screen_name, brand_tickets_path(brand), class: 'list-group-item list-group-item-action'
 
 != pagy_bootstrap_nav(@pagy)
