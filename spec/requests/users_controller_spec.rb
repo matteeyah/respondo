@@ -26,10 +26,10 @@ RSpec.describe UsersController, type: :request do
           sign_in(user)
         end
 
-        it 'renders the user account' do
+        it 'renders the user account removal link' do
           get_edit
 
-          expect(response.body).to include('google_oauth2')
+          expect(response.body).to include('Remove Google')
         end
 
         it 'renders the twitter authorization link' do

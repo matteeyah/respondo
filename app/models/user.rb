@@ -10,6 +10,10 @@ class User < ApplicationRecord
     has_one :"#{provider}_account", -> { where(provider: value) }, class_name: 'Account', inverse_of: :user
   end
 
+  def account_for_provider?(provider)
+    accounts.exists?(provider: provider)
+  end
+
   def client_for_provider(provider)
     accounts.find_by(provider: provider)&.client
   end
