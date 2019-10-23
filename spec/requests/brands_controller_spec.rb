@@ -69,7 +69,7 @@ RSpec.describe BrandsController, type: :request do
         it 'renders the remove user link' do
           get_edit
 
-          expect(response.body).to include('Remove User')
+          expect(response.body).to include("Remove #{user.name}")
         end
       end
 

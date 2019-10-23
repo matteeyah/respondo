@@ -16,15 +16,15 @@
       = link_to 'Respondo', root_path, class: 'navbar-brand'
       .collapse.navbar-collapse#navbar-content
         %ul.navbar-nav.mr-auto
-          %li.nav-item= link_to 'Brands', brands_path, class: 'nav-link'
+          %li.nav-item= active_link_to 'Brands', brands_path, class: 'nav-link'
         .mr-sm-2
           %ul.navbar-nav
             - if user_signed_in?
               - if current_brand.nil?
                 %li.nav-item= auth_provider_link('Login Brand', 'twitter', 'brand', class: 'nav-link')
               - else
-                %li.nav-item= link_to "Edit #{current_brand.screen_name}", edit_brand_path(current_brand), class: 'nav-link'
-              %li.nav-item= link_to "Edit #{current_user.name}", edit_user_path(current_user), class: 'nav-link'
+                %li.nav-item= active_link_to "Edit #{current_brand.screen_name}", edit_brand_path(current_brand), class: 'nav-link'
+              %li.nav-item= active_link_to "Edit #{current_user.name}", edit_user_path(current_user), class: 'nav-link'
               %li.nav-item= link_to '(logout)', logout_path, method: :delete, class: 'nav-link'
             - else
               %li.nav-item= auth_provider_link('Login User', 'google_oauth2', 'user', class: 'nav-link')
