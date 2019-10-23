@@ -1,9 +1,19 @@
-- unless user.twitter_account
-  = auth_twitter_link('Authorize Twitter', 'user')
+%h3 New accounts
+%p.lead Click to add.
 
-- unless user.google_oauth2_account
-  = auth_google_link('Authorize Google', 'user')
+.list-group.list-group-horizontal
+  - Account.providers.keys.each do |provider|
+    - unless user.account_for_provider?(provider)
+      = auth_provider_link("Authorize #{provider_human_name(provider)}",
+        provider, 'user', class: 'list-group-item list-group-item-action')
 
-%ul
-- user.accounts.each do |account|
-  %li #{account.provider} - #{link_to 'Remove Account', user_account_path(user, account), method: :delete}
+%hr
+
+%h3 Existing accounts
+%p.lead Click to remove.
+
+.list-group
+  - user.accounts.each do |account|
+    = link_to "Remove #{provider_human_name(account.provider)}",
+      user_account_path(user, account), method: :delete,
+      class: 'list-group-item list-group-item-action'

@@ -22,6 +22,6 @@ RSpec.describe 'brands/edit', type: :view do
   end
 
   it 'has the remove user link' do
-    expect(render).to have_link('Remove User', href: brand_user_path(brand, user_in_brand.id))
+    expect(render).to have_link("Remove #{user_in_brand.name}", href: brand_user_path(brand, user_in_brand.id))
   end
 end

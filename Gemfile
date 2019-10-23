@@ -26,6 +26,7 @@ gem 'webpacker', '~> 4.0' # Transpile app-like JavaScript. Read more: https://gi
 gem 'omniauth-google-oauth2', '~> 0.6.0'
 gem 'omniauth-twitter', '~> 1.4.0'
 # Other
+gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
 gem 'attr_encrypted', '~> 3.1.0' # encrypted attributes
 gem 'bootstrap', '~> 4.3.1' # Twitter bootstrap styling
 gem 'haml-rails', '~> 2.0' # HAML markup processing

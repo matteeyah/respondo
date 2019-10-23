@@ -14,6 +14,30 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#account_for_provider?' do
+    subject(:account_for_provider?) { user.account_for_provider?(provider) }
+
+    let(:user) { FactoryBot.create(:user) }
+
+    Account.providers.keys.each do |provider_name|
+      context "when provider is #{provider_name}" do
+        let(:provider) { provider_name }
+
+        context 'when account for provider exists' do
+          before do
+            FactoryBot.create(:account, user: user, provider: provider)
+          end
+
+          it { is_expected.to eq(true) }
+        end
+
+        context 'when account for provider does not exist' do
+          it { is_expected.to eq(false) }
+        end
+      end
+    end
+  end
+
   describe '#client_for_provider' do
     subject(:client_for_provider) { user.client_for_provider(provider) }
 

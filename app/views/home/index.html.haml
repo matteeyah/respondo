@@ -1,4 +1,12 @@
-Hello World
+%section.jumbotron
+  %h1.display-4 Hello, world!
+  - if current_brand
+    %p.lead You're all set! Feel free to hop into the brand tickets!
+    = link_to 'Brand Tickets', brand_tickets_path(current_brand), class: 'btn btn-primary btn-lg'
+  - elsif user_signed_in?
+    %p.lead Woohoo, you're logged in. The next step is to authorize a brand account.
+    = auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'btn btn-primary btn-lg')
+  - else
+    %p.lead Hello there - the first step is to log in.
+    = auth_provider_link('Login', 'google_oauth2', 'user', class: 'btn btn-primary btn-lg')
 
-- if current_brand
-  = link_to 'Brand Tickets', brand_tickets_path(current_brand)
