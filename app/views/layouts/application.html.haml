@@ -28,8 +28,11 @@
               %li.nav-item= link_to '(logout)', logout_path, method: :delete, class: 'nav-link'
             - else
               %li.nav-item= auth_google_link('Login User', 'user')
-    %main.container{ role: 'main' }
+    %main{ role: 'main' }
       - if flash.any?
         - flash.each do |type, message|
           %div{ class: "alert alert-#{type}" }= message
       = yield
+    %footer.container
+      %hr
+      %p © Respondo 2019
