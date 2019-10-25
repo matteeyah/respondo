@@ -67,31 +67,33 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'POST reply' do
     subject(:post_reply) { post "/brands/#{brand.id}/tickets/#{ticket.id}/reply", params: { response_text: 'does not matter' } }
 
-    let(:ticket) { FactoryBot.create(:ticket, brand: brand) }
+    let!(:ticket) { FactoryBot.create(:ticket, brand: brand) }
 
     context 'when user is signed in' do
+      let(:tweet) do
+        instance_double(Twitter::Tweet, id: '1', attrs: { full_text: 'does not matter' },
+                                        in_reply_to_tweet_id: ticket.external_uid,
+                                        user: instance_double(Twitter::User, id: '2', screen_name: 'test'))
+      end
+
+      let(:error) { Twitter::Error::Forbidden.new('error') }
+      let(:client) { instance_spy(Clients::Twitter) }
+      let(:client_class) { class_spy(Clients::Twitter, new: client) }
       let(:user) { FactoryBot.create(:user, :with_account) }
 
       before do
         sign_in(user)
+        stub_const('Clients::Twitter', client_class)
       end
 
-      context 'when authorized' do
-        let(:tweet) do
-          instance_double(Twitter::Tweet, id: '1', text: 'does not matter', in_reply_to_tweet_id: ticket.external_uid,
-                                          user: instance_double(Twitter::User, id: '2', screen_name: 'test'))
-        end
-
-        let(:client) { instance_spy(Clients::Twitter, reply: tweet) }
-        let(:client_class) { class_spy(Clients::Twitter, new: client) }
-
+      context 'when authorized as a brand' do
         before do
-          stub_const('Clients::Twitter', client_class)
+          brand.users << user
         end
 
-        context 'when authorized as a brand' do
+        context 'when tweet is valid' do
           before do
-            brand.users << user
+            allow(client).to receive(:reply).and_return(tweet)
           end
 
           it 'replies to the ticket' do
@@ -123,9 +125,37 @@ RSpec.describe Brands::TicketsController, type: :request do
           end
         end
 
-        context 'when authorized as a user' do
+        context 'when tweet is invalid' do
           before do
-            FactoryBot.create(:account, provider: 'twitter', user: user)
+            allow(client).to receive(:reply).and_raise(error)
+          end
+
+          it 'does not create a reply ticket' do
+            expect { post_reply }.not_to change(Ticket, :count).from(1)
+          end
+
+          it 'sets the flash' do
+            post_reply
+
+            expect(controller.flash[:warning]).to eq("Unable to create tweet.\nerror")
+          end
+
+          it 'redirects to brand tickets path' do
+            post_reply
+
+            expect(response).to redirect_to(brand_tickets_path(brand))
+          end
+        end
+      end
+
+      context 'when authorized as a user' do
+        before do
+          FactoryBot.create(:account, provider: 'twitter', user: user)
+        end
+
+        context 'when tweet is valid' do
+          before do
+            allow(client).to receive(:reply).and_return(tweet)
           end
 
           it 'replies to the ticket' do
@@ -148,6 +178,28 @@ RSpec.describe Brands::TicketsController, type: :request do
             post_reply
 
             expect(controller.flash[:success]).to eq('Response has been successfully submitted.')
+          end
+
+          it 'redirects to brand tickets path' do
+            post_reply
+
+            expect(response).to redirect_to(brand_tickets_path(brand))
+          end
+        end
+
+        context 'when tweet is invalid' do
+          before do
+            allow(client).to receive(:reply).and_raise(error)
+          end
+
+          it 'does not create a reply ticket' do
+            expect { post_reply }.not_to change(Ticket, :count).from(1)
+          end
+
+          it 'sets the flash' do
+            post_reply
+
+            expect(controller.flash[:warning]).to eq("Unable to create tweet.\nerror")
           end
 
           it 'redirects to brand tickets path' do
