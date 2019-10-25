@@ -1,15 +1,18 @@
-%ul.list-group
+%ul.list-group.mt-3
   - tickets.each do |ticket, replies|
-    %li.list-group-item
-      %p.lead #{ticket.author.username}: #{ticket.content}
-      - if user_authorized_for?(current_user, brand) || user_can_reply_to?(current_user, ticket.provider)
-        = form_with url: brand_ticket_reply_path(brand, ticket) do |reply_form|
-          .form-group
-            = reply_form.text_field :response_text, class: 'form-control'
-          = reply_form.submit 'Reply', class: 'btn btn-primary'
+    %li.list-group-item.mt-3
+      .row.ml-3.mb-3
+        %span.font-weight-bold.mr-1 #{ticket.author.username}:
+        %span= ticket.content
+      .row
+        - if user_authorized_for?(current_user, brand) || user_can_reply_to?(current_user, ticket.provider)
+          = form_with url: brand_ticket_reply_path(brand, ticket), class: 'form-inline col-sm-10' do |reply_form|
+            = reply_form.text_field :response_text, required: true, class: 'form-control col-sm-9'
+            = reply_form.submit 'Reply', class: 'btn btn-secondary col-sm-2 ml-auto'
 
-      - if user_authorized_for?(current_user, brand)
-        = button_to invert_status_action(ticket.status), brand_ticket_invert_status_path(brand, ticket), class: 'btn btn-primary'
+        - if user_authorized_for?(current_user, brand)
+          = button_to invert_status_action(ticket.status), brand_ticket_invert_status_path(brand, ticket),
+            form_class: 'form-inline col-sm-2 ml-auto', class: 'btn btn-success col-sm-12'
 
       - if replies.any?
         = render partial: 'tickets', locals: { brand: brand, tickets: replies }

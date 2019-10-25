@@ -1,12 +1,15 @@
-%h3 Tweets
+%h2
+  %span Tweets
 
-- if user_authorized_for?(current_user, brand)
-  = button_to 'Refresh Tickets', refresh_brand_tickets_path(brand), class: 'btn btn-primary'
+  - if user_authorized_for?(current_user, brand)
+    = button_to '↺', refresh_brand_tickets_path(brand), form_class: 'd-inline-block', class: 'btn btn-light'
 
-.list-group.list-group-horizontal
-  = link_to 'Open Tickets', brand_tickets_path(brand, status: 'open'), class: 'list-group-item list-group-item-action'
-  = link_to 'Solved Tickets', brand_tickets_path(brand, status: 'solved'), class: 'list-group-item list-group-item-action'
+.list-group.list-group-horizontal.mb-3
+  = link_to 'Open Tickets', brand_tickets_path(brand, status: 'open'), class: 'list-group-item list-group-item-action text-center'
+  = link_to 'Solved Tickets', brand_tickets_path(brand, status: 'solved'), class: 'list-group-item list-group-item-action text-center'
 
 = render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: @tickets }
 
-!= pagy_bootstrap_nav(@pagy)
+.row.mt-3
+  .pagination.ml-auto.mr-auto
+    != pagy_bootstrap_nav(@pagy)

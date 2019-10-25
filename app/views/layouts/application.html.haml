@@ -28,7 +28,7 @@
               %li.nav-item= link_to '(logout)', logout_path, method: :delete, class: 'nav-link'
             - else
               %li.nav-item= auth_provider_link('Login User', 'google_oauth2', 'user', class: 'nav-link')
-    %main.container{ role: 'main' }
+    %main.container.mt-4{ role: 'main' }
       - if flash.any?
         - flash.each do |type, message|
           %div{ class: "alert alert-#{type} alert-dismissible fade show", role: 'alert' }

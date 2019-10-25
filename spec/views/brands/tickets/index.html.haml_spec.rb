@@ -34,7 +34,7 @@ RSpec.describe 'brands/tickets/index', type: :view do
     end
 
     it 'renders the refresh button' do
-      expect(render).to have_button('Refresh Tickets')
+      expect(render).to have_button('↺')
     end
   end
 
