@@ -15,13 +15,15 @@ module Brands
     end
 
     def reply
-      return unless client
+      begin
+        tweet = client.reply(params[:response_text], ticket.external_uid)
+        Ticket.from_tweet(tweet, brand)
+        flash[:success] = 'Response has been successfully submitted.'
+      rescue Twitter::Error => e
+        flash[:warning] = "Unable to create tweet.\n#{e.message}"
+      end
 
-      tweet = client.reply(params[:response_text], ticket.external_uid)
-      Ticket.from_tweet(tweet, brand)
-
-      redirect_to brand_tickets_path(brand),
-                  flash: { success: 'Response has been successfully submitted.' }
+      redirect_to brand_tickets_path(brand)
     end
 
     def invert_status
