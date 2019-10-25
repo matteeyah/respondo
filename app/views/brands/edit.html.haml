@@ -1,17 +1,20 @@
-%h3 Users outside Brand
-%p.lead Select user and click button to add.
+.row
 
-= form_with url: brand_users_path(brand), method: :post do |remove_user_form|
-  .form-group
-    = remove_user_form.select :user_id, options_for_select(add_users_dropdown_options_for(brand)),
-      {}, class: 'custom-select form-control', id: 'add-user'
-  = remove_user_form.submit 'Add User', class: 'btn btn-primary'
+  .col
+    %h3 Users outside Brand
+    %p.lead Select user and click button to add.
 
-%hr
+    = form_with url: brand_users_path(brand), method: :post do |remove_user_form|
+      = remove_user_form.select :user_id, options_for_select(add_users_dropdown_options_for(brand)),
+        { include_blank: 'Select user' }, required: true, class: 'custom-select form-control col-sm-6', id: 'add-user'
+      = remove_user_form.submit 'Add User', class: 'btn btn-primary ml-3'
 
-%h3 Users in Brand
-%p.lead Click to remove.
 
-.list-group
-  - brand.users.each do |user|
-    = link_to "Remove #{user.name}", brand_user_path(brand, user), method: :delete, class: 'list-group-item list-group-item-action'
+  .col
+    %h3 Users in Brand
+    %p.lead Click to remove.
+
+    .list-group.list-group-horizontal.flex-wrap
+      - brand.users.each do |user|
+        = link_to "Remove #{user.name}", brand_user_path(brand, user), method: :delete,
+          class: 'list-group-item list-group-item-action col-sm-6 text-center'
