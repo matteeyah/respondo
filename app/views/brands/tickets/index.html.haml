@@ -1,8 +1,9 @@
-%h2
-  %span Tweets
+%h4
+  %span #{brand.screen_name}: Tweets
 
   - if user_authorized_for?(current_user, brand)
     = button_to '↺', refresh_brand_tickets_path(brand), form_class: 'd-inline-block', class: 'btn btn-light'
+%hr
 
 .list-group.list-group-horizontal.mb-3
   = link_to 'Open Tickets', brand_tickets_path(brand, status: 'open'), class: 'list-group-item list-group-item-action text-center'
