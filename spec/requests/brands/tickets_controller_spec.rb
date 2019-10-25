@@ -78,7 +78,8 @@ RSpec.describe Brands::TicketsController, type: :request do
 
       context 'when authorized' do
         let(:tweet) do
-          instance_double(Twitter::Tweet, id: '1', text: 'does not matter', in_reply_to_tweet_id: ticket.external_uid,
+          instance_double(Twitter::Tweet, id: '1', attrs: { full_text: 'does not matter' },
+                                          in_reply_to_tweet_id: ticket.external_uid,
                                           user: instance_double(Twitter::User, id: '2', screen_name: 'test'))
         end
 

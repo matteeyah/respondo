@@ -22,7 +22,10 @@ class Ticket < ApplicationRecord
     def from_tweet(tweet, brand)
       author = Author.from_twitter_user(tweet.user)
       parent = find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id))
-      brand.tickets.create(external_uid: tweet.id, provider: 'twitter', content: tweet.text, author: author, parent: parent)
+      brand.tickets.create(
+        external_uid: tweet.id, author: author, parent: parent,
+        provider: 'twitter', content: tweet.attrs[:full_text]
+      )
     end
 
     def with_descendants_hash(included_relations = nil)

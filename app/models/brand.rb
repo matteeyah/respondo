@@ -24,7 +24,7 @@ class Brand < ApplicationRecord
   end
 
   def new_mentions
-    twitter.mentions_timeline(since: last_ticket_id)
+    twitter.mentions_timeline(since: last_ticket_id, tweet_mode: 'extended')
   end
 
   def twitter

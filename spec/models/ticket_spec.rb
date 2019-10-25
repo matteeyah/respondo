@@ -75,7 +75,7 @@ RSpec.describe Ticket, type: :model do
     let(:tweet) do
       instance_double('Twitter::Tweet',
                       id: '2',
-                      text: 'helloworld',
+                      attrs: { full_text: 'helloworld' },
                       user: 'does not matter',
                       in_reply_to_tweet_id: '1')
     end
@@ -96,7 +96,7 @@ RSpec.describe Ticket, type: :model do
       it 'builds a ticket with correct information' do
         expect(from_tweet).to have_attributes(
           external_uid: tweet.id, provider: 'twitter',
-          content: tweet.text,
+          content: tweet.attrs[:full_text],
           brand: brand, parent: nil, author: author
         )
       end
@@ -120,7 +120,7 @@ RSpec.describe Ticket, type: :model do
       it 'builds a ticket with correct information' do
         expect(from_tweet).to have_attributes(
           external_uid: tweet.id, provider: 'twitter',
-          content: tweet.text,
+          content: tweet.attrs[:full_text],
           brand: brand, parent: parent, author: author
         )
       end
