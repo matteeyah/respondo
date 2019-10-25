@@ -12,7 +12,7 @@ class OmniauthCallbacksController < ApplicationController
       authenticate_brand(omniauth_hash)
     end
 
-    redirect_back fallback_location: root_path
+    redirect_to root_path
   end
 
   private
