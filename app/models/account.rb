@@ -1,7 +1,9 @@
-# typed: false
+# typed: strict
 # frozen_string_literal: true
 
 class Account < ApplicationRecord
+  extend T::Sig
+
   validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: :provider }
   validates :email, presence: true, allow_blank: false, allow_nil: true
   validates :provider, presence: true
@@ -14,6 +16,7 @@ class Account < ApplicationRecord
   attr_encrypted :token, key: attr_encrypted_encryption_key
   attr_encrypted :secret, key: attr_encrypted_encryption_key
 
+  sig { params(auth: T.untyped, current_user: T.nilable(User)).returns(Account) }
   def self.from_omniauth(auth, current_user) # rubocop:disable Metrics/AbcSize
     find_or_initialize_by(external_uid: auth.uid, provider: auth.provider).tap do |account|
       account.email = auth.info.email
@@ -27,6 +30,7 @@ class Account < ApplicationRecord
     end
   end
 
+  sig { returns(T.nilable(Clients::Twitter)) }
   def client
     case provider
     when 'twitter'
@@ -36,6 +40,7 @@ class Account < ApplicationRecord
 
   private
 
+  sig { returns(Clients::Twitter) }
   def twitter_client
     @twitter_client ||=
       Clients::Twitter.new do |config|

@@ -1,7 +1,9 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 class Author < ApplicationRecord
+  extend T::Sig
+
   validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: :provider }
   validates :username, presence: true, allow_blank: false
   validates :provider, presence: true
@@ -10,6 +12,7 @@ class Author < ApplicationRecord
 
   has_many :tickets, dependent: :restrict_with_error
 
+  sig { params(twitter_user: T.untyped).returns(Author) }
   def self.from_twitter_user(twitter_user)
     find_or_initialize_by(external_uid: twitter_user.id, provider: 'twitter').tap do |author|
       author.username = twitter_user.screen_name

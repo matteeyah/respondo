@@ -1,7 +1,9 @@
-# typed: false
+# typed: strict
 # frozen_string_literal: true
 
 class Ticket < ApplicationRecord
+  extend T::Sig
+
   validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: %i[provider brand_id] }
   validates :content, presence: true, allow_blank: false
   validates :provider, presence: true
@@ -20,6 +22,9 @@ class Ticket < ApplicationRecord
   has_many :replies, class_name: 'Ticket', foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
 
   class << self
+    extend T::Sig
+
+    sig { params(tweet: T.untyped, brand: Brand).returns(Ticket) }
     def from_tweet(tweet, brand)
       author = Author.from_twitter_user(tweet.user)
       parent = find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id))
@@ -29,12 +34,14 @@ class Ticket < ApplicationRecord
       )
     end
 
+    sig { params(included_relations: T.nilable(T::Array[Symbol])).returns(T.nilable(T::Hash[Ticket, T.untyped])) }
     def with_descendants_hash(included_relations = nil)
       ids_query = arel_table[:id].in(self_and_descendants_arel(all.select(:id).arel))
       tickets = Ticket.unscoped.includes(included_relations).where(ids_query)
       convert_ticket_array_to_hash(tickets)
     end
 
+    sig { params(ticket_ids: T.untyped).returns(Arel::SelectManager) }
     def self_and_descendants_arel(ticket_ids) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
       # WITH RECURSIVE "ticket_tree" AS (
       #   SELECT "tickets".* FROM "tickets" WHERE "tickets"."id" IN (TICKET_IDS)
@@ -71,6 +78,7 @@ class Ticket < ApplicationRecord
 
     private
 
+    sig { params(tickets: Ticket::ActiveRecord_Relation).returns(T.nilable(T::Hash[Ticket, T.untyped])) }
     def convert_ticket_array_to_hash(tickets)
       {}.extend(Hashie::Extensions::DeepFind).tap do |hash|
         tickets.each do |ticket|
@@ -82,6 +90,7 @@ class Ticket < ApplicationRecord
       end
     end
 
+    sig { params(tweet_id: T.nilable(String)).returns(T.nilable(String)) }
     def parse_tweet_reply_id(tweet_id)
       # `Twitter::NullObject#presence` returned another `Twitter::NullObject`
       # https://github.com/sferik/twitter/issues/959
@@ -91,11 +100,13 @@ class Ticket < ApplicationRecord
 
   private
 
+  sig { returns(Arel::Nodes::And) }
   def descendants_query
     self.class.arel_table[:id].in(self.class.self_and_descendants_arel(id))
       .and(self.class.arel_table[:id].not_eq(id))
   end
 
+  sig { returns(T.nilable(Integer)) }
   def cascade_status
     return unless status_changed?
 
