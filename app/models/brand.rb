@@ -24,7 +24,9 @@ class Brand < ApplicationRecord
   end
 
   def new_mentions
-    twitter.mentions_timeline(since: last_ticket_id, tweet_mode: 'extended')
+    option_hash = { tweet_mode: 'extended' }
+    option_hash[:since_id] = last_ticket_id if last_ticket_id
+    twitter.mentions_timeline(option_hash)
   end
 
   def twitter

@@ -111,7 +111,7 @@ RSpec.describe Brand, type: :model do
       it 'queries the twitter client with last ticket id' do
         new_mentions
 
-        expect(twitter_client).to have_received(:mentions_timeline).with(since: an_instance_of(String), tweet_mode: 'extended')
+        expect(twitter_client).to have_received(:mentions_timeline).with(since_id: an_instance_of(String), tweet_mode: 'extended')
       end
     end
 
@@ -119,7 +119,7 @@ RSpec.describe Brand, type: :model do
       it 'queries the twitter client without last ticket id' do
         new_mentions
 
-        expect(twitter_client).to have_received(:mentions_timeline).with(since: nil, tweet_mode: 'extended')
+        expect(twitter_client).to have_received(:mentions_timeline).with(tweet_mode: 'extended')
       end
     end
   end
