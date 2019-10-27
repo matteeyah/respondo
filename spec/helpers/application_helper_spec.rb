@@ -8,7 +8,7 @@ RSpec.describe ApplicationHelper, type: :helper do
       context "when provider is #{account_provider}" do
         let(:provider) { account_provider }
 
-        it { is_expected.to match(%r{<a rel="nofollow" data-method="post" href="/auth/.*\?model=model">text</a>}) }
+        it { is_expected.to match(%r{<a rel="nofollow" data-method="post" href="/auth/.*\?model=model&amp;redirect_to=">text</a>}) }
       end
     end
   end

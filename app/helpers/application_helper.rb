@@ -2,7 +2,7 @@
 
 module ApplicationHelper
   def auth_provider_link(text, provider, model, html_options = {})
-    link_to text, auth_provider_path(provider, model: model), method: :post, **html_options
+    link_to text, auth_provider_path(provider, model: model, redirect_to: request.path), method: :post, **html_options
   end
 
   private
