@@ -10,5 +10,7 @@ class BrandsController < Brands::ApplicationController
     @pagy, @brands = pagy(Brand.all)
   end
 
-  def edit; end
+  def edit
+    @pagy, @brand_users = pagy(brand.users)
+  end
 end

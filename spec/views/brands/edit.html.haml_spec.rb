@@ -2,11 +2,14 @@
 
 RSpec.describe 'brands/edit', type: :view do
   let(:brand) { FactoryBot.create(:brand) }
-  let!(:user_in_brand) { FactoryBot.create(:user) }
+  let(:user_in_brand) { FactoryBot.create(:user) }
   let!(:user_outside_brand) { FactoryBot.create(:user) }
 
   before do
     brand.users << user_in_brand
+    assign(:brand_users, [user_in_brand])
+
+    allow(view).to receive(:pagy_bootstrap_nav)
 
     without_partial_double_verification do
       allow(view).to receive(:brand).and_return(brand)
