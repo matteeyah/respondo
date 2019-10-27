@@ -1,3 +1,4 @@
+# typed: strict
 # frozen_string_literal: true
 
 # Pagy initializer file (3.5.0)

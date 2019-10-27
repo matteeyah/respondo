@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 RSpec.shared_examples 'unauthorized user examples' do |alert_message|

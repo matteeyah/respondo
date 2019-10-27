@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
@@ -42,6 +43,7 @@ group :development, :test do
   gem 'rubocop-performance', '~> 1.4.1', require: false
   gem 'rubocop-rails', '~> 2.3.2', require: false
   gem 'rubocop-rspec', '~> 1.35.0', require: false
+  gem 'rubocop-sorbet', '~> 0.3.3', require: false
   ## Haml linter
   gem 'haml_lint', '~> 0.33.0', require: false
   # Other
@@ -51,6 +53,9 @@ group :development, :test do
   gem 'pry-byebug', '~> 3.7.0' # pry debugging
   gem 'rspec-rails', '4.0.0.beta2' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
+  # Ruby type checking
+  gem 'sorbet', '~> 0.4.4399'
+  gem 'sorbet-runtime', '~> 0.4.4399'
 end
 
 group :development do
@@ -63,6 +68,7 @@ group :development do
   # Other
   gem 'dotenv-rails', '~> 2.7.5' # .env
   gem 'pry-rails', '~> 0.3.9' # pry console
+  gem 'sorbet-rails', '~> 0.5.8.1' # rbi generators for rails
 end
 
 group :test do

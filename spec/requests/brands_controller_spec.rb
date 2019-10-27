@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_helpers.rb'

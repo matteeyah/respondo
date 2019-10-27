@@ -4,6 +4,7 @@ require:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-performance
+  - rubocop-sorbet
 
 AllCops:
   Exclude:
@@ -34,3 +35,6 @@ Layout/MultilineMethodCallIndentation:
 
 RSpec/NestedGroups:
   Max: 5
+
+Sorbet/StrongSigil:
+  Enabled: false
