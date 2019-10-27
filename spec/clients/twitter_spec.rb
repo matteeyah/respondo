@@ -16,7 +16,10 @@ RSpec.describe Clients::Twitter do
     it 'calls the underlying API' do
       reply
 
-      expect(client).to have_received(:update).with('text', in_reply_to_status_id: 1, auto_populate_reply_metadata: true)
+      expect(client).to have_received(:update).with(
+        'text', in_reply_to_status_id: 1, auto_populate_reply_metadata: true,
+                tweet_mode: 'extended'
+      )
     end
   end
 end
