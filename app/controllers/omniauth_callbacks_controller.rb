@@ -3,16 +3,17 @@
 class OmniauthCallbacksController < ApplicationController
   def authenticate
     omniauth_hash = request.env['omniauth.auth']
-    model = request.env['omniauth.params']['model']
+    auth_params = request.env['omniauth.params']
+    redirect_uri = auth_params['redirect_to'] || root_path
 
-    case model
+    case auth_params['model']
     when 'user'
       authenticate_user(omniauth_hash)
     when 'brand'
       authenticate_brand(omniauth_hash)
     end
 
-    redirect_to root_path
+    redirect_to redirect_uri
   end
 
   private
