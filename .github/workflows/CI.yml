@@ -43,3 +43,12 @@ jobs:
         run: gem install haml_lint -v '0.33.0'
       - name: haml-lint
         run: haml-lint
+  sorbet:
+    runs-on: ubuntu-latest
+    container: ruby:2.6.5
+    steps:
+      - uses: actions/checkout@v1
+      - name: rails dependencies
+        run: bundle install --without development production --jobs 4 --retry 3
+      - name: sorbet
+        run: bundle exec srb typecheck
