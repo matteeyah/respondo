@@ -54,12 +54,6 @@ RSpec.describe BrandsController, type: :request do
           brand.users << user
         end
 
-        it 'renders the users list' do
-          get_edit
-
-          expect(response.body).to include(*brand.users.map(&:name))
-        end
-
         it 'renders the add user button' do
           get_edit
 
@@ -70,6 +64,30 @@ RSpec.describe BrandsController, type: :request do
           get_edit
 
           expect(response.body).to include("Remove #{user.name}")
+        end
+
+        context 'when pagination is not required' do
+          it 'renders the users list' do
+            get_edit
+
+            expect(response.body).to include(user.name)
+          end
+        end
+
+        context 'when pagination is required' do
+          let!(:extra_users) { FactoryBot.create_list(:user, 20, brand: brand) }
+
+          it 'paginates users' do
+            get_edit
+
+            expect(response.body).to include(user.name, *extra_users.first(19).map(&:name))
+          end
+
+          it 'does not show page two users' do
+            get_edit
+
+            expect(response.body).not_to include(extra_users.last.name)
+          end
         end
       end
 
