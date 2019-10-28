@@ -8,6 +8,40 @@ RSpec.describe Ticket, type: :model do
     it { is_expected.to validate_presence_of(:content) }
     it { is_expected.to validate_presence_of(:provider) }
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider, :brand_id) }
+
+    describe '#parent_in_brand' do
+      context 'when parent does not exist' do
+        it 'does not invalidate the ticket' do
+          expect(ticket).to be_valid
+        end
+      end
+
+      context 'when parent is in brand' do
+        before do
+          ticket.parent = FactoryBot.create(:ticket, brand: ticket.brand)
+        end
+
+        it 'does not invalidate the ticket' do
+          expect(ticket).to be_valid
+        end
+      end
+
+      context 'when parent is not in brand' do
+        before do
+          ticket.parent = FactoryBot.create(:ticket)
+        end
+
+        it 'invalidates the ticket' do
+          expect(ticket).not_to be_valid
+        end
+
+        it 'returns parent validation error' do
+          ticket.validate
+
+          expect(ticket.errors).to include(:parent)
+        end
+      end
+    end
   end
 
   it { is_expected.to define_enum_for(:status).with_values(%i[open solved]) }
@@ -25,8 +59,8 @@ RSpec.describe Ticket, type: :model do
       subject(:execute_callback) { parent.run_callbacks(:save) }
 
       let(:parent) { FactoryBot.create(:ticket, status: :open) }
-      let(:reply) { FactoryBot.create(:ticket, status: :open, parent: parent) }
-      let(:nested_reply) { FactoryBot.create(:ticket, status: :open, parent: reply) }
+      let(:reply) { FactoryBot.create(:ticket, status: :open, parent: parent, brand: parent.brand) }
+      let(:nested_reply) { FactoryBot.create(:ticket, status: :open, parent: reply, brand: parent.brand) }
 
       context 'when status changes' do
         before do
@@ -58,7 +92,7 @@ RSpec.describe Ticket, type: :model do
     let(:parentless_ticket) { FactoryBot.create(:ticket) }
 
     before do
-      FactoryBot.create(:ticket, parent: parentless_ticket)
+      FactoryBot.create(:ticket, parent: parentless_ticket, brand: parentless_ticket.brand)
     end
 
     it 'only returns parentless tickets' do
@@ -107,7 +141,7 @@ RSpec.describe Ticket, type: :model do
     end
 
     context 'when parent exists' do
-      let!(:parent) { FactoryBot.create(:ticket, external_uid: tweet.in_reply_to_tweet_id) }
+      let!(:parent) { FactoryBot.create(:ticket, external_uid: tweet.in_reply_to_tweet_id, brand: brand) }
 
       it 'creates a new ticket' do
         expect { from_tweet }.to change(described_class, :count).from(1).to(2)
@@ -136,8 +170,8 @@ RSpec.describe Ticket, type: :model do
 
     let(:first_root_ticket) { FactoryBot.create(:ticket) }
     let(:second_root_ticket) { FactoryBot.create(:ticket) }
-    let!(:first_child_ticket) { FactoryBot.create(:ticket, parent: first_root_ticket) }
-    let!(:second_child_ticket) { FactoryBot.create(:ticket, parent: second_root_ticket) }
+    let!(:first_child_ticket) { FactoryBot.create(:ticket, parent: first_root_ticket, brand: first_root_ticket.brand) }
+    let!(:second_child_ticket) { FactoryBot.create(:ticket, parent: second_root_ticket, brand: second_root_ticket.brand) }
 
     it 'returns tickets in hash format' do
       expect(with_descendants_hash).to be_an_instance_of(Hash)

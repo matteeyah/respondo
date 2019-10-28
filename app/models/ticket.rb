@@ -4,6 +4,7 @@ class Ticket < ApplicationRecord
   validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: %i[provider brand_id] }
   validates :content, presence: true, allow_blank: false
   validates :provider, presence: true
+  validate :parent_in_brand
 
   before_save :cascade_status
 
@@ -21,7 +22,7 @@ class Ticket < ApplicationRecord
   class << self
     def from_tweet(tweet, brand)
       author = Author.from_twitter_user(tweet.user)
-      parent = find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id))
+      parent = brand.tickets.find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id))
       brand.tickets.create!(
         external_uid: tweet.id, author: author, parent: parent,
         provider: 'twitter', content: tweet.attrs[:full_text]
@@ -89,6 +90,13 @@ class Ticket < ApplicationRecord
   end
 
   private
+
+  def parent_in_brand
+    return unless parent
+    return unless parent.brand != brand
+
+    errors.add(:parent, 'must be in same brand as ticket')
+  end
 
   def descendants_query
     self.class.arel_table[:id].in(self.class.self_and_descendants_arel(id))
