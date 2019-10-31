@@ -74,6 +74,7 @@ group :test do
   gem 'mini_racer', '~> 0.2.6' # JS runtime for execjs
   gem 'shoulda-matchers', '~> 4.1.2' # One-liner matchers
   gem 'simplecov', '~> 0.16.1', require: false # Coverage
+  gem 'webmock', '~> 3.7.6' # Stubs and expectations for HTTP requests
 end
 
 group :production do
