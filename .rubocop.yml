@@ -14,23 +14,31 @@ AllCops:
     - 'tmp/**/*'
     - 'bin/**/*'
 
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
     - 'config/environments/*'
 
+Metrics/LineLength:
+  Max: 135
+
 Metrics/MethodLength:
   Exclude:
     - 'db/migrate/*'
 
-Metrics/LineLength:
-  Max: 135
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/system/**/*'
 
-Style/Documentation:
-  Enabled: false
-
-Layout/MultilineMethodCallIndentation:
-  EnforcedStyle: indented
+RSpec/MultipleExpectations:
+  Exclude:
+    - 'spec/system/**/*'
 
 RSpec/NestedGroups:
   Max: 5
+
+Style/Documentation:
+  Enabled: false
