@@ -77,7 +77,7 @@ RSpec.configure do |config|
 
   # Use rack_test for driving system tests
   config.before(:each, type: :system) do
-    driven_by(:rack_test)
+    driven_by(:selenium, using: :headless_chrome, screen_size: [1920, 1080])
   end
 end
 
