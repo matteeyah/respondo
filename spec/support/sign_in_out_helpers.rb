@@ -1,24 +1,25 @@
 # frozen_string_literal: true
 
+require './spec/support/omniauth_helpers.rb'
+
 module SignInOutHelpers
+  include OmniauthHelpers
+
   def self.included(base)
     base.class_eval do
       after do
-        Account.providers.keys.each do |provider|
-          OmniAuth.config.mock_auth.delete(provider.to_sym)
-        end
+        OmniAuth.config.mock_auth.slice!(:default)
       end
     end
   end
 
   def sign_in(user)
     account = user.accounts.first
-    OmniAuth.config.add_mock(account.provider.to_sym,
-                             uid: account.external_uid,
-                             info: { name: user.name, email: account.email },
-                             credentials: {})
+    add_user_oauth_mock(account.provider.to_sym, account.external_uid, user.name, account.email)
     post "/auth/#{account.provider}?model=user"
+    # This is a redirect to the callback controller
     follow_redirect!
+    # This is a redirect back to the referrer path
     follow_redirect!
   end
 
