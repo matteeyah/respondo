@@ -5,10 +5,6 @@ require './spec/support/omniauth_helpers.rb'
 RSpec.describe 'Homepage', type: :system do
   include OmniauthHelpers
 
-  after do
-    OmniAuth.config.mock_auth.slice!(:default)
-  end
-
   it 'guides user through the set-up process' do
     visit '/'
 

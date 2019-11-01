@@ -2,20 +2,16 @@
 
 require './spec/support/omniauth_helpers.rb'
 
+# This is an abstraction on top of OmniauthHelpers for request type specs.
+#
+# Request type specs should not include OmniauthHelpers directly - this module
+# should be included instead.
 module SignInOutHelpers
-  include OmniauthHelpers
-
-  def self.included(base)
-    base.class_eval do
-      after do
-        OmniAuth.config.mock_auth.slice!(:default)
-      end
-    end
-  end
+  extend OmniauthHelpers
 
   def sign_in(user)
     account = user.accounts.first
-    add_user_oauth_mock(account.provider.to_sym, account.external_uid, user.name, account.email)
+    SignInOutHelpers.add_oauth_mock_for_user(user, account)
     post "/auth/#{account.provider}?model=user"
     # This is a redirect to the callback controller
     follow_redirect!

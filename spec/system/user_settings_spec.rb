@@ -6,10 +6,10 @@ RSpec.describe 'User settings', type: :system do
   include OmniauthHelpers
 
   let(:user) { FactoryBot.create(:user, :with_account) }
-  let(:brand) { FactoryBot.create(:brand) }
 
   before do
-    add_oauth_mock_for_user(user, user.accounts.first)
+    add_oauth_mock_for_user(user)
+    brand = FactoryBot.create(:brand)
     add_oauth_mock_for_brand(brand)
 
     visit '/'
@@ -19,13 +19,9 @@ RSpec.describe 'User settings', type: :system do
     click_link 'User settings'
   end
 
-  after do
-    OmniAuth.config.mock_auth.slice!(:default)
-  end
-
   context 'when adding accounts to user' do
     before do
-      add_oauth_mock('twitter', '123', { name: user.name, email: 'hello@world.com' }, {})
+      add_oauth_mock_for_user(user, FactoryBot.create(:account, provider: 'twitter'))
     end
 
     it 'allows the user to authorize an account' do

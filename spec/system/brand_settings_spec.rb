@@ -9,7 +9,7 @@ RSpec.describe 'Brand settings', type: :system do
 
   before do
     user = FactoryBot.create(:user, :with_account)
-    add_oauth_mock_for_user(user, user.accounts.first)
+    add_oauth_mock_for_user(user)
     add_oauth_mock_for_brand(brand)
 
     visit '/'
@@ -17,10 +17,6 @@ RSpec.describe 'Brand settings', type: :system do
     click_link 'Login User'
     click_link 'Login Brand'
     click_link 'Brand settings'
-  end
-
-  after do
-    OmniAuth.config.mock_auth.slice!(:default)
   end
 
   context 'when adding users to brand' do
