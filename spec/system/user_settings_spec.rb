@@ -9,13 +9,10 @@ RSpec.describe 'User settings', type: :system do
 
   before do
     add_oauth_mock_for_user(user)
-    brand = FactoryBot.create(:brand)
-    add_oauth_mock_for_brand(brand)
 
     visit '/'
 
     click_link 'Login User'
-    click_link 'Login Brand'
     click_link 'User settings'
   end
 
