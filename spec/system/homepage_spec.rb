@@ -11,12 +11,14 @@ RSpec.describe 'Homepage', type: :system do
     expect(page).to have_text('Hello, world!')
     expect(page).to have_link('Login')
 
-    add_oauth_mock(:google_oauth2, '123', { name: 'Test User', email: 'test@example.com' }, {})
+    user = FactoryBot.create(:user, :with_account)
+    add_oauth_mock_for_user(user)
     click_link('Login')
 
     expect(page).to have_link('Authorize Brand')
 
-    add_oauth_mock(:twitter, '123', { nickname: 'test_brand' }, {})
+    brand = FactoryBot.create(:brand)
+    add_oauth_mock_for_brand(brand)
     click_link('Authorize Brand')
 
     expect(page).to have_link('Brand Tickets')
