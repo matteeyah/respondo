@@ -77,7 +77,10 @@ RSpec.configure do |config|
 
   # Use rack_test for driving system tests
   config.before(:each, type: :system) do
-    driven_by(:selenium, using: :headless_chrome, screen_size: [1920, 1080])
+    driven_by(:selenium, using: :headless_chrome, screen_size: [1920, 1080]) do |driver_options|
+      # headless chrome can't run in Docker with sandboxing
+      driver_options.add_argument('no-sandbox')
+    end
   end
 end
 
