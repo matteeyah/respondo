@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Brand settings', type: :system do
+RSpec.describe 'Brands', type: :system do
   let(:brands) { FactoryBot.create_list(:brand, 2) }
 
   it 'allows user to navigate to all brands' do

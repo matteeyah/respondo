@@ -2,7 +2,7 @@
 
 require './spec/support/omniauth_helpers.rb'
 
-RSpec.describe 'Homepage', type: :system do
+RSpec.describe 'Authentication', type: :system do
   include OmniauthHelpers
 
   it 'allows user creation' do
