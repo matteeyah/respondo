@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
 require './spec/support/omniauth_helpers.rb'
+require './spec/support/sign_in_out_system_helpers.rb'
 
 RSpec.describe 'User settings', type: :system do
   include OmniauthHelpers
+  include SignInOutSystemHelpers
 
   let(:user) { FactoryBot.create(:user, :with_account) }
 
   before do
-    add_oauth_mock_for_user(user)
-
     visit '/'
 
-    click_link 'Login User'
+    sign_in_user(user)
+
     click_link 'User settings'
   end
 

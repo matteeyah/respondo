@@ -4,21 +4,21 @@ RSpec.describe 'home/index', type: :view do
   before do
     without_partial_double_verification do
       allow(view).to receive(:current_brand).and_return(brand)
-      allow(view).to receive(:user_signed_in?).and_return(user_logged_in)
+      allow(view).to receive(:user_signed_in?).and_return(user_signed_in)
     end
   end
 
-  context 'when user is logged out' do
+  context 'when user is signed out' do
     let(:brand) { nil }
-    let(:user_logged_in) { false }
+    let(:user_signed_in) { false }
 
-    it 'renders the login link' do
+    it 'renders the sign in link' do
       expect(render).to have_link('Login')
     end
   end
 
-  context 'when the user is logged in' do
-    let(:user_logged_in) { true }
+  context 'when the user is signed in' do
+    let(:user_signed_in) { true }
 
     context 'when brand is not signed in' do
       let(:brand) { nil }

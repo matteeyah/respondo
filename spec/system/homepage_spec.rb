@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require './spec/support/omniauth_helpers.rb'
+require './spec/support/sign_in_out_system_helpers.rb'
 
 RSpec.describe 'Homepage', type: :system do
-  include OmniauthHelpers
+  include SignInOutSystemHelpers
 
   it 'guides user through the set-up process' do
     visit '/'
@@ -11,15 +11,11 @@ RSpec.describe 'Homepage', type: :system do
     expect(page).to have_text('Hello, world!')
     expect(page).to have_link('Login')
 
-    user = FactoryBot.create(:user, :with_account)
-    add_oauth_mock_for_user(user)
-    click_link('Login')
+    sign_in_user(nil, 'Login')
 
     expect(page).to have_link('Authorize Brand')
 
-    brand = FactoryBot.create(:brand)
-    add_oauth_mock_for_brand(brand)
-    click_link('Authorize Brand')
+    sign_in_brand(nil, 'Authorize Brand')
 
     expect(page).to have_link('Brand Tickets')
 

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require './spec/support/sign_in_out_helpers.rb'
+require './spec/support/sign_in_out_request_helpers.rb'
 require './spec/support/unauthenticated_user_examples.rb'
 require './spec/support/unauthorized_user_examples.rb'
 
 RSpec.describe Users::AccountsController, type: :request do
-  include SignInOutHelpers
+  include SignInOutRequestHelpers
 
   describe 'DELETE destroy' do
     subject(:delete_destroy) { delete "/users/#{user.id}/accounts/#{account.id}" }
