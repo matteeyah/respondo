@@ -247,7 +247,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
         it 'sets the flash' do
           post_authenticate
 
-          expect(controller.flash[:warning]).to eq('User is not logged in.')
+          expect(controller.flash[:warning]).to eq('User is not signed in.')
         end
       end
     end

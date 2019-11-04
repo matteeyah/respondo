@@ -13,7 +13,7 @@ RSpec.describe 'home/index', type: :view do
     let(:user_signed_in) { false }
 
     it 'renders the sign in link' do
-      expect(render).to have_link('Login')
+      expect(render).to have_link('Sign In')
     end
   end
 

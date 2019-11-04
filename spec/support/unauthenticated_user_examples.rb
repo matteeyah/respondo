@@ -5,7 +5,7 @@ RSpec.shared_examples 'unauthenticated user examples' do
     subject
     follow_redirect!
 
-    expect(controller.flash[:warning]).to eq('You are not logged in.')
+    expect(controller.flash[:warning]).to eq('You are not signed in.')
   end
 
   it 'redirects the user back (to root)' do

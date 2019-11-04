@@ -31,7 +31,7 @@ class OmniauthCallbacksController < ApplicationController
 
   def authenticate_brand(auth_hash)
     unless user_signed_in?
-      flash[:warning] = 'User is not logged in.'
+      flash[:warning] = 'User is not signed in.'
       return
     end
 

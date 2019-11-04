@@ -7,7 +7,7 @@ RSpec.describe SessionsController, type: :request do
   include SignInOutRequestHelpers
 
   describe 'DELETE destroy' do
-    subject(:delete_destroy) { delete '/logout' }
+    subject(:delete_destroy) { delete '/sign_out' }
 
     context 'when user is signed in' do
       before do
@@ -21,7 +21,7 @@ RSpec.describe SessionsController, type: :request do
       it 'sets the flash' do
         delete_destroy
 
-        expect(controller.flash[:success]).to eq('You have been logged out.')
+        expect(controller.flash[:success]).to eq('You have been signed out.')
       end
 
       it 'redirects to root path' do

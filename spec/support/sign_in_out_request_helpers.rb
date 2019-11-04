@@ -20,7 +20,7 @@ module SignInOutRequestHelpers
   end
 
   def sign_out
-    delete '/logout'
+    delete '/sign_out'
     follow_redirect!
   end
 end
