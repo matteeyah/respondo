@@ -5,16 +5,9 @@ on: [push]
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    container: ruby:2.6.5
+    container: matteeyah/respondo-ci:latest
     steps:
       - uses: actions/checkout@v1
-      - name: install yarn
-        run: |
-          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-          echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-          apt update && apt install -y yarn
-      - name: install chrome
-        run: apt install -y chromium
       - name: node dependencies
         run: bin/yarn install
       - name: rails dependencies
@@ -25,16 +18,9 @@ jobs:
         run: bundle exec rspec --tag ~type:system
   rspec-system:
     runs-on: ubuntu-latest
-    container: ruby:2.6.5
+    container: matteeyah/respondo-ci:latest
     steps:
       - uses: actions/checkout@v1
-      - name: install yarn
-        run: |
-          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-          echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-          apt update && apt install -y yarn
-      - name: install chrome
-        run: apt install -y chromium
       - name: node dependencies
         run: bin/yarn install
       - name: rails dependencies
