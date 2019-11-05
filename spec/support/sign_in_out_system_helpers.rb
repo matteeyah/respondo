@@ -3,9 +3,6 @@
 require './spec/support/omniauth_helpers.rb'
 
 # This is an abstraction on top of OmniauthHelpers for system type specs.
-#
-# System type specs should not include OmniauthHelpers directly for logging in -
-# this module should be included instead.
 module SignInOutSystemHelpers
   extend OmniauthHelpers
 

@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-# Only system type specs should need to include this module directly.
-# Request type specs should include SignInOutHelpers.
+# This should generally not be included directly. Respective extending modules
+# should be included instead (e.g. SignInOutRequestHelpers,
+# SignInOutSystemHelpers).
+#
+# In some cases it's acceptable to include this directly as well.
 module OmniauthHelpers
   # Clear OmniAuth mocks in all specs that include this module.
   def self.included(base)

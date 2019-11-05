@@ -75,7 +75,7 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
-  # Use rack_test for driving system tests
+  # Use selenium and headless chrome for driving system tests
   config.before(:each, type: :system) do
     driven_by(:selenium, using: :headless_chrome, screen_size: [1920, 1080]) do |driver_options|
       # headless chrome can't run in Docker with sandboxing

@@ -3,9 +3,6 @@
 require './spec/support/omniauth_helpers.rb'
 
 # This is an abstraction on top of OmniauthHelpers for request type specs.
-#
-# Request type specs should not include OmniauthHelpers directly - this module
-# should be included instead.
 module SignInOutRequestHelpers
   extend OmniauthHelpers
 
