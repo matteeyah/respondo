@@ -6,6 +6,6 @@ class SessionsController < ApplicationController
   def destroy
     sign_out
 
-    redirect_to root_path, flash: { success: 'You have been logged out.' }
+    redirect_to root_path, flash: { success: 'You have been signed out.' }
   end
 end

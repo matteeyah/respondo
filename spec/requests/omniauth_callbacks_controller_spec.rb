@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require './spec/support/sign_in_out_helpers.rb'
+require './spec/support/sign_in_out_request_helpers.rb'
 
 RSpec.describe OmniauthCallbacksController, type: :request do
-  include SignInOutHelpers
+  include SignInOutRequestHelpers
 
   describe 'GET authenticate' do
     subject(:post_authenticate) do
@@ -32,7 +32,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 
-          context 'when the user is logged out' do
+          context 'when the user is signed out' do
             context 'when the account does not exist' do
               it 'creates a new account' do
                 expect { post_authenticate }.to change(Account, :count).from(0).to(1)
@@ -94,7 +94,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
             end
           end
 
-          context 'when user is logged in' do
+          context 'when user is signed in' do
             let(:user) do
               account_provider = (Account.providers.keys - [provider]).first
 
@@ -183,7 +183,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
       let(:model) { 'brand' }
       let(:provider) { 'twitter' }
 
-      context 'when user is logged in' do
+      context 'when user is signed in' do
         let(:user) { FactoryBot.create(:user, :with_account) }
 
         before do
@@ -237,7 +237,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
         end
       end
 
-      context 'when user is not logged in' do
+      context 'when user is not signed in' do
         it 'redirects to root' do
           post_authenticate
 
@@ -247,7 +247,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
         it 'sets the flash' do
           post_authenticate
 
-          expect(controller.flash[:warning]).to eq('User is not logged in.')
+          expect(controller.flash[:warning]).to eq('User is not signed in.')
         end
       end
     end

@@ -68,12 +68,20 @@ RSpec.configure do |config|
   #
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/docs
-  config.infer_spec_type_from_file_location!
+  # config.infer_spec_type_from_file_location!
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Use selenium and headless chrome for driving system tests
+  config.before(:each, type: :system) do
+    driven_by(:selenium, using: :headless_chrome, screen_size: [1920, 1080]) do |driver_options|
+      # headless chrome can't run in Docker with sandboxing
+      driver_options.add_argument('no-sandbox')
+    end
+  end
 end
 
 Shoulda::Matchers.configure do |config|
