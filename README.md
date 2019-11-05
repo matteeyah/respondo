@@ -41,7 +41,7 @@ state you need to reset the database.
 To build the respondo image run
 
 ```
-docker build . -t respondo
+docker build . --tag respondo
 ```
 
 #### Development
@@ -59,3 +59,10 @@ To run tests inside the docker container run
 ```
 docker run respondo rspec --require rails_helper.rb
 ```
+
+#### CI
+
+To update the CI docker image run:
+
+- `docker build . --file Dockerfile.CI --tag matteeyah/respondo-ci:latest`
+- `docker push matteeyah/respondo-ci:latest`

@@ -1,0 +1,23 @@
+name: docker
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - Dockerfile.CI
+
+jobs:
+  ci_image:
+    runs-on: ubuntu-latest
+    container: docker:stable
+    steps:
+      - uses: actions/checkout@v1
+      - name: build
+        run: docker build . --file Dockerfile.CI --tag matteeyah/respondo-ci:latest
+      - name: login
+        env:
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+        run: docker login --username matteeyah --password ${DOCKER_HUB_TOKEN}
+      - name: publish
+        run: docker push matteeyah/respondo-ci:latest
