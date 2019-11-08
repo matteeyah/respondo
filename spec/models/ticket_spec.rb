@@ -54,66 +54,42 @@ RSpec.describe Ticket, type: :model do
     it { is_expected.to have_many(:replies).dependent(:destroy) }
   end
 
-  describe 'Callbacks' do
-    describe 'cascade_status' do
-      subject(:execute_callback) { ticket.run_callbacks(:save) }
+  describe 'State Machine' do
+    let(:root) { FactoryBot.create(:ticket, status: status) }
+    let(:parent) { FactoryBot.create(:ticket, status: status, parent: root, brand: root.brand) }
+    let(:ticket) { FactoryBot.create(:ticket, status: status, parent: parent, brand: root.brand) }
+    let(:nested_ticket) { FactoryBot.create(:ticket, status: status, parent: ticket, brand: root.brand) }
+    let!(:nested_nested_ticket) { FactoryBot.create(:ticket, status: status, parent: nested_ticket, brand: root.brand) }
 
-      let(:root) { FactoryBot.create(:ticket, status: status) }
-      let(:parent) { FactoryBot.create(:ticket, status: status, parent: root, brand: root.brand) }
-      let(:ticket) { FactoryBot.create(:ticket, status: status, parent: parent, brand: root.brand) }
-      let(:nested_ticket) { FactoryBot.create(:ticket, status: status, parent: ticket, brand: root.brand) }
-      let!(:nested_nested_ticket) { FactoryBot.create(:ticket, status: status, parent: nested_ticket, brand: root.brand) }
+    describe 'open' do
+      subject(:open_ticket) { ticket.open! }
 
-      context 'when status changes to solved' do
-        let(:status) { :open }
+      let(:status) { :solved }
 
-        before do
-          ticket.status = 'solved'
-        end
-
-        it 'cascades change to descendants' do
-          expect { execute_callback }
-            .to change { nested_ticket.reload.status }.from('open').to('solved')
-            .and change { nested_nested_ticket.reload.status }.from('open').to('solved')
-        end
-
-        it 'does not cascade change ancestors' do
-          expect { execute_callback }.not_to change { parent.reload.status }.from('open')
-        end
+      it 'cascades change to ancestors' do
+        expect { open_ticket }
+          .to change { parent.reload.status }.from('solved').to('open')
+          .and change { root.reload.status }.from('solved').to('open')
       end
 
-      context 'when status changes to open' do
-        let(:status) { :solved }
+      it 'does not cascade change to descendants' do
+        expect { open_ticket }.not_to change { nested_ticket.reload.status }.from('solved')
+      end
+    end
 
-        before do
-          ticket.status = 'open'
-        end
+    describe 'solve' do
+      subject(:solve_ticket) { ticket.solve! }
 
-        it 'cascades change to ancestors' do
-          expect { execute_callback }
-            .to change { parent.reload.status }.from('solved').to('open')
-            .and change { root.reload.status }.from('solved').to('open')
-        end
+      let(:status) { :open }
 
-        it 'does not cascade change to descendants' do
-          expect { execute_callback }.not_to change { nested_ticket.reload.status }.from('solved')
-        end
+      it 'cascades change to descendants' do
+        expect { solve_ticket }
+          .to change { nested_ticket.reload.status }.from('open').to('solved')
+          .and change { nested_nested_ticket.reload.status }.from('open').to('solved')
       end
 
-      context 'when status does not change' do
-        let(:status) { :open }
-
-        before do
-          ticket.content = 'hello world'
-        end
-
-        it 'does not cascade change to ancestors' do
-          expect { execute_callback }.not_to change { parent.reload.status }.from('open')
-        end
-
-        it 'does not cascade change to descendants' do
-          expect { execute_callback }.not_to change { nested_ticket.reload.status }.from('open')
-        end
+      it 'does not cascade change ancestors' do
+        expect { solve_ticket }.not_to change { parent.reload.status }.from('open')
       end
     end
   end

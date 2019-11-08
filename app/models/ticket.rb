@@ -1,15 +1,36 @@
 # frozen_string_literal: true
 
 class Ticket < ApplicationRecord
+  include AASM
+
   validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: %i[provider brand_id] }
   validates :content, presence: true, allow_blank: false
   validates :provider, presence: true
   validate :parent_in_brand
 
-  before_save :cascade_status
-
   enum status: { open: 0, solved: 1 }
   enum provider: { twitter: 0 }
+
+  aasm column: :status, enum: true do
+    state :open, initial: true
+    state :solved
+
+    event :open do
+      before do
+        Ticket.where(ancestors_query).update_all(status: 'open') # rubocop:disable Rails/SkipsModelValidations
+      end
+
+      transitions from: :solved, to: :open
+    end
+
+    event :solve do
+      before do
+        Ticket.where(descendants_query).update_all(status: 'solved') # rubocop:disable Rails/SkipsModelValidations
+      end
+
+      transitions from: :open, to: :solved
+    end
+  end
 
   scope :root, -> { where(parent: nil) }
 
@@ -119,18 +140,5 @@ class Ticket < ApplicationRecord
 
   def ancestors_query
     arel_ids_query_minus_self(self.class.self_and_ancestors_arel(id))
-  end
-
-  def cascade_status
-    return unless status_changed?
-
-    query = case status
-            when 'open'
-              ancestors_query
-            when 'solved'
-              descendants_query
-            end
-
-    Ticket.where(query).update_all(status: status) # rubocop:disable Rails/SkipsModelValidations
   end
 end
