@@ -49,7 +49,7 @@ group :development, :test do
   gem 'factory_bot_rails', '~> 5.0.2' # Use factory_bot
   gem 'faker', '~> 2.2.2' # Sample data
   gem 'pry-byebug', '~> 3.7.0' # pry debugging
-  gem 'rspec-rails', '4.0.0.beta2' # rspec testing framework
+  gem 'rspec-rails', '4.0.0.beta3' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
 end
 
