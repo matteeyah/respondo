@@ -115,7 +115,7 @@ RSpec.describe Ticket, type: :model do
     let(:author) { FactoryBot.create(:author) }
 
     let(:tweet) do
-      instance_double('Twitter::Tweet',
+      instance_double(Twitter::Tweet,
                       id: '2',
                       attrs: { full_text: 'helloworld' },
                       user: 'does not matter',

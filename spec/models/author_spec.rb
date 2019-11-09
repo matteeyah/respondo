@@ -20,7 +20,7 @@ RSpec.describe Author, type: :model do
   describe '.from_twitter_user' do
     subject(:from_twitter_user) { described_class.from_twitter_user(twitter_user) }
 
-    let(:twitter_user) { instance_double('Twitter::User', id: '1', screen_name: 'helloworld') }
+    let(:twitter_user) { instance_double(Twitter::User, id: '1', screen_name: 'helloworld') }
 
     context 'when there is no matching author' do
       it 'creates a new author' do

@@ -83,7 +83,7 @@ RSpec.describe Brands::TicketsController, type: :request do
 
       before do
         sign_in(user)
-        stub_const('Clients::Twitter', client_class)
+        stub_const(Clients::Twitter.to_s, client_class)
       end
 
       context 'when authorized as a brand' do
@@ -298,7 +298,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     let(:load_new_tweets_job_class) { class_spy(LoadNewTweetsJob) }
 
     before do
-      stub_const('LoadNewTweetsJob', load_new_tweets_job_class)
+      stub_const(LoadNewTweetsJob.to_s, load_new_tweets_job_class)
     end
 
     context 'when user is signed in' do

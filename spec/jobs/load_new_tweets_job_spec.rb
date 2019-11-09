@@ -4,19 +4,29 @@ RSpec.describe LoadNewTweetsJob, type: :job do
   describe '#perform' do
     subject(:perform_now) { described_class.perform_now(brand.id) }
 
-    let(:mentions) { [instance_double(Twitter::Tweet), instance_double(Twitter::Tweet)] }
-    let(:brand) { instance_double(Brand, id: 123, new_mentions: mentions) }
-    let(:ticket_class) { class_spy(Ticket) }
+    let(:brand) { FactoryBot.create(:brand) }
+    let(:parent) { FactoryBot.create(:ticket, status: :solved, brand: brand) }
 
-    before do
-      allow(Brand).to receive(:find_by).with(id: brand.id).and_return(brand)
-      stub_const('Ticket', ticket_class)
+    let(:mentions) do
+      [instance_double(
+        Twitter::Tweet,
+        id: '1234', in_reply_to_tweet_id: parent.external_uid,
+        attrs: { full_text: 'hello' },
+        user: OpenStruct.new(id: '1234', screen_name: 'example')
+      )]
     end
 
-    it 'creates tickets' do
-      perform_now
+    before do
+      allow(brand).to receive(:new_mentions).and_return(mentions)
+      allow(Brand).to receive(:find_by).with(id: brand.id).and_return(brand)
+    end
 
-      mentions.each { |mention| expect(ticket_class).to have_received(:from_tweet).with(mention, brand).once }
+    it 'creates ticket ticket' do
+      expect { perform_now }.to change(Ticket, :count).from(1).to(2)
+    end
+
+    it 'opens parent ticket' do
+      expect { perform_now }.to change { parent.reload.status }.from('solved').to('open')
     end
   end
 end
