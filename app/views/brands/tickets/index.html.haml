@@ -2,12 +2,18 @@
   %span #{brand.screen_name}: Tweets
 
   - if user_authorized_for?(current_user, brand)
-    = button_to '↺', refresh_brand_tickets_path(brand), form_class: 'd-inline-block', class: 'btn btn-light'
+    = button_to '↻', refresh_brand_tickets_path(brand), form_class: 'd-inline-block', class: 'btn btn-light'
 %hr
 
 .list-group.list-group-horizontal.mb-3
   = link_to 'Open Tickets', brand_tickets_path(brand, status: 'open'), class: 'list-group-item list-group-item-action text-center'
   = link_to 'Solved Tickets', brand_tickets_path(brand, status: 'solved'), class: 'list-group-item list-group-item-action text-center'
+
+= form_with url: brand_tickets_path(brand), local: true, method: :get,
+  class: 'form-inline col-sm-12', html: { autocomplete: 'off' } do |search_form|
+  = search_form.hidden_field :status, value: request.parameters[:status]
+  = search_form.text_field :query, required: true, class: 'form-control col-sm-8'
+  = search_form.submit 'Search', name: nil, class: 'btn btn-outline-success col-sm-3 ml-auto'
 
 = render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: @tickets }
 
