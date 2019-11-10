@@ -1,15 +1,36 @@
 # frozen_string_literal: true
 
 class Ticket < ApplicationRecord
+  include AASM
+
   validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: %i[provider brand_id] }
   validates :content, presence: true, allow_blank: false
   validates :provider, presence: true
   validate :parent_in_brand
 
-  before_save :cascade_status
-
   enum status: { open: 0, solved: 1 }
   enum provider: { twitter: 0 }
+
+  aasm column: :status, enum: true do
+    state :open, initial: true
+    state :solved
+
+    event :open do
+      before do
+        Ticket.where(ancestors_query).update_all(status: 'open') # rubocop:disable Rails/SkipsModelValidations
+      end
+
+      transitions from: :solved, to: :open
+    end
+
+    event :solve do
+      before do
+        Ticket.where(descendants_query).update_all(status: 'solved') # rubocop:disable Rails/SkipsModelValidations
+      end
+
+      transitions from: :open, to: :solved
+    end
+  end
 
   scope :root, -> { where(parent: nil) }
 
@@ -35,38 +56,12 @@ class Ticket < ApplicationRecord
       convert_ticket_array_to_hash(tickets)
     end
 
-    def self_and_descendants_arel(ticket_ids) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-      # WITH RECURSIVE "ticket_tree" AS (
-      #   SELECT "tickets".* FROM "tickets" WHERE "tickets"."id" IN (TICKET_IDS)
-      #   UNION ALL
-      #   SELECT "tickets".* FROM "tickets" INNER JOIN "ticket_tree" ON "tickets"."parent_id" = "ticket_tree"."id"
-      # ) SELECT "ticket_tree"."id" FROM "ticket_tree"
-      # This recursive SQL allows us to get all descendant tickets given a ticket
-      # id. The method itself represents this recursive CTE SQL query in arel.
-      ticket_tree = Arel::Table.new(:ticket_tree)
-      select_manager = Arel::SelectManager.new(ActiveRecord::Base).freeze
+    def self_and_descendants_arel(ticket_ids)
+      self_and_recursive_cte_query_arel(:parent_id, :id, ticket_ids)
+    end
 
-      non_recursive_term = select_manager.dup.tap do |m|
-        m.from(arel_table)
-        m.project(arel_table[Arel.star])
-        m.where(arel_table[:id].in(ticket_ids))
-      end
-
-      recursive_term = select_manager.dup.tap do |m|
-        m.from(arel_table)
-        m.join(ticket_tree)
-        m.on(arel_table[:parent_id].eq(ticket_tree[:id]))
-        m.project(arel_table[Arel.star])
-      end
-
-      union = non_recursive_term.union(:all, recursive_term)
-      as_statement = Arel::Nodes::As.new(ticket_tree, union)
-
-      select_manager.dup.tap do |m|
-        m.from(ticket_tree)
-        m.with(:recursive, as_statement)
-        m.project(ticket_tree[:id])
-      end
+    def self_and_ancestors_arel(ticket_ids)
+      self_and_recursive_cte_query_arel(:id, :parent_id, ticket_ids)
     end
 
     private
@@ -87,6 +82,43 @@ class Ticket < ApplicationRecord
       # https://github.com/sferik/twitter/issues/959
       tweet_id.nil? ? nil : tweet_id
     end
+
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    def self_and_recursive_cte_query_arel(arel_table_column, tree_column, ticket_ids)
+      # WITH RECURSIVE "ticket_tree" AS (
+      #   SELECT "tickets".* FROM "tickets" WHERE "tickets"."id" IN (TICKET_IDS)
+      #   UNION ALL
+      #   SELECT "tickets".* FROM "tickets" INNER JOIN "ticket_tree" ON "tickets".AREL_TABLE_COLUMN = "ticket_tree".TREE_COLUMN
+      # ) SELECT "ticket_tree"."id" FROM "ticket_tree"
+      # This recursive SQL allows us to get all ancestor or descendant tickets
+      # given a list of ticket ids. The method itself represents this recursive
+      # CTE SQL query in arel.
+      ticket_tree = Arel::Table.new(:ticket_tree)
+      select_manager = Arel::SelectManager.new(ActiveRecord::Base).freeze
+
+      non_recursive_term = select_manager.dup.tap do |m|
+        m.from(arel_table)
+        m.project(arel_table[Arel.star])
+        m.where(arel_table[:id].in(ticket_ids))
+      end
+
+      recursive_term = select_manager.dup.tap do |m|
+        m.from(arel_table)
+        m.join(ticket_tree)
+        m.on(arel_table[arel_table_column].eq(ticket_tree[tree_column]))
+        m.project(arel_table[Arel.star])
+      end
+
+      union = non_recursive_term.union(:all, recursive_term)
+      as_statement = Arel::Nodes::As.new(ticket_tree, union)
+
+      select_manager.dup.tap do |m|
+        m.from(ticket_tree)
+        m.with(:recursive, as_statement)
+        m.project(ticket_tree[:id])
+      end
+    end
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
   end
 
   private
@@ -98,14 +130,15 @@ class Ticket < ApplicationRecord
     errors.add(:parent, 'must be in same brand as ticket')
   end
 
-  def descendants_query
-    self.class.arel_table[:id].in(self.class.self_and_descendants_arel(id))
-      .and(self.class.arel_table[:id].not_eq(id))
+  def arel_ids_query_minus_self(query)
+    self.class.arel_table[:id].in(query).and(self.class.arel_table[:id].not_eq(id))
   end
 
-  def cascade_status
-    return unless status_changed?
+  def descendants_query
+    arel_ids_query_minus_self(self.class.self_and_descendants_arel(id))
+  end
 
-    Ticket.where(descendants_query).update_all(status: status) # rubocop:disable Rails/SkipsModelValidations
+  def ancestors_query
+    arel_ids_query_minus_self(self.class.self_and_ancestors_arel(id))
   end
 end

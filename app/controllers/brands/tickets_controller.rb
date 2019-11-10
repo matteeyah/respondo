@@ -29,9 +29,9 @@ module Brands
     def invert_status
       case ticket.status
       when 'open'
-        ticket.update(status: 'solved')
+        ticket.solve!
       when 'solved'
-        ticket.update(status: 'open')
+        ticket.open!
       end
 
       redirect_to brand_tickets_path(brand),

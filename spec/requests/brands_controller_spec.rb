@@ -63,14 +63,14 @@ RSpec.describe BrandsController, type: :request do
         it 'renders the remove user link' do
           get_edit
 
-          expect(response.body).to include("Remove #{user.name}")
+          expect(response.body).to include("Remove #{CGI.escape_html(user.name)}")
         end
 
         context 'when pagination is not required' do
           it 'renders the users list' do
             get_edit
 
-            expect(response.body).to include(user.name)
+            expect(response.body).to include(CGI.escape_html(user.name))
           end
         end
 
@@ -80,13 +80,13 @@ RSpec.describe BrandsController, type: :request do
           it 'paginates users' do
             get_edit
 
-            expect(response.body).to include(user.name, *extra_users.first(19).map(&:name))
+            expect(response.body).to include(*[user, *extra_users.first(19)].map { |user| CGI.escape_html(user.name) })
           end
 
           it 'does not show page two users' do
             get_edit
 
-            expect(response.body).not_to include(extra_users.last.name)
+            expect(response.body).not_to include(CGI.escape_html(extra_users.last.name))
           end
         end
       end
