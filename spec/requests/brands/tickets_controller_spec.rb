@@ -10,56 +10,104 @@ RSpec.describe Brands::TicketsController, type: :request do
   let(:brand) { FactoryBot.create(:brand) }
 
   describe 'GET index' do
-    subject(:get_index) { get "/brands/#{brand.id}/tickets", params: { status: status } }
+    subject(:get_index) { get "/brands/#{brand.id}/tickets", params: { status: status, query: query } }
 
-    context 'when pagination is not required' do
-      let!(:open_ticket) { FactoryBot.create(:ticket, status: :open, brand: brand) }
-      let!(:solved_ticket) { FactoryBot.create(:ticket, status: :solved, brand: brand) }
+    context 'without search' do
+      let(:query) { nil }
 
-      context 'when status parameter is not specified' do
-        let(:status) { nil }
+      context 'when pagination is not required' do
+        let!(:open_ticket) { FactoryBot.create(:ticket, status: :open, brand: brand) }
+        let!(:solved_ticket) { FactoryBot.create(:ticket, status: :solved, brand: brand) }
 
-        it 'renders open tickets' do
-          get_index
+        context 'when status parameter is not specified' do
+          let(:status) { nil }
 
-          expect(response.body).to include(open_ticket.content)
+          it 'renders open tickets' do
+            get_index
+
+            expect(response.body).to include(open_ticket.content)
+          end
+        end
+
+        context 'when status parameter is empty string' do
+          let(:status) { '' }
+
+          it 'renders open tickets' do
+            get_index
+
+            expect(response.body).to include(open_ticket.content)
+          end
+        end
+
+        context 'when status parameter is open' do
+          let(:status) { 'open' }
+
+          it 'renders open tickets' do
+            get_index
+
+            expect(response.body).to include(open_ticket.content)
+          end
+        end
+
+        context 'when status parameter is solved' do
+          let(:status) { 'solved' }
+
+          it 'renders solved tickets' do
+            get_index
+
+            expect(response.body).to include(solved_ticket.content)
+          end
         end
       end
 
-      context 'when status parameter is open' do
-        let(:status) { 'open' }
+      context 'when pagination is required' do
+        let!(:open_tickets) { FactoryBot.create_list(:ticket, 21, status: :open, brand: brand) }
 
-        it 'renders open tickets' do
+        it 'paginates tickets' do
           get_index
 
-          expect(response.body).to include(open_ticket.content)
+          expect(response.body).to include(*open_tickets.first(20).map(&:content))
         end
-      end
 
-      context 'when status parameter is solved' do
-        let(:status) { 'solved' }
-
-        it 'renders solved tickets' do
+        it 'does not show page two tickets' do
           get_index
 
-          expect(response.body).to include(solved_ticket.content)
+          expect(response.body).not_to include(open_tickets.last.content)
         end
       end
     end
 
-    context 'when pagination is required' do
-      let!(:open_tickets) { FactoryBot.create_list(:ticket, 21, status: :open, brand: brand) }
+    context 'when searching by author name' do
+      let(:tickets) { FactoryBot.create_list(:ticket, 2, brand: brand) }
+      let(:query) { tickets.first.author.username }
 
-      it 'paginates tickets' do
+      it 'shows matching tickets' do
         get_index
 
-        expect(response.body).to include(*open_tickets.first(20).map(&:content))
+        expect(response.body).to include(tickets.first.content)
       end
 
-      it 'does not show page two tickets' do
+      it 'does not show other tickets' do
         get_index
 
-        expect(response.body).not_to include(open_tickets.last.content)
+        expect(response.body).not_to include(tickets.second.content)
+      end
+    end
+
+    context 'when searching by ticket content' do
+      let(:tickets) { FactoryBot.create_list(:ticket, 2, brand: brand) }
+      let(:query) { tickets.first.content }
+
+      it 'shows matching tickets' do
+        get_index
+
+        expect(response.body).to include(tickets.first.content)
+      end
+
+      it 'does not show other tickets' do
+        get_index
+
+        expect(response.body).not_to include(tickets.second.content)
       end
     end
   end

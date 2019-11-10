@@ -33,8 +33,12 @@ RSpec.describe 'brands/tickets/index', type: :view do
         .and have_link('Solved Tickets', href: brand_tickets_path(brand, status: 'solved'))
     end
 
+    it 'renders ticket search form' do
+      expect(render).to have_field('query').and have_button('Search')
+    end
+
     it 'renders the refresh button' do
-      expect(render).to have_button('↺')
+      expect(render).to have_button('↻')
     end
   end
 
@@ -46,6 +50,10 @@ RSpec.describe 'brands/tickets/index', type: :view do
     it 'renders ticket status links' do
       expect(render).to have_link('Open Tickets', href: brand_tickets_path(brand, status: 'open'))
         .and have_link('Solved Tickets', href: brand_tickets_path(brand, status: 'solved'))
+    end
+
+    it 'renders ticket search form' do
+      expect(render).to have_field('query').and have_button('Search')
     end
 
     it 'does not render the refresh button' do

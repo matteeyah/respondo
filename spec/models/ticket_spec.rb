@@ -108,6 +108,21 @@ RSpec.describe Ticket, type: :model do
     end
   end
 
+  describe '.search' do
+    subject(:search) { described_class.search('hello_world') }
+
+    let!(:author_hit) { FactoryBot.create(:ticket, author: FactoryBot.create(:author, username: 'hello_world')) }
+    let!(:content_hit) { FactoryBot.create(:ticket, content: 'hello_world') }
+
+    it 'searches by author name' do
+      expect(search).to include(author_hit)
+    end
+
+    it 'searches by ticket content' do
+      expect(search).to include(content_hit)
+    end
+  end
+
   describe '.from_tweet' do
     subject(:from_tweet) { described_class.from_tweet(tweet, brand) }
 

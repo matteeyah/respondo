@@ -9,8 +9,12 @@ module Brands
     before_action :authorize_reply!, only: [:reply]
 
     def index
-      status = params[:status] || 'open'
-      @pagy, tickets = pagy(brand.tickets.root.where(status: status))
+      status = params[:status].presence || 'open'
+      query = params[:query]
+
+      tickets = brand.tickets.root.where(status: status)
+      tickets = tickets.search(query) if query
+      @pagy, tickets = pagy(tickets)
       @tickets = tickets.with_descendants_hash(:author)
     end
 

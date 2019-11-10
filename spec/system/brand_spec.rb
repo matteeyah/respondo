@@ -84,6 +84,45 @@ RSpec.describe 'Brand', type: :system do
     end
   end
 
+  it 'allows searching tickets by author name' do
+    sign_in_user
+    sign_in_brand(brand)
+
+    fill_in :query, with: tickets.first.author.username
+    click_button 'Search'
+
+    expect(page).to have_text(tickets.first.content)
+    expect(page).not_to have_text(tickets.second.content)
+  end
+
+  it 'allows searching tickets by content' do
+    sign_in_user
+    sign_in_brand(brand)
+
+    fill_in :query, with: tickets.first.content
+    click_button 'Search'
+
+    expect(page).to have_text(tickets.first.content)
+    expect(page).not_to have_text(tickets.second.content)
+  end
+
+  it 'keeps ticket status context when searching' do
+    solved_tickets = FactoryBot.create_list(:ticket, 2, status: :solved, brand: brand)
+
+    sign_in_user
+    sign_in_brand(brand)
+
+    click_link 'Solved Tickets'
+
+    fill_in :query, with: solved_tickets.first.content
+    click_button 'Search'
+
+    expect(page).to have_text(solved_tickets.first.content)
+    expect(page).not_to have_text(solved_tickets.second.content)
+    expect(page).not_to have_text(tickets.first.content)
+    expect(page).not_to have_text(tickets.second.content)
+  end
+
   private
 
   def stub_twitter_reply_response(user_external_uid, user_screen_name, in_reply_to_status_id, response_text)
