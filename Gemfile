@@ -64,6 +64,7 @@ group :development do
   # Other
   gem 'dotenv-rails', '~> 2.7.5' # .env
   gem 'pry-rails', '~> 0.3.9' # pry console
+  gem 'license_finder'
 end
 
 group :test do
