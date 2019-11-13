@@ -89,6 +89,12 @@
     :why: 
     :versions: []
     :when: 2019-11-13 18:30:35.449386000 Z
+- - :whitelist
+  - unknown
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 19:24:50.637312000 Z
 - - :blacklist
   - AGPL-1.0
   - :who: matteeyah
