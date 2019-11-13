@@ -49,6 +49,7 @@ group :development, :test do
   gem 'bullet', '~> 6.0.2' # N+1 monitoring
   gem 'factory_bot_rails', '~> 5.0.2' # Use factory_bot
   gem 'faker', '~> 2.2.2' # Sample data
+  gem 'license_finder', '~> 5.11.1' # license checking
   gem 'pry-byebug', '~> 3.7.0' # pry debugging
   gem 'rspec-rails', '4.0.0.beta3' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
@@ -64,7 +65,6 @@ group :development do
   # Other
   gem 'dotenv-rails', '~> 2.7.5' # .env
   gem 'pry-rails', '~> 0.3.9' # pry console
-  gem 'license_finder'
 end
 
 group :test do
