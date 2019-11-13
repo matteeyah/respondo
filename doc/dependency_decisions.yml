@@ -1,0 +1,176 @@
+---
+- - :whitelist
+  - ISC
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:27:55.184175000 Z
+- - :whitelist
+  - MIT
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:28:02.416053000 Z
+- - :whitelist
+  - MIT*
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:43:45.672009000 Z
+- - :whitelist
+  - BSD
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:30:41.342415000 Z
+- - :whitelist
+  - BSD*
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:31:03.115768000 Z
+- - :whitelist
+  - Simplified BSD
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:29:47.749093000 Z
+- - :whitelist
+  - New BSD
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:29:16.288051000 Z
+- - :whitelist
+  - CC0-1.0
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:29:29.240737000 Z
+- - :whitelist
+  - CC-BY-3.0
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:31:13.031989000 Z
+- - :whitelist
+  - CC-BY-4.0
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:30:49.077696000 Z
+- - :whitelist
+  - Apache 2.0
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:28:48.120282000 Z
+- - :whitelist
+  - Mozilla Public License 2.0
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:31:39.764031000 Z
+- - :whitelist
+  - ruby
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:31:46.375734000 Z
+- - :whitelist
+  - Unlicense
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:29:39.428781000 Z
+- - :whitelist
+  - WTFPL
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:30:35.449386000 Z
+- - :whitelist
+  - unknown
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 19:24:50.637312000 Z
+- - :blacklist
+  - AGPL-1.0
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:51:47.166027000 Z
+- - :blacklist
+  - AGPL-3.0
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:48:43.058176000 Z
+- - :blacklist
+  - AGPL-3.0-only
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:51:34.713419000 Z
+- - :blacklist
+  - AGPL-3.0-or-later
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:51:40.521101000 Z
+
+- - :whitelist
+  - "(BSD-3-Clause OR GPL-2.0)"
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:30:18.502483000 Z
+- - :whitelist
+  - "(MIT AND BSD-3-Clause)"
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:30:27.472735000 Z
+- - :whitelist
+  - "(MIT AND Zlib)"
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:31:19.491188000 Z
+- - :whitelist
+  - "(BSD-2-Clause OR MIT OR Apache-2.0)"
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:31:28.172585000 Z
+- - :whitelist
+  - "(MIT OR Apache-2.0)"
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:32:03.497814000 Z
+- - :whitelist
+  - BSD-3-Clause OR MIT
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:32:12.050310000 Z
+- - :whitelist
+  - 2-clause BSDL
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:32:21.429419000 Z
+- - :whitelist
+  - "(WTFPL OR MIT)"
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:33:02.450067000 Z
+- - :blacklist
+  - AGPL
+  - :who: matteeyah
+    :why: 
+    :versions: []
+    :when: 2019-11-13 18:47:02.438592000 Z
