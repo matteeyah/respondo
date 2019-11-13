@@ -8,10 +8,16 @@ jobs:
     container: matteeyah/respondo-ci:latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
       - name: node dependencies
         run: bin/yarn install
       - name: rails dependencies
-        run: bundle install --without development production --jobs 4 --retry 3
+        run: bundle install --without development production --jobs 4 --retry 3 --path vendor/bundle
       - name: rspec
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
@@ -21,10 +27,16 @@ jobs:
     container: matteeyah/respondo-ci:latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
       - name: node dependencies
         run: bin/yarn install
       - name: rails dependencies
-        run: bundle install --without development production --jobs 4 --retry 3
+        run: bundle install --without development production --jobs 4 --retry 3 --path vendor/bundle
       - name: rspec system
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
