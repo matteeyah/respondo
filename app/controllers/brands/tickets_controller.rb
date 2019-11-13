@@ -12,8 +12,12 @@ module Brands
       status = params[:status].presence || 'open'
       query = params[:query]
 
-      tickets = brand.tickets.root.where(status: status)
-      tickets = tickets.search(query) if query
+      tickets = brand.tickets.where(status: status)
+      tickets = if query
+                  tickets.search(query)
+                else
+                  tickets.root
+                end
       @pagy, tickets = pagy(tickets)
       @tickets = tickets.with_descendants_hash(:author)
     end
