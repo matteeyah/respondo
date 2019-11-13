@@ -84,43 +84,65 @@ RSpec.describe 'Brand', type: :system do
     end
   end
 
-  it 'allows searching tickets by author name' do
-    sign_in_user
-    sign_in_brand(brand)
+  describe 'Search' do
+    it 'allows searching tickets by author name' do
+      sign_in_user
+      sign_in_brand(brand)
 
-    fill_in :query, with: tickets.first.author.username
-    click_button 'Search'
+      fill_in :query, with: tickets.first.author.username
+      click_button 'Search'
 
-    expect(page).to have_text(tickets.first.content)
-    expect(page).not_to have_text(tickets.second.content)
-  end
+      expect(page).to have_text(tickets.first.content)
+      expect(page).not_to have_text(tickets.second.content)
+    end
 
-  it 'allows searching tickets by content' do
-    sign_in_user
-    sign_in_brand(brand)
+    it 'allows searching tickets by content' do
+      sign_in_user
+      sign_in_brand(brand)
 
-    fill_in :query, with: tickets.first.content
-    click_button 'Search'
+      fill_in :query, with: tickets.first.content
+      click_button 'Search'
 
-    expect(page).to have_text(tickets.first.content)
-    expect(page).not_to have_text(tickets.second.content)
-  end
+      expect(page).to have_text(tickets.first.content)
+      expect(page).not_to have_text(tickets.second.content)
+    end
 
-  it 'keeps ticket status context when searching' do
-    solved_tickets = FactoryBot.create_list(:ticket, 2, status: :solved, brand: brand)
+    it 'keeps ticket status context when searching' do
+      solved_tickets = FactoryBot.create_list(:ticket, 2, status: :solved, brand: brand)
+      tickets.first.update(content: solved_tickets.first.content)
 
-    sign_in_user
-    sign_in_brand(brand)
+      sign_in_user
+      sign_in_brand(brand)
 
-    click_link 'Solved Tickets'
+      click_link 'Solved Tickets'
 
-    fill_in :query, with: solved_tickets.first.content
-    click_button 'Search'
+      # This is a hack to make Capybara wait until the page is loaded after navigating
+      find(:xpath, "//input[@type='hidden'][@value='solved']", visible: :hidden)
 
-    expect(page).to have_text(solved_tickets.first.content)
-    expect(page).not_to have_text(solved_tickets.second.content)
-    expect(page).not_to have_text(tickets.first.content)
-    expect(page).not_to have_text(tickets.second.content)
+      fill_in :query, with: solved_tickets.first.content
+      click_button 'Search'
+
+      expect(page).to have_text(solved_tickets.first.author.username)
+      expect(page).not_to have_text(solved_tickets.second.author.username)
+      expect(page).not_to have_text(tickets.first.author.username)
+      expect(page).not_to have_text(tickets.second.author.username)
+    end
+
+    it 'allows searching by nested ticket content' do
+      nested_ticket = FactoryBot.create(:ticket, brand: brand, parent: tickets.first)
+      nested_nested_ticket = FactoryBot.create(:ticket, brand: brand, parent: nested_ticket)
+
+      sign_in_user
+      sign_in_brand(brand)
+
+      fill_in :query, with: nested_ticket.content
+      click_button 'Search'
+
+      expect(page).to have_text(nested_ticket.content)
+      expect(page).to have_text(nested_nested_ticket.content)
+      expect(page).not_to have_text(tickets.first.content)
+      expect(page).not_to have_text(tickets.second.content)
+    end
   end
 
   private
