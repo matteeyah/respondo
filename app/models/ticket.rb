@@ -61,7 +61,7 @@ class Ticket < ApplicationRecord
       )
     end
 
-    def with_descendants_hash(included_relations = nil)
+    def with_descendants_hash(*included_relations)
       ids_query = arel_table[:id].in(self_and_descendants_arel(all.select(:id).arel))
       tickets = Ticket.unscoped.includes(included_relations).where(ids_query)
       convert_ticket_array_to_hash(tickets)
