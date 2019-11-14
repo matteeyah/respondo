@@ -12,7 +12,7 @@ class CreateAccounts < ActiveRecord::Migration[6.0]
       t.string :encrypted_secret
       t.string :encrypted_secret_iv, index: { unique: true }
 
-      t.references :user, null: false
+      t.references :user, index: true, null: false
 
       t.timestamps
     end

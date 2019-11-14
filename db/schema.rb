@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_12_173327) do
+ActiveRecord::Schema.define(version: 2019_11_14_195339) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "external_uid", null: false
@@ -51,6 +51,16 @@ ActiveRecord::Schema.define(version: 2019_09_12_173327) do
     t.index ["encrypted_secret_iv"], name: "index_brands_on_encrypted_secret_iv", unique: true
     t.index ["encrypted_token_iv"], name: "index_brands_on_encrypted_token_iv", unique: true
     t.index ["external_uid"], name: "index_brands_on_external_uid", unique: true
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text "content", null: false
+    t.integer "user_id", null: false
+    t.integer "ticket_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ticket_id"], name: "index_comments_on_ticket_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "tickets", force: :cascade do |t|
