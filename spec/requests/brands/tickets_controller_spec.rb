@@ -163,7 +163,7 @@ RSpec.describe Brands::TicketsController, type: :request do
           it 'sets the flash' do
             post_reply
 
-            expect(controller.flash[:success]).to eq('Response has been successfully submitted.')
+            expect(controller.flash[:success]).to eq('Response was successfully submitted.')
           end
 
           it 'redirects to brand tickets path' do
@@ -225,7 +225,7 @@ RSpec.describe Brands::TicketsController, type: :request do
           it 'sets the flash' do
             post_reply
 
-            expect(controller.flash[:success]).to eq('Response has been successfully submitted.')
+            expect(controller.flash[:success]).to eq('Response was successfully submitted.')
           end
 
           it 'redirects to brand tickets path' do
@@ -260,6 +260,73 @@ RSpec.describe Brands::TicketsController, type: :request do
 
       context 'when user is not authorized' do
         include_examples 'unauthorized user examples', 'You are not allowed to reply to the ticket.'
+      end
+    end
+
+    context 'when user is not signed in' do
+      include_examples 'unauthenticated user examples'
+    end
+  end
+
+  describe 'POST comment' do
+    subject(:post_comment) { post "/brands/#{brand.id}/tickets/#{ticket.id}/comment", params: { comment_text: comment_text } }
+
+    let(:ticket) { FactoryBot.create(:ticket, brand: brand) }
+    let(:comment_text) { nil }
+
+    context 'when user is signed in' do
+      let(:user) { FactoryBot.create(:user, :with_account) }
+
+      before do
+        sign_in(user)
+      end
+
+      context 'when user is authorized' do
+        before do
+          brand.users << user
+        end
+
+        context 'when comment is valid' do
+          let(:comment_text) { 'does not matter' }
+
+          it 'creates a comment' do
+            expect { post_comment }.to change(Comment, :count).from(0).to(1)
+          end
+
+          it 'sets the flash' do
+            post_comment
+
+            expect(controller.flash[:success]).to eq('Comment was successfully submitted.')
+          end
+
+          it 'redirects to brand tickets path' do
+            post_comment
+
+            expect(response).to redirect_to(brand_tickets_path(brand))
+          end
+        end
+
+        context 'when comment is not valid' do
+          it 'does not create a comment' do
+            expect { post_comment }.not_to change(Comment, :count)
+          end
+
+          it 'sets the flash' do
+            post_comment
+
+            expect(controller.flash[:warning]).to eq('Unable to create comment.')
+          end
+
+          it 'redirects to brand tickets path' do
+            post_comment
+
+            expect(response).to redirect_to(brand_tickets_path(brand))
+          end
+        end
+      end
+
+      context 'when user is not authorized' do
+        include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
       end
     end
 
