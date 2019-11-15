@@ -84,6 +84,23 @@ RSpec.describe 'Brand', type: :system do
     end
   end
 
+  it 'allows commenting on tickets' do
+    user = sign_in_user
+    sign_in_brand(brand)
+
+    comment_text = 'Comment from Respondo system tests.'
+
+    within('ul.list-group > li.list-group-item:first-child') do
+      fill_in :comment_text, with: comment_text
+      click_button 'Comment'
+    end
+
+    within('ul.list-group > li.list-group-item:first-child > ul.list-group > li.list-group-item.list-group-item-warning') do
+      expect(page).to have_text(user.name)
+      expect(page).to have_text(comment_text)
+    end
+  end
+
   describe 'Search' do
     it 'allows searching tickets by author name' do
       sign_in_user
