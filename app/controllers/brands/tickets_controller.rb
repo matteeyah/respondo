@@ -5,7 +5,7 @@ module Brands
     include Pagy::Backend
 
     before_action :authenticate!, except: [:index]
-    before_action :authorize!, only: %i[refresh invert_status]
+    before_action :authorize!, except: %i[index reply]
     before_action :authorize_reply!, only: [:reply]
 
     def index
@@ -19,16 +19,28 @@ module Brands
                   tickets.root
                 end
       @pagy, tickets = pagy(tickets)
-      @tickets = tickets.with_descendants_hash(:author)
+      @tickets = tickets.with_descendants_hash(:author, comments: [:user])
     end
 
     def reply
       begin
         tweet = client.reply(params[:response_text], ticket.external_uid)
         Ticket.from_tweet(tweet, brand)
-        flash[:success] = 'Response has been successfully submitted.'
+        flash[:success] = 'Response was successfully submitted.'
       rescue Twitter::Error => e
         flash[:warning] = "Unable to create tweet.\n#{e.message}"
+      end
+
+      redirect_to brand_tickets_path(brand)
+    end
+
+    def comment
+      comment = ticket.comments.create(content: params[:comment_text], user: current_user)
+
+      if comment.persisted?
+        flash[:success] = 'Comment was successfully submitted.'
+      else
+        flash[:warning] = 'Unable to create comment.'
       end
 
       redirect_to brand_tickets_path(brand)

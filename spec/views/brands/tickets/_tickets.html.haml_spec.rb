@@ -10,6 +10,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
   let(:brand) { FactoryBot.create(:brand) }
   let(:ticket) { FactoryBot.create(:ticket, brand: brand, status: :open) }
   let(:nested_ticket) { FactoryBot.create(:ticket, brand: brand, parent: ticket, status: :solved) }
+  let!(:comments) { FactoryBot.create_list(:comment, 2, ticket: ticket) }
   let(:tickets) { { ticket => { nested_ticket => {} } } }
 
   before do
@@ -43,6 +44,19 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       render_tickets_partial
 
       expect(rendered).to have_button('Open').and have_button('Solve')
+    end
+
+    it 'displays comment form' do
+      render_tickets_partial
+
+      expect(rendered).to have_field(:comment_text)
+    end
+
+    it 'displays comments' do
+      render_tickets_partial
+
+      expect(rendered).to have_text("#{comments.first.user.name}:").and have_text(comments.first.content)
+        .and have_text("#{comments.second.user.name}:").and have_text(comments.second.content)
     end
   end
 
@@ -82,6 +96,12 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
         expect(rendered).not_to have_button('Solve')
       end
+
+      it 'does not display comment form' do
+        render_tickets_partial
+
+        expect(rendered).not_to have_field(:comment_text)
+      end
     end
 
     context 'when user has account' do
@@ -112,6 +132,12 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         render_tickets_partial
 
         expect(rendered).not_to have_button('Solve')
+      end
+
+      it 'does not display comment form' do
+        render_tickets_partial
+
+        expect(rendered).not_to have_field(:comment_text)
       end
     end
   end

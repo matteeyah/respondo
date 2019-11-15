@@ -52,6 +52,7 @@ RSpec.describe Ticket, type: :model do
     it { is_expected.to belong_to(:brand) }
     it { is_expected.to belong_to(:parent).optional }
     it { is_expected.to have_many(:replies).dependent(:destroy) }
+    it { is_expected.to have_many(:comments).dependent(:restrict_with_error) }
   end
 
   describe 'State Machine' do

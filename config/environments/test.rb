@@ -59,5 +59,6 @@ Rails.application.configure do
 
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Account', association: :user
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'User', association: :brand
+    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :comments
   end
 end

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     scope module: :brands do
       resources :tickets, only: [:index] do
         post :reply
+        post :comment
         post :invert_status
 
         collection do
