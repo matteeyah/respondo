@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_195339) do
     t.integer "status", default: 0, null: false
     t.integer "brand_id", null: false
     t.integer "author_id", null: false
+    t.integer "user_id"
     t.integer "parent_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -77,6 +78,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_195339) do
     t.index ["brand_id"], name: "index_tickets_on_brand_id"
     t.index ["external_uid", "provider", "brand_id"], name: "index_tickets_on_external_uid_and_provider_and_brand_id", unique: true
     t.index ["parent_id"], name: "index_tickets_on_parent_id"
+    t.index ["user_id"], name: "index_tickets_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

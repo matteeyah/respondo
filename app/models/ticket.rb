@@ -35,6 +35,7 @@ class Ticket < ApplicationRecord
 
   scope :root, -> { where(parent: nil) }
 
+  belongs_to :user, optional: true
   belongs_to :author
   belongs_to :brand
 
