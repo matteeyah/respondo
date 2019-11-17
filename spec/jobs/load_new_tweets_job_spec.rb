@@ -21,7 +21,7 @@ RSpec.describe LoadNewTweetsJob, type: :job do
       allow(Brand).to receive(:find_by).with(id: brand.id).and_return(brand)
     end
 
-    it 'creates ticket ticket' do
+    it 'creates ticket' do
       expect { perform_now }.to change(Ticket, :count).from(1).to(2)
     end
 
