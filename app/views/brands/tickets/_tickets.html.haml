@@ -2,7 +2,10 @@
   - tickets.each do |ticket, replies|
     %li.list-group-item.mt-3
       .row.ml-3.mb-3
-        %span.font-weight-bold.mr-1 #{ticket.author.username}:
+        - if user_authorized_for?(current_user, brand) && ticket.user
+          %span.font-weight-bold.mr-1 #{ticket.user.name} as #{ticket.author.username}:
+        - else
+          %span.font-weight-bold.mr-1 #{ticket.author.username}:
         %span= ticket.content
       .row
         - if user_authorized_for?(current_user, brand) || user_can_reply_to?(current_user, ticket.provider)

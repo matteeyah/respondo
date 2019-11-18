@@ -19,7 +19,7 @@ module Brands
                   tickets.root
                 end
       @pagy, tickets = pagy(tickets)
-      @tickets = tickets.with_descendants_hash(:author, comments: [:user])
+      @tickets = tickets.with_descendants_hash(:author, :user, comments: [:user])
     end
 
     def reply
