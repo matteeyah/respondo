@@ -35,6 +35,7 @@ class Ticket < ApplicationRecord
 
   scope :root, -> { where(parent: nil) }
 
+  belongs_to :user, optional: true
   belongs_to :author
   belongs_to :brand
 
@@ -52,12 +53,13 @@ class Ticket < ApplicationRecord
       )
     end
 
-    def from_tweet(tweet, brand)
+    def from_tweet(tweet, brand, user)
       author = Author.from_twitter_user(tweet.user)
       parent = brand.tickets.find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id))
       brand.tickets.create!(
         external_uid: tweet.id, author: author, parent: parent,
-        provider: 'twitter', content: tweet.attrs[:full_text]
+        provider: 'twitter', content: tweet.attrs[:full_text],
+        user: user
       )
     end
 

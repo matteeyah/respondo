@@ -37,7 +37,7 @@ RSpec.describe 'Brand', type: :system do
   it 'allows replying to tickets' do
     brand.update(token: 'hello', secret: 'world')
 
-    sign_in_user
+    user = sign_in_user
     sign_in_brand(brand)
 
     response_text = 'Hello from Respondo system tests'
@@ -54,7 +54,7 @@ RSpec.describe 'Brand', type: :system do
     end
 
     within('ul.list-group > li.list-group-item:first-child > ul') do
-      expect(page).to have_text(brand.screen_name)
+      expect(page).to have_text("#{user.name} as #{brand.screen_name}:")
       expect(page).to have_text(response_text)
     end
   end

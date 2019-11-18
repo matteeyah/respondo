@@ -8,6 +8,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
   end
 
   let(:brand) { FactoryBot.create(:brand) }
+  let(:user) { FactoryBot.create(:user) }
   let(:ticket) { FactoryBot.create(:ticket, brand: brand, status: :open) }
   let(:nested_ticket) { FactoryBot.create(:ticket, brand: brand, parent: ticket, status: :solved) }
   let!(:comments) { FactoryBot.create_list(:comment, 2, ticket: ticket) }
@@ -15,7 +16,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
   before do
     without_partial_double_verification do
-      allow(view).to receive(:current_user).and_return(FactoryBot.build(:user))
+      allow(view).to receive(:current_user).and_return(user)
     end
 
     allow(view).to receive(:user_authorized_for?).and_return(false)
@@ -57,6 +58,18 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
       expect(rendered).to have_text("#{comments.first.user.name}:").and have_text(comments.first.content)
         .and have_text("#{comments.second.user.name}:").and have_text(comments.second.content)
+    end
+
+    context 'when ticket has user' do
+      before do
+        ticket.update(user: user)
+      end
+
+      it 'displays user along with author' do
+        render_tickets_partial
+
+        expect(rendered).to have_text("#{ticket.user.name} as #{ticket.author.username}:").and have_text(ticket.content)
+      end
     end
   end
 
@@ -138,6 +151,18 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         render_tickets_partial
 
         expect(rendered).not_to have_field(:comment_text)
+      end
+
+      context 'when ticket has user' do
+        before do
+          ticket.update(user: user)
+        end
+
+        it 'does not display user' do
+          render_tickets_partial
+
+          expect(rendered).not_to have_text("#{ticket.user.name} as #{ticket.author.username}:")
+        end
       end
     end
   end

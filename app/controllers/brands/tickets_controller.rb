@@ -19,18 +19,15 @@ module Brands
                   tickets.root
                 end
       @pagy, tickets = pagy(tickets)
-      @tickets = tickets.with_descendants_hash(:author, comments: [:user])
+      @tickets = tickets.with_descendants_hash(:author, :user, comments: [:user])
     end
 
     def reply
-      begin
-        tweet = client.reply(params[:response_text], ticket.external_uid)
-        Ticket.from_tweet(tweet, brand)
-        flash[:success] = 'Response was successfully submitted.'
-      rescue Twitter::Error => e
-        flash[:warning] = "Unable to create tweet.\n#{e.message}"
-      end
-
+      create_ticket!
+      flash[:success] = 'Response was successfully submitted.'
+    rescue Twitter::Error => e
+      flash[:warning] = "Unable to create tweet.\n#{e.message}"
+    ensure
       redirect_to brand_tickets_path(brand)
     end
 
@@ -83,6 +80,13 @@ module Brands
 
     def ticket
       @ticket ||= brand.tickets.find(params[:ticket_id] || params[:id])
+    end
+
+    def create_ticket!
+      Ticket.from_tweet(
+        client.reply(params[:response_text], ticket.external_uid),
+        brand, current_user
+      )
     end
   end
 end

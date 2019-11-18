@@ -157,7 +157,7 @@ RSpec.describe Brands::TicketsController, type: :request do
           it 'creates a reply ticket with matching attributes' do
             post_reply
 
-            expect(Ticket.find_by(external_uid: tweet.id)).to have_attributes(parent: ticket, content: 'does not matter')
+            expect(Ticket.find_by(external_uid: tweet.id)).to have_attributes(parent: ticket, content: 'does not matter', user: user)
           end
 
           it 'sets the flash' do
