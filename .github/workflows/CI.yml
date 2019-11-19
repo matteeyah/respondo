@@ -104,3 +104,21 @@ jobs:
         run: gem install haml_lint -v '0.33.0'
       - name: Run haml-lint
         run: haml-lint
+  stylelint:
+    runs-on: ubuntu-latest
+    container: node:13.1.0-stretch
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install stylelint
+        run: npm install --global stylelint stylelint-config-standard@19.0.0
+      - name: Run stylelint
+        run: stylelint '**/*.scss'
+  standard:
+    runs-on: ubuntu-latest
+    container: node:13.1.0-stretch
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install standard
+        run: npm install --global standard@14.3.1
+      - name: Run standard
+        run: standard

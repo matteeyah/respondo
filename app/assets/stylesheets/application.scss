@@ -17,6 +17,7 @@
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap";
 
-#alert-container {
-  height: 4em;
+main > .sticky-top {
+  min-height: 4em;
+  top: 1em;
 }
