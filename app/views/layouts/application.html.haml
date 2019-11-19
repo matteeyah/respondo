@@ -29,7 +29,7 @@
             - else
               %li.nav-item= auth_provider_link('Sign In', 'google_oauth2', 'user', class: 'nav-link')
     %main.container.mt-4{ role: 'main' }
-      #alert-container
+      .sticky-top
         - if flash.any?
           - flash.each do |type, message|
             .alert.alert-dismissible.fade.show{ class: "alert-#{type}", role: 'alert' }
