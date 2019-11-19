@@ -110,7 +110,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install stylelint
-        run: npm install --global stylelint stylelint-config-standard
+        run: npm install --global stylelint stylelint-config-standard@19.0.0
       - name: Run stylelint
         run: stylelint '**/*.scss'
   standard:
@@ -119,6 +119,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install standard
-        run: npm install --global standard
+        run: npm install --global standard@14.3.1
       - name: Run standard
         run: standard
