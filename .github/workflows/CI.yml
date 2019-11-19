@@ -113,3 +113,12 @@ jobs:
         run: npm install --global stylelint stylelint-config-standard
       - name: Run stylelint
         run: stylelint '**/*.scss'
+  standard:
+    runs-on: ubuntu-latest
+    container: node:13.1.0-stretch
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install standard
+        run: npm install --global standard
+      - name: Run standard
+        run: standard
