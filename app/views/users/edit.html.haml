@@ -2,11 +2,9 @@
 %hr
 
 .row
-
   .col
     %h3 New accounts
     %p.lead Click to add.
-
     .list-group.list-group-horizontal.flex-wrap
       - Account.providers.keys.each do |provider|
         - unless user.account_for_provider?(provider)
@@ -16,7 +14,6 @@
   .col
     %h3 Existing accounts
     %p.lead Click to remove.
-
     .list-group.list-group-horizontal.flex-wrap
       - user.accounts.each do |account|
         = link_to "Remove #{provider_human_name(account.provider)}",
