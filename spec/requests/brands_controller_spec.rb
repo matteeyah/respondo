@@ -8,31 +8,52 @@ RSpec.describe BrandsController, type: :request do
   include SignInOutRequestHelpers
 
   describe 'GET index' do
-    subject(:get_index) { get '/brands' }
+    subject(:get_index) { get '/brands', params: { query: query } }
 
-    context 'when pagination is not required' do
-      let!(:brands) { FactoryBot.create_list(:brand, 2) }
+    context 'without search' do
+      let(:query) { nil }
 
-      it 'shows the first page of brands' do
-        get_index
+      context 'when pagination is not required' do
+        let!(:brands) { FactoryBot.create_list(:brand, 2) }
 
-        expect(response.body).to include(*brands.map(&:screen_name))
+        it 'shows the first page of brands' do
+          get_index
+
+          expect(response.body).to include(*brands.map(&:screen_name))
+        end
+      end
+
+      context 'when pagination is required' do
+        let!(:brands) { FactoryBot.create_list(:brand, 21) }
+
+        it 'paginates brands' do
+          get_index
+
+          expect(response.body).to include(*brands.first(20).map(&:screen_name))
+        end
+
+        it 'does not show page two brands' do
+          get_index
+
+          expect(response.body).not_to include(brands.last.screen_name)
+        end
       end
     end
 
-    context 'when pagination is required' do
-      let!(:brands) { FactoryBot.create_list(:brand, 21) }
+    context 'when searching by brand screen name' do
+      let(:brands) { FactoryBot.create_list(:brand, 2) }
+      let(:query) { brands.first.screen_name }
 
-      it 'paginates brands' do
+      it 'shows matching brands' do
         get_index
 
-        expect(response.body).to include(*brands.first(20).map(&:screen_name))
+        expect(response.body).to include(brands.first.screen_name)
       end
 
-      it 'does not show page two brands' do
+      it 'does not show other brands' do
         get_index
 
-        expect(response.body).not_to include(brands.last.screen_name)
+        expect(response.body).not_to include(brands.second.screen_name)
       end
     end
   end

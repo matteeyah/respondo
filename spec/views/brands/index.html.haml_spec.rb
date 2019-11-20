@@ -17,4 +17,8 @@ RSpec.describe 'brands/index', type: :view do
     expect(render).to have_link(brands.first.screen_name, href: brand_tickets_path(brands.first))
       .and have_link(brands.second.screen_name, href: brand_tickets_path(brands.second))
   end
+
+  it 'renders brands search form' do
+    expect(render).to have_field('query').and have_button('Search')
+  end
 end

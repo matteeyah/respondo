@@ -16,4 +16,14 @@ RSpec.describe 'Brands', type: :system do
     click_link brands.second.screen_name
     expect(page).to have_text("#{brands.second.screen_name}: Tweets")
   end
+
+  it 'allows searching brands by screen name' do
+    visit brands_path
+
+    fill_in :query, with: brands.first.screen_name
+    click_button 'Search'
+
+    expect(page).to have_text(brands.first.screen_name)
+    expect(page).not_to have_text(brands.second.screen_name)
+  end
 end

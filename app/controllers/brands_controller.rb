@@ -7,7 +7,8 @@ class BrandsController < Brands::ApplicationController
   before_action :authorize!, except: [:index]
 
   def index
-    @pagy, @brands = pagy(Brand.all)
+    brands = Brand.where(Brand.arel_table[:screen_name].matches("%#{params[:query]}%"))
+    @pagy, @brands = pagy(brands)
   end
 
   def edit
