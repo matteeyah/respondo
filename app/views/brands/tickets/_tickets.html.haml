@@ -10,7 +10,7 @@
       .row
         - if user_authorized_for?(current_user, brand) || user_can_reply_to?(current_user, ticket.provider)
           = form_with url: brand_ticket_reply_path(brand, ticket),
-            class: 'form-inline col-sm-10', html: { autocomplete: 'off' } do |reply_form|
+            class: 'form-inline col-sm-10', html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off' } do |reply_form|
             = reply_form.text_field :response_text, required: true, placeholder: 'Reply', class: 'form-control col-sm-9'
             = reply_form.submit 'Reply', class: 'btn btn-secondary col-sm-2 ml-auto'
 
