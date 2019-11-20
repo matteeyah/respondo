@@ -7,7 +7,13 @@ class BrandsController < Brands::ApplicationController
   before_action :authorize!, except: [:index]
 
   def index
-    brands = Brand.where(Brand.arel_table[:screen_name].matches("%#{params[:query]}%"))
+    query = params[:query]
+
+    brands = if query.present?
+               Brand.search(query)
+             else
+               Brand.all
+             end
     @pagy, @brands = pagy(brands)
   end
 

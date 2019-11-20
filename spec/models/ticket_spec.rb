@@ -115,6 +115,7 @@ RSpec.describe Ticket, type: :model do
 
     let!(:author_hit) { FactoryBot.create(:ticket, author: FactoryBot.create(:author, username: 'hello_world')) }
     let!(:content_hit) { FactoryBot.create(:ticket, content: 'hello_world') }
+    let!(:miss) { FactoryBot.create(:ticket) }
 
     it 'searches by author name' do
       expect(search).to include(author_hit)
@@ -122,6 +123,10 @@ RSpec.describe Ticket, type: :model do
 
     it 'searches by ticket content' do
       expect(search).to include(content_hit)
+    end
+
+    it 'does not include misses' do
+      expect(search).not_to include(miss)
     end
   end
 

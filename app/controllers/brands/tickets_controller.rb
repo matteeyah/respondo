@@ -13,7 +13,7 @@ module Brands
       query = params[:query]
 
       tickets = brand.tickets.where(status: status)
-      tickets = if query
+      tickets = if query.present?
                   tickets.search(query)
                 else
                   tickets.root
