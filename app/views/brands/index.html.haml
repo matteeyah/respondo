@@ -3,8 +3,11 @@
 
 = form_with url: brands_path, local: true, method: :get,
   class: 'form-inline col-sm-12', html: { autocomplete: 'off' } do |search_form|
-  = search_form.text_field :query, required: true, class: 'form-control col-sm-8',
-    placeholder: 'Search by brand screen name'
+  .input-group.col-sm-8
+    = search_form.text_field :query, required: true, value: request.parameters[:query],
+      placeholder: 'Search by brand screen name', class: 'form-control'
+    .input-group-append
+      = link_to 'Clear Search', brands_path, class: 'btn btn-outline-secondary'
   = search_form.submit 'Search', name: nil, class: 'btn btn-outline-success col-sm-3 ml-auto'
 
 .list-group.list-group-horizontal.flex-wrap.mt-3
