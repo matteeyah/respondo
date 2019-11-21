@@ -1,5 +1,7 @@
 # README
 
+![](https://github.com/matteeyah/respondo/workflows/CI/badge.svg)
+
 ### Environment variables
 
 - Rails
