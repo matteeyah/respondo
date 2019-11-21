@@ -1,7 +1,13 @@
 %h4 Brands
 %hr
 
-.list-group.list-group-horizontal.flex-wrap
+= form_with url: brands_path, local: true, method: :get,
+  class: 'form-inline col-sm-12', html: { autocomplete: 'off' } do |search_form|
+  = search_form.text_field :query, required: true, class: 'form-control col-sm-8',
+    placeholder: 'Search by brand screen name'
+  = search_form.submit 'Search', name: nil, class: 'btn btn-outline-success col-sm-3 ml-auto'
+
+.list-group.list-group-horizontal.flex-wrap.mt-3
   - @brands.each do |brand|
     = link_to brand.screen_name, brand_tickets_path(brand), class: 'list-group-item list-group-item-action col-sm-3 text-center'
 

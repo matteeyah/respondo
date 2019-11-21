@@ -7,10 +7,22 @@ class BrandsController < Brands::ApplicationController
   before_action :authorize!, except: [:index]
 
   def index
-    @pagy, @brands = pagy(Brand.all)
+    @pagy, @brands = pagy(brands)
   end
 
   def edit
     @pagy, @brand_users = pagy(brand.users)
+  end
+
+  private
+
+  def brands
+    query = params[:query]
+
+    if query.present?
+      Brand.search(query)
+    else
+      Brand.all
+    end
   end
 end

@@ -21,6 +21,10 @@ class Brand < ApplicationRecord
         brand.save!
       end
     end
+
+    def search(query)
+      where(arel_table[:screen_name].matches("%#{query}%"))
+    end
   end
 
   def new_mentions
