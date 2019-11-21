@@ -9,17 +9,8 @@ module Brands
     before_action :authorize_reply!, only: [:reply]
 
     def index
-      status = params[:status].presence || 'open'
-      query = params[:query]
-
-      tickets = brand.tickets.where(status: status)
-      tickets = if query.present?
-                  tickets.search(query)
-                else
-                  tickets.root
-                end
-      @pagy, tickets = pagy(tickets)
-      @tickets = tickets.with_descendants_hash(:author, :user, comments: [:user])
+      @pagy, tickets_relation = pagy(tickets)
+      @tickets = tickets_relation.with_descendants_hash(:author, :user, comments: [:user])
     end
 
     def reply
@@ -80,6 +71,15 @@ module Brands
 
     def ticket
       @ticket ||= brand.tickets.find(params[:ticket_id] || params[:id])
+    end
+
+    def tickets
+      status = params[:status].presence || 'open'
+      query = params[:query]
+
+      filtered_tickets = brand.tickets.where(status: status)
+
+      query.present? ? filtered_tickets.search(query) : filtered_tickets.root
     end
 
     def create_ticket!
