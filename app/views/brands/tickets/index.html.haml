@@ -5,8 +5,10 @@
 %hr
 
 .list-group.list-group-horizontal.mb-3
-  = link_to 'Open Tickets', brand_tickets_path(brand, status: 'open'), class: 'list-group-item list-group-item-action text-center'
-  = link_to 'Solved Tickets', brand_tickets_path(brand, status: 'solved'), class: 'list-group-item list-group-item-action text-center'
+  = active_link_to 'Open Tickets', brand_tickets_path(brand, status: 'open'), active: { status: 'open' },
+    class: 'list-group-item list-group-item-action text-center'
+  = active_link_to 'Solved Tickets', brand_tickets_path(brand, status: 'solved'), active: { status: 'solved' },
+    class: 'list-group-item list-group-item-action text-center'
 
 = form_with url: brand_tickets_path(brand), local: true, method: :get,
   class: 'form-inline col-sm-12', html: { autocomplete: 'off' } do |search_form|
