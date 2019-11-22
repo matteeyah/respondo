@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_14_195339) do
+ActiveRecord::Schema.define(version: 2019_11_22_171907) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "external_uid", null: false
@@ -61,6 +61,15 @@ ActiveRecord::Schema.define(version: 2019_11_14_195339) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["ticket_id"], name: "index_comments_on_ticket_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "personal_access_tokens", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "token_digest", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_personal_access_tokens_on_user_id"
   end
 
   create_table "tickets", force: :cascade do |t|

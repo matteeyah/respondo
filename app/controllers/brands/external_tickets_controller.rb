@@ -16,7 +16,7 @@ module Brands
     private
 
     def create_params
-      params.require(:ticket).permit(:external_uid, :content, :parent_uid, author: [:external_uid, :username])
+      params.require(:ticket).permit(:external_uid, :content, :parent_uid, author: %i[external_uid username])
     end
   end
 end
