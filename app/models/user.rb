@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  validates :name, presence: true, allow_blank: false
+  validates :name, presence: { allow_blank: false }
 
   belongs_to :brand, optional: true
   has_many :accounts, dependent: :destroy

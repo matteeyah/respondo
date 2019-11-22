@@ -4,8 +4,8 @@ class Ticket < ApplicationRecord
   include AASM
   extend RecursiveCte
 
-  validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: %i[provider brand_id] }
-  validates :content, presence: true, allow_blank: false
+  validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[provider brand_id] }
+  validates :content, presence: { allow_blank: false }
   validates :provider, presence: true
   validate :parent_in_brand
 
