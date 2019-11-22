@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :users, only: [:edit] do
     scope module: :users do
       resources :accounts, only: [:destroy]
+      resources :personal_access_tokens, only: %i[create destroy]
     end
   end
 
