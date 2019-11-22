@@ -112,44 +112,6 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
   end
 
-  describe 'POST create_external.json' do
-    subject(:post_create_external_json) { post "/brands/#{brand.id}/tickets/create_external.json", params: external_json }
-
-    let(:external_json) do
-      {
-        external_uid: '123hello321world',
-        content: 'This is content from the external ticket example.',
-        parent_uid: 'external_ticket_parent_external_uid',
-        author: {
-          external_uid: 'external_ticket_author_external_uid',
-          username: 'best_username'
-        }
-      }
-    end
-
-    it 'creates a ticket' do
-      expect { post_create_external_json }.to change(Ticket, :count).from(0).to(1)
-    end
-
-    it 'creates a ticket with matching attributes' do
-      post_create_external_json
-
-      expect(Ticket.find_by(external_uid: external_json[:external_uid])).to have_attributes(content: external_json[:content])
-    end
-
-    it 'renders json' do
-      post_create_external_json
-
-      expect(response.content_type).to eq('application/json; charset=utf-8')
-    end
-
-    it 'renders new ticket' do
-      post_create_external_json
-
-      expect(response.body).to eq(Ticket.find_by(external_uid: external_json[:external_uid]).to_json)
-    end
-  end
-
   describe 'POST reply' do
     subject(:post_reply) { post "/brands/#{brand.id}/tickets/#{ticket.id}/reply", params: { response_text: 'does not matter' } }
 

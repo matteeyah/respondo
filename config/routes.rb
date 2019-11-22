@@ -24,10 +24,11 @@ Rails.application.routes.draw do
         post :invert_status
 
         collection do
-          post :create_external, constraints: { format: 'json' }
           post :refresh
         end
       end
+
+      resources :external_tickets, constraints: { format: 'json' }, only: [:create]
 
       resources :users, only: %i[create destroy]
     end

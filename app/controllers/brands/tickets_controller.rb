@@ -4,24 +4,13 @@ module Brands
   class TicketsController < ApplicationController
     include Pagy::Backend
 
-    protect_from_forgery except: [:create_external]
-
-    before_action :authenticate!, except: %i[index create_external]
-    before_action :authorize!, except: %i[index reply create_external]
+    before_action :authenticate!, except: %i[index]
+    before_action :authorize!, except: %i[index reply]
     before_action :authorize_reply!, only: [:reply]
 
     def index
       @pagy, tickets_relation = pagy(tickets)
       @tickets = tickets_relation.with_descendants_hash(:author, :user, comments: [:user])
-    end
-
-    def create_external
-      respond_to do |format|
-        format.json do
-          new_ticket = Ticket.from_external_ticket!(params, brand)
-          render json: new_ticket
-        end
-      end
     end
 
     def reply
