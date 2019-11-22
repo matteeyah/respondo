@@ -10,7 +10,7 @@
           - else
             #{ticket.author.username}:
         %span= ticket.content
-      - if ticket.parent_id == nil
+      - if ticket.parent_id.nil?
         .row.ml-3.mb-3
           %span.font-weight-bold.mr-1 Provider:
           %span= ticket.provider
