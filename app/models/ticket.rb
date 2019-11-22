@@ -10,7 +10,7 @@ class Ticket < ApplicationRecord
   validate :parent_in_brand
 
   enum status: { open: 0, solved: 1 }
-  enum provider: { twitter: 0 }
+  enum provider: { external: 0, twitter: 1 }
 
   aasm column: :status, enum: true do
     state :open, initial: true
@@ -53,13 +53,22 @@ class Ticket < ApplicationRecord
       )
     end
 
-    def from_tweet(tweet, brand, user)
-      author = Author.from_twitter_user(tweet.user)
-      parent = brand.tickets.find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id))
+    def from_tweet!(tweet, brand, user)
+      author = Author.from_twitter_user!(tweet.user)
+      parent = brand.tickets.find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id), provider: 'twitter')
       brand.tickets.create!(
         external_uid: tweet.id, author: author, parent: parent,
         provider: 'twitter', content: tweet.attrs[:full_text],
         user: user
+      )
+    end
+
+    def from_external_ticket!(external_ticket_json, brand)
+      author = Author.from_external_author!(external_ticket_json[:author])
+      parent = brand.tickets.find_by(external_uid: external_ticket_json[:parent_uid], provider: 'external')
+      brand.tickets.create!(
+        external_uid: external_ticket_json[:external_uid], author: author, parent: parent,
+        provider: 'external', content: external_ticket_json[:content]
       )
     end
 
