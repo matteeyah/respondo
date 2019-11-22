@@ -4,7 +4,7 @@ RSpec.describe Brands::ExternalTicketsController, type: :request do
   let(:brand) { FactoryBot.create(:brand) }
 
   describe 'POST create.json' do
-    subject(:post_create_json) { post "/brands/#{brand.id}/external_tickets.json", params: external_json }
+    subject(:post_create_json) { post "/brands/#{brand.id}/external_tickets.json", params: { ticket: external_json } }
 
     let(:external_json) do
       {
