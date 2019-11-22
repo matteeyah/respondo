@@ -35,6 +35,12 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         .and have_text("#{nested_ticket.author.username}:").and have_text(nested_ticket.content)
     end
 
+    it 'displays provider for root tickets' do
+      render_tickets_partial
+
+      expect(rendered).to have_text('Provider:', count: 1).and have_text(ticket.provider, count: 1)
+    end
+
     it 'displays response forms' do
       render_tickets_partial
 
@@ -47,10 +53,10 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       expect(rendered).to have_button('Open').and have_button('Solve')
     end
 
-    it 'displays comment form' do
+    it 'displays comment forms' do
       render_tickets_partial
 
-      expect(rendered).to have_field(:comment_text)
+      expect(rendered).to have_field(:comment_text, count: 2).and have_button('Comment', count: 2)
     end
 
     it 'displays comments' do
@@ -84,6 +90,12 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
         expect(rendered).to have_text("#{ticket.author.username}:").and have_text(ticket.content)
           .and have_text("#{nested_ticket.author.username}:").and have_text(nested_ticket.content)
+      end
+
+      it 'displays provider for root tickets' do
+        render_tickets_partial
+
+        expect(rendered).to have_text('Provider:', count: 1).and have_text(ticket.provider, count: 1)
       end
 
       it 'does not display response textbox' do

@@ -1,8 +1,18 @@
+- user_authorized = user_authorized_for?(current_user, brand)
+
 %h4
-  %span #{brand.screen_name}: Tweets
-  - if user_authorized_for?(current_user, brand)
+  %span #{brand.screen_name}: Tickets
+  - if user_authorized
     = button_to '↻', refresh_brand_tickets_path(brand), form_class: 'd-inline-block', class: 'btn btn-light'
 %hr
+
+- if user_authorized
+  .alert.alert-secondary
+    %p.mb-0
+      You can create tickets manually by submitting a request to
+      %span.font-weight-bold= brand_external_tickets_url(brand, format: :json)
+      %br
+      See the #{link_to 'required format', 'https://github.com/matteeyah/respondo#external-tickets'}.
 
 .list-group.list-group-horizontal.mb-3
   = active_link_to 'Open Tickets', brand_tickets_path(brand, status: 'open'), active: { status: 'open' },

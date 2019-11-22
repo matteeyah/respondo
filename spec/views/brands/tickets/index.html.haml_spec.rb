@@ -40,6 +40,10 @@ RSpec.describe 'brands/tickets/index', type: :view do
     it 'renders the refresh button' do
       expect(render).to have_button('↻')
     end
+
+    it 'renders the manual ticket info alert' do
+      expect(render).to have_text(brand_external_tickets_url(brand, format: :json))
+    end
   end
 
   context 'when user is not authorized' do
@@ -58,6 +62,10 @@ RSpec.describe 'brands/tickets/index', type: :view do
 
     it 'does not render the refresh button' do
       expect(render).not_to have_button('Refresh Tickets')
+    end
+
+    it 'does not render the manual ticket info alert' do
+      expect(render).not_to have_text(brand_external_tickets_url(brand, format: :json))
     end
   end
 end
