@@ -5,7 +5,7 @@ RSpec.describe PersonalAccessToken, type: :model do
     subject(:personal_access_token) { FactoryBot.create(:personal_access_token) }
 
     it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_uniqueness_of(:name).scoped_to(:user_id) }
+    it { is_expected.to validate_uniqueness_of(:name) }
   end
 
   describe 'Relations' do
