@@ -24,6 +24,7 @@ Rails.application.routes.draw do
         post :invert_status
 
         collection do
+          post :create_external, constraints: { format: 'json' }
           post :refresh
         end
       end
