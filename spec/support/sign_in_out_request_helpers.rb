@@ -9,7 +9,7 @@ module SignInOutRequestHelpers
   def sign_in(user)
     account = user.accounts.first
     SignInOutRequestHelpers.add_oauth_mock_for_user(user, account)
-    post "/auth/#{account.provider}?model=user"
+    post "/auth/#{account.provider}?state=user"
     # This is a redirect to the callback controller
     follow_redirect!
     # This is a redirect back to the referrer path

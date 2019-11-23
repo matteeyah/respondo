@@ -5,9 +5,9 @@ require './spec/support/sign_in_out_request_helpers.rb'
 RSpec.describe OmniauthCallbacksController, type: :request do
   include SignInOutRequestHelpers
 
-  describe 'GET authenticate' do
+  describe 'POST authenticate' do
     subject(:post_authenticate) do
-      post "/auth/#{provider}?model=#{model}"
+      post "/auth/#{provider}?state=#{model}"
       follow_redirect!
     end
 
