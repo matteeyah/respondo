@@ -66,6 +66,19 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         .and have_text("#{comments.second.user.name}:").and have_text(comments.second.content)
     end
 
+    context 'when ticket is external' do
+      before do
+        ticket.external!
+        nested_ticket.external!
+      end
+
+      it 'does not display response form' do
+        render_tickets_partial
+
+        expect(rendered).not_to have_button('Reply')
+      end
+    end
+
     context 'when ticket has user' do
       before do
         ticket.update(user: user)
@@ -163,6 +176,19 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         render_tickets_partial
 
         expect(rendered).not_to have_field(:comment_text)
+      end
+
+      context 'when ticket is external' do
+        before do
+          ticket.external!
+          nested_ticket.external!
+        end
+
+        it 'does not display response form' do
+          render_tickets_partial
+
+          expect(rendered).not_to have_button('Reply')
+        end
       end
 
       context 'when ticket has user' do

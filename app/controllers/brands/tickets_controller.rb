@@ -4,7 +4,7 @@ module Brands
   class TicketsController < ApplicationController
     include Pagy::Backend
 
-    before_action :authenticate!, except: %i[index]
+    before_action :authenticate!, except: [:index]
     before_action :authorize!, except: %i[index reply]
     before_action :authorize_reply!, only: [:reply]
 

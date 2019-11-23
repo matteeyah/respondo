@@ -9,7 +9,7 @@
 - if user_authorized
   .alert.alert-secondary
     %p.mb-0
-      You can create tickets manually by submitting a request to
+      You can create tickets manually by submitting a POST request to
       %span.font-weight-bold= brand_external_tickets_url(brand, format: :json)
       %br
       See the #{link_to 'required format', 'https://github.com/matteeyah/respondo#external-tickets'}.
