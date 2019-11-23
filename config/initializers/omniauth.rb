@@ -3,6 +3,7 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET']
   provider :twitter, ENV['TWITTER_API_KEY'], ENV['TWITTER_API_SECRET']
+  provider :disqus, ENV['DISQUS_PUBLIC_KEY'], ENV['DISQUS_SECRET_KEY']
 end
 
 # This prevents CSRF in Omniauth authentication requests.

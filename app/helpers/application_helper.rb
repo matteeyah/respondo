@@ -13,6 +13,8 @@ module ApplicationHelper
              '/auth/twitter'
            when 'google_oauth2'
              '/auth/google_oauth2'
+           when 'disqus'
+             '/auth/disqus'
            end
 
     "#{path}?#{params.to_query}"
