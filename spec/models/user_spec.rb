@@ -8,6 +8,7 @@ RSpec.describe User, type: :model do
   describe 'Relations' do
     it { is_expected.to belong_to(:brand).optional }
     it { is_expected.to have_many(:accounts).dependent(:destroy) }
+    it { is_expected.to have_many(:personal_access_tokens).dependent(:destroy) }
     it { is_expected.to have_many(:comments).dependent(:restrict_with_error) }
 
     Account.providers.keys.each do |provider|

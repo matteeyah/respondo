@@ -68,6 +68,7 @@ GEM
       encryptor (~> 3.0.0)
     autoprefixer-rails (9.7.2)
       execjs
+    bcrypt (3.1.13)
     bindex (0.8.1)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
@@ -410,6 +411,7 @@ DEPENDENCIES
   aasm (~> 5.0.6)
   active_link_to (~> 1.0.5)
   attr_encrypted (~> 3.1.0)
+  bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.2)
   bootstrap (~> 4.3.1)
   bullet (~> 6.0.2)

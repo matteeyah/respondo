@@ -17,27 +17,32 @@ RSpec.describe 'User settings', type: :system do
     click_link 'User settings'
   end
 
-  context 'when adding accounts to user' do
-    before do
-      add_oauth_mock_for_user(user, FactoryBot.create(:account, provider: 'twitter'))
-    end
+  it 'allows the user to authorize an account' do
+    add_oauth_mock_for_user(user, FactoryBot.create(:account, provider: 'twitter'))
+    click_link 'Authorize Twitter'
 
-    it 'allows the user to authorize an account' do
-      click_link 'Authorize Twitter'
-
-      expect(page).to have_link('Remove Twitter')
-    end
+    expect(page).to have_link('Remove Twitter')
   end
 
-  context 'when removing accounts from user' do
-    before do
-      FactoryBot.create(:account, provider: 'twitter', user: user)
-    end
+  it 'allows the user to remove an account' do
+    FactoryBot.create(:account, provider: 'twitter', user: user)
+    click_link 'Remove Twitter'
 
-    it 'allows the user to remove an account' do
-      click_link 'Remove Twitter'
+    expect(page).to have_link('Authorize Twitter')
+  end
 
-      expect(page).to have_link('Authorize Twitter')
-    end
+  it 'allows the user to create a personal access token' do
+    fill_in :name, with: 'something_nice'
+    click_button 'Create'
+
+    expect(page).to have_link('Remove something_nice')
+  end
+
+  it 'allows the user to remove a personal access token' do
+    FactoryBot.create(:personal_access_token, name: 'something_nice', user: user)
+
+    click_link 'Remove something_nice'
+
+    expect(page).not_to have_link('Remove something_nice')
   end
 end

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Account < ApplicationRecord
-  validates :external_uid, presence: true, allow_blank: false, uniqueness: { scope: :provider }
-  validates :email, presence: true, allow_blank: false, allow_nil: true
+  validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: :provider }
+  validates :email, presence: { allow_blank: false, allow_nil: true }
   validates :provider, presence: true
   validates :provider, uniqueness: { scope: :user_id }
 

@@ -83,7 +83,7 @@ module Brands
     end
 
     def create_ticket!
-      Ticket.from_tweet(
+      Ticket.from_tweet!(
         client.reply(params[:response_text], ticket.external_uid),
         brand, current_user
       )
