@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
+require './spec/support/concerns/account_examples.rb'
+
 RSpec.describe UserAccount, type: :model do
   describe 'Validations' do
     subject(:account) { FactoryBot.create(:user_account) }
 
-    it { is_expected.to validate_presence_of(:external_uid) }
-    it { is_expected.to validate_presence_of(:email).allow_nil }
     it { is_expected.to validate_presence_of(:provider) }
-    it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider) }
     it { is_expected.to validate_uniqueness_of(:provider).scoped_to(:user_id).ignoring_case_sensitivity }
+    it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider).ignoring_case_sensitivity }
   end
 
   it { is_expected.to define_enum_for(:provider).with_values(%i[google_oauth2 twitter disqus]) }
@@ -16,6 +16,8 @@ RSpec.describe UserAccount, type: :model do
   describe 'Relations' do
     it { is_expected.to belong_to(:user) }
   end
+
+  it_behaves_like 'account'
 
   describe '.from_omniauth' do
     %w[twitter google_oauth2].each do |provider|
@@ -204,28 +206,6 @@ RSpec.describe UserAccount, type: :model do
           end
         end
       end
-    end
-  end
-
-  describe '#client' do
-    subject(:client) { account.client }
-
-    let(:account) { FactoryBot.build(:user_account) }
-
-    context 'when provider is twitter' do
-      before do
-        account.provider = 'twitter'
-      end
-
-      it { is_expected.to be_an_instance_of(Clients::Twitter) }
-    end
-
-    context 'when provider is not supported' do
-      before do
-        account.provider = 'google_oauth2'
-      end
-
-      it { is_expected.to eq(nil) }
     end
   end
 end
