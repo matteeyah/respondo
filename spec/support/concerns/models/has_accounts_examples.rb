@@ -17,7 +17,7 @@ RSpec.shared_examples 'has_accounts' do
 
         context 'when account for provider exists' do
           before do
-            FactoryBot.create(account_class_slug, model_class_slug => model, provider: provider)
+            FactoryBot.create(account_class_slug, model_class_slug => model, provider: provider_name)
           end
 
           it { is_expected.to eq(true) }
@@ -40,7 +40,7 @@ RSpec.shared_examples 'has_accounts' do
         let(:provider) { provider_name }
 
         context 'when account for provider exists' do
-          let!(:account) { FactoryBot.create(account_class_slug, model_class_slug => model, provider: provider) }
+          let!(:account) { FactoryBot.create(account_class_slug, model_class_slug => model, provider: provider_name) }
 
           it { is_expected.to be_an_instance_of(account.client.class) }
         end
