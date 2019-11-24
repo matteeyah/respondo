@@ -6,7 +6,7 @@ module Brands
     before_action :authorize!
 
     def destroy
-      if brand.brand_accounts.count == 1
+      if brand.accounts.count == 1
         flash[:danger] = 'You can not remove your last account.'
       else
         account.destroy
@@ -19,7 +19,7 @@ module Brands
     private
 
     def account
-      @account ||= brand.brand_accounts.find(params[:brand_account_id] || params[:id])
+      @account ||= brand.accounts.find(params[:brand_account_id] || params[:id])
     end
   end
 end

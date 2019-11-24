@@ -36,14 +36,14 @@ module OmniauthHelpers
                              credentials: credentials)
   end
 
-  def add_oauth_mock_for_user(user, account = user.user_accounts.first)
+  def add_oauth_mock_for_user(user, account = user.accounts.first)
     add_oauth_mock(
       account.provider.to_sym, account.external_uid, { name: user.name, email: account.email },
       token: account.token, secret: account.secret
     )
   end
 
-  def add_oauth_mock_for_brand(brand, account = brand.brand_accounts.first)
+  def add_oauth_mock_for_brand(brand, account = brand.accounts.first)
     add_oauth_mock(
       account.provider.to_sym, account.external_uid, { nickname: brand.screen_name },
       token: account.token, secret: account.secret

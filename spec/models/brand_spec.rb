@@ -9,7 +9,7 @@ RSpec.describe Brand, type: :model do
 
   describe 'Relations' do
     it { is_expected.to have_many(:users).dependent(:nullify) }
-    it { is_expected.to have_many(:brand_accounts).dependent(:destroy) }
+    it { is_expected.to have_many(:accounts).dependent(:destroy) }
     it { is_expected.to have_many(:tickets).dependent(:restrict_with_error) }
 
     BrandAccount.providers.keys.each do |provider|

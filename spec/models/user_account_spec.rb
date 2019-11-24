@@ -85,7 +85,7 @@ RSpec.describe UserAccount, type: :model do
               end
 
               it 'adds the account to the specified user' do
-                expect(current_user.user_accounts).to include(from_omniauth)
+                expect(current_user.accounts).to include(from_omniauth)
               end
             end
 
@@ -99,7 +99,7 @@ RSpec.describe UserAccount, type: :model do
               end
 
               it 'does not add the account to the specified user' do
-                expect(current_user.user_accounts).not_to include(from_omniauth)
+                expect(current_user.accounts).not_to include(from_omniauth)
               end
 
               it 'has an error about provider being taken' do

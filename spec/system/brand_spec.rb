@@ -38,7 +38,7 @@ RSpec.describe 'Brand', type: :system do
     user = sign_in_user
     sign_in_brand(brand)
 
-    account = brand.brand_accounts.first
+    account = brand.accounts.first
     account.update(token: 'hello', secret: 'world')
 
     response_text = 'Hello from Respondo system tests'

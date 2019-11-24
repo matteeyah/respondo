@@ -3,7 +3,7 @@
 class Brand < ApplicationRecord
   validates :screen_name, presence: { allow_blank: false }
 
-  has_many :brand_accounts, dependent: :destroy
+  has_many :accounts, class_name: 'BrandAccount', inverse_of: :brand, dependent: :destroy
   has_many :users, dependent: :nullify
   has_many :tickets, dependent: :restrict_with_error
 
@@ -18,10 +18,10 @@ class Brand < ApplicationRecord
   end
 
   def account_for_provider?(provider)
-    brand_accounts.exists?(provider: provider)
+    accounts.exists?(provider: provider)
   end
 
   def client_for_provider(provider)
-    brand_accounts.find_by(provider: provider)&.client
+    accounts.find_by(provider: provider)&.client
   end
 end

@@ -85,7 +85,7 @@ RSpec.describe BrandAccount, type: :model do
               end
 
               it 'adds the account to the specified brand' do
-                expect(current_brand.brand_accounts).to include(from_omniauth)
+                expect(current_brand.accounts).to include(from_omniauth)
               end
             end
 
@@ -99,7 +99,7 @@ RSpec.describe BrandAccount, type: :model do
               end
 
               it 'does not add the account to the specified brand' do
-                expect(current_brand.brand_accounts).not_to include(from_omniauth)
+                expect(current_brand.accounts).not_to include(from_omniauth)
               end
 
               it 'has an error about provider being taken' do

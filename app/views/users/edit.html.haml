@@ -1,8 +1,7 @@
 %h4= user.name
 %hr
 
-= render partial: 'shared/accounts',
-  locals: { providers: UserAccount.providers.keys, existing_accounts: user.user_accounts, model: user }
+= render partial: 'shared/accounts', locals: { providers: UserAccount.providers.keys, model: user }
 
 %hr
 
