@@ -1,5 +1,3 @@
-- model_slug = model.class.to_s.downcase
-
 .row
   .col
     %h3 New accounts
@@ -8,7 +6,7 @@
       - providers.each do |provider|
         - unless model.account_for_provider?(provider)
           = auth_provider_link("Authorize #{provider_human_name(provider)}",
-            provider, model_slug, class: 'list-group-item list-group-item-action col-sm-6 text-center')
+            provider, model.class.to_s.downcase, class: 'list-group-item list-group-item-action col-sm-6 text-center')
 
   .col
     %h3 Existing accounts

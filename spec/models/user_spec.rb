@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require './spec/support/concerns/models/has_accounts_examples.rb'
+
 RSpec.describe User, type: :model do
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:name) }
@@ -16,49 +18,5 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#account_for_provider?' do
-    subject(:account_for_provider?) { user.account_for_provider?(provider) }
-
-    let(:user) { FactoryBot.create(:user) }
-
-    UserAccount.providers.keys.each do |provider_name|
-      context "when provider is #{provider_name}" do
-        let(:provider) { provider_name }
-
-        context 'when account for provider exists' do
-          before do
-            FactoryBot.create(:user_account, user: user, provider: provider)
-          end
-
-          it { is_expected.to eq(true) }
-        end
-
-        context 'when account for provider does not exist' do
-          it { is_expected.to eq(false) }
-        end
-      end
-    end
-  end
-
-  describe '#client_for_provider' do
-    subject(:client_for_provider) { user.client_for_provider(provider) }
-
-    let(:user) { FactoryBot.create(:user) }
-
-    UserAccount.providers.keys.each do |provider_name|
-      context "when provider is #{provider_name}" do
-        let(:provider) { provider_name }
-
-        context 'when account for provider exists' do
-          let!(:account) { FactoryBot.create(:user_account, user: user, provider: provider) }
-
-          it { is_expected.to be_an_instance_of(account.client.class) }
-        end
-
-        context 'when account for provider does not exist' do
-          it { is_expected.to eq(nil) }
-        end
-      end
-    end
-  end
+  it_behaves_like 'has_accounts'
 end
