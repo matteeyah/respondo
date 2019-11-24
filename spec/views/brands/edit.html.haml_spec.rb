@@ -26,10 +26,6 @@ RSpec.describe 'brands/edit', type: :view do
     expect(render).to have_link('Remove Twitter')
   end
 
-  it 'renders all users' do
-    expect(render).to have_text(user_in_brand.name)
-  end
-
   it 'has the add user select box' do
     expect(render).to have_select('add-user', options: ['Select user', user_outside_brand.name])
   end
