@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :account do
+  factory :brand_account do
     external_uid { generate(:external_uid) }
-    provider { 'google_oauth2' }
+    provider { 'twitter' }
 
-    user
+    brand
   end
 end

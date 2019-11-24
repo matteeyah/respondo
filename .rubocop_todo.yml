@@ -10,5 +10,6 @@
 # Configuration parameters: Max.
 RSpec/NestedGroups:
   Exclude:
-    - 'spec/models/account_spec.rb'
+    - 'spec/models/user_account_spec.rb'
+    - 'spec/models/brand_account_spec.rb'
     - 'spec/requests/omniauth_callbacks_controller_spec.rb'

@@ -43,10 +43,10 @@ module OmniauthHelpers
     )
   end
 
-  def add_oauth_mock_for_brand(brand)
+  def add_oauth_mock_for_brand(brand, account = brand.accounts.first)
     add_oauth_mock(
-      :twitter, brand.external_uid, { nickname: brand.screen_name },
-      token: brand.token, secret: brand.secret
+      account.provider.to_sym, account.external_uid, { nickname: brand.screen_name },
+      token: account.token, secret: account.secret
     )
   end
 end

@@ -4,7 +4,7 @@ RSpec.describe 'users/edit', type: :view do
   let(:user) { FactoryBot.create(:user) }
 
   before do
-    FactoryBot.create(:account, provider: 'google_oauth2', user: user)
+    FactoryBot.create(:user_account, provider: 'google_oauth2', user: user)
     FactoryBot.create(:personal_access_token, name: 'something_nice', user: user)
 
     without_partial_double_verification do

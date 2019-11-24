@@ -53,7 +53,7 @@ RSpec.describe BrandsHelper, type: :helper do
 
       context 'when user has account' do
         before do
-          FactoryBot.create(:account, provider: provider, user: user)
+          FactoryBot.create(:user_account, provider: provider, user: user)
         end
 
         context 'when account has client' do

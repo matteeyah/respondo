@@ -3,10 +3,9 @@
 class OmniauthCallbacksController < ApplicationController
   def authenticate
     omniauth_hash = request.env['omniauth.auth']
-    auth_params = request.env['omniauth.params']
-    redirect_uri = auth_params['redirect_to'] || root_path
+    redirect_uri = request.env['omniauth.origin'] || root_path
 
-    case auth_params['model']
+    case request.env['omniauth.params']['state']
     when 'user'
       authenticate_user(omniauth_hash)
     when 'brand'
@@ -19,7 +18,7 @@ class OmniauthCallbacksController < ApplicationController
   private
 
   def authenticate_user(auth_hash)
-    account = Account.from_omniauth(auth_hash, current_user)
+    account = UserAccount.from_omniauth(auth_hash, current_user)
 
     if account.persisted?
       flash[:success] = 'User was successfully authenticated.'
@@ -30,14 +29,15 @@ class OmniauthCallbacksController < ApplicationController
   end
 
   def authenticate_brand(auth_hash)
-    unless user_signed_in?
-      flash[:warning] = 'User is not signed in.'
-      return
+    return flash[:warning] = 'User is not signed in.' unless user_signed_in?
+
+    account = BrandAccount.from_omniauth(auth_hash, current_brand)
+
+    if account.persisted?
+      flash[:success] = 'Brand was successfully authenticated.'
+      current_user.update(brand: account.brand)
+    else
+      flash[:danger] = "Could not authenticate brand.\n#{account.errors.full_messages.join("\n")}"
     end
-
-    brand = Brand.from_omniauth(auth_hash)
-    current_user.update(brand: brand)
-
-    flash[:success] = 'Brand was successfully authenticated.'
   end
 end

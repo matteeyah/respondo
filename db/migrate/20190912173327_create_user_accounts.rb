@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class CreateAccounts < ActiveRecord::Migration[6.0]
+class CreateUserAccounts < ActiveRecord::Migration[6.0]
   def change
-    create_table :accounts do |t|
+    create_table :user_accounts do |t|
       t.string :external_uid, null: false
       t.string :email
       t.integer :provider, null: false
@@ -17,7 +17,7 @@ class CreateAccounts < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :accounts, %i[user_id provider], unique: true
-    add_index :accounts, %i[external_uid provider], unique: true
+    add_index :user_accounts, %i[user_id provider], unique: true
+    add_index :user_accounts, %i[external_uid provider], unique: true
   end
 end

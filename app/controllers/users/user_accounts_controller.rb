@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Users
-  class AccountsController < ApplicationController
+  class UserAccountsController < ApplicationController
     before_action :authenticate!
     before_action :authorize!
 
@@ -19,7 +19,7 @@ module Users
     private
 
     def account
-      @account ||= user.accounts.find(params[:account_id] || params[:id])
+      @account ||= user.accounts.find(params[:user_account_id] || params[:id])
     end
   end
 end

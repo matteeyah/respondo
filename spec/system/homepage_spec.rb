@@ -16,7 +16,7 @@ RSpec.describe 'Homepage', type: :system do
 
     expect(page).to have_link('Authorize Brand')
 
-    add_oauth_mock_for_brand(FactoryBot.create(:brand))
+    add_oauth_mock_for_brand(FactoryBot.create(:brand, :with_account))
     click_link('Authorize Brand', class: 'btn')
 
     expect(page).to have_link('Brand Tickets')

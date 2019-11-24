@@ -138,6 +138,14 @@ endpoint in JSON format.
         - DEVELOPMENT
         - PRODUCTION
 
+- Disqus OAuth
+    - `DISQUS_PUBLIC_KEY`
+        - DEVELOPMENT
+        - PRODUCTION
+    - `DISQUS_SECRET_KEY`
+        - DEVELOPMENT
+        - PRODUCTION
+
 ### Heroku
 
 #### Reset the database

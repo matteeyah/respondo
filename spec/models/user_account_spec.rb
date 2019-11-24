@@ -1,21 +1,23 @@
 # frozen_string_literal: true
 
-RSpec.describe Account, type: :model do
-  describe 'Validations' do
-    subject(:account) { FactoryBot.create(:account) }
+require './spec/support/concerns/account_examples.rb'
 
-    it { is_expected.to validate_presence_of(:external_uid) }
-    it { is_expected.to validate_presence_of(:email).allow_nil }
+RSpec.describe UserAccount, type: :model do
+  describe 'Validations' do
+    subject(:account) { FactoryBot.create(:user_account) }
+
     it { is_expected.to validate_presence_of(:provider) }
-    it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider) }
     it { is_expected.to validate_uniqueness_of(:provider).scoped_to(:user_id).ignoring_case_sensitivity }
+    it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider).ignoring_case_sensitivity }
   end
 
-  it { is_expected.to define_enum_for(:provider).with_values(%i[twitter google_oauth2]) }
+  it { is_expected.to define_enum_for(:provider).with_values(%i[google_oauth2 twitter disqus]) }
 
   describe 'Relations' do
     it { is_expected.to belong_to(:user) }
   end
+
+  it_behaves_like 'account'
 
   describe '.from_omniauth' do
     %w[twitter google_oauth2].each do |provider|
@@ -89,7 +91,7 @@ RSpec.describe Account, type: :model do
 
             context 'when existing user has account for provider' do
               before do
-                FactoryBot.create(:account, provider: provider, user: current_user)
+                FactoryBot.create(:user_account, provider: provider, user: current_user)
               end
 
               it 'does not create new users' do
@@ -108,7 +110,7 @@ RSpec.describe Account, type: :model do
         end
 
         context 'when there is a matching account' do
-          let!(:account) { FactoryBot.create(:account, external_uid: auth_hash.uid, provider: auth_hash.provider) }
+          let!(:account) { FactoryBot.create(:user_account, external_uid: auth_hash.uid, provider: auth_hash.provider) }
           let(:current_user) { account.user }
 
           context 'when account belongs to current user' do
@@ -204,28 +206,6 @@ RSpec.describe Account, type: :model do
           end
         end
       end
-    end
-  end
-
-  describe '#client' do
-    subject(:client) { account.client }
-
-    let(:account) { FactoryBot.build(:account) }
-
-    context 'when provider is twitter' do
-      before do
-        account.provider = 'twitter'
-      end
-
-      it { is_expected.to be_an_instance_of(Clients::Twitter) }
-    end
-
-    context 'when provider is not supported' do
-      before do
-        account.provider = 'google_oauth2'
-      end
-
-      it { is_expected.to eq(nil) }
     end
   end
 end

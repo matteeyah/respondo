@@ -22,6 +22,7 @@ gem 'webpacker', '~> 4.0' # Transpile app-like JavaScript. Read more: https://gi
 # gem 'image_processing', '~> 1.2'
 
 # Omniauth
+gem 'omniauth-disqus', '~> 1.0.1'
 gem 'omniauth-google-oauth2', '~> 0.6.0'
 gem 'omniauth-twitter', '~> 1.4.0'
 # Other

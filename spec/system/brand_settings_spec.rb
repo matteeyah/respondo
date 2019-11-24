@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require './spec/support/omniauth_helpers.rb'
 require './spec/support/sign_in_out_system_helpers.rb'
 
 RSpec.describe 'Brand settings', type: :system do
+  include OmniauthHelpers
   include SignInOutSystemHelpers
 
-  let(:brand) { FactoryBot.create(:brand) }
+  let(:brand) { FactoryBot.create(:brand, :with_account) }
 
   before do
     visit '/'
@@ -14,6 +16,20 @@ RSpec.describe 'Brand settings', type: :system do
     sign_in_brand(brand)
 
     click_link 'Brand settings'
+  end
+
+  it 'allows the user to authorize an account' do
+    add_oauth_mock_for_brand(brand, FactoryBot.create(:brand_account, provider: 'disqus'))
+    click_link 'Authorize Disqus'
+
+    expect(page).to have_link('Remove Disqus')
+  end
+
+  it 'allows the user to remove an account' do
+    FactoryBot.create(:brand_account, provider: 'disqus', brand: brand)
+    click_link 'Remove Disqus'
+
+    expect(page).to have_link('Authorize Disqus')
   end
 
   context 'when adding users to brand' do

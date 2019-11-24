@@ -6,13 +6,13 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   # OmniAuth routing
-  get 'auth/:provider/callback', to: 'omniauth_callbacks#authenticate', constraints: { provider: /twitter|google_oauth2/ }
+  get 'auth/:provider/callback', to: 'omniauth_callbacks#authenticate', constraints: { provider: /twitter|google_oauth2|disqus/ }
   get 'auth/failure', to: redirect('/')
   delete :sign_out, to: 'sessions#destroy'
 
   resources :users, only: [:edit] do
     scope module: :users do
-      resources :accounts, only: [:destroy]
+      resources :user_accounts, only: [:destroy]
       resources :personal_access_tokens, only: %i[create destroy]
     end
   end
@@ -28,6 +28,8 @@ Rails.application.routes.draw do
           post :refresh
         end
       end
+
+      resources :brand_accounts, only: [:destroy]
 
       resources :external_tickets, constraints: { format: 'json' }, only: [:create]
 

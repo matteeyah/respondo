@@ -5,7 +5,7 @@ require './spec/support/sign_in_out_system_helpers.rb'
 RSpec.describe 'Brand', type: :system do
   include SignInOutSystemHelpers
 
-  let(:brand) { FactoryBot.create(:brand) }
+  let(:brand) { FactoryBot.create(:brand, :with_account) }
   let!(:tickets) { FactoryBot.create_list(:ticket, 2, brand: brand) }
 
   before do
@@ -35,14 +35,15 @@ RSpec.describe 'Brand', type: :system do
   end
 
   it 'allows replying to tickets' do
-    brand.update(token: 'hello', secret: 'world')
-
     user = sign_in_user
     sign_in_brand(brand)
 
+    account = brand.accounts.first
+    account.update(token: 'hello', secret: 'world')
+
     response_text = 'Hello from Respondo system tests'
     stub_twitter_reply_response(
-      brand.external_uid,
+      account.external_uid,
       brand.screen_name,
       tickets.first.external_uid,
       response_text
@@ -61,7 +62,7 @@ RSpec.describe 'Brand', type: :system do
 
   it 'allows replying to tickets from other brands' do
     user = sign_in_user
-    account = FactoryBot.create(:account, provider: 'twitter', token: 'hello', secret: 'world', user: user)
+    account = FactoryBot.create(:user_account, provider: 'twitter', token: 'hello', secret: 'world', user: user)
     page.driver.browser.navigate.refresh
 
     response_text = 'Hello from Respondo system tests'
