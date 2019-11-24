@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
+require './spec/support/concerns/views/_accounts_examples.rb'
+
 RSpec.describe 'users/edit', type: :view do
   let(:user) { FactoryBot.create(:user) }
 
   before do
-    FactoryBot.create(:user_account, provider: 'google_oauth2', user: user)
     FactoryBot.create(:personal_access_token, name: 'something_nice', user: user)
 
     without_partial_double_verification do
@@ -12,13 +13,7 @@ RSpec.describe 'users/edit', type: :view do
     end
   end
 
-  it 'renders the authorize twitter link' do
-    expect(render).to have_link('Authorize Twitter')
-  end
-
-  it 'renders remove account link' do
-    expect(render).to have_link('Remove Google')
-  end
+  it_behaves_like '_accounts_partial', User
 
   it 'renders the new personal access tokens form' do
     expect(render).to have_field(:name).and have_button('Create')

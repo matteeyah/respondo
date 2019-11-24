@@ -9,7 +9,7 @@ RSpec.shared_examples 'has_accounts' do
   describe '#account_for_provider?' do
     subject(:account_for_provider?) { model.account_for_provider?(provider) }
 
-    let(:model) { FactoryBot.create(described_class.to_s.underscore) }
+    let(:model) { FactoryBot.create(model_class_slug) }
 
     providers.each do |provider_name|
       context "when provider is #{provider_name}" do
@@ -33,7 +33,7 @@ RSpec.shared_examples 'has_accounts' do
   describe '#client_for_provider' do
     subject(:client_for_provider) { model.client_for_provider(provider) }
 
-    let(:model) { FactoryBot.create(described_class.to_s.underscore) }
+    let(:model) { FactoryBot.create(model_class_slug) }
 
     providers.each do |provider_name|
       context "when provider is #{provider_name}" do
