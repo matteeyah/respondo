@@ -1,0 +1,62 @@
+{
+  "provider": "disqus",
+  "uid": "100000000000000000000",
+  "info": {
+    "name": "John Smith",
+    "nickname": "john_smith",
+    "location": "Anytown, USA",
+    "description": "super hero",
+    "image": "https://disqus.com/api/users/avatars/john_smith.jpg",
+    "urls": {
+      "profileUrl": "https://disqus.com/by/john_smith/"
+    }
+  },
+  "credentials": {
+    "token": "TOKEN",
+    "refresh_token": "REFRESH_TOKEN",
+    "expires_at": 1577152252,
+    "expires": true
+  },
+  "extra": {
+    "raw_info": {
+      "isFollowing": false,
+      "disable3rdPartyTrackers": false,
+      "isPowerContributor": false,
+      "isFollowedBy": false,
+      "isPrimary": true,
+      "id": "123456789",
+      "numFollowers": 0,
+      "rep": 1.162166,
+      "numFollowing": 0,
+      "numPosts": 173,
+      "location": "Anytown, USA",
+      "isPrivate": false,
+      "joinedAt": "2014-1-1T19:38:24",
+      "username": "john_smith",
+      "numLikesReceived": 23,
+      "reputationLabel": "Average",
+      "about": "super hero",
+      "name": "John Smith",
+      "url": "https://example.com",
+      "isBlocked": false,
+      "numForumsFollowing": 0,
+      "profileUrl": "https://disqus.com/by/john_smith/",
+      "reputation": 1.162166,
+      "avatar": {
+        "small": {
+          "permalink": "https://disqus.com/api/users/avatars/john_smith.jpg",
+          "cache": "https://c.disquscdn.com/uploads/users/12345/6789/avatar1.jpg?1234567890"
+        },
+        "isCustom": true,
+        "permalink": "https://disqus.com/api/users/avatars/john_smith.jpg",
+        "cache": "https://c.disquscdn.com/uploads/users/12345/6789/avatar1.jpg?1234567890",
+        "large": {
+          "permalink": "https://disqus.com/api/users/avatars/john_smith.jpg",
+          "cache": "https://c.disquscdn.com/uploads/users/12345/6789/avatar1.jpg?1234567890"
+        }
+      },
+      "signedUrl": "https://disq.us/?url=https%3A%2F%2Fexample.com&key=Z_M2JBCuyvghxrwxeXWNjw",
+      "isAnonymous": false
+    }
+  }
+}

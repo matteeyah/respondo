@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_22_171907) do
+ActiveRecord::Schema.define(version: 2019_11_24_000315) do
 
   create_table "authors", force: :cascade do |t|
     t.string "external_uid", null: false
@@ -21,18 +21,28 @@ ActiveRecord::Schema.define(version: 2019_11_22_171907) do
     t.index ["external_uid", "provider"], name: "index_authors_on_external_uid_and_provider", unique: true
   end
 
-  create_table "brands", force: :cascade do |t|
+  create_table "brand_accounts", force: :cascade do |t|
     t.string "external_uid", null: false
-    t.string "screen_name", null: false
+    t.string "email"
+    t.integer "provider", null: false
     t.string "encrypted_token"
     t.string "encrypted_token_iv"
     t.string "encrypted_secret"
     t.string "encrypted_secret_iv"
+    t.integer "brand_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["encrypted_secret_iv"], name: "index_brands_on_encrypted_secret_iv", unique: true
-    t.index ["encrypted_token_iv"], name: "index_brands_on_encrypted_token_iv", unique: true
-    t.index ["external_uid"], name: "index_brands_on_external_uid", unique: true
+    t.index ["brand_id", "provider"], name: "index_brand_accounts_on_brand_id_and_provider", unique: true
+    t.index ["brand_id"], name: "index_brand_accounts_on_brand_id"
+    t.index ["encrypted_secret_iv"], name: "index_brand_accounts_on_encrypted_secret_iv", unique: true
+    t.index ["encrypted_token_iv"], name: "index_brand_accounts_on_encrypted_token_iv", unique: true
+    t.index ["external_uid", "provider"], name: "index_brand_accounts_on_external_uid_and_provider", unique: true
+  end
+
+  create_table "brands", force: :cascade do |t|
+    t.string "screen_name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "comments", force: :cascade do |t|

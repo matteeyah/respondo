@@ -29,6 +29,8 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :brand_accounts, only: [:destroy]
+
       resources :external_tickets, constraints: { format: 'json' }, only: [:create]
 
       resources :users, only: %i[create destroy]

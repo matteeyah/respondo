@@ -6,6 +6,8 @@ RSpec.describe 'brands/edit', type: :view do
   let!(:user_outside_brand) { FactoryBot.create(:user) }
 
   before do
+    FactoryBot.create(:brand_account, provider: 'twitter', brand: brand)
+
     brand.users << user_in_brand
     assign(:brand_users, [user_in_brand])
 
@@ -14,6 +16,14 @@ RSpec.describe 'brands/edit', type: :view do
     without_partial_double_verification do
       allow(view).to receive(:brand).and_return(brand)
     end
+  end
+
+  it 'renders the authorize disqus link' do
+    expect(render).to have_link('Authorize Disqus')
+  end
+
+  it 'renders remove account link' do
+    expect(render).to have_link('Remove Twitter')
   end
 
   it 'renders all users' do

@@ -115,7 +115,7 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'POST reply' do
     subject(:post_reply) { post "/brands/#{brand.id}/tickets/#{ticket.id}/reply", params: { response_text: 'does not matter' } }
 
-    let!(:ticket) { FactoryBot.create(:ticket, brand: brand) }
+    let!(:ticket) { FactoryBot.create(:ticket, provider: 'twitter', brand: brand) }
 
     context 'when user is signed in' do
       let(:tweet) do
@@ -136,6 +136,7 @@ RSpec.describe Brands::TicketsController, type: :request do
 
       context 'when authorized as a brand' do
         before do
+          FactoryBot.create(:brand_account, provider: ticket.provider, brand: brand)
           brand.users << user
         end
 
@@ -198,7 +199,7 @@ RSpec.describe Brands::TicketsController, type: :request do
 
       context 'when authorized as a user' do
         before do
-          FactoryBot.create(:user_account, provider: 'twitter', user: user)
+          FactoryBot.create(:user_account, provider: ticket.provider, user: user)
         end
 
         context 'when tweet is valid' do

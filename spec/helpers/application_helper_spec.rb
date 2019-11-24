@@ -4,11 +4,25 @@ RSpec.describe ApplicationHelper, type: :helper do
   describe '#auth_provider_link' do
     subject(:auth_provider_link) { helper.auth_provider_link('text', provider, 'model') }
 
-    UserAccount.providers.keys.each do |account_provider|
+    (UserAccount.providers.keys + BrandAccount.providers.keys).each do |account_provider|
       context "when provider is #{account_provider}" do
         let(:provider) { account_provider }
 
         it { is_expected.to match(%r{<a rel="nofollow" data-method="post" href="/auth/.*\?state=model">text</a>}) }
+      end
+    end
+  end
+
+  describe '#provider_human_name' do
+    subject(:provider_human_name) { helper.provider_human_name(provider) }
+
+    (UserAccount.providers.keys + BrandAccount.providers.keys).each do |account_provider|
+      context "when provider is #{account_provider}" do
+        let(:provider) { account_provider }
+
+        it 'returns human mame' do
+          expect(provider_human_name).to be_an_instance_of(String)
+        end
       end
     end
   end

@@ -5,6 +5,17 @@ module ApplicationHelper
     link_to text, auth_provider_path(provider, state: model), method: :post, **html_options
   end
 
+  def provider_human_name(provider)
+    case provider
+    when 'twitter'
+      'Twitter'
+    when 'google_oauth2'
+      'Google'
+    when 'disqus'
+      'Disqus'
+    end
+  end
+
   private
 
   def auth_provider_path(provider, params)

@@ -14,7 +14,7 @@ module SignInOutSystemHelpers
   end
 
   def sign_in_brand(brand = nil)
-    (brand || FactoryBot.create(:brand)).tap do |active_brand|
+    (brand || FactoryBot.create(:brand, :with_account)).tap do |active_brand|
       SignInOutSystemHelpers.add_oauth_mock_for_brand(active_brand)
       click_link('Authorize Brand', class: 'nav-link')
     end

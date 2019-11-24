@@ -2,7 +2,12 @@
 
 FactoryBot.define do
   factory :brand do
-    external_uid { generate(:external_uid) }
     screen_name { Faker::Internet.domain_word }
+  end
+
+  trait :with_account do
+    after(:create) do |brand|
+      create(:brand_account, brand: brand)
+    end
   end
 end

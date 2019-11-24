@@ -58,6 +58,7 @@ Rails.application.configure do
     Bullet.raise = true
 
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'UserAccount', association: :user
+    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'BrandAccount', association: :brand
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'User', association: :brand
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :comments
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :user

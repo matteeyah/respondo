@@ -57,7 +57,7 @@ module Brands
 
     def client
       @client ||= if current_brand == brand
-                    brand.twitter
+                    current_brand.client_for_provider(ticket.provider)
                   else
                     current_user.client_for_provider(ticket.provider)
                   end
