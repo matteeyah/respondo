@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/concerns/account_examples.rb'
+require './spec/support/concerns/models/account_examples.rb'
 
 RSpec.describe BrandAccount, type: :model do
   describe 'Validations' do

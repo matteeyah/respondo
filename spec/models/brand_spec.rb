@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require './spec/support/concerns/models/has_accounts_examples.rb'
+
 RSpec.describe Brand, type: :model do
   describe 'Validations' do
     subject(:brand) { FactoryBot.create(:brand) }
@@ -17,6 +19,8 @@ RSpec.describe Brand, type: :model do
     end
   end
 
+  it_behaves_like 'has_accounts'
+
   describe '.search' do
     subject(:search) { described_class.search('hello_world') }
 
@@ -29,52 +33,6 @@ RSpec.describe Brand, type: :model do
 
     it 'does not include misses' do
       expect(search).not_to include(miss)
-    end
-  end
-
-  describe '#account_for_provider?' do
-    subject(:account_for_provider?) { brand.account_for_provider?(provider) }
-
-    let(:brand) { FactoryBot.create(:brand) }
-
-    BrandAccount.providers.keys.each do |provider_name|
-      context "when provider is #{provider_name}" do
-        let(:provider) { provider_name }
-
-        context 'when account for provider exists' do
-          before do
-            FactoryBot.create(:brand_account, brand: brand, provider: provider)
-          end
-
-          it { is_expected.to eq(true) }
-        end
-
-        context 'when account for provider does not exist' do
-          it { is_expected.to eq(false) }
-        end
-      end
-    end
-  end
-
-  describe '#client_for_provider' do
-    subject(:client_for_provider) { brand.client_for_provider(provider) }
-
-    let(:brand) { FactoryBot.create(:brand) }
-
-    BrandAccount.providers.keys.each do |provider_name|
-      context "when provider is #{provider_name}" do
-        let(:provider) { provider_name }
-
-        context 'when account for provider exists' do
-          let!(:account) { FactoryBot.create(:brand_account, brand: brand, provider: provider) }
-
-          it { is_expected.to be_an_instance_of(account.client.class) }
-        end
-
-        context 'when account for provider does not exist' do
-          it { is_expected.to eq(nil) }
-        end
-      end
     end
   end
 end
