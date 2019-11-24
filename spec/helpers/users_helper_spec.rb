@@ -4,7 +4,7 @@ RSpec.describe UsersHelper, type: :helper do
   describe '#provider_human_name' do
     subject(:provider_human_name) { helper.provider_human_name(provider) }
 
-    Account.providers.keys.each do |account_provider|
+    UserAccount.providers.keys.each do |account_provider|
       context "when provider is #{account_provider}" do
         let(:provider) { account_provider }
 

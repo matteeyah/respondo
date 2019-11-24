@@ -4,14 +4,14 @@ require './spec/support/sign_in_out_request_helpers.rb'
 require './spec/support/unauthenticated_user_examples.rb'
 require './spec/support/unauthorized_user_examples.rb'
 
-RSpec.describe Users::AccountsController, type: :request do
+RSpec.describe Users::UserAccountsController, type: :request do
   include SignInOutRequestHelpers
 
   describe 'DELETE destroy' do
-    subject(:delete_destroy) { delete "/users/#{user.id}/accounts/#{account.id}" }
+    subject(:delete_destroy) { delete "/users/#{user.id}/user_accounts/#{account.id}" }
 
     let(:user) { FactoryBot.create(:user) }
-    let!(:account) { FactoryBot.create(:account, provider: 'google_oauth2', user: user) }
+    let!(:account) { FactoryBot.create(:user_account, provider: 'google_oauth2', user: user) }
 
     context 'when user is signed in' do
       let(:browsing_user) { FactoryBot.create(:user, :with_account) }
@@ -29,7 +29,7 @@ RSpec.describe Users::AccountsController, type: :request do
 
         context 'when user has only one account' do
           it 'does not destroy the account' do
-            expect { delete_destroy }.not_to change(Account, :count).from(2)
+            expect { delete_destroy }.not_to change(UserAccount, :count).from(2)
           end
 
           it 'sets the flash' do
@@ -47,11 +47,11 @@ RSpec.describe Users::AccountsController, type: :request do
 
         context 'when user has multiple accounts' do
           before do
-            FactoryBot.create(:account, provider: 'twitter', user: user)
+            FactoryBot.create(:user_account, provider: 'twitter', user: user)
           end
 
           it 'destroys the account' do
-            expect { delete_destroy }.to change(Account, :count).from(3).to(2)
+            expect { delete_destroy }.to change(UserAccount, :count).from(3).to(2)
           end
 
           it 'sets the flash' do

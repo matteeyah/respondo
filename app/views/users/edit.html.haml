@@ -6,7 +6,7 @@
     %h3 New accounts
     %p.lead Click to add.
     .list-group.list-group-horizontal.flex-wrap
-      - Account.providers.keys.each do |provider|
+      - UserAccount.providers.keys.each do |provider|
         - unless user.account_for_provider?(provider)
           = auth_provider_link("Authorize #{provider_human_name(provider)}",
             provider, 'user', class: 'list-group-item list-group-item-action col-sm-6 text-center')
@@ -15,9 +15,9 @@
     %h3 Existing accounts
     %p.lead Click to remove.
     .list-group.list-group-horizontal.flex-wrap
-      - user.accounts.each do |account|
+      - user.user_accounts.each do |account|
         = link_to "Remove #{provider_human_name(account.provider)}",
-          user_account_path(user, account), method: :delete,
+          user_user_account_path(user, account), method: :delete,
           class: 'list-group-item list-group-item-action col-sm-6 text-center'
 
 %hr

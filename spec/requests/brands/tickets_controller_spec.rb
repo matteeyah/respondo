@@ -198,7 +198,7 @@ RSpec.describe Brands::TicketsController, type: :request do
 
       context 'when authorized as a user' do
         before do
-          FactoryBot.create(:account, provider: 'twitter', user: user)
+          FactoryBot.create(:user_account, provider: 'twitter', user: user)
         end
 
         context 'when tweet is valid' do

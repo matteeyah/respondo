@@ -18,14 +18,14 @@ RSpec.describe 'User settings', type: :system do
   end
 
   it 'allows the user to authorize an account' do
-    add_oauth_mock_for_user(user, FactoryBot.create(:account, provider: 'twitter'))
+    add_oauth_mock_for_user(user, FactoryBot.create(:user_account, provider: 'twitter'))
     click_link 'Authorize Twitter'
 
     expect(page).to have_link('Remove Twitter')
   end
 
   it 'allows the user to remove an account' do
-    FactoryBot.create(:account, provider: 'twitter', user: user)
+    FactoryBot.create(:user_account, provider: 'twitter', user: user)
     click_link 'Remove Twitter'
 
     expect(page).to have_link('Authorize Twitter')

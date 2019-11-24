@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Account < ApplicationRecord
+class UserAccount < ApplicationRecord
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: :provider }
   validates :email, presence: { allow_blank: false, allow_nil: true }
   validates :provider, presence: true

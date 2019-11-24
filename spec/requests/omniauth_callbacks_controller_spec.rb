@@ -35,7 +35,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
           context 'when the user is signed out' do
             context 'when the account does not exist' do
               it 'creates a new account' do
-                expect { post_authenticate }.to change(Account, :count).from(0).to(1)
+                expect { post_authenticate }.to change(UserAccount, :count).from(0).to(1)
               end
 
               it 'creates a new user' do
@@ -63,11 +63,11 @@ RSpec.describe OmniauthCallbacksController, type: :request do
 
             context 'when the account exists' do
               before do
-                FactoryBot.create(:account, external_uid: auth_hash.uid, provider: provider)
+                FactoryBot.create(:user_account, external_uid: auth_hash.uid, provider: provider)
               end
 
               it 'does not create a new account' do
-                expect { post_authenticate }.not_to change(Account, :count).from(1)
+                expect { post_authenticate }.not_to change(UserAccount, :count).from(1)
               end
 
               it 'does not create a new user' do
@@ -96,10 +96,10 @@ RSpec.describe OmniauthCallbacksController, type: :request do
 
           context 'when user is signed in' do
             let(:user) do
-              account_provider = (Account.providers.keys - [provider]).first
+              account_provider = (UserAccount.providers.keys - [provider]).first
 
               FactoryBot.create(:user).tap do |user|
-                FactoryBot.create(:account, provider: account_provider, user: user)
+                FactoryBot.create(:user_account, provider: account_provider, user: user)
               end
             end
 
@@ -113,7 +113,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
             context 'when account does not exist' do
               context 'when user does not have account for provider' do
                 it 'creates a new account' do
-                  expect { post_authenticate }.to change(Account, :count).from(1).to(2)
+                  expect { post_authenticate }.to change(UserAccount, :count).from(1).to(2)
                 end
 
                 it 'does not create a new user' do
@@ -122,17 +122,17 @@ RSpec.describe OmniauthCallbacksController, type: :request do
 
                 it 'associates the account with the current user' do
                   expect { post_authenticate }.to change { user.reload.public_send("#{provider}_account") }
-                    .from(nil).to(an_instance_of(Account))
+                    .from(nil).to(an_instance_of(UserAccount))
                 end
               end
 
               context 'when user already has account for same provider' do
                 before do
-                  FactoryBot.create(:account, provider: provider, user: user)
+                  FactoryBot.create(:user_account, provider: provider, user: user)
                 end
 
                 it 'does not create a new account' do
-                  expect { post_authenticate }.not_to change(Account, :count).from(2)
+                  expect { post_authenticate }.not_to change(UserAccount, :count).from(2)
                 end
 
                 it 'sets the flash' do
@@ -145,10 +145,10 @@ RSpec.describe OmniauthCallbacksController, type: :request do
 
             context 'when account exists' do
               context 'when account belongs to someone else' do
-                let!(:account) { FactoryBot.create(:account, external_uid: auth_hash.uid, provider: provider) }
+                let!(:account) { FactoryBot.create(:user_account, external_uid: auth_hash.uid, provider: provider) }
 
                 it 'does not create a new account' do
-                  expect { post_authenticate }.not_to change(Account, :count).from(2)
+                  expect { post_authenticate }.not_to change(UserAccount, :count).from(2)
                 end
 
                 it 'does not create a new user' do
@@ -162,11 +162,11 @@ RSpec.describe OmniauthCallbacksController, type: :request do
 
               context 'when account belongs to current user' do
                 before do
-                  FactoryBot.create(:account, external_uid: auth_hash.uid, provider: provider, user: user)
+                  FactoryBot.create(:user_account, external_uid: auth_hash.uid, provider: provider, user: user)
                 end
 
                 it 'does not create a new account' do
-                  expect { post_authenticate }.not_to change(Account, :count).from(2)
+                  expect { post_authenticate }.not_to change(UserAccount, :count).from(2)
                 end
 
                 it 'does not create a new user' do

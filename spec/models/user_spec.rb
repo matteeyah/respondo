@@ -7,11 +7,11 @@ RSpec.describe User, type: :model do
 
   describe 'Relations' do
     it { is_expected.to belong_to(:brand).optional }
-    it { is_expected.to have_many(:accounts).dependent(:destroy) }
+    it { is_expected.to have_many(:user_accounts).dependent(:destroy) }
     it { is_expected.to have_many(:personal_access_tokens).dependent(:destroy) }
     it { is_expected.to have_many(:comments).dependent(:restrict_with_error) }
 
-    Account.providers.keys.each do |provider|
+    UserAccount.providers.keys.each do |provider|
       it { is_expected.to have_one(:"#{provider}_account") }
     end
   end
@@ -21,13 +21,13 @@ RSpec.describe User, type: :model do
 
     let(:user) { FactoryBot.create(:user) }
 
-    Account.providers.keys.each do |provider_name|
+    UserAccount.providers.keys.each do |provider_name|
       context "when provider is #{provider_name}" do
         let(:provider) { provider_name }
 
         context 'when account for provider exists' do
           before do
-            FactoryBot.create(:account, user: user, provider: provider)
+            FactoryBot.create(:user_account, user: user, provider: provider)
           end
 
           it { is_expected.to eq(true) }
@@ -45,12 +45,12 @@ RSpec.describe User, type: :model do
 
     let(:user) { FactoryBot.create(:user) }
 
-    Account.providers.keys.each do |provider_name|
+    UserAccount.providers.keys.each do |provider_name|
       context "when provider is #{provider_name}" do
         let(:provider) { provider_name }
 
         context 'when account for provider exists' do
-          let!(:account) { FactoryBot.create(:account, user: user, provider: provider) }
+          let!(:account) { FactoryBot.create(:user_account, user: user, provider: provider) }
 
           it { is_expected.to be_an_instance_of(account.client.class) }
         end

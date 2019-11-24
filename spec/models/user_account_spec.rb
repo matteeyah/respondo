@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe Account, type: :model do
+RSpec.describe UserAccount, type: :model do
   describe 'Validations' do
-    subject(:account) { FactoryBot.create(:account) }
+    subject(:account) { FactoryBot.create(:user_account) }
 
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:email).allow_nil }
@@ -83,13 +83,13 @@ RSpec.describe Account, type: :model do
               end
 
               it 'adds the account to the specified user' do
-                expect(current_user.accounts).to include(from_omniauth)
+                expect(current_user.user_accounts).to include(from_omniauth)
               end
             end
 
             context 'when existing user has account for provider' do
               before do
-                FactoryBot.create(:account, provider: provider, user: current_user)
+                FactoryBot.create(:user_account, provider: provider, user: current_user)
               end
 
               it 'does not create new users' do
@@ -97,7 +97,7 @@ RSpec.describe Account, type: :model do
               end
 
               it 'does not add the account to the specified user' do
-                expect(current_user.accounts).not_to include(from_omniauth)
+                expect(current_user.user_accounts).not_to include(from_omniauth)
               end
 
               it 'has an error about provider being taken' do
@@ -108,7 +108,7 @@ RSpec.describe Account, type: :model do
         end
 
         context 'when there is a matching account' do
-          let!(:account) { FactoryBot.create(:account, external_uid: auth_hash.uid, provider: auth_hash.provider) }
+          let!(:account) { FactoryBot.create(:user_account, external_uid: auth_hash.uid, provider: auth_hash.provider) }
           let(:current_user) { account.user }
 
           context 'when account belongs to current user' do
@@ -210,7 +210,7 @@ RSpec.describe Account, type: :model do
   describe '#client' do
     subject(:client) { account.client }
 
-    let(:account) { FactoryBot.build(:account) }
+    let(:account) { FactoryBot.build(:user_account) }
 
     context 'when provider is twitter' do
       before do

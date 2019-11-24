@@ -18,7 +18,7 @@ class OmniauthCallbacksController < ApplicationController
   private
 
   def authenticate_user(auth_hash)
-    account = Account.from_omniauth(auth_hash, current_user)
+    account = UserAccount.from_omniauth(auth_hash, current_user)
 
     if account.persisted?
       flash[:success] = 'User was successfully authenticated.'

@@ -61,7 +61,7 @@ RSpec.describe 'Brand', type: :system do
 
   it 'allows replying to tickets from other brands' do
     user = sign_in_user
-    account = FactoryBot.create(:account, provider: 'twitter', token: 'hello', secret: 'world', user: user)
+    account = FactoryBot.create(:user_account, provider: 'twitter', token: 'hello', secret: 'world', user: user)
     page.driver.browser.navigate.refresh
 
     response_text = 'Hello from Respondo system tests'
