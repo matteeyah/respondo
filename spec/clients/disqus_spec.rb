@@ -18,7 +18,7 @@ RSpec.describe Clients::Disqus do
   end
 
   before do
-    stub_const('DisqusApi', disqus_client_spy)
+    stub_const(DisqusApi.to_s, disqus_client_spy)
   end
 
   it { expect(client).to be_a_kind_of(Clients::Client) }

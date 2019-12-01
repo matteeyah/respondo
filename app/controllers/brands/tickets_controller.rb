@@ -47,10 +47,10 @@ module Brands
     end
 
     def refresh
-      LoadNewTweetsJob.perform_now(brand.id)
+      LoadNewTicketsJob.perform_now(brand.id)
 
       redirect_to brand_tickets_path(brand),
-                  flash: { success: 'Tickets refresh successfully initiated.' }
+                  flash: { success: 'Ticket refresh successfully initiated.' }
     end
 
     private

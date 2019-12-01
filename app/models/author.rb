@@ -18,6 +18,14 @@ class Author < ApplicationRecord
       end
     end
 
+    def from_disqus_user!(disqus_user)
+      find_or_initialize_by(external_uid: disqus_user[:id], provider: 'disqus').tap do |author|
+        author.username = disqus_user[:username]
+
+        author.save!
+      end
+    end
+
     def from_external_author!(external_author_json)
       find_or_initialize_by(external_uid: external_author_json[:external_uid], provider: 'external').tap do |author|
         author.username = external_author_json[:username]

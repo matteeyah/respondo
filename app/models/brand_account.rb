@@ -25,11 +25,21 @@ class BrandAccount < ApplicationRecord
   def new_mentions
     last_ticket_identifier = case provider
                              when 'twitter'
-                               brand.tickets.twitter.last&.external_uid
+                               last_twitter_ticket_identifier
                              when 'disqus'
-                               brand.tickets.disqus.last&.created_at
+                               last_disqus_ticket_identifier
                              end
 
     client.new_mentions(last_ticket_identifier)
+  end
+
+  private
+
+  def last_twitter_ticket_identifier
+    brand.tickets.twitter.last&.external_uid
+  end
+
+  def last_disqus_ticket_identifier
+    brand.tickets.disqus.last&.created_at&.utc&.iso8601
   end
 end

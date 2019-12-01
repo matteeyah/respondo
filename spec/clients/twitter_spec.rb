@@ -2,7 +2,7 @@
 
 RSpec.describe Clients::Twitter do
   let(:client) { described_class.new('api_key', 'api_secret', 'token', 'secret') }
-  let(:twitter_client_spy) { instance_spy(Twitter::REST::Client) }
+  let(:twitter_client_spy) { instance_spy(Twitter::REST::Client, mentions_timeline: []) }
 
   before do
     allow(client).to receive(:twitter_client).and_return(twitter_client_spy)

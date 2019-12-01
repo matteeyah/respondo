@@ -411,10 +411,10 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'POST refresh' do
     subject(:post_refresh) { post "/brands/#{brand.id}/tickets/refresh" }
 
-    let(:load_new_tweets_job_class) { class_spy(LoadNewTweetsJob) }
+    let(:load_new_tickets_job_class) { class_spy(LoadNewTicketsJob) }
 
     before do
-      stub_const(LoadNewTweetsJob.to_s, load_new_tweets_job_class)
+      stub_const(LoadNewTicketsJob.to_s, load_new_tickets_job_class)
     end
 
     context 'when user is signed in' do
@@ -432,13 +432,13 @@ RSpec.describe Brands::TicketsController, type: :request do
         it 'calls the background worker' do
           post_refresh
 
-          expect(load_new_tweets_job_class).to have_received(:perform_now)
+          expect(load_new_tickets_job_class).to have_received(:perform_now)
         end
 
         it 'sets the flash' do
           post_refresh
 
-          expect(controller.flash[:success]).to eq('Tickets refresh successfully initiated.')
+          expect(controller.flash[:success]).to eq('Ticket refresh successfully initiated.')
         end
 
         it 'redirects to brand tickets path' do

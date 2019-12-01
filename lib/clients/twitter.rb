@@ -12,7 +12,7 @@ module Clients
     def new_mentions(last_ticket_identifier)
       options_hash = { tweet_mode: 'extended' }
       options_hash[:since_id] = last_ticket_identifier if last_ticket_identifier
-      twitter_client.mentions_timeline(options_hash)
+      twitter_client.mentions_timeline(options_hash).reverse
     end
 
     def reply(response_text, tweet_id)
