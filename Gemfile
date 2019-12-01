@@ -30,12 +30,12 @@ gem 'aasm', '~> 5.0.6' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
 gem 'attr_encrypted', '~> 3.1.0' # encrypted attributes
 gem 'bootstrap', '~> 4.3.1' # Twitter bootstrap styling
+gem 'disqus_api', '~> 0.0.7' # Disqus client
 gem 'hamlit', '~> 2.10.0' # High-Performance HAML markup processing
 gem 'hashie', '~> 3.6.0' # Hash utilities
 gem 'pagy', '~> 3.5' # Pagination
 gem 'sass-rails', '~> 5' # SCSS CSS pre-processor
 gem 'twitter', '~> 6.2.0' # Twitter client
-gem 'disqus_api', '~> 0.0.7' # Disqus client
 
 group :development, :test do
   # Linters

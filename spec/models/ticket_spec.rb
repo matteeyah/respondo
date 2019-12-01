@@ -45,7 +45,7 @@ RSpec.describe Ticket, type: :model do
   end
 
   it { is_expected.to define_enum_for(:status).with_values(%i[open solved]) }
-  it { is_expected.to define_enum_for(:provider).with_values(%i[external twitter]) }
+  it { is_expected.to define_enum_for(:provider).with_values(%i[external twitter disqus]) }
 
   describe 'Relations' do
     it { is_expected.to belong_to(:author) }

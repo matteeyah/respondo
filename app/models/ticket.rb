@@ -10,7 +10,7 @@ class Ticket < ApplicationRecord
   validate :parent_in_brand
 
   enum status: { open: 0, solved: 1 }
-  enum provider: { external: 0, twitter: 1 }
+  enum provider: { external: 0, twitter: 1, disqus: 2 }
 
   aasm column: :status, enum: true do
     state :open, initial: true

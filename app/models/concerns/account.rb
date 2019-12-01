@@ -15,18 +15,18 @@ module Account
     case provider
     when 'twitter'
       twitter_client
+    when 'disqus'
+      disqus_client
     end
   end
 
   private
 
   def twitter_client
-    @twitter_client ||=
-      Clients::Twitter.new do |config|
-        config.consumer_key        = ENV['TWITTER_API_KEY']
-        config.consumer_secret     = ENV['TWITTER_API_SECRET']
-        config.access_token        = token
-        config.access_token_secret = secret
-      end
+    @twitter_client ||= Clients::Twitter.new(ENV['TWITTER_API_KEY'], ENV['TWITTER_API_SECRET'], token, secret)
+  end
+
+  def disqus_client
+    @disqus_client ||= Clients::Disqus.new(ENV['DISQUS_PUBLIC_KEY'], ENV['DISQUS_SECRET_KEY'], token)
   end
 end

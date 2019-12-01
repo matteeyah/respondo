@@ -13,12 +13,14 @@ RSpec.shared_examples 'account' do
 
     let(:account) { FactoryBot.build(described_class.to_s.underscore) }
 
-    context 'when provider is twitter' do
-      before do
-        account.provider = 'twitter'
-      end
+    %w[twitter disqus].each do |provider|
+      context "when provider is #{provider}" do
+        before do
+          account.provider = provider
+        end
 
-      it { is_expected.to be_an_instance_of(Clients::Twitter) }
+        it { is_expected.to be_kind_of(Clients::Client) }
+      end
     end
   end
 end

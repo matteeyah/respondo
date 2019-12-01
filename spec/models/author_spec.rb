@@ -11,7 +11,7 @@ RSpec.describe Author, type: :model do
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider) }
   end
 
-  it { is_expected.to define_enum_for(:provider).with_values(%i[external twitter]) }
+  it { is_expected.to define_enum_for(:provider).with_values(%i[external twitter disqus]) }
 
   describe 'Relations' do
     it { is_expected.to have_many(:tickets).dependent(:restrict_with_error) }
