@@ -35,6 +35,7 @@ gem 'hashie', '~> 3.6.0' # Hash utilities
 gem 'pagy', '~> 3.5' # Pagination
 gem 'sass-rails', '~> 5' # SCSS CSS pre-processor
 gem 'twitter', '~> 6.2.0' # Twitter client
+gem 'disqus_api', '~> 0.0.7' # Disqus client
 
 group :development, :test do
   # Linters
