@@ -10,7 +10,7 @@ class Ticket < ApplicationRecord
   validate :parent_in_brand
 
   enum status: { open: 0, solved: 1 }
-  enum provider: { external: 0, twitter: 1 }
+  enum provider: { external: 0, twitter: 1, disqus: 2 }
 
   aasm column: :status, enum: true do
     state :open, initial: true
@@ -55,21 +55,23 @@ class Ticket < ApplicationRecord
 
     def from_tweet!(tweet, brand, user)
       author = Author.from_twitter_user!(tweet.user)
-      parent = brand.tickets.find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id), provider: 'twitter')
-      brand.tickets.create!(
-        external_uid: tweet.id, author: author, parent: parent,
-        provider: 'twitter', content: tweet.attrs[:full_text],
-        user: user
-      )
+      parent = brand.tickets.twitter.find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id))
+      brand.tickets.twitter.create!(external_uid: tweet.id, author: author, user: user,
+                                    parent: parent, content: tweet.attrs[:full_text])
+    end
+
+    def from_disqus_post!(post, brand, user)
+      author = Author.from_disqus_user!(post[:author])
+      parent = brand.tickets.disqus.find_by(external_uid: post[:parent])
+      brand.tickets.disqus.create!(external_uid: post[:id], author: author, user: user,
+                                   parent: parent, content: post[:raw_message])
     end
 
     def from_external_ticket!(external_ticket_json, brand)
       author = Author.from_external_author!(external_ticket_json[:author])
-      parent = brand.tickets.find_by(external_uid: external_ticket_json[:parent_uid], provider: 'external')
-      brand.tickets.create!(
-        external_uid: external_ticket_json[:external_uid], author: author, parent: parent,
-        provider: 'external', content: external_ticket_json[:content]
-      )
+      parent = brand.tickets.external.find_by(external_uid: external_ticket_json[:parent_uid])
+      brand.tickets.external.create!(external_uid: external_ticket_json[:external_uid], author: author,
+                                     parent: parent, content: external_ticket_json[:content])
     end
 
     def with_descendants_hash(*included_relations)

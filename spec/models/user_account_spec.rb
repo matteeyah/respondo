@@ -20,7 +20,7 @@ RSpec.describe UserAccount, type: :model do
   it_behaves_like 'account'
 
   describe '.from_omniauth' do
-    %w[twitter google_oauth2].each do |provider|
+    described_class.providers.keys.each do |provider|
       context "when provider is #{provider}" do
         subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_user) }
 
@@ -30,6 +30,8 @@ RSpec.describe UserAccount, type: :model do
                            'twitter_oauth_hash.json'
                          when 'google_oauth2'
                            'google_oauth_hash.json'
+                         when 'disqus'
+                           'disqus_oauth_hash.json'
                          end
 
           JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)

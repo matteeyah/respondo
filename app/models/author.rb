@@ -5,7 +5,7 @@ class Author < ApplicationRecord
   validates :username, presence: { allow_blank: false }
   validates :provider, presence: true
 
-  enum provider: { external: 0, twitter: 1 }
+  enum provider: { external: 0, twitter: 1, disqus: 2 }
 
   has_many :tickets, dependent: :restrict_with_error
 
@@ -13,6 +13,14 @@ class Author < ApplicationRecord
     def from_twitter_user!(twitter_user)
       find_or_initialize_by(external_uid: twitter_user.id, provider: 'twitter').tap do |author|
         author.username = twitter_user.screen_name
+
+        author.save!
+      end
+    end
+
+    def from_disqus_user!(disqus_user)
+      find_or_initialize_by(external_uid: disqus_user[:id], provider: 'disqus').tap do |author|
+        author.username = disqus_user[:username]
 
         author.save!
       end

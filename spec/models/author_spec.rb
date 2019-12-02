@@ -11,7 +11,7 @@ RSpec.describe Author, type: :model do
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider) }
   end
 
-  it { is_expected.to define_enum_for(:provider).with_values(%i[external twitter]) }
+  it { is_expected.to define_enum_for(:provider).with_values(%i[external twitter disqus]) }
 
   describe 'Relations' do
     it { is_expected.to have_many(:tickets).dependent(:restrict_with_error) }
@@ -64,6 +64,58 @@ RSpec.describe Author, type: :model do
       context 'when username changes' do
         it 'updates username' do
           expect { from_twitter_user! }.to change { author.reload.username }.to(twitter_user.screen_name)
+        end
+      end
+    end
+  end
+
+  describe '.from_disqus_user!' do
+    subject(:from_disqus_user!) { described_class.from_disqus_user!(disqus_user) }
+
+    let(:disqus_user) { { id: '12321', username: 'helloworld' } }
+
+    context 'when there is no matching author' do
+      it 'creates a new author' do
+        expect { from_disqus_user! }.to change(described_class, :count).from(0).to(1)
+      end
+
+      it 'returns a new author' do
+        expect(from_disqus_user!).to be_instance_of(described_class)
+      end
+
+      it 'builds an author entity with correct information' do
+        expect(from_disqus_user!).to have_attributes(external_uid: disqus_user[:id], username: disqus_user[:username])
+      end
+
+      it 'persists the new author' do
+        expect(from_disqus_user!).to be_persisted
+      end
+    end
+
+    context 'when author exists' do
+      let!(:author) { FactoryBot.create(:author, external_uid: disqus_user[:id], provider: 'disqus') }
+
+      it 'returns the matching author' do
+        expect(from_disqus_user!).to eq(author)
+      end
+
+      it 'does not create new author entities' do
+        expect { from_disqus_user! }.not_to change(described_class, :count).from(1)
+      end
+
+      context 'when username does not change' do
+        before do
+          author.update(username: disqus_user[:username])
+        end
+
+        it 'does not update username' do
+          expect { from_disqus_user! }.not_to change { author.reload.username }.from(disqus_user[:username])
+        end
+      end
+
+      context 'when username changes' do
+        it 'updates username' do
+          expect { from_disqus_user! }.to change { author.reload.username }.to(disqus_user[:username])
         end
       end
     end

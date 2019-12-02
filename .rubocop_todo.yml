@@ -13,3 +13,4 @@ RSpec/NestedGroups:
     - 'spec/models/user_account_spec.rb'
     - 'spec/models/brand_account_spec.rb'
     - 'spec/requests/omniauth_callbacks_controller_spec.rb'
+    - 'spec/requests/brands/tickets_controller_spec.rb'

@@ -23,12 +23,23 @@ class BrandAccount < ApplicationRecord
   end
 
   def new_mentions
-    case provider
-    when 'twitter'
-      last_ticket_id = brand.tickets.twitter.last&.external_uid
-      option_hash = { tweet_mode: 'extended' }
-      option_hash[:since_id] = last_ticket_id if last_ticket_id
-      client.mentions_timeline(option_hash)
-    end
+    last_ticket_identifier = case provider
+                             when 'twitter'
+                               last_twitter_ticket_identifier
+                             when 'disqus'
+                               last_disqus_ticket_identifier
+                             end
+
+    client.new_mentions(last_ticket_identifier)
+  end
+
+  private
+
+  def last_twitter_ticket_identifier
+    brand.tickets.twitter.last&.external_uid
+  end
+
+  def last_disqus_ticket_identifier
+    brand.tickets.disqus.last&.created_at&.utc&.iso8601
   end
 end

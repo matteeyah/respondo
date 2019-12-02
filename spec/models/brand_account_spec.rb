@@ -20,7 +20,7 @@ RSpec.describe BrandAccount, type: :model do
   it_behaves_like 'account'
 
   describe '.from_omniauth' do
-    %w[twitter].each do |provider|
+    described_class.providers.keys.each do |provider|
       context "when provider is #{provider}" do
         subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_brand) }
 
@@ -28,8 +28,8 @@ RSpec.describe BrandAccount, type: :model do
           fixture_name = case provider
                          when 'twitter'
                            'twitter_oauth_hash.json'
-                         when 'google_oauth2'
-                           'google_oauth_hash.json'
+                         when 'disqus'
+                           'disqus_oauth_hash.json'
                          end
 
           JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)
@@ -213,32 +213,33 @@ RSpec.describe BrandAccount, type: :model do
     subject(:new_mentions) { account.new_mentions }
 
     let(:account) { FactoryBot.build(:brand_account) }
-    let(:client_spy) { instance_spy(Clients::Twitter) }
+    let(:client_spy) { instance_spy(Clients::Client) }
 
-    before do
-      allow(account).to receive(:twitter_client).and_return(client_spy)
-    end
-
-    context 'when provider is twitter' do
-      before do
-        account.provider = 'twitter'
-      end
-
-      context 'when brand has tickets' do
-        let!(:last_ticket) { FactoryBot.create(:ticket, provider: 'twitter', brand: account.brand) }
-
-        it 'calls client new mentions' do
-          new_mentions
-
-          expect(client_spy).to have_received(:mentions_timeline).with(tweet_mode: 'extended', since_id: last_ticket.external_uid)
+    described_class.providers.keys.each do |provider|
+      context "when provider is #{provider}" do
+        before do
+          allow(account).to receive(:"#{provider}_client").and_return(client_spy)
+          account.provider = provider
         end
-      end
 
-      context 'when brand does not have tickets' do
-        it 'calls client new mentions' do
-          new_mentions
+        context 'when brand has tickets' do
+          before do
+            FactoryBot.create(:ticket, provider: provider, brand: account.brand)
+          end
 
-          expect(client_spy).to have_received(:mentions_timeline).with(tweet_mode: 'extended')
+          it 'calls client new mentions with last ticket identifier' do
+            new_mentions
+
+            expect(client_spy).to have_received(:new_mentions).with(anything)
+          end
+        end
+
+        context 'when brand does not have tickets' do
+          it 'calls client new mentions with nil' do
+            new_mentions
+
+            expect(client_spy).to have_received(:new_mentions).with(nil)
+          end
         end
       end
     end

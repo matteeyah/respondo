@@ -2,14 +2,20 @@
 
 ![](https://github.com/matteeyah/respondo/workflows/CI/badge.svg)
 
-## External Tickets
+## Limitations
 
-### Format
+### Disqus
+
+- Brand Disqus account has to be owner of the Disqus forum
+
+### External Tickets
+
+#### Format
 
 All requests are sent to the `Brands::TicketsController#create_external`
 endpoint in JSON format.
 
-#### Schema
+##### Schema
 
 ```jsonschema
 {
@@ -88,7 +94,7 @@ endpoint in JSON format.
 }
 ```
 
-#### Example
+##### Example
 
 ```json
 {
@@ -145,6 +151,13 @@ endpoint in JSON format.
     - `DISQUS_SECRET_KEY`
         - DEVELOPMENT
         - PRODUCTION
+
+### Integrating Providers
+
+- Integrate provider OAuth
+- Create provider client
+- Integrate client with account model
+- Implement replying to tickets from provider
 
 ### Heroku
 
