@@ -125,6 +125,54 @@ RSpec.describe Brands::TicketsController, type: :request do
       stub_const(Clients::Disqus.to_s, disqus_client_class)
     end
 
+    shared_examples 'valid reply' do
+      it 'replies to the ticket' do
+        post_reply
+
+        expect(client).to have_received(:reply).with('does not matter', ticket.external_uid)
+      end
+
+      it 'creates a reply ticket' do
+        expect { post_reply }.to change(Ticket, :count).from(1).to(2)
+      end
+
+      it 'creates a reply ticket with matching attributes' do
+        post_reply
+
+        expect(ticket.replies.first).to have_attributes(parent: ticket, content: 'does not matter')
+      end
+
+      it 'sets the flash' do
+        post_reply
+
+        expect(controller.flash[:success]).to eq('Response was successfully submitted.')
+      end
+
+      it 'redirects to brand tickets path' do
+        post_reply
+
+        expect(response).to redirect_to(brand_tickets_path(brand))
+      end
+    end
+
+    shared_examples 'invalid reply' do
+      it 'does not create a reply ticket' do
+        expect { post_reply }.not_to change(Ticket, :count).from(1)
+      end
+
+      it 'sets the flash' do
+        post_reply
+
+        expect(controller.flash[:warning]).to eq("Unable to create tweet.\nerror")
+      end
+
+      it 'redirects to brand tickets path' do
+        post_reply
+
+        expect(response).to redirect_to(brand_tickets_path(brand))
+      end
+    end
+
     context 'when user is signed in' do
       let(:user) { FactoryBot.create(:user) }
 
@@ -165,33 +213,7 @@ RSpec.describe Brands::TicketsController, type: :request do
                 allow(client).to receive(:reply).and_return(client_response)
               end
 
-              it 'replies to the ticket' do
-                post_reply
-
-                expect(client).to have_received(:reply).with('does not matter', ticket.external_uid)
-              end
-
-              it 'creates a reply ticket' do
-                expect { post_reply }.to change(Ticket, :count).from(1).to(2)
-              end
-
-              it 'creates a reply ticket with matching attributes' do
-                post_reply
-
-                expect(ticket.replies.first).to have_attributes(parent: ticket, content: 'does not matter')
-              end
-
-              it 'sets the flash' do
-                post_reply
-
-                expect(controller.flash[:success]).to eq('Response was successfully submitted.')
-              end
-
-              it 'redirects to brand tickets path' do
-                post_reply
-
-                expect(response).to redirect_to(brand_tickets_path(brand))
-              end
+              it_behaves_like 'valid reply'
             end
 
             context 'when reply is invalid' do
@@ -199,21 +221,7 @@ RSpec.describe Brands::TicketsController, type: :request do
                 allow(client).to receive(:reply).and_raise(client_error)
               end
 
-              it 'does not create a reply ticket' do
-                expect { post_reply }.not_to change(Ticket, :count).from(1)
-              end
-
-              it 'sets the flash' do
-                post_reply
-
-                expect(controller.flash[:warning]).to eq("Unable to create tweet.\nerror")
-              end
-
-              it 'redirects to brand tickets path' do
-                post_reply
-
-                expect(response).to redirect_to(brand_tickets_path(brand))
-              end
+              it_behaves_like 'invalid reply'
             end
           end
 
@@ -228,33 +236,7 @@ RSpec.describe Brands::TicketsController, type: :request do
                 allow(client).to receive(:reply).and_return(client_response)
               end
 
-              it 'replies to the ticket' do
-                post_reply
-
-                expect(client).to have_received(:reply).with('does not matter', ticket.external_uid)
-              end
-
-              it 'creates a reply ticket' do
-                expect { post_reply }.to change(Ticket, :count).from(1).to(2)
-              end
-
-              it 'creates a reply ticket with matching attributes' do
-                post_reply
-
-                expect(ticket.replies.first).to have_attributes(parent: ticket, content: 'does not matter', user: user)
-              end
-
-              it 'sets the flash' do
-                post_reply
-
-                expect(controller.flash[:success]).to eq('Response was successfully submitted.')
-              end
-
-              it 'redirects to brand tickets path' do
-                post_reply
-
-                expect(response).to redirect_to(brand_tickets_path(brand))
-              end
+              it_behaves_like 'valid reply'
             end
 
             context 'when reply is invalid' do
@@ -262,21 +244,7 @@ RSpec.describe Brands::TicketsController, type: :request do
                 allow(client).to receive(:reply).and_raise(client_error)
               end
 
-              it 'does not create a reply ticket' do
-                expect { post_reply }.not_to change(Ticket, :count).from(1)
-              end
-
-              it 'sets the flash' do
-                post_reply
-
-                expect(controller.flash[:warning]).to eq("Unable to create tweet.\nerror")
-              end
-
-              it 'redirects to brand tickets path' do
-                post_reply
-
-                expect(response).to redirect_to(brand_tickets_path(brand))
-              end
+              it_behaves_like 'invalid reply'
             end
           end
         end
