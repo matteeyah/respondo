@@ -83,10 +83,14 @@ module Brands
     end
 
     def create_ticket!
-      Ticket.from_tweet!(
-        client.reply(params[:response_text], ticket.external_uid),
-        brand, current_user
-      )
+      response = client.reply(params[:response_text], ticket.external_uid)
+
+      case ticket.provider
+      when 'twitter'
+        Ticket.from_tweet!(response, brand, current_user)
+      when 'disqus'
+        Ticket.from_disqus_post!(response, brand, current_user)
+      end
     end
   end
 end

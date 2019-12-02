@@ -52,4 +52,17 @@ RSpec.describe Clients::Disqus do
       end
     end
   end
+
+  describe '#reply' do
+    subject(:reply) { client.reply('response text', 'disqus_uid') }
+
+    it 'calls the underlying twitter client' do
+      reply
+
+      expect(posts_spy).to have_received(:create).with(
+        api_key: 'api_key', api_secret: 'api_secret', access_token: 'token',
+        parent: 'disqus_uid', message: 'response text'
+      )
+    end
+  end
 end

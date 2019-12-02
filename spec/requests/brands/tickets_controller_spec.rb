@@ -116,145 +116,168 @@ RSpec.describe Brands::TicketsController, type: :request do
     subject(:post_reply) { post "/brands/#{brand.id}/tickets/#{ticket.id}/reply", params: { response_text: 'does not matter' } }
 
     let!(:ticket) { FactoryBot.create(:ticket, provider: 'twitter', brand: brand) }
+    let(:client) { instance_spy(Clients::Client) }
+    let(:twitter_client_class) { class_spy(Clients::Twitter, new: client) }
+    let(:disqus_client_class) { class_spy(Clients::Disqus, new: client) }
+
+    before do
+      stub_const(Clients::Twitter.to_s, twitter_client_class)
+      stub_const(Clients::Disqus.to_s, disqus_client_class)
+    end
 
     context 'when user is signed in' do
-      let(:tweet) do
-        instance_double(Twitter::Tweet, id: '1', attrs: { full_text: 'does not matter' },
-                                        in_reply_to_tweet_id: ticket.external_uid,
-                                        user: instance_double(Twitter::User, id: '2', screen_name: 'test'))
-      end
-
-      let(:error) { Twitter::Error::Forbidden.new('error') }
-      let(:client) { instance_spy(Clients::Twitter) }
-      let(:client_class) { class_spy(Clients::Twitter, new: client) }
-      let(:user) { FactoryBot.create(:user, :with_account) }
+      let(:user) { FactoryBot.create(:user) }
 
       before do
+        FactoryBot.create(:user_account, provider: 'google_oauth2', user: user)
         sign_in(user)
-        stub_const(Clients::Twitter.to_s, client_class)
       end
 
-      context 'when authorized as a brand' do
-        before do
-          FactoryBot.create(:brand_account, provider: ticket.provider, brand: brand)
-          brand.users << user
-        end
-
-        context 'when tweet is valid' do
+      %w[twitter disqus].each do |provider|
+        context "when ticket provider is #{provider}" do
           before do
-            allow(client).to receive(:reply).and_return(tweet)
+            ticket.update(provider: provider)
           end
 
-          it 'replies to the ticket' do
-            post_reply
-
-            expect(client).to have_received(:reply).with('does not matter', ticket.external_uid)
+          let(:client_error) { Twitter::Error::Forbidden.new('error') }
+          let(:client_response) do
+            case provider
+            when 'twitter'
+              instance_double(Twitter::Tweet, id: '1', attrs: { full_text: 'does not matter' },
+                                              in_reply_to_tweet_id: ticket.external_uid,
+                                              user: instance_double(Twitter::User, id: '2', screen_name: 'test'))
+            when 'disqus'
+              {
+                id: '12321', raw_message: 'does not matter',
+                author: { id: '12321', username: 'bestusername' },
+                parent: ticket.external_uid
+              }
+            end
           end
 
-          it 'creates a reply ticket' do
-            expect { post_reply }.to change(Ticket, :count).from(1).to(2)
+          context 'when authorized as a user' do
+            before do
+              FactoryBot.create(:user_account, provider: provider, user: user)
+            end
+
+            context 'when reply is valid' do
+              before do
+                allow(client).to receive(:reply).and_return(client_response)
+              end
+
+              it 'replies to the ticket' do
+                post_reply
+
+                expect(client).to have_received(:reply).with('does not matter', ticket.external_uid)
+              end
+
+              it 'creates a reply ticket' do
+                expect { post_reply }.to change(Ticket, :count).from(1).to(2)
+              end
+
+              it 'creates a reply ticket with matching attributes' do
+                post_reply
+
+                expect(ticket.replies.first).to have_attributes(parent: ticket, content: 'does not matter')
+              end
+
+              it 'sets the flash' do
+                post_reply
+
+                expect(controller.flash[:success]).to eq('Response was successfully submitted.')
+              end
+
+              it 'redirects to brand tickets path' do
+                post_reply
+
+                expect(response).to redirect_to(brand_tickets_path(brand))
+              end
+            end
+
+            context 'when reply is invalid' do
+              before do
+                allow(client).to receive(:reply).and_raise(client_error)
+              end
+
+              it 'does not create a reply ticket' do
+                expect { post_reply }.not_to change(Ticket, :count).from(1)
+              end
+
+              it 'sets the flash' do
+                post_reply
+
+                expect(controller.flash[:warning]).to eq("Unable to create tweet.\nerror")
+              end
+
+              it 'redirects to brand tickets path' do
+                post_reply
+
+                expect(response).to redirect_to(brand_tickets_path(brand))
+              end
+            end
           end
 
-          it 'creates a reply ticket with matching attributes' do
-            post_reply
+          context 'when authorized as a brand' do
+            before do
+              FactoryBot.create(:brand_account, provider: ticket.provider, brand: brand)
+              brand.users << user
+            end
 
-            expect(Ticket.find_by(external_uid: tweet.id)).to have_attributes(parent: ticket, content: 'does not matter', user: user)
-          end
+            context 'when reply is valid' do
+              before do
+                allow(client).to receive(:reply).and_return(client_response)
+              end
 
-          it 'sets the flash' do
-            post_reply
+              it 'replies to the ticket' do
+                post_reply
 
-            expect(controller.flash[:success]).to eq('Response was successfully submitted.')
-          end
+                expect(client).to have_received(:reply).with('does not matter', ticket.external_uid)
+              end
 
-          it 'redirects to brand tickets path' do
-            post_reply
+              it 'creates a reply ticket' do
+                expect { post_reply }.to change(Ticket, :count).from(1).to(2)
+              end
 
-            expect(response).to redirect_to(brand_tickets_path(brand))
-          end
-        end
+              it 'creates a reply ticket with matching attributes' do
+                post_reply
 
-        context 'when tweet is invalid' do
-          before do
-            allow(client).to receive(:reply).and_raise(error)
-          end
+                expect(ticket.replies.first).to have_attributes(parent: ticket, content: 'does not matter', user: user)
+              end
 
-          it 'does not create a reply ticket' do
-            expect { post_reply }.not_to change(Ticket, :count).from(1)
-          end
+              it 'sets the flash' do
+                post_reply
 
-          it 'sets the flash' do
-            post_reply
+                expect(controller.flash[:success]).to eq('Response was successfully submitted.')
+              end
 
-            expect(controller.flash[:warning]).to eq("Unable to create tweet.\nerror")
-          end
+              it 'redirects to brand tickets path' do
+                post_reply
 
-          it 'redirects to brand tickets path' do
-            post_reply
+                expect(response).to redirect_to(brand_tickets_path(brand))
+              end
+            end
 
-            expect(response).to redirect_to(brand_tickets_path(brand))
-          end
-        end
-      end
+            context 'when reply is invalid' do
+              before do
+                allow(client).to receive(:reply).and_raise(client_error)
+              end
 
-      context 'when authorized as a user' do
-        before do
-          FactoryBot.create(:user_account, provider: ticket.provider, user: user)
-        end
+              it 'does not create a reply ticket' do
+                expect { post_reply }.not_to change(Ticket, :count).from(1)
+              end
 
-        context 'when tweet is valid' do
-          before do
-            allow(client).to receive(:reply).and_return(tweet)
-          end
+              it 'sets the flash' do
+                post_reply
 
-          it 'replies to the ticket' do
-            post_reply
+                expect(controller.flash[:warning]).to eq("Unable to create tweet.\nerror")
+              end
 
-            expect(client).to have_received(:reply).with('does not matter', ticket.external_uid)
-          end
+              it 'redirects to brand tickets path' do
+                post_reply
 
-          it 'creates a reply ticket' do
-            expect { post_reply }.to change(Ticket, :count).from(1).to(2)
-          end
-
-          it 'creates a reply ticket with matching attributes' do
-            post_reply
-
-            expect(Ticket.find_by(external_uid: tweet.id)).to have_attributes(parent: ticket, content: 'does not matter')
-          end
-
-          it 'sets the flash' do
-            post_reply
-
-            expect(controller.flash[:success]).to eq('Response was successfully submitted.')
-          end
-
-          it 'redirects to brand tickets path' do
-            post_reply
-
-            expect(response).to redirect_to(brand_tickets_path(brand))
-          end
-        end
-
-        context 'when tweet is invalid' do
-          before do
-            allow(client).to receive(:reply).and_raise(error)
-          end
-
-          it 'does not create a reply ticket' do
-            expect { post_reply }.not_to change(Ticket, :count).from(1)
-          end
-
-          it 'sets the flash' do
-            post_reply
-
-            expect(controller.flash[:warning]).to eq("Unable to create tweet.\nerror")
-          end
-
-          it 'redirects to brand tickets path' do
-            post_reply
-
-            expect(response).to redirect_to(brand_tickets_path(brand))
+                expect(response).to redirect_to(brand_tickets_path(brand))
+              end
+            end
           end
         end
       end
