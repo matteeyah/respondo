@@ -31,5 +31,5 @@ Start reading our code and you'll get the hang of it. We optimize for:
   * Convention over Configuration
   * Development Velocity
 
-Thanks,  
+Thanks,
 Matija

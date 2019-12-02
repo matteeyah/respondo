@@ -235,7 +235,7 @@ RSpec.describe BrandAccount, type: :model do
         end
 
         context 'when brand does not have tickets' do
-          it 'calls client new mentions without args' do
+          it 'calls client new mentions with nil' do
             new_mentions
 
             expect(client_spy).to have_received(:new_mentions).with(nil)
