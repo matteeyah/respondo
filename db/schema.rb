@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 2019_11_24_000315) do
     t.integer "provider", null: false
     t.text "content", null: false
     t.integer "status", default: 0, null: false
+    t.string "metadata"
     t.integer "brand_id", null: false
     t.integer "author_id", null: false
     t.integer "user_id"
