@@ -15,6 +15,13 @@
 All requests are sent to the `Brands::TicketsController#create_external`
 endpoint in JSON format.
 
+The response URL is stored in ticket metadata. Respondo will send a POST request
+to the response URL and expects a response with the same schema that's used for
+creating tickets.
+
+[Zapier webhooks](https://zapier.com/apps/webhook/help) could be used to
+implement this.
+
 ##### Schema
 
 ```jsonschema
