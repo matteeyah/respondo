@@ -9,7 +9,7 @@ module Brands
     def create
       respond_to do |format|
         format.json do
-          new_ticket = Ticket.from_external_ticket!(create_params.merge(metadata: metadata_param), brand)
+          new_ticket = Ticket.from_external_ticket!(create_params.merge(metadata: metadata_param), brand, nil)
           render json: new_ticket
         end
       end

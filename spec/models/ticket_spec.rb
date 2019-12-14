@@ -213,7 +213,7 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: tweet.id, provider: 'twitter', content: tweet.attrs[:full_text],
-            brand: brand, author: author, user: user
+            metadata: nil, brand: brand, author: author, user: user
           }
         end
       end
@@ -244,7 +244,7 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: disqus_post[:id], provider: 'disqus', content: disqus_post[:raw_message],
-            brand: brand, author: author, user: user
+            metadata: nil, brand: brand, author: author, user: user
           }
         end
       end
@@ -260,6 +260,7 @@ RSpec.describe Ticket, type: :model do
         {
           external_uid: '123hello321world',
           content: 'This is content from the external ticket example.',
+          metadata: 'https://response_url.com',
           parent_uid: 'external_ticket_parent_external_uid',
           author: {
             external_uid: 'external_ticket_author_external_uid',
@@ -278,7 +279,8 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: external_ticket_json[:external_uid], provider: 'external',
-            content: external_ticket_json[:content], brand: brand, author: author, user: user
+            content: external_ticket_json[:content], metadata: 'https://response_url.com',
+            brand: brand, author: author, user: user
           }
         end
       end

@@ -70,8 +70,9 @@ class Ticket < ApplicationRecord
     def from_external_ticket!(external_ticket_json, brand, user)
       author = Author.from_external_author!(external_ticket_json[:author])
       parent = brand.tickets.external.find_by(external_uid: external_ticket_json[:parent_uid])
-      brand.tickets.external.create!(external_uid: external_ticket_json[:external_uid], author: author, user: user,
-                                     parent: parent, content: external_ticket_json[:content])
+      brand.tickets.external.create!(external_uid: external_ticket_json[:external_uid],
+                                     metadata: external_ticket_json[:metadata], content: external_ticket_json[:content],
+                                     author: author, user: user, parent: parent)
     end
 
     def with_descendants_hash(*included_relations)
