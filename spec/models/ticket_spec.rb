@@ -294,7 +294,7 @@ RSpec.describe Ticket, type: :model do
   end
 
   describe '.from_external_ticket!' do
-    subject(:from_external_ticket!) { described_class.from_external_ticket!(external_ticket_json, brand) }
+    subject(:from_external_ticket!) { described_class.from_external_ticket!(external_ticket_json, brand, user) }
 
     let(:brand) { FactoryBot.create(:brand) }
     let(:author) { FactoryBot.create(:author) }
@@ -315,31 +315,71 @@ RSpec.describe Ticket, type: :model do
       allow(Author).to receive(:from_external_author!).with(external_ticket_json[:author]).and_return(author)
     end
 
-    it 'creates a new ticket' do
-      expect { from_external_ticket! }.to change(described_class, :count).from(0).to(1)
+    context 'when user is not specified' do
+      let(:user) { nil }
+
+      it 'creates a new ticket' do
+        expect { from_external_ticket! }.to change(described_class, :count).from(0).to(1)
+      end
+
+      it 'returns a new ticket' do
+        expect(from_external_ticket!).to be_instance_of(described_class)
+      end
+
+      it 'persists the new ticket' do
+        expect(from_external_ticket!).to be_persisted
+      end
+
+      it 'builds a ticket with correct information' do
+        expect(from_external_ticket!).to have_attributes(
+          external_uid: external_ticket_json[:external_uid], provider: 'external',
+          content: external_ticket_json[:content],
+          brand: brand, parent: nil, author: author, user: nil
+        )
+      end
+
+      context 'when parent exists' do
+        let!(:parent) do
+          FactoryBot.create(:ticket, external_uid: external_ticket_json[:parent_uid], provider: 'external', brand: brand)
+        end
+
+        it 'assigns the parent to the ticket' do
+          expect(from_external_ticket!).to have_attributes(parent: parent)
+        end
+      end
     end
 
-    it 'returns a new ticket' do
-      expect(from_external_ticket!).to be_instance_of(described_class)
-    end
+    context 'when user is specified' do
+      let(:user) { FactoryBot.create(:user) }
 
-    it 'persists the new ticket' do
-      expect(from_external_ticket!).to be_persisted
-    end
+      it 'creates a new ticket' do
+        expect { from_external_ticket! }.to change(described_class, :count).from(0).to(1)
+      end
 
-    it 'builds a ticket with correct information' do
-      expect(from_external_ticket!).to have_attributes(
-        external_uid: external_ticket_json[:external_uid], provider: 'external',
-        content: external_ticket_json[:content],
-        brand: brand, parent: nil, author: author, user: nil
-      )
-    end
+      it 'returns a new ticket' do
+        expect(from_external_ticket!).to be_instance_of(described_class)
+      end
 
-    context 'when parent exists' do
-      let!(:parent) { FactoryBot.create(:ticket, external_uid: external_ticket_json[:parent_uid], provider: 'external', brand: brand) }
+      it 'persists the new ticket' do
+        expect(from_external_ticket!).to be_persisted
+      end
 
-      it 'assigns the parent to the ticket' do
-        expect(from_external_ticket!).to have_attributes(parent: parent)
+      it 'builds a ticket with correct information' do
+        expect(from_external_ticket!).to have_attributes(
+          external_uid: external_ticket_json[:external_uid], provider: 'external',
+          content: external_ticket_json[:content],
+          brand: brand, parent: nil, author: author, user: user
+        )
+      end
+
+      context 'when parent exists' do
+        let!(:parent) do
+          FactoryBot.create(:ticket, external_uid: external_ticket_json[:parent_uid], provider: 'external', brand: brand)
+        end
+
+        it 'assigns the parent to the ticket' do
+          expect(from_external_ticket!).to have_attributes(parent: parent)
+        end
       end
     end
   end

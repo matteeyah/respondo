@@ -67,10 +67,10 @@ class Ticket < ApplicationRecord
                                    parent: parent, content: post[:raw_message])
     end
 
-    def from_external_ticket!(external_ticket_json, brand)
+    def from_external_ticket!(external_ticket_json, brand, user)
       author = Author.from_external_author!(external_ticket_json[:author])
       parent = brand.tickets.external.find_by(external_uid: external_ticket_json[:parent_uid])
-      brand.tickets.external.create!(external_uid: external_ticket_json[:external_uid], author: author,
+      brand.tickets.external.create!(external_uid: external_ticket_json[:external_uid], author: author, user: user,
                                      parent: parent, content: external_ticket_json[:content])
     end
 
