@@ -30,7 +30,6 @@ implement this.
   "required": [
     "external_uid",
     "content",
-    "metadata",
     "author"
   ],
   "properties": {
@@ -90,7 +89,6 @@ implement this.
 {
   "external_uid": "123hello321world",
   "content": "This is content from the external ticket example.",
-  "metadata": "https://response_url.com",
   "parent_uid": "external_ticket_parent_external_uid",
   "author": {
     "external_uid": "external_ticket_author_external_uid",
