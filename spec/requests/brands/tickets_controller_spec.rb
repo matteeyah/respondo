@@ -119,10 +119,12 @@ RSpec.describe Brands::TicketsController, type: :request do
     let(:client) { instance_spy(Clients::Client) }
     let(:twitter_client_class) { class_spy(Clients::Twitter, new: client) }
     let(:disqus_client_class) { class_spy(Clients::Disqus, new: client) }
+    let(:external_client_class) { class_spy(Clients::External, new: client) }
 
     before do
       stub_const(Clients::Twitter.to_s, twitter_client_class)
       stub_const(Clients::Disqus.to_s, disqus_client_class)
+      stub_const(Clients::External.to_s, external_client_class)
     end
 
     shared_examples 'valid reply' do
@@ -181,7 +183,7 @@ RSpec.describe Brands::TicketsController, type: :request do
         sign_in(user)
       end
 
-      %w[twitter disqus].each do |provider|
+      Ticket.providers.keys.each do |provider|
         context "when ticket provider is #{provider}" do
           before do
             ticket.update(provider: provider)
@@ -200,12 +202,24 @@ RSpec.describe Brands::TicketsController, type: :request do
                 author: { id: '12321', username: 'bestusername' },
                 parent: ticket.external_uid
               }
+            when 'external'
+              {
+                external_uid: '123hello321world',
+                content: 'does not matter',
+                metadata: 'https://response_url.com',
+                parent_uid: ticket.external_uid,
+                author: {
+                  external_uid: 'external_ticket_author_external_uid',
+                  username: 'best_username'
+                }
+              }
             end
           end
 
           context 'when authorized as a user' do
             before do
-              FactoryBot.create(:user_account, provider: provider, user: user)
+              account_provider = provider == 'external' ? 'twitter' : provider
+              FactoryBot.create(:user_account, provider: account_provider, user: user)
             end
 
             context 'when reply is valid' do
@@ -227,7 +241,8 @@ RSpec.describe Brands::TicketsController, type: :request do
 
           context 'when authorized as a brand' do
             before do
-              FactoryBot.create(:brand_account, provider: ticket.provider, brand: brand)
+              account_provider = ticket.provider == 'external' ? 'twitter' : ticket.provider
+              FactoryBot.create(:brand_account, provider: account_provider, brand: brand)
               brand.users << user
             end
 

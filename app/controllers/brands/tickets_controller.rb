@@ -14,7 +14,7 @@ module Brands
     end
 
     def reply
-      create_ticket!
+      respond!
       flash[:success] = 'Response was successfully submitted.'
     rescue Twitter::Error => e
       flash[:warning] = "Unable to create tweet.\n#{e.message}"
@@ -55,8 +55,10 @@ module Brands
 
     private
 
-    def client
-      @client ||= if current_brand == brand
+    def client # rubocop:disable Metrics/AbcSize
+      @client ||= if ticket.external?
+                    Clients::External.new(ticket.metadata)
+                  elsif current_brand == brand
                     current_brand.client_for_provider(ticket.provider)
                   else
                     current_user.client_for_provider(ticket.provider)
@@ -64,7 +66,9 @@ module Brands
     end
 
     def authorize_reply!
-      return if (current_brand == brand) || current_user&.client_for_provider(ticket.provider)
+      return if ticket.external?
+      return if current_brand == brand
+      return if current_user&.client_for_provider(ticket.provider)
 
       redirect_back fallback_location: root_path, flash: { warning: 'You are not allowed to reply to the ticket.' }
     end
@@ -82,14 +86,20 @@ module Brands
       query.present? ? filtered_tickets.search(query) : filtered_tickets.root
     end
 
-    def create_ticket!
+    def respond!
       response = client.reply(params[:response_text], ticket.external_uid)
 
-      case ticket.provider
+      create_ticket!(ticket.provider, response)
+    end
+
+    def create_ticket!(provider, response)
+      case provider
       when 'twitter'
         Ticket.from_tweet!(response, brand, current_user)
       when 'disqus'
         Ticket.from_disqus_post!(response, brand, current_user)
+      when 'external'
+        Ticket.from_external_ticket!(response, brand, current_user)
       end
     end
   end

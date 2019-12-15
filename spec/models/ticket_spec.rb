@@ -130,216 +130,159 @@ RSpec.describe Ticket, type: :model do
     end
   end
 
-  describe '.from_tweet!' do
-    subject(:from_tweet!) { described_class.from_tweet!(tweet, brand, user) }
+  describe '.from_ methods' do
+    shared_examples 'from method' do
+      context 'when user is not specified' do
+        let(:user) { nil }
 
-    let(:brand) { FactoryBot.create(:brand) }
-    let(:author) { FactoryBot.create(:author) }
+        it 'creates a new ticket' do
+          expect { subject }.to change(described_class, :count).from(0).to(1)
+        end
 
-    let(:tweet) do
-      instance_double(Twitter::Tweet,
-                      id: '2',
-                      attrs: { full_text: 'helloworld' },
-                      user: 'does not matter',
-                      in_reply_to_tweet_id: '1')
-    end
+        it 'returns a new ticket' do
+          expect(subject).to be_instance_of(described_class)
+        end
 
-    before do
-      allow(Author).to receive(:from_twitter_user!).with(tweet.user).and_return(author)
-    end
+        it 'persists the new ticket' do
+          expect(subject).to be_persisted
+        end
 
-    context 'when user is not specified' do
-      let(:user) { nil }
+        it 'builds a ticket with correct information' do
+          expect(subject).to have_attributes(expected_attributes.merge(parent: nil))
+        end
 
-      it 'creates a new ticket' do
-        expect { from_tweet! }.to change(described_class, :count).from(0).to(1)
+        context 'when parent exists' do
+          let!(:parent) { FactoryBot.create(:ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand: brand) }
+
+          it 'assigns the parent to the ticket' do
+            expect(subject).to have_attributes(parent: parent)
+          end
+        end
       end
 
-      it 'returns a new ticket' do
-        expect(from_tweet!).to be_instance_of(described_class)
-      end
+      context 'when the user is specified' do
+        let(:user) { FactoryBot.create(:user) }
 
-      it 'persists the new ticket' do
-        expect(from_tweet!).to be_persisted
-      end
+        it 'creates a new ticket' do
+          expect { subject }.to change(described_class, :count).from(0).to(1)
+        end
 
-      it 'builds a ticket with correct information' do
-        expect(from_tweet!).to have_attributes(
-          external_uid: tweet.id, provider: 'twitter', content: tweet.attrs[:full_text],
-          brand: brand, parent: nil, author: author, user: nil
-        )
-      end
+        it 'returns a new ticket' do
+          expect(subject).to be_instance_of(described_class)
+        end
 
-      context 'when parent exists' do
-        let!(:parent) { FactoryBot.create(:ticket, external_uid: tweet.in_reply_to_tweet_id, provider: 'twitter', brand: brand) }
+        it 'persists the new ticket' do
+          expect(subject).to be_persisted
+        end
 
-        it 'assigns the parent to the ticket' do
-          expect(from_tweet!).to have_attributes(parent: parent)
+        it 'builds a ticket with correct information' do
+          expect(subject).to have_attributes(expected_attributes.merge(parent: nil))
+        end
+
+        context 'when parent exists' do
+          let!(:parent) { FactoryBot.create(:ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand: brand) }
+
+          it 'assigns the parent to the ticket' do
+            expect(subject).to have_attributes(parent: parent)
+          end
         end
       end
     end
 
-    context 'when the user is specified' do
-      let(:user) { FactoryBot.create(:user) }
+    describe '.from_tweet!' do
+      subject(:from_tweet!) { described_class.from_tweet!(tweet, brand, user) }
 
-      it 'creates a new ticket' do
-        expect { from_tweet! }.to change(described_class, :count).from(0).to(1)
+      let(:brand) { FactoryBot.create(:brand) }
+      let(:author) { FactoryBot.create(:author) }
+
+      let(:tweet) do
+        instance_double(Twitter::Tweet,
+                        id: '2',
+                        attrs: { full_text: 'helloworld' },
+                        user: 'does not matter',
+                        in_reply_to_tweet_id: '1')
       end
 
-      it 'returns a new ticket' do
-        expect(from_tweet!).to be_instance_of(described_class)
+      before do
+        allow(Author).to receive(:from_twitter_user!).with(tweet.user).and_return(author)
       end
 
-      it 'persists the new ticket' do
-        expect(from_tweet!).to be_persisted
-      end
+      it_behaves_like 'from method' do
+        let(:parent_id) { tweet.in_reply_to_tweet_id }
 
-      it 'builds a ticket with correct information' do
-        expect(from_tweet!).to have_attributes(
-          external_uid: tweet.id, provider: 'twitter', content: tweet.attrs[:full_text],
-          brand: brand, parent: nil, author: author, user: user
-        )
-      end
-
-      context 'when parent exists' do
-        let!(:parent) { FactoryBot.create(:ticket, external_uid: tweet.in_reply_to_tweet_id, provider: 'twitter', brand: brand) }
-
-        it 'assigns the parent to the ticket' do
-          expect(from_tweet!).to have_attributes(parent: parent)
-        end
-      end
-    end
-  end
-
-  describe '.from_disqus_post!' do
-    subject(:from_disqus_post!) { described_class.from_disqus_post!(disqus_post, brand, user) }
-
-    let(:brand) { FactoryBot.create(:brand) }
-    let(:author) { FactoryBot.create(:author) }
-
-    let(:disqus_post) do
-      {
-        id: '12321',
-        author: { id: '12321', username: 'bestusername' },
-        parent: '123454321',
-        raw_message: 'hello world'
-      }
-    end
-
-    before do
-      allow(Author).to receive(:from_disqus_user!).with(disqus_post[:author]).and_return(author)
-    end
-
-    context 'when user is not specified' do
-      let(:user) { nil }
-
-      it 'creates a new ticket' do
-        expect { from_disqus_post! }.to change(described_class, :count).from(0).to(1)
-      end
-
-      it 'returns a new ticket' do
-        expect(from_disqus_post!).to be_instance_of(described_class)
-      end
-
-      it 'persists the new ticket' do
-        expect(from_disqus_post!).to be_persisted
-      end
-
-      it 'builds a ticket with correct information' do
-        expect(from_disqus_post!).to have_attributes(
-          external_uid: disqus_post[:id], provider: 'disqus', content: disqus_post[:raw_message],
-          brand: brand, parent: nil, author: author, user: nil
-        )
-      end
-
-      context 'when parent exists' do
-        let!(:parent) { FactoryBot.create(:ticket, external_uid: disqus_post[:parent], provider: 'disqus', brand: brand) }
-
-        it 'assigns the parent to the ticket' do
-          expect(from_disqus_post!).to have_attributes(parent: parent)
+        let(:expected_attributes) do
+          {
+            external_uid: tweet.id, provider: 'twitter', content: tweet.attrs[:full_text],
+            metadata: nil, brand: brand, author: author, user: user
+          }
         end
       end
     end
 
-    context 'when the user is specified' do
-      let(:user) { FactoryBot.create(:user) }
+    describe '.from_disqus_post!' do
+      subject(:from_disqus_post!) { described_class.from_disqus_post!(disqus_post, brand, user) }
 
-      it 'creates a new ticket' do
-        expect { from_disqus_post! }.to change(described_class, :count).from(0).to(1)
-      end
+      let(:brand) { FactoryBot.create(:brand) }
+      let(:author) { FactoryBot.create(:author) }
 
-      it 'returns a new ticket' do
-        expect(from_disqus_post!).to be_instance_of(described_class)
-      end
-
-      it 'persists the new ticket' do
-        expect(from_disqus_post!).to be_persisted
-      end
-
-      it 'builds a ticket with correct information' do
-        expect(from_disqus_post!).to have_attributes(
-          external_uid: disqus_post[:id], provider: 'disqus', content: disqus_post[:raw_message],
-          brand: brand, parent: nil, author: author, user: user
-        )
-      end
-
-      context 'when parent exists' do
-        let!(:parent) { FactoryBot.create(:ticket, external_uid: disqus_post[:parent], provider: 'disqus', brand: brand) }
-
-        it 'assigns the parent to the ticket' do
-          expect(from_disqus_post!).to have_attributes(parent: parent)
-        end
-      end
-    end
-  end
-
-  describe '.from_external_ticket!' do
-    subject(:from_external_ticket!) { described_class.from_external_ticket!(external_ticket_json, brand) }
-
-    let(:brand) { FactoryBot.create(:brand) }
-    let(:author) { FactoryBot.create(:author) }
-
-    let(:external_ticket_json) do
-      {
-        external_uid: '123hello321world',
-        content: 'This is content from the external ticket example.',
-        parent_uid: 'external_ticket_parent_external_uid',
-        author: {
-          external_uid: 'external_ticket_author_external_uid',
-          username: 'best_username'
+      let(:disqus_post) do
+        {
+          id: '12321',
+          author: { id: '12321', username: 'bestusername' },
+          parent: '123454321',
+          raw_message: 'hello world'
         }
-      }
+      end
+
+      before do
+        allow(Author).to receive(:from_disqus_user!).with(disqus_post[:author]).and_return(author)
+      end
+
+      it_behaves_like 'from method' do
+        let(:parent_id) { disqus_post[:parent] }
+
+        let(:expected_attributes) do
+          {
+            external_uid: disqus_post[:id], provider: 'disqus', content: disqus_post[:raw_message],
+            metadata: nil, brand: brand, author: author, user: user
+          }
+        end
+      end
     end
 
-    before do
-      allow(Author).to receive(:from_external_author!).with(external_ticket_json[:author]).and_return(author)
-    end
+    describe '.from_external_ticket!' do
+      subject(:from_external_ticket!) { described_class.from_external_ticket!(external_ticket_json, brand, user) }
 
-    it 'creates a new ticket' do
-      expect { from_external_ticket! }.to change(described_class, :count).from(0).to(1)
-    end
+      let(:brand) { FactoryBot.create(:brand) }
+      let(:author) { FactoryBot.create(:author) }
 
-    it 'returns a new ticket' do
-      expect(from_external_ticket!).to be_instance_of(described_class)
-    end
+      let(:external_ticket_json) do
+        {
+          external_uid: '123hello321world',
+          content: 'This is content from the external ticket example.',
+          metadata: 'https://response_url.com',
+          parent_uid: 'external_ticket_parent_external_uid',
+          author: {
+            external_uid: 'external_ticket_author_external_uid',
+            username: 'best_username'
+          }
+        }
+      end
 
-    it 'persists the new ticket' do
-      expect(from_external_ticket!).to be_persisted
-    end
+      before do
+        allow(Author).to receive(:from_external_author!).with(external_ticket_json[:author]).and_return(author)
+      end
 
-    it 'builds a ticket with correct information' do
-      expect(from_external_ticket!).to have_attributes(
-        external_uid: external_ticket_json[:external_uid], provider: 'external',
-        content: external_ticket_json[:content],
-        brand: brand, parent: nil, author: author, user: nil
-      )
-    end
+      it_behaves_like 'from method' do
+        let(:parent_id) { external_ticket_json[:parent_uid] }
 
-    context 'when parent exists' do
-      let!(:parent) { FactoryBot.create(:ticket, external_uid: external_ticket_json[:parent_uid], provider: 'external', brand: brand) }
-
-      it 'assigns the parent to the ticket' do
-        expect(from_external_ticket!).to have_attributes(parent: parent)
+        let(:expected_attributes) do
+          {
+            external_uid: external_ticket_json[:external_uid], provider: 'external',
+            content: external_ticket_json[:content], metadata: 'https://response_url.com',
+            brand: brand, author: author, user: user
+          }
+        end
       end
     end
   end
