@@ -52,7 +52,7 @@ group :development, :test do
   gem 'faker', '~> 2.2.2' # Sample data
   gem 'license_finder', '~> 5.11.1' # license checking
   gem 'pry-byebug', '~> 3.7.0' # pry debugging
-  gem 'rspec-rails', '4.0.0.beta3' # rspec testing framework
+  gem 'rspec-rails', '4.0.0.beta4' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
 end
 
