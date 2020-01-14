@@ -113,8 +113,12 @@ implement this.
 
 ### Environment variables
 
+Environment variables required to run the application should be stored in an
+`.env` file in `DEVELOPMENT` and `TEST` environments.
+
 - Rails
     - `RAILS_MASTER_KEY`
+        - DEVELOPMENT
         - TEST
         - PRODUCTION
 
