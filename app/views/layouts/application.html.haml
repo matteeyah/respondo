@@ -17,6 +17,8 @@
       .collapse.navbar-collapse#navbar-content
         %ul.navbar-nav.mr-auto
           %li.nav-item= active_link_to 'Brands', brands_path, active: [brands: :index], class: 'nav-link'
+          - if current_brand
+            %li.nav-item= active_link_to 'Current Brand', brand_tickets_path(current_brand), active: :exclusive, class: 'nav-link'
         .mr-sm-2
           %ul.navbar-nav
             - if user_signed_in?
