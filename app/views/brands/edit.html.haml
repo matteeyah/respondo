@@ -10,7 +10,7 @@
     %h3 Users outside Brand
     %p.lead Select user and click button to add.
     = form_with url: brand_users_path(brand), method: :post do |remove_user_form|
-      = remove_user_form.select :user_id, options_for_select(add_users_dropdown_options_for(brand)),
+      = remove_user_form.select :user_id, options_for_select(add_users_dropdown_options_for),
         { include_blank: 'Select user' }, required: true, class: 'custom-select form-control col-sm-6', id: 'add-user'
       = remove_user_form.submit 'Add User', class: 'btn btn-primary ml-3'
 
