@@ -26,20 +26,44 @@ RSpec.describe Brands::UsersController, type: :request do
           brand.users << browsing_user
         end
 
-        it 'adds the user to the brand' do
-          expect { post_create }.to change { user.reload.brand_id }.from(nil).to(brand.id)
+        context 'when user does not belong to other brand' do
+          it 'adds the user to the brand' do
+            expect { post_create }.to change { user.reload.brand_id }.from(nil).to(brand.id)
+          end
+
+          it 'sets the flash' do
+            post_create
+
+            expect(controller.flash[:success]).to eq('User was successfully added to the brand.')
+          end
+
+          it 'redirects to edit brand path' do
+            post_create
+
+            expect(response).to redirect_to(edit_brand_path(brand))
+          end
         end
 
-        it 'sets the flash' do
-          post_create
+        context 'when user belongs to other brand' do
+          before do
+            FactoryBot.create(:brand).users << user
+          end
 
-          expect(controller.flash[:success]).to eq('User was successfully added to the brand.')
-        end
+          it 'does not add the user to the brand' do
+            expect { post_create }.not_to change(user.reload, :brand_id)
+          end
 
-        it 'redirects to edit brand path' do
-          post_create
+          it 'sets the flash' do
+            post_create
 
-          expect(response).to redirect_to(edit_brand_path(brand))
+            expect(controller.flash[:warning]).to eq('Unable to add the user to the brand. User already belongs to a brand.')
+          end
+
+          it 'redirects to root path' do
+            post_create
+
+            expect(response).to redirect_to(root_path)
+          end
         end
       end
 

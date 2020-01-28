@@ -3,8 +3,8 @@
 module BrandsHelper
   include Pagy::Frontend
 
-  def add_users_dropdown_options_for(brand)
-    users_not_in_brand(brand).pluck(:name, :id)
+  def add_users_dropdown_options_for
+    users_not_in_brand.pluck(:name, :id)
   end
 
   def user_authorized_for?(user, brand)
@@ -20,7 +20,7 @@ module BrandsHelper
 
   private
 
-  def users_not_in_brand(brand)
-    User.where.not(brand_id: brand.id).or(User.where(brand_id: nil))
+  def users_not_in_brand
+    User.where(brand_id: nil)
   end
 end
