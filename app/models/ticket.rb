@@ -110,6 +110,10 @@ class Ticket < ApplicationRecord
     end
   end
 
+  def provider
+    metadata&.dig(:provider) || self[:provider]
+  end
+
   private
 
   def parent_in_brand

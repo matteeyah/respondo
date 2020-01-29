@@ -308,4 +308,29 @@ RSpec.describe Ticket, type: :model do
       )
     end
   end
+
+  describe '#provider' do
+    subject(:ticket) { FactoryBot.create(:ticket) }
+    subject(:provider) { ticket.provider}
+
+    context 'when ticket has custom provider' do
+      before do
+        ticket.metadata = { provider: 'hacker_news' }
+      end
+
+      it 'uses custom provider' do
+        expect(provider).to eq('hacker_news')
+      end
+    end
+
+    context 'when ticket does not have custom provider' do
+      before do
+        ticket.metadata = { provider: nil }
+      end
+
+      it 'uses external provider' do
+        expect(provider).to eq(ticket.provider)
+      end
+    end
+  end
 end
