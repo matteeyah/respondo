@@ -49,7 +49,6 @@ implement this.
       "type": "object",
       "required": [
         "response_url",
-        "provider"
       ],
       "properties": {
         "response_url": {
@@ -58,7 +57,7 @@ implement this.
             "https://response_url.com"
           ]
         },
-        "provider": {
+        "custom_provider": {
           "type": "string",
           "examples": [
             "hacker_news"
@@ -118,7 +117,7 @@ implement this.
   "content": "This is content from the external ticket example.",
   "metadata": {
     "response_url": "https://response_url.com",
-    "provider": "hacker_news"
+    "custom_provider": "hacker_news"
   },
   "author": {
     "external_uid": "external_ticket_author_external_uid",

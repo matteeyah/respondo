@@ -48,10 +48,8 @@ class Ticket < ApplicationRecord
   class << self
     def search(query)
       authors = Author.arel_table
-      where(
-        arel_table[:content].matches("%#{query}%")
-        .or(arel_table[:author_id].in(authors.project(authors[:id]).where(authors[:username].matches(query))))
-      )
+      where(arel_table[:content].matches("%#{query}%")
+        .or(arel_table[:author_id].in(authors.project(authors[:id]).where(authors[:username].matches(query)))))
     end
 
     def from_tweet!(tweet, brand, user)
@@ -111,7 +109,7 @@ class Ticket < ApplicationRecord
   end
 
   def provider
-    metadata&.dig(:provider) || self[:provider]
+    metadata&.dig(:custom_provider) || self[:provider]
   end
 
   private

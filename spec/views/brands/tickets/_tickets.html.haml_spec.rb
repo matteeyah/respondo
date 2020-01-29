@@ -87,7 +87,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
       context 'when tickets have external provider' do
         before do
-          ticket.metadata[:provider] = nested_ticket.metadata[:provider] = 'hacker_news'
+          ticket.metadata[:custom_provider] = nested_ticket.metadata[:custom_provider] = 'hacker_news'
         end
 
         it 'shows custom external provider for root tickets' do
@@ -218,7 +218,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
         context 'when tickets have external provider' do
           before do
-            ticket.metadata[:provider] = nested_ticket.metadata[:provider] = 'hacker_news'
+            ticket.metadata[:custom_provider] = nested_ticket.metadata[:custom_provider] = 'hacker_news'
           end
 
           it 'shows custom external provider for root tickets' do

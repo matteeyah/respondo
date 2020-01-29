@@ -310,12 +310,13 @@ RSpec.describe Ticket, type: :model do
   end
 
   describe '#provider' do
-    subject(:ticket) { FactoryBot.create(:ticket) }
-    subject(:provider) { ticket.provider}
+    subject(:provider) { ticket.provider }
+
+    let(:ticket) { FactoryBot.create(:ticket) }
 
     context 'when ticket has custom provider' do
       before do
-        ticket.metadata = { provider: 'hacker_news' }
+        ticket.metadata = { custom_provider: 'hacker_news' }
       end
 
       it 'uses custom provider' do
