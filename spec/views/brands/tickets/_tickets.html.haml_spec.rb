@@ -70,12 +70,31 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       before do
         ticket.external!
         nested_ticket.external!
+        ticket.metadata = nested_ticket.metadata = { response_url: 'https://google.com' }
       end
 
       it 'does not display response form' do
         render_tickets_partial
 
         expect(rendered).not_to have_button('Reply')
+      end
+
+      it 'shows external provider for root tickets' do
+        render_tickets_partial
+
+        expect(rendered).to have_text('Provider:', count: 1).and have_text('external', count: 1)
+      end
+
+      context 'when tickets have external provider' do
+        before do
+          ticket.metadata[:custom_provider] = nested_ticket.metadata[:custom_provider] = 'hacker_news'
+        end
+
+        it 'shows custom external provider for root tickets' do
+          render_tickets_partial
+
+          expect(rendered).to have_text('Provider:', count: 1).and have_text('hacker_news', count: 1)
+        end
       end
     end
 
@@ -182,12 +201,31 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         before do
           ticket.external!
           nested_ticket.external!
+          ticket.metadata = nested_ticket.metadata = { response_url: 'https://google.com' }
         end
 
         it 'does not display response form' do
           render_tickets_partial
 
           expect(rendered).not_to have_button('Reply')
+        end
+
+        it 'shows external provider for root tickets' do
+          render_tickets_partial
+
+          expect(rendered).to have_text('Provider:', count: 1).and have_text('external', count: 1)
+        end
+
+        context 'when tickets have external provider' do
+          before do
+            ticket.metadata[:custom_provider] = nested_ticket.metadata[:custom_provider] = 'hacker_news'
+          end
+
+          it 'shows custom external provider for root tickets' do
+            render_tickets_partial
+
+            expect(rendered).to have_text('Provider:', count: 1).and have_text('hacker_news', count: 1)
+          end
         end
       end
 

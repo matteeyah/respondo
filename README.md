@@ -46,10 +46,24 @@ implement this.
       ]
     },
     "metadata": {
-      "type": "string",
-      "examples": [
-        "https://response_url.com"
-      ]
+      "type": "object",
+      "required": [
+        "response_url",
+      ],
+      "properties": {
+        "response_url": {
+          "type": "string",
+          "examples": [
+            "https://response_url.com"
+          ]
+        },
+        "custom_provider": {
+          "type": "string",
+          "examples": [
+            "hacker_news"
+          ]
+        }
+      }
     },
     "parent_uid": {
       "type": "string",
@@ -101,7 +115,10 @@ implement this.
 {
   "external_uid": "123hello321world",
   "content": "This is content from the external ticket example.",
-  "metadata": "https://response_url.com",
+  "metadata": {
+    "response_url": "https://response_url.com",
+    "custom_provider": "hacker_news"
+  },
   "author": {
     "external_uid": "external_ticket_author_external_uid",
     "username": "best_username"
