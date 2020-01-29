@@ -206,7 +206,9 @@ RSpec.describe Brands::TicketsController, type: :request do
               {
                 external_uid: '123hello321world',
                 content: 'does not matter',
-                metadata: 'https://response_url.com',
+                metadata: {
+                  response_url: 'https://response_url.com'
+                },
                 parent_uid: ticket.external_uid,
                 author: {
                   external_uid: 'external_ticket_author_external_uid',

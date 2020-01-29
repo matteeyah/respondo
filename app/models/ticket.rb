@@ -8,6 +8,7 @@ class Ticket < ApplicationRecord
   validates :content, presence: { allow_blank: false }
   validates :provider, presence: true
   validate :parent_in_brand
+  serialize :metadata
 
   enum status: { open: 0, solved: 1 }
   enum provider: { external: 0, twitter: 1, disqus: 2 }
