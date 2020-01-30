@@ -213,3 +213,5 @@ To update the CI docker image run:
 
 - `docker build . --file Dockerfile.CI --tag matteeyah/respondo-ci:latest`
 - `docker push matteeyah/respondo-ci:latest`
+
+This is required when bumping the ruby version.
