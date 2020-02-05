@@ -84,7 +84,7 @@ jobs:
         run: bundle exec license_finder
   rubocop:
     runs-on: ubuntu-latest
-    container: ruby:2.6.5
+    container: ruby:2.7.0
     steps:
       - uses: actions/checkout@v1
       - name: Install rubocop
@@ -97,7 +97,7 @@ jobs:
         run: rubocop
   haml-lint:
     runs-on: ubuntu-latest
-    container: ruby:2.6.5
+    container: ruby:2.7.0
     steps:
       - uses: actions/checkout@v1
       - name: Install haml-lint
@@ -131,3 +131,13 @@ jobs:
         run: pip install proselint
       - name: Run proselint
         run: proselint docs/
+  markdown_lint:
+    runs-on: ubuntu-latest
+    container: ruby:2.7.0
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install mdl
+        run: |
+          gem install mdl
+      - name: Run mdl
+        run: mdl .

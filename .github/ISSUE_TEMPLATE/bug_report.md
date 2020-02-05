@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+# Bug Report
+
 ## Description
 
 A clear and concise description of what the bug is.
@@ -16,9 +18,9 @@ A clear and concise description of what the bug is.
 Steps to reproduce the behavior:
 
 1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+1. Click on '....'
+1. Scroll down to '....'
+1. See error
 
 ## Expected behavior
 
@@ -30,9 +32,9 @@ If applicable, add screenshots to help explain your problem.
 
 ## Desktop
 
- - OS: [e.g. macOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+- OS: [e.g. macOS]
+- Browser [e.g. chrome, safari]
+- Version [e.g. 22]
 
 ## Additional context
 

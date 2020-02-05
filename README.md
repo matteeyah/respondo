@@ -134,34 +134,34 @@ Environment variables required to run the application should be stored in an
 `.env` file in `DEVELOPMENT` and `TEST` environments.
 
 - Rails
-    - `RAILS_MASTER_KEY`
-        - DEVELOPMENT
-        - TEST
-        - PRODUCTION
+  - `RAILS_MASTER_KEY`
+    - DEVELOPMENT
+    - TEST
+    - PRODUCTION
 
 - Google OAuth
-    - `GOOGLE_CLIENT_ID`
-        - DEVELOPMENT
-        - PRODUCTION
-    - `GOOGLE_CLIENT_SECRET`
-        - DEVELOPMENT
-        - PRODUCTION
+  - `GOOGLE_CLIENT_ID`
+    - DEVELOPMENT
+    - PRODUCTION
+  - `GOOGLE_CLIENT_SECRET`
+    - DEVELOPMENT
+    - PRODUCTION
 
 - Twitter OAuth
-    - `TWITTER_API_KEY`
-        - DEVELOPMENT
-        - PRODUCTION
-    - `TWITTER_API_SECRET`
-        - DEVELOPMENT
-        - PRODUCTION
+  - `TWITTER_API_KEY`
+    - DEVELOPMENT
+    - PRODUCTION
+  - `TWITTER_API_SECRET`
+    - DEVELOPMENT
+    - PRODUCTION
 
 - Disqus OAuth
-    - `DISQUS_PUBLIC_KEY`
-        - DEVELOPMENT
-        - PRODUCTION
-    - `DISQUS_SECRET_KEY`
-        - DEVELOPMENT
-        - PRODUCTION
+  - `DISQUS_PUBLIC_KEY`
+    - DEVELOPMENT
+    - PRODUCTION
+  - `DISQUS_SECRET_KEY`
+    - DEVELOPMENT
+    - PRODUCTION
 
 ### Integrating Providers
 
@@ -191,7 +191,7 @@ To build the respondo image run
 docker build . --tag respondo
 ```
 
-#### Development
+#### Develop
 
 To standup an instance of respondo for development purposes run
 
@@ -199,7 +199,7 @@ To standup an instance of respondo for development purposes run
 docker run -p 3000:3000 respondo
 ```
 
-#### Tests
+#### Test
 
 To run tests inside the docker container run
 
