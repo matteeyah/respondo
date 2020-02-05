@@ -66,7 +66,7 @@ You can also add or remove users from your brand. All associated users will be a
 
 Currently, we can automatically integrate your Twitter, Disqus and Google accounts. To do so, navigate to the `User Settings` page and you'll be able to authorize or deauthorize these accounts.
 
-## External Tickets
+## Webhook Integrations
 
 If you want to create a ticket manually, just submit a POST request to `https://respondo.herokuapp.com/brands/{BRAND_ID}/external_tickets.json` using [this format](https://github.com/matteeyah/respondo#external-tickets).
 
