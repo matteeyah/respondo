@@ -138,6 +138,12 @@ Environment variables required to run the application should be stored in an
     - DEVELOPMENT
     - TEST
     - PRODUCTION
+  - `NEW_RELIC_APP_NAME`
+    - PRODUCTION
+  - `NEW_RELIC_LICENSE_KEY`
+    - PRODUCTION
+  - `NEW_RELIC_LOG`
+    - PRODUCTION
 
 - Google OAuth
   - `GOOGLE_CLIENT_ID`
