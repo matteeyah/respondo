@@ -75,5 +75,15 @@
       "plan": "papertrail:choklad",
       "as": "PAPERTRAIL"
     }
-  ]
+  ],
+  "environments": {
+    "review": {
+      "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "free"
+        }
+      }
+    }
+  }
 }
