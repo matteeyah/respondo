@@ -13,7 +13,9 @@
         'data-target' => '#navbar-content', 'aria-controls' => 'navbar-content',
         'aria-expanded' => 'false', 'aria-label' => 'Toggle navigation' }
         %span.navbar-toggler-icon
-      = link_to 'Respondo', root_path, class: 'navbar-brand'
+      %a.navbar-brand{ href: root_path }
+        = image_tag('logo_white_160x160.png')
+        %span Respondo
       .collapse.navbar-collapse#navbar-content
         %ul.navbar-nav.mr-auto
           %li.nav-item= active_link_to 'Brands', brands_path, active: [brands: :index], class: 'nav-link'
