@@ -68,6 +68,6 @@ Currently, we can automatically integrate your Twitter, Disqus and Google accoun
 
 ## Webhook Integrations
 
-If you want to create a ticket manually, just submit a POST request to `https://respondo.herokuapp.com/brands/{BRAND_ID}/external_tickets.json` using [this format](https://github.com/matteeyah/respondo#external-tickets).
+If you want to create a ticket manually, just submit a POST request to `https://app.respondohub.com/brands/{BRAND_ID}/external_tickets.json` using [this format](https://github.com/matteeyah/respondo#external-tickets).
 
 You will need a `Personal Access Token` for creating external tickets. You can review existing and create new tokens on the `User Settings` page.
