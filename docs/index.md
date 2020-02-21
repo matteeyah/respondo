@@ -7,15 +7,13 @@ title: Documentation
 
 > Ticketing system for social media posts
 
----
-
 ## Overview
 
 [Respondo](https://respondohub.com/) uses a ticket approach to social media (similar to Zendesk). You can filter tickets by status and search them by author name or content.
 
 ## Content
 
-* Test
+* Table of Contents
 {:toc}
 
 ## Basic navigation
@@ -23,8 +21,6 @@ title: Documentation
 While signed out, you can see all [authenticated brands](https://app.respondohub.com/brands), but can't respond to any ticket.
 
 When you select one of the authenticated brands, you will be able to choose between `Open tickets` and `Solved tickets`.
-
-[//]: # (explain what's the point of solving tickets)
 
 Every time somebody mentions the brand's handle on any social network that is currently integrated with that brand's Respondo, a new ticket will be created under `Open tickets`.
 
