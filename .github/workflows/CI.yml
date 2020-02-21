@@ -130,7 +130,7 @@ jobs:
       - name: Install proselint
         run: pip install proselint
       - name: Run proselint
-        run: proselint docs/
+        run: proselint docs/*.md
   markdown_lint:
     runs-on: ubuntu-latest
     container: ruby:2.7.0

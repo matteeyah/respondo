@@ -1,0 +1,13 @@
+html {
+  scroll-behavior: smooth;
+}
+
+header {
+  padding: 156px 0 100px;
+}
+
+.navbar-brand img {
+  width: 2em;
+  height: 2em;
+  margin-right: 0.5em;
+}
