@@ -309,8 +309,8 @@ RSpec.describe Ticket, type: :model do
     end
   end
 
-  describe '#provider' do
-    subject(:provider) { ticket.provider }
+  describe '#actual_provider' do
+    subject(:actual_provider) { ticket.actual_provider }
 
     let(:ticket) { FactoryBot.create(:ticket) }
 
@@ -320,7 +320,7 @@ RSpec.describe Ticket, type: :model do
       end
 
       it 'uses custom provider' do
-        expect(provider).to eq('hacker_news')
+        expect(actual_provider).to eq('hacker_news')
       end
     end
 
@@ -329,8 +329,8 @@ RSpec.describe Ticket, type: :model do
         ticket.metadata = { provider: nil }
       end
 
-      it 'uses external provider' do
-        expect(provider).to eq(ticket.provider)
+      it 'uses ticket provider' do
+        expect(actual_provider).to eq(ticket.provider)
       end
     end
   end

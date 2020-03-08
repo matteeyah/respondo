@@ -108,7 +108,7 @@ class Ticket < ApplicationRecord
     end
   end
 
-  def provider
+  def actual_provider
     metadata&.dig(:custom_provider) || self[:provider]
   end
 
