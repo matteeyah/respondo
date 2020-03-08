@@ -10,17 +10,17 @@
 
 ### External Tickets
 
-#### Format
-
-All requests are sent to the `Brands::TicketsController#create_external`
-endpoint in JSON format.
-
 The response URL is stored in ticket metadata. Respondo will send a POST request
 to the response URL and expects a response with the same schema that's used for
 creating tickets.
 
 [Zapier webhooks](https://zapier.com/apps/webhook/help) could be used to
 implement this.
+
+#### Inbound Format
+
+All requests are sent to the `Brands::TicketsController#create_external`
+endpoint in JSON format.
 
 ##### Schema
 
@@ -97,7 +97,7 @@ implement this.
 }
 ```
 
-##### Example
+##### Examples
 
 ```json
 {
@@ -123,6 +123,147 @@ implement this.
     "external_uid": "external_ticket_author_external_uid",
     "username": "best_username"
   }
+}
+```
+
+#### Reply Format
+
+All replies are sent as POST requests to the `Ticket.metadata[:response_url]`
+endpoint in JSON format. A response is expected.
+
+##### Reply Schema
+
+```jsonschema
+{
+  "type": "object",
+  "required": [
+    "response_text",
+    "author",
+    "parent_id"
+  ],
+  "properties": {
+    "response_text": {
+      "type": "string",
+      "examples": [
+        "This is content from an example external ticket reply."
+      ]
+    },
+    "author": {
+      "type": "object",
+      "examples": [
+        {
+          "external_uid": "author_uid_1",
+          "username": "author_username"
+        }
+      ],
+      "required": [
+        "external_uid",
+        "username"
+      ],
+      "properties": {
+        "external_uid": {
+          "type": "string",
+          "examples": [
+            "author_uid_1"
+          ]
+        },
+        "username": {
+          "type": "string",
+          "examples": [
+            "author_username"
+          ]
+        }
+      }
+    },
+    "parent_id": {
+      "type": "string",
+      "examples": [
+        "external_ticket_uid_1"
+      ]
+    }
+  }
+}
+```
+
+###### Reply Example
+
+```json
+{
+  "response_text": "This is content from an example external ticket reply.",
+  "author": {
+    "external_uid": "author_uid_1",
+    "username": "author_username"
+  },
+  "parent_id": "external_ticket_uid_1"
+}
+```
+
+##### Response Schema
+
+```jsonschema
+{
+  "type": "object",
+  "required": [
+    "external_uid",
+    "author",
+    "parent_uid",
+    "content"
+  ],
+  "properties": {
+    "external_uid": {
+      "type": "string",
+      "examples": [
+        "external_ticket_uid_2"
+      ]
+    },
+    "author": {
+      "type": "object",
+      "required": [
+        "external_uid",
+        "username"
+      ],
+      "properties": {
+        "external_uid": {
+          "type": "string",
+          "examples": [
+            "author_uid_1"
+          ]
+        },
+        "username": {
+          "type": "string",
+          "examples": [
+            "author_username"
+          ]
+        }
+      }
+    },
+    "parent_uid": {
+      "type": "string",
+      "examples": [
+        "parent_uid_1"
+      ]
+    },
+    "content": {
+      "type": "string",
+      "examples": [
+        "This is content from an example external ticket reply."
+      ]
+    }
+  }
+}
+```
+
+###### Response Example
+
+```json
+{
+  "external_uid": "external_ticket_uid_2",
+  "author": {
+    "external_uid": "author_uid_1",
+    "username": "author_username"
+  },
+  "parent_uid":"parent_uid_1",
+  "content": "This is content from an example external ticket reply."
 }
 ```
 
