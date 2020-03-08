@@ -13,6 +13,10 @@ module Brands
       @tickets = tickets_relation.with_descendants_hash(:author, :user, comments: [:user])
     end
 
+    def show
+      @ticket = ticket
+    end
+
     def reply
       respond!
       flash[:success] = 'Response was successfully submitted.'
