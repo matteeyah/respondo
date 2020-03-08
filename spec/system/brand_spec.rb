@@ -92,6 +92,7 @@ RSpec.describe 'Brand', type: :system do
     response_text = 'Hello from Respondo system tests'
     target_ticket = tickets.first
     target_ticket.external!
+    target_ticket.author.external!
     target_ticket.metadata = { response_url: 'https://example.com' }
     target_ticket.save
     response = {
