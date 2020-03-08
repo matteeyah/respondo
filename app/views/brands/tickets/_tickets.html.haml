@@ -3,39 +3,7 @@
 %ul.list-group.mt-3
   - tickets.each do |ticket, replies|
     %li.list-group-item.mt-3
-      .row.ml-3.mb-3
-        %span.font-weight-bold.mr-1
-          - if user_authorized && ticket.user
-            #{ticket.user.name} as #{ticket.author.username}:
-          - else
-            #{ticket.author.username}:
-        %span= ticket.content
-      - if ticket.parent_id.nil?
-        .row.ml-3.mb-3
-          %span.font-weight-bold.mr-1 Provider:
-          %span= ticket.provider
-
-      .row
-        - if (user_authorized || user_can_reply_to?(current_user, ticket.provider)) && !ticket.external?
-          = form_with url: brand_ticket_reply_path(brand, ticket), class: 'form-inline col-sm-10',
-            html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off' } do |reply_form|
-            = reply_form.text_field :response_text, required: true, placeholder: 'Reply', class: 'form-control col-sm-9'
-            = reply_form.submit 'Reply', class: 'btn btn-secondary col-sm-2 ml-auto'
-
-      - if user_authorized
-        - if ticket.comments.any?
-          %ul.list-group.mt-3.mb-3
-            - ticket.comments.each do |comment|
-              %li.list-group-item.list-group-item-warning.mt-2
-                %span.font-weight-bold.mr-1 #{comment.user.name}:
-                %span= comment.content
-        .row
-          = form_with url: brand_ticket_comment_path(brand, ticket), class: 'form-inline col-sm-10 mt-1',
-            html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off' } do |reply_form|
-            = reply_form.text_field :comment_text, required: true, placeholder: 'Comment', class: 'form-control col-sm-9'
-            = reply_form.submit 'Comment', class: 'btn btn-secondary col-sm-2 ml-auto'
-          = button_to invert_status_action(ticket.status), brand_ticket_invert_status_path(brand, ticket),
-            form_class: 'form-inline col-sm-2 ml-auto', class: 'btn btn-success col-sm-12'
+      = render partial: 'ticket', locals: { brand: brand, ticket: ticket }
 
       - if replies.any?
         = render partial: 'tickets', locals: { brand: brand, tickets: replies }

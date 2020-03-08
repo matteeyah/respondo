@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   resources :brands, only: %i[index edit] do
     scope module: :brands do
-      resources :tickets, only: [:index] do
+      resources :tickets, only: %i[index show] do
         post :reply
         post :comment
         post :invert_status
