@@ -102,6 +102,19 @@ RSpec.describe 'Brand', type: :system do
     end
   end
 
+  it 'allows navigating to tickets' do
+    sign_in_user
+    sign_in_brand(brand)
+
+    target_ticket = tickets.first
+
+    within('ul.list-group > li.list-group-item:first-child') do
+      click_link target_ticket.created_at
+    end
+
+    expect(page).to have_current_path(brand_ticket_path(brand, target_ticket))
+  end
+
   describe 'Search' do
     it 'allows searching tickets by author name' do
       sign_in_user

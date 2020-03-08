@@ -58,6 +58,12 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
       .and have_text("#{comments.second.user.name}:").and have_text(comments.second.content)
   end
 
+  it 'displays ticket permalink' do
+    render_ticket_partial
+
+    expect(rendered).to have_link(ticket.created_at, href: brand_ticket_path(brand, ticket))
+  end
+
   context 'when ticket is external' do
     before do
       ticket.external!

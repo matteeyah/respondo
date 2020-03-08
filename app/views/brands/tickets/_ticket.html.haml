@@ -33,3 +33,6 @@
       = reply_form.submit 'Comment', class: 'btn btn-secondary col-sm-2 ml-auto'
     = button_to invert_status_action(ticket.status), brand_ticket_invert_status_path(brand, ticket),
       form_class: 'form-inline col-sm-2 ml-auto', class: 'btn btn-success col-sm-12'
+
+.row
+  %span.col-sm-12.mt-1= link_to(ticket.created_at, brand_ticket_path(brand, ticket))
