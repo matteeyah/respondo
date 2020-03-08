@@ -85,6 +85,35 @@ RSpec.describe 'Brand', type: :system do
     end
   end
 
+  it 'allows replying to external tickets' do
+    user = sign_in_user
+    sign_in_brand(brand)
+
+    response_text = 'Hello from Respondo system tests'
+    target_ticket = tickets.first
+    target_ticket.external!
+    target_ticket.metadata = { response_url: 'https://example.com' }
+    target_ticket.save
+    response = {
+      external_uid: 123_456,
+      author: { external_uid: '123', username: brand.screen_name },
+      parent_uid: target_ticket.external_uid,
+      content: response_text
+    }
+    stub_request(:post, target_ticket.metadata[:response_url])
+      .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
+
+    within('ul.list-group > li.list-group-item:first-child') do
+      fill_in :response_text, with: response_text
+      click_button 'Reply'
+    end
+
+    within('ul.list-group > li.list-group-item:first-child > ul') do
+      expect(page).to have_text("#{user.name} as #{brand.screen_name}:")
+      expect(page).to have_text(response_text)
+    end
+  end
+
   it 'allows commenting on tickets' do
     user = sign_in_user
     sign_in_brand(brand)

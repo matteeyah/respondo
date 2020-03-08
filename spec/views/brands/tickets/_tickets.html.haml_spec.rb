@@ -73,10 +73,10 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         ticket.metadata = nested_ticket.metadata = { response_url: 'https://google.com' }
       end
 
-      it 'does not display response form' do
+      it 'displays response form' do
         render_tickets_partial
 
-        expect(rendered).not_to have_button('Reply')
+        expect(rendered).to have_field(:response_text, count: 2).and have_button('Reply', count: 2)
       end
 
       it 'shows external provider for root tickets' do
