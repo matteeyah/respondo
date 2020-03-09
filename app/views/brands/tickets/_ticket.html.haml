@@ -10,10 +10,11 @@
 - if ticket.parent_id.nil?
   .row.ml-3.mb-3
     %span.font-weight-bold.mr-1 Provider:
-    %span= ticket.provider
+    %span= ticket.actual_provider
 
 .row
-  - if (user_authorized || user_can_reply_to?(current_user, ticket.provider)) && !ticket.external?
+  -# Only authorized users can respond to external tickets
+  - if user_authorized || (user_can_reply_to?(current_user, ticket.actual_provider) && !ticket.external?)
     = form_with url: brand_ticket_reply_path(brand, ticket), class: 'form-inline col-sm-10',
       html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off' } do |reply_form|
       = reply_form.text_field :response_text, required: true, placeholder: 'Reply', class: 'form-control col-sm-9'

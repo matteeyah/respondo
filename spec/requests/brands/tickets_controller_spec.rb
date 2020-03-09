@@ -214,7 +214,7 @@ RSpec.describe Brands::TicketsController, type: :request do
                   external_uid: 'external_ticket_author_external_uid',
                   username: 'best_username'
                 }
-              }
+              }.to_json
             end
           end
 

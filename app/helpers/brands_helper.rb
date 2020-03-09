@@ -12,6 +12,8 @@ module BrandsHelper
   end
 
   def user_can_reply_to?(user, provider)
+    return true if provider == 'external'
+
     # Twitter::REST::Client implements #blank?
     # This prevents using rails' blank? or present? implementations
     # https://github.com/sferik/twitter/issues/960
