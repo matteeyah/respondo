@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Documentation - Tickets
+order: 4
 ---
 
 # Working with Tickets

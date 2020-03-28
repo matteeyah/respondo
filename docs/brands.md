@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Documentation - Brands
+order: 3
 ---
 
 # Managing brands

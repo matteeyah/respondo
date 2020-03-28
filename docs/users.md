@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Documentation - Users
+order: 2
 ---
 
 # Managing users
