@@ -81,7 +81,7 @@ jobs:
       - name: Install bundler dependencies
         run: bundle install --jobs 4 --retry 3 --path vendor/bundle
       - name: Run license_finder
-        run: bundle exec license_finder
+        run: bundle exec license_finder --decisions-file dependency_decisions.yml
   rubocop:
     runs-on: ubuntu-latest
     container: ruby:2.7.0
