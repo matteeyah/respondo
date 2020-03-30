@@ -14,6 +14,16 @@ class BrandsController < Brands::ApplicationController
     @pagy, @brand_users = pagy(brand.users)
   end
 
+  def update
+    if brand.update(update_params)
+      flash[:success] = 'Brand was successfully updated.'
+    else
+      flash[:danger] = 'Brand could not be updated.'
+    end
+
+    redirect_to edit_brand_path(brand)
+  end
+
   private
 
   def brands
@@ -24,5 +34,9 @@ class BrandsController < Brands::ApplicationController
     else
       Brand.all
     end
+  end
+
+  def update_params
+    params.require(:brand).permit(:domain)
   end
 end

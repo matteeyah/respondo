@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :brands, only: %i[index edit] do
+  resources :brands, only: %i[index edit update] do
     scope module: :brands do
       resources :tickets, only: %i[index show] do
         post :reply
