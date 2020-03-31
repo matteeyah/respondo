@@ -9,16 +9,28 @@ class UserAccount < ApplicationRecord
 
   belongs_to :user
 
-  def self.from_omniauth(auth, current_user) # rubocop:disable Metrics/AbcSize
-    find_or_initialize_by(external_uid: auth.uid, provider: auth.provider).tap do |account|
-      account.email = auth.info.email
+  class << self
+    def from_omniauth(auth, current_user) # rubocop:disable Metrics/AbcSize
+      find_or_initialize_by(external_uid: auth.uid, provider: auth.provider).tap do |account|
+        account.email = auth.info.email
 
-      account.token = auth.credentials.token
-      account.secret = auth.credentials.secret
+        account.token = auth.credentials.token
+        account.secret = auth.credentials.secret
 
-      account.user = current_user || account.user || User.new(name: auth.info.name)
+        account.user = current_user || account.user || User.new(name: auth.info.name)
+        account.user.brand = find_brand(account.email)
 
-      account.save
+        account.save
+      end
+    end
+
+    private
+
+    def find_brand(user_email)
+      return unless user_email
+
+      user_domain = user_email.split('@').last
+      Brand.find_by(domain: user_domain)
     end
   end
 end

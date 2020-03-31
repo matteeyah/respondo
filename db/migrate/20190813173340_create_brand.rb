@@ -4,6 +4,7 @@ class CreateBrand < ActiveRecord::Migration[6.0]
   def change
     create_table :brands do |t|
       t.string :screen_name, null: false
+      t.string :domain, null: true
 
       t.timestamps
     end

@@ -15,6 +15,20 @@ RSpec.describe 'Authentication', type: :system do
     expect(page).to have_link('User settings')
   end
 
+  context 'when user email belongs to brand domain' do
+    before do
+      FactoryBot.create(:brand, domain: 'example.com')
+    end
+
+    it 'adds the user to the brand' do
+      visit '/'
+
+      add_oauth_mock(:google_oauth2, '123', { name: 'Test User', email: 'test@example.com' }, {})
+      click_link('Sign In', class: 'nav-link')
+      expect(page).to have_link('Current Brand')
+    end
+  end
+
   it 'redirects after sign in' do
     visit brands_path
 

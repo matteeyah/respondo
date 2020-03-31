@@ -7,6 +7,8 @@ RSpec.describe Brand, type: :model do
     subject(:brand) { FactoryBot.create(:brand) }
 
     it { is_expected.to validate_presence_of(:screen_name) }
+    it { is_expected.to allow_value('example.com').for(:domain) }
+    it { is_expected.not_to allow_value('not!adomain.com').for(:domain) }
   end
 
   describe 'Relations' do

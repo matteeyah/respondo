@@ -27,4 +27,8 @@ RSpec.describe 'brands/edit', type: :view do
   it 'has the remove user link' do
     expect(render).to have_link("Remove #{user_in_brand.name}", href: brand_user_path(brand, user_in_brand.id))
   end
+
+  it 'has the brand domain text field' do
+    expect(render).to have_selector('input[name="brand[domain]"]')
+  end
 end

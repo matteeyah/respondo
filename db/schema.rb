@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2019_11_24_000315) do
 
   create_table "brands", force: :cascade do |t|
     t.string "screen_name", null: false
+    t.string "domain"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

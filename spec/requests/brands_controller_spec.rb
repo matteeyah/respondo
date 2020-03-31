@@ -121,4 +121,73 @@ RSpec.describe BrandsController, type: :request do
       include_examples 'unauthenticated user examples'
     end
   end
+
+  describe 'PATCH update' do
+    subject(:patch_update) { patch "/brands/#{brand.id}", params: { brand: { domain: new_domain } } }
+
+    let(:brand) { FactoryBot.create(:brand) }
+    let(:new_domain) { nil }
+
+    context 'when user is signed in' do
+      let(:user) { FactoryBot.create(:user, :with_account) }
+
+      before do
+        sign_in(user)
+      end
+
+      context 'when user is authorized' do
+        before do
+          brand.users << user
+        end
+
+        context 'when the specified domain is valid' do
+          let(:new_domain) { 'example.com' }
+
+          it 'updates the brand' do
+            expect { patch_update }.to change { brand.reload.domain }.from(nil).to(new_domain)
+          end
+
+          it 'sets the flash' do
+            patch_update
+
+            expect(controller.flash[:success]).to eq('Brand was successfully updated.')
+          end
+
+          it 'redirects to edit brand path' do
+            patch_update
+
+            expect(response).to redirect_to(edit_brand_path(brand))
+          end
+        end
+
+        context 'when the specified domain is not valid' do
+          let(:new_domain) { 'not!valid.com' }
+
+          it 'does not update the brand' do
+            expect { patch_update }.not_to change { brand.reload.domain }.from(nil)
+          end
+
+          it 'sets the flash' do
+            patch_update
+
+            expect(controller.flash[:danger]).to eq('Brand could not be updated.')
+          end
+
+          it 'redirects to edit brand path' do
+            patch_update
+
+            expect(response).to redirect_to(edit_brand_path(brand))
+          end
+        end
+      end
+
+      context 'when user is not authorized' do
+        include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
+      end
+    end
+
+    context 'when user is not signed in' do
+      include_examples 'unauthenticated user examples'
+    end
+  end
 end

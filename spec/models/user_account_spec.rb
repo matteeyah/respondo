@@ -60,6 +60,18 @@ RSpec.describe UserAccount, type: :model do
             it 'creates a new user' do
               expect { from_omniauth }.to change(User, :count).from(0).to(1)
             end
+
+            context 'when the user email belongs to brand domain' do
+              let!(:brand) { FactoryBot.create(:brand, domain: 'example.com') }
+
+              before do
+                auth_hash.info.email = 'test@example.com'
+              end
+
+              it 'adds the user to the brand' do
+                expect(from_omniauth.user.brand).to eq(brand)
+              end
+            end
           end
 
           context 'when adding the account to existing user' do
@@ -89,6 +101,18 @@ RSpec.describe UserAccount, type: :model do
               it 'adds the account to the specified user' do
                 expect(current_user.accounts).to include(from_omniauth)
               end
+
+              context 'when the user email belongs to brand domain' do
+                let!(:brand) { FactoryBot.create(:brand, domain: 'example.com') }
+
+                before do
+                  auth_hash.info.email = 'test@example.com'
+                end
+
+                it 'adds the user to the brand' do
+                  expect(from_omniauth.user.brand).to eq(brand)
+                end
+              end
             end
 
             context 'when existing user has account for provider' do
@@ -106,6 +130,18 @@ RSpec.describe UserAccount, type: :model do
 
               it 'has an error about provider being taken' do
                 expect(from_omniauth.errors.details).to include(provider: array_including(a_hash_including(error: :taken)))
+              end
+
+              context 'when the user email belongs to brand domain' do
+                let!(:brand) { FactoryBot.create(:brand, domain: 'example.com') }
+
+                before do
+                  auth_hash.info.email = 'test@example.com'
+                end
+
+                it 'adds the user to the brand' do
+                  expect(from_omniauth.user.brand).to eq(brand)
+                end
               end
             end
           end
@@ -126,6 +162,18 @@ RSpec.describe UserAccount, type: :model do
 
             it 'does not change the account owner' do
               expect { from_omniauth }.not_to change { account.reload.user }.from(account.user)
+            end
+
+            context 'when the user email belongs to brand domain' do
+              let!(:brand) { FactoryBot.create(:brand, domain: 'example.com') }
+
+              before do
+                auth_hash.info.email = 'test@example.com'
+              end
+
+              it 'adds the user to the brand' do
+                expect(from_omniauth.user.brand).to eq(brand)
+              end
             end
           end
 
@@ -148,6 +196,18 @@ RSpec.describe UserAccount, type: :model do
 
             it 'associates the account to current user' do
               expect(from_omniauth.user).to eq(current_user)
+            end
+
+            context 'when the user email belongs to brand domain' do
+              let!(:brand) { FactoryBot.create(:brand, domain: 'example.com') }
+
+              before do
+                auth_hash.info.email = 'test@example.com'
+              end
+
+              it 'adds the user to the brand' do
+                expect(from_omniauth.user.brand).to eq(brand)
+              end
             end
           end
 
