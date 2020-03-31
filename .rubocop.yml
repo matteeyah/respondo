@@ -14,6 +14,9 @@ AllCops:
     - 'tmp/**/*'
     - 'bin/**/*'
 
+Layout/LineLength:
+  Max: 135
+
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
@@ -21,9 +24,6 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
     - 'config/environments/*'
-
-Metrics/LineLength:
-  Max: 135
 
 Metrics/MethodLength:
   Exclude:
