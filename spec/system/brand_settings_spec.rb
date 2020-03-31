@@ -32,24 +32,34 @@ RSpec.describe 'Brand settings', type: :system do
     expect(page).to have_link('Authorize Disqus')
   end
 
-  context 'when adding users to brand' do
-    let!(:external_user) { FactoryBot.create(:user) }
+  it 'allows the user to add users to brand' do
+    external_user = FactoryBot.create(:user)
 
-    it 'allows the user to add users to brand' do
-      select external_user.name, from: 'add-user'
-      click_button 'Add User'
+    select external_user.name, from: 'add-user'
+    click_button 'Add User'
 
-      expect(page).to have_link("Remove #{external_user.name}")
-    end
+    expect(page).to have_link("Remove #{external_user.name}")
   end
 
-  context 'when removing user from brand' do
-    let!(:existing_user) { FactoryBot.create(:user, brand: brand) }
+  it 'allows the user to remove users from brand' do
+    existing_user = FactoryBot.create(:user, brand: brand)
 
-    it 'allows the user to remove users from brand' do
-      click_link "Remove #{existing_user.name}"
+    click_link "Remove #{existing_user.name}"
 
-      expect(page).to have_select('add-user', with_options: [existing_user.name])
-    end
+    expect(page).to have_select('add-user', with_options: [existing_user.name])
+  end
+
+  it 'allows the user to edit the brand domain' do
+    fill_in 'brand[domain]', with: 'example.com'
+    click_button 'Update domain'
+
+    expect(page).to have_field('brand[domain]', with: 'example.com')
+  end
+
+  it 'prevents the user to update the brand with an invalid domain' do
+    fill_in 'brand[domain]', with: 'invalid!domain.com'
+    click_button 'Update domain'
+
+    expect(page).to have_field('brand[domain]', with: '')
   end
 end

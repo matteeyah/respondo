@@ -34,4 +34,4 @@
     = form_with model: brand, method: :patch do |update_brand_form|
       .form-group
         = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control col-sm-5'
-      = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary col-sm-3'
+      = update_brand_form.submit 'Update domain', name: nil, class: 'btn btn-primary col-sm-3'
