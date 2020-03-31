@@ -1,173 +1,173 @@
 ---
-- - :whitelist
+- - :permit
   - ISC
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:27:55.184175000 Z
-- - :whitelist
+- - :permit
   - MIT
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:28:02.416053000 Z
-- - :whitelist
+- - :permit
   - MIT*
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:43:45.672009000 Z
-- - :whitelist
+- - :permit
   - BSD
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:30:41.342415000 Z
-- - :whitelist
+- - :permit
   - BSD*
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:31:03.115768000 Z
-- - :whitelist
+- - :permit
   - Simplified BSD
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:29:47.749093000 Z
-- - :whitelist
+- - :permit
   - New BSD
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:29:16.288051000 Z
-- - :whitelist
+- - :permit
   - CC0-1.0
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:29:29.240737000 Z
-- - :whitelist
+- - :permit
   - CC-BY-3.0
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:31:13.031989000 Z
-- - :whitelist
+- - :permit
   - CC-BY-4.0
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:30:49.077696000 Z
-- - :whitelist
+- - :permit
   - Apache 2.0
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:28:48.120282000 Z
-- - :whitelist
+- - :permit
   - Mozilla Public License 2.0
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:31:39.764031000 Z
-- - :whitelist
+- - :permit
   - ruby
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:31:46.375734000 Z
-- - :whitelist
+- - :permit
   - Unlicense
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:29:39.428781000 Z
-- - :whitelist
+- - :permit
   - WTFPL
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:30:35.449386000 Z
-- - :blacklist
+- - :restrict
   - AGPL
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:47:02.438592000 Z
-- - :blacklist
+- - :restrict
   - AGPL-1.0
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:51:47.166027000 Z
-- - :blacklist
+- - :restrict
   - AGPL-3.0
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:48:43.058176000 Z
-- - :blacklist
+- - :restrict
   - AGPL-3.0-only
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:51:34.713419000 Z
-- - :blacklist
+- - :restrict
   - AGPL-3.0-or-later
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:51:40.521101000 Z
-- - :whitelist
+- - :permit
   - "(BSD-3-Clause OR GPL-2.0)"
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:30:18.502483000 Z
-- - :whitelist
+- - :permit
   - "(MIT AND BSD-3-Clause)"
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:30:27.472735000 Z
-- - :whitelist
+- - :permit
   - "(MIT AND Zlib)"
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:31:19.491188000 Z
-- - :whitelist
+- - :permit
   - "(BSD-2-Clause OR MIT OR Apache-2.0)"
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:31:28.172585000 Z
-- - :whitelist
+- - :permit
   - "(MIT OR Apache-2.0)"
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:32:03.497814000 Z
-- - :whitelist
+- - :permit
   - "(MIT OR CC0-1.0)"
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-19 15:57:31.115977000 Z
-- - :whitelist
+- - :permit
   - BSD-3-Clause OR MIT
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:32:12.050310000 Z
-- - :whitelist
+- - :permit
   - 2-clause BSDL
   - :who: matteeyah
     :why: 
     :versions: []
     :when: 2019-11-13 18:32:21.429419000 Z
-- - :whitelist
+- - :permit
   - "(WTFPL OR MIT)"
   - :who: matteeyah
     :why: 
@@ -185,5 +185,5 @@
   - :who: matteeyah
     :why: 
     :versions:
-    - 6.8.0.360
+    - 6.9.0.363
     :when: 2020-02-07 17:23:48.798013000 Z
