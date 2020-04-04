@@ -32,10 +32,12 @@ Metrics/MethodLength:
 RSpec/ExampleLength:
   Exclude:
     - 'spec/system/**/*'
+    - 'spec/support/system/**/*'
 
 RSpec/MultipleExpectations:
   Exclude:
     - 'spec/system/**/*'
+    - 'spec/support/system/**/*'
 
 RSpec/NestedGroups:
   Max: 5
