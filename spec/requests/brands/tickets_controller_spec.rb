@@ -112,6 +112,20 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
   end
 
+  describe 'GET show' do
+    subject(:get_show) { get "/brands/#{brand.id}/tickets/#{ticket.id}" }
+
+    let!(:ticket) { FactoryBot.create(:ticket, provider: 'twitter', brand: brand) }
+
+    context 'when user is not signed in' do
+      it 'shows the ticket' do
+        get_show
+
+        expect(response.body).to include(ticket.content)
+      end
+    end
+  end
+
   describe 'POST reply' do
     subject(:post_reply) { post "/brands/#{brand.id}/tickets/#{ticket.id}/reply", params: { response_text: 'does not matter' } }
 
