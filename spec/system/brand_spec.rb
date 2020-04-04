@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_system_helpers.rb'
+require './spec/support/system/allows_interacting_with_tickets_examples.rb'
 
 RSpec.describe 'Brand', type: :system do
   include SignInOutSystemHelpers
@@ -12,7 +13,7 @@ RSpec.describe 'Brand', type: :system do
     visit brand_tickets_path(brand)
   end
 
-  it 'shows tickets' do
+  it 'shows the tickets' do
     expect(page).to have_text(tickets.first.content)
     expect(page).to have_text(tickets.first.author.username)
 
@@ -20,44 +21,8 @@ RSpec.describe 'Brand', type: :system do
     expect(page).to have_text(tickets.second.author.username)
   end
 
-  it 'allows solving tickets' do
-    sign_in_user
-    sign_in_brand(brand)
-
-    within('ul.list-group > li.list-group-item:first-child') do
-      click_button 'Solve'
-    end
-
-    click_link 'Solved Tickets'
-
-    expect(page).to have_text(tickets.first.author.username)
-    expect(page).to have_text(tickets.first.content)
-  end
-
-  it 'allows replying to tickets' do
-    user = sign_in_user
-    sign_in_brand(brand)
-
-    account = brand.accounts.first
-    account.update(token: 'hello', secret: 'world')
-
-    response_text = 'Hello from Respondo system tests'
-    stub_twitter_reply_response(
-      account.external_uid,
-      brand.screen_name,
-      tickets.first.external_uid,
-      response_text
-    )
-
-    within('ul.list-group > li.list-group-item:first-child') do
-      fill_in :response_text, with: response_text
-      click_button 'Reply'
-    end
-
-    within('ul.list-group > li.list-group-item:first-child > ul') do
-      expect(page).to have_text("#{user.name} as #{brand.screen_name}:")
-      expect(page).to have_text(response_text)
-    end
+  include_examples 'allows interacting with tickets' do
+    let(:target_ticket) { tickets.first }
   end
 
   it 'allows replying to tickets from other brands' do
@@ -82,53 +47,6 @@ RSpec.describe 'Brand', type: :system do
     within('ul.list-group > li.list-group-item:first-child > ul') do
       expect(page).to have_text(user_nickname)
       expect(page).to have_text(response_text)
-    end
-  end
-
-  it 'allows replying to external tickets' do
-    user = sign_in_user
-    sign_in_brand(brand)
-
-    response_text = 'Hello from Respondo system tests'
-    target_ticket = tickets.first
-    target_ticket.external!
-    target_ticket.author.external!
-    target_ticket.metadata = { response_url: 'https://example.com' }
-    target_ticket.save
-    response = {
-      external_uid: 123_456,
-      author: { external_uid: '123', username: brand.screen_name },
-      parent_uid: target_ticket.external_uid,
-      content: response_text
-    }
-    stub_request(:post, target_ticket.metadata[:response_url])
-      .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
-
-    within('ul.list-group > li.list-group-item:first-child') do
-      fill_in :response_text, with: response_text
-      click_button 'Reply'
-    end
-
-    within('ul.list-group > li.list-group-item:first-child > ul') do
-      expect(page).to have_text("#{user.name} as #{brand.screen_name}:")
-      expect(page).to have_text(response_text)
-    end
-  end
-
-  it 'allows commenting on tickets' do
-    user = sign_in_user
-    sign_in_brand(brand)
-
-    comment_text = 'Comment from Respondo system tests.'
-
-    within('ul.list-group > li.list-group-item:first-child') do
-      fill_in :comment_text, with: comment_text
-      click_button 'Comment'
-    end
-
-    within('ul.list-group > li.list-group-item:first-child > ul.list-group > li.list-group-item.list-group-item-warning') do
-      expect(page).to have_text(user.name)
-      expect(page).to have_text(comment_text)
     end
   end
 
