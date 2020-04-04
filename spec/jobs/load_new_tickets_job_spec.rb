@@ -13,7 +13,8 @@ RSpec.describe LoadNewTicketsJob, type: :job do
         Twitter::Tweet,
         id: '1234', in_reply_to_tweet_id: parent.external_uid,
         attrs: { full_text: 'hello' },
-        user: OpenStruct.new(id: '1234', screen_name: 'example')
+        user: OpenStruct.new(id: '1234', screen_name: 'example'),
+        created_at: 1.day.ago.utc
       )]
     end
     let(:disqus_mentions) do
@@ -21,7 +22,8 @@ RSpec.describe LoadNewTicketsJob, type: :job do
         id: '12321',
         author: { id: '12321', username: 'bestusername' },
         parent: '123454321',
-        raw_message: 'hello world'
+        raw_message: 'hello world',
+        createdAt: 1.day.ago.utc
       }]
     end
 

@@ -209,12 +209,14 @@ RSpec.describe Brands::TicketsController, type: :request do
             when 'twitter'
               instance_double(Twitter::Tweet, id: '1', attrs: { full_text: 'does not matter' },
                                               in_reply_to_tweet_id: ticket.external_uid,
-                                              user: instance_double(Twitter::User, id: '2', screen_name: 'test'))
+                                              user: instance_double(Twitter::User, id: '2', screen_name: 'test'),
+                                              created_at: 1.day.ago.utc)
             when 'disqus'
               {
                 id: '12321', raw_message: 'does not matter',
                 author: { id: '12321', username: 'bestusername' },
-                parent: ticket.external_uid
+                parent: ticket.external_uid,
+                createdAt: 1.day.ago.utc
               }
             when 'external'
               {
@@ -227,7 +229,8 @@ RSpec.describe Brands::TicketsController, type: :request do
                 author: {
                   external_uid: 'external_ticket_author_external_uid',
                   username: 'best_username'
-                }
+                },
+                created_at: 1.day.ago.utc
               }.to_json
             end
           end

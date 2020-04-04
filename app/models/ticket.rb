@@ -56,22 +56,26 @@ class Ticket < ApplicationRecord
       author = Author.from_twitter_user!(tweet.user)
       parent = brand.tickets.twitter.find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id))
       brand.tickets.twitter.create!(external_uid: tweet.id, author: author, user: user,
-                                    parent: parent, content: tweet.attrs[:full_text])
+                                    parent: parent, content: tweet.attrs[:full_text],
+                                    created_at: tweet.created_at)
     end
 
     def from_disqus_post!(post, brand, user)
       author = Author.from_disqus_user!(post[:author])
       parent = brand.tickets.disqus.find_by(external_uid: post[:parent])
       brand.tickets.disqus.create!(external_uid: post[:id], author: author, user: user,
-                                   parent: parent, content: post[:raw_message])
+                                   parent: parent, content: post[:raw_message],
+                                   created_at: post[:createdAt])
     end
 
     def from_external_ticket!(external_ticket_json, brand, user)
       author = Author.from_external_author!(external_ticket_json[:author])
       parent = brand.tickets.external.find_by(external_uid: external_ticket_json[:parent_uid])
       brand.tickets.external.create!(external_uid: external_ticket_json[:external_uid],
-                                     metadata: external_ticket_json[:metadata], content: external_ticket_json[:content],
-                                     author: author, user: user, parent: parent)
+                                     author: author, user: user, parent: parent,
+                                     metadata: external_ticket_json[:metadata],
+                                     content: external_ticket_json[:content],
+                                     created_at: external_ticket_json[:created_at])
     end
 
     def with_descendants_hash(*included_relations)

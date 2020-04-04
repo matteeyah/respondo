@@ -200,7 +200,8 @@ RSpec.describe Ticket, type: :model do
                         id: '2',
                         attrs: { full_text: 'helloworld' },
                         user: 'does not matter',
-                        in_reply_to_tweet_id: '1')
+                        in_reply_to_tweet_id: '1',
+                        created_at: 1.day.ago.utc)
       end
 
       before do
@@ -230,7 +231,8 @@ RSpec.describe Ticket, type: :model do
           id: '12321',
           author: { id: '12321', username: 'bestusername' },
           parent: '123454321',
-          raw_message: 'hello world'
+          raw_message: 'hello world',
+          createdAt: 1.day.ago.utc
         }
       end
 
@@ -267,7 +269,8 @@ RSpec.describe Ticket, type: :model do
           author: {
             external_uid: 'external_ticket_author_external_uid',
             username: 'best_username'
-          }
+          },
+          created_at: 1.day.ago.utc
         }
       end
 
