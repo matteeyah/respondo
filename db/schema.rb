@@ -46,14 +46,14 @@ ActiveRecord::Schema.define(version: 2019_11_24_000315) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "comments", force: :cascade do |t|
+  create_table "internal_notes", force: :cascade do |t|
     t.text "content", null: false
     t.integer "user_id", null: false
     t.integer "ticket_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["ticket_id"], name: "index_comments_on_ticket_id"
-    t.index ["user_id"], name: "index_comments_on_user_id"
+    t.index ["ticket_id"], name: "index_internal_notes_on_ticket_id"
+    t.index ["user_id"], name: "index_internal_notes_on_user_id"
   end
 
   create_table "personal_access_tokens", force: :cascade do |t|

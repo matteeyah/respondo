@@ -11,7 +11,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
   let(:user) { FactoryBot.create(:user) }
   let(:ticket) { FactoryBot.create(:ticket, brand: brand, status: :open) }
   let(:nested_ticket) { FactoryBot.create(:ticket, brand: brand, parent: ticket, status: :solved) }
-  let!(:comments) { FactoryBot.create_list(:comment, 2, ticket: ticket) }
+  let!(:internal_notes) { FactoryBot.create_list(:internal_note, 2, ticket: ticket) }
   let(:tickets) { { ticket => { nested_ticket => {} } } }
 
   before do
@@ -53,17 +53,17 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       expect(rendered).to have_button('Open').and have_button('Solve')
     end
 
-    it 'displays comment forms' do
+    it 'displays internal note forms' do
       render_tickets_partial
 
-      expect(rendered).to have_field(:comment_text, count: 2).and have_button('Comment', count: 2)
+      expect(rendered).to have_field(:internal_note_text, count: 2).and have_button('Post Internal Note', count: 2)
     end
 
-    it 'displays comments' do
+    it 'displays internal notes' do
       render_tickets_partial
 
-      expect(rendered).to have_text("#{comments.first.user.name}:").and have_text(comments.first.content)
-        .and have_text("#{comments.second.user.name}:").and have_text(comments.second.content)
+      expect(rendered).to have_text("#{internal_notes.first.user.name}:").and have_text(internal_notes.first.content)
+        .and have_text("#{internal_notes.second.user.name}:").and have_text(internal_notes.second.content)
     end
 
     context 'when ticket is external' do
@@ -154,10 +154,10 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         expect(rendered).not_to have_button('Solve')
       end
 
-      it 'does not display comment form' do
+      it 'does not display internal note form' do
         render_tickets_partial
 
-        expect(rendered).not_to have_field(:comment_text)
+        expect(rendered).not_to have_field(:internal_note_text)
       end
     end
 
@@ -191,10 +191,10 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         expect(rendered).not_to have_button('Solve')
       end
 
-      it 'does not display comment form' do
+      it 'does not display internal note form' do
         render_tickets_partial
 
-        expect(rendered).not_to have_field(:comment_text)
+        expect(rendered).not_to have_field(:internal_note_text)
       end
 
       context 'when ticket is external' do

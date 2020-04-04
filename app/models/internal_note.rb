@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Comment < ApplicationRecord
+class InternalNote < ApplicationRecord
   validates :content, presence: { allow_blank: false }
 
   belongs_to :user
