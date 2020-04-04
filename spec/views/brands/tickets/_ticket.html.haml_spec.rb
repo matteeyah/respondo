@@ -10,7 +10,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
   let(:brand) { FactoryBot.create(:brand) }
   let(:user) { FactoryBot.create(:user) }
   let(:ticket) { FactoryBot.create(:ticket, brand: brand, status: :open) }
-  let!(:comments) { FactoryBot.create_list(:comment, 2, ticket: ticket) }
+  let!(:internal_notes) { FactoryBot.create_list(:internal_note, 2, ticket: ticket) }
 
   before do
     without_partial_double_verification do
@@ -45,17 +45,17 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
     expect(rendered).to have_button('Solve')
   end
 
-  it 'displays the comment form' do
+  it 'displays the internal note form' do
     render_ticket_partial
 
-    expect(rendered).to have_field(:comment_text, count: 1).and have_button('Comment', count: 1)
+    expect(rendered).to have_field(:internal_note_text, count: 1).and have_button('Post Internal Note', count: 1)
   end
 
-  it 'displays comments' do
+  it 'displays internal notes' do
     render_ticket_partial
 
-    expect(rendered).to have_text("#{comments.first.user.name}:").and have_text(comments.first.content)
-      .and have_text("#{comments.second.user.name}:").and have_text(comments.second.content)
+    expect(rendered).to have_text("#{internal_notes.first.user.name}:").and have_text(internal_notes.first.content)
+      .and have_text("#{internal_notes.second.user.name}:").and have_text(internal_notes.second.content)
   end
 
   it 'displays ticket permalink' do

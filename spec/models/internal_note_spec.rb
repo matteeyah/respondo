@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe Comment, type: :model do
+RSpec.describe InternalNote, type: :model do
   describe 'Validations' do
-    subject(:comment) { FactoryBot.create(:comment) }
+    subject(:internal_note) { FactoryBot.create(:internal_note) }
 
     it { is_expected.to validate_presence_of(:content) }
   end

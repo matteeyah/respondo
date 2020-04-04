@@ -291,11 +291,14 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
   end
 
-  describe 'POST comment' do
-    subject(:post_comment) { post "/brands/#{brand.id}/tickets/#{ticket.id}/comment", params: { comment_text: comment_text } }
+  describe 'POST internal_note' do
+    subject(:post_internal_note) do
+      post "/brands/#{brand.id}/tickets/#{ticket.id}/internal_note",
+           params: { internal_note_text: internal_note_text }
+    end
 
     let(:ticket) { FactoryBot.create(:ticket, brand: brand) }
-    let(:comment_text) { nil }
+    let(:internal_note_text) { nil }
 
     context 'when user is signed in' do
       let(:user) { FactoryBot.create(:user, :with_account) }
@@ -309,39 +312,39 @@ RSpec.describe Brands::TicketsController, type: :request do
           brand.users << user
         end
 
-        context 'when comment is valid' do
-          let(:comment_text) { 'does not matter' }
+        context 'when internal note is valid' do
+          let(:internal_note_text) { 'does not matter' }
 
-          it 'creates a comment' do
-            expect { post_comment }.to change(Comment, :count).from(0).to(1)
+          it 'creates an internal note' do
+            expect { post_internal_note }.to change(InternalNote, :count).from(0).to(1)
           end
 
           it 'sets the flash' do
-            post_comment
+            post_internal_note
 
-            expect(controller.flash[:success]).to eq('Comment was successfully submitted.')
+            expect(controller.flash[:success]).to eq('Internal note was successfully submitted.')
           end
 
           it 'redirects to brand tickets path' do
-            post_comment
+            post_internal_note
 
             expect(response).to redirect_to(brand_tickets_path(brand))
           end
         end
 
-        context 'when comment is not valid' do
-          it 'does not create a comment' do
-            expect { post_comment }.not_to change(Comment, :count)
+        context 'when internal note is not valid' do
+          it 'does not create an internal note' do
+            expect { post_internal_note }.not_to change(InternalNote, :count)
           end
 
           it 'sets the flash' do
-            post_comment
+            post_internal_note
 
-            expect(controller.flash[:warning]).to eq('Unable to create comment.')
+            expect(controller.flash[:warning]).to eq('Unable to create internal note.')
           end
 
           it 'redirects to brand tickets path' do
-            post_comment
+            post_internal_note
 
             expect(response).to redirect_to(brand_tickets_path(brand))
           end

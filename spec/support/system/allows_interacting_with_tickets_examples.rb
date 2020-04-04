@@ -52,19 +52,19 @@ RSpec.shared_examples 'allows interacting with tickets' do
     expect(page).to have_text(response_text)
   end
 
-  it 'allows commenting on tickets' do
+  it 'allows leaving internal notes on tickets' do
     user = sign_in_user
     sign_in_brand(brand)
 
-    comment_text = 'Comment from Respondo system tests.'
+    internal_note_text = 'Internal note from Respondo system tests.'
 
-    within "form[action='/brands/#{target_ticket.brand.id}/tickets/#{target_ticket.id}/comment']" do
-      fill_in :comment_text, with: comment_text
-      click_button 'Comment'
+    within "form[action='/brands/#{target_ticket.brand.id}/tickets/#{target_ticket.id}/internal_note']" do
+      fill_in :internal_note_text, with: internal_note_text
+      click_button 'Post Internal Note'
     end
 
     expect(page).to have_text(user.name)
-    expect(page).to have_text(comment_text)
+    expect(page).to have_text(internal_note_text)
   end
 
   it 'allows solving tickets' do

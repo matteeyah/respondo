@@ -10,7 +10,7 @@ module Brands
 
     def index
       @pagy, tickets_relation = pagy(tickets)
-      @tickets = tickets_relation.with_descendants_hash(:author, :user, comments: [:user])
+      @tickets = tickets_relation.with_descendants_hash(:author, :user, internal_notes: [:user])
     end
 
     def show
@@ -26,13 +26,13 @@ module Brands
       redirect_to brand_tickets_path(brand)
     end
 
-    def comment
-      comment = ticket.comments.create(content: params[:comment_text], user: current_user)
+    def internal_note
+      internal_note = ticket.internal_notes.create(content: params[:internal_note_text], user: current_user)
 
-      if comment.persisted?
-        flash[:success] = 'Comment was successfully submitted.'
+      if internal_note.persisted?
+        flash[:success] = 'Internal note was successfully submitted.'
       else
-        flash[:warning] = 'Unable to create comment.'
+        flash[:warning] = 'Unable to create internal note.'
       end
 
       redirect_to brand_tickets_path(brand)
