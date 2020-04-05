@@ -55,27 +55,25 @@ class Ticket < ApplicationRecord
     def from_tweet!(tweet, brand, user)
       author = Author.from_twitter_user!(tweet.user)
       parent = brand.tickets.twitter.find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id))
-      brand.tickets.twitter.create!(external_uid: tweet.id, author: author, user: user,
-                                    parent: parent, content: tweet.attrs[:full_text],
-                                    created_at: tweet.created_at)
+      brand.tickets.twitter.create!(external_uid: tweet.id, author: author, user: user, parent: parent,
+                                    content: tweet.attrs[:full_text], created_at: tweet.created_at)
     end
 
     def from_disqus_post!(post, brand, user)
       author = Author.from_disqus_user!(post[:author])
       parent = brand.tickets.disqus.find_by(external_uid: post[:parent])
-      brand.tickets.disqus.create!(external_uid: post[:id], author: author, user: user,
-                                   parent: parent, content: post[:raw_message],
-                                   created_at: post[:createdAt])
+      brand.tickets.disqus.create!(external_uid: post[:id], author: author, user: user, parent: parent,
+                                   content: post[:raw_message], created_at: post[:createdAt])
     end
 
     def from_external_ticket!(external_ticket_json, brand, user)
       author = Author.from_external_author!(external_ticket_json[:author])
       parent = brand.tickets.external.find_by(external_uid: external_ticket_json[:parent_uid])
-      brand.tickets.external.create!(external_uid: external_ticket_json[:external_uid],
-                                     author: author, user: user, parent: parent,
-                                     metadata: external_ticket_json[:metadata],
-                                     content: external_ticket_json[:content],
-                                     created_at: external_ticket_json[:created_at])
+      brand.tickets.external.create!(
+        external_uid: external_ticket_json[:external_uid], author: author, user: user, parent: parent,
+        metadata: external_ticket_json[:metadata], content: external_ticket_json[:content],
+        created_at: external_ticket_json[:created_at]
+      )
     end
 
     def with_descendants_hash(*included_relations)
@@ -86,10 +84,6 @@ class Ticket < ApplicationRecord
 
     def self_and_descendants_arel(ticket_ids)
       self_and_recursive_cte_query_arel(:parent_id, :id, ticket_ids)
-    end
-
-    def self_and_ancestors_arel(ticket_ids)
-      self_and_recursive_cte_query_arel(:id, :parent_id, ticket_ids)
     end
 
     private
@@ -135,6 +129,7 @@ class Ticket < ApplicationRecord
   end
 
   def ancestors_query
-    arel_ids_query_minus_self(self.class.self_and_ancestors_arel(id))
+    self_and_ancestors_arel = self.class.self_and_recursive_cte_query_arel(:id, :parent_id, id)
+    arel_ids_query_minus_self(self_and_ancestors_arel)
   end
 end
