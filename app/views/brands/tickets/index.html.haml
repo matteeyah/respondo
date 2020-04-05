@@ -12,7 +12,7 @@
       You can create tickets manually by submitting a POST request to
       %span.font-weight-bold= brand_external_tickets_url(brand, format: :json)
       %br
-      See the #{link_to 'required format', 'https://github.com/matteeyah/respondo#external-tickets'}.
+      See the #{link_to 'required format', 'https://docs.respondohub.com/external_ticket_format'}.
 
 .list-group.list-group-horizontal.mb-3
   = active_link_to 'Open Tickets', brand_tickets_path(brand, status: 'open'), active: { status: 'open' },
