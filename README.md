@@ -30,7 +30,8 @@ endpoint in JSON format.
   "required": [
     "external_uid",
     "content",
-    "author"
+    "author",
+    "created_at"
   ],
   "properties": {
     "external_uid": {
@@ -91,6 +92,12 @@ endpoint in JSON format.
           ]
         }
       }
+    },
+    "created_at": {
+      "type": "string",
+      "examples": [
+        "2020-04-04 23:35:27.632879 UTC"
+      ]
     }
   },
   "additionalProperties": false
@@ -107,7 +114,8 @@ endpoint in JSON format.
   "author": {
     "external_uid": "external_ticket_author_external_uid",
     "username": "best_username"
-  }
+  },
+  "created_at": "2019-01-01 23:35:27.632879 UTC"
 }
 ```
 
@@ -122,7 +130,8 @@ endpoint in JSON format.
   "author": {
     "external_uid": "external_ticket_author_external_uid",
     "username": "best_username"
-  }
+  },
+  "created_at": "2019-01-01 23:35:27.632879 UTC"
 }
 ```
 
@@ -207,7 +216,8 @@ endpoint in JSON format. A response is expected.
     "external_uid",
     "author",
     "parent_uid",
-    "content"
+    "content",
+    "created_at"
   ],
   "properties": {
     "external_uid": {
@@ -248,6 +258,12 @@ endpoint in JSON format. A response is expected.
       "examples": [
         "This is content from an example external ticket reply."
       ]
+    },
+    "created_at": {
+      "type": "string",
+      "examples": [
+        "2020-04-04 23:35:27.632879 UTC"
+      ]
     }
   }
 }
@@ -263,7 +279,8 @@ endpoint in JSON format. A response is expected.
     "username": "author_username"
   },
   "parent_uid":"parent_uid_1",
-  "content": "This is content from an example external ticket reply."
+  "content": "This is content from an example external ticket reply.",
+  "created_at": "2019-01-01 23:35:27.632879 UTC"
 }
 ```
 

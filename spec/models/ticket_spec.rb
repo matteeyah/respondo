@@ -197,10 +197,7 @@ RSpec.describe Ticket, type: :model do
 
       let(:tweet) do
         instance_double(Twitter::Tweet,
-                        id: '2',
-                        attrs: { full_text: 'helloworld' },
-                        user: 'does not matter',
-                        in_reply_to_tweet_id: '1')
+                        JSON.parse(file_fixture('twitter_post_hash.json').read).deep_symbolize_keys)
       end
 
       before do
@@ -225,14 +222,7 @@ RSpec.describe Ticket, type: :model do
       let(:brand) { FactoryBot.create(:brand) }
       let(:author) { FactoryBot.create(:author) }
 
-      let(:disqus_post) do
-        {
-          id: '12321',
-          author: { id: '12321', username: 'bestusername' },
-          parent: '123454321',
-          raw_message: 'hello world'
-        }
-      end
+      let(:disqus_post) { JSON.parse(file_fixture('disqus_post_hash.json').read).deep_symbolize_keys }
 
       before do
         allow(Author).to receive(:from_disqus_user!).with(disqus_post[:author]).and_return(author)
@@ -256,20 +246,7 @@ RSpec.describe Ticket, type: :model do
       let(:brand) { FactoryBot.create(:brand) }
       let(:author) { FactoryBot.create(:author) }
 
-      let(:external_ticket_json) do
-        {
-          external_uid: '123hello321world',
-          content: 'This is content from the external ticket example.',
-          metadata: {
-            response_url: 'https://response_url.com'
-          },
-          parent_uid: 'external_ticket_parent_external_uid',
-          author: {
-            external_uid: 'external_ticket_author_external_uid',
-            username: 'best_username'
-          }
-        }
-      end
+      let(:external_ticket_json) { JSON.parse(file_fixture('external_post_hash.json').read).deep_symbolize_keys }
 
       before do
         allow(Author).to receive(:from_external_author!).with(external_ticket_json[:author]).and_return(author)
