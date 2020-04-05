@@ -4,7 +4,7 @@ title: Documentation - Tickets
 order: 4
 ---
 
-# Working with Tickets
+# Working with tickets
 
 ## Responding to tickets
 
@@ -13,20 +13,20 @@ order: 4
 If you aren't a member of a certain brand, you can respond to related tickets
 from your personal account.
 
-You will only be able to respond on the social network that is currently
-authenticated in your `User settings`.
+You can only respond on the social network that is currently authenticated in
+your `User settings`.
 
 ### Brand account
 
-If you are a member of a certain brand, you will be able to respond to related
-tickets and responses will be sent from the brand's social network handle.
+If you are a member of a certain brand, you can respond to related tickets.
+Responses are sent from the brand's social network handle.
 
-You will also be able to solve tickets.
+You can also solve tickets.
 
 ## Solving tickets
 
 Every user of the related brand can mark tickets as solved. If somebody continues
-the discussion on the ticket after that, it will be automatically moved to
+the discussion on the ticket after that, it is automatically moved to
 `Open tickets`.
 
 ## Webhook Integrations
@@ -35,5 +35,5 @@ If you want to create a ticket manually, just submit a POST request to
 `https://app.respondohub.com/brands/{BRAND_ID}/external_tickets.json` using
 [this format](https://docs.respondohub.com/external_ticket_format).
 
-You will need a `Personal Access Token` for creating external tickets. You can
-review existing and create new tokens on the `User Settings` page.
+You need a `Personal Access Token` for creating external tickets. You can review
+existing and create new tokens on the `User Settings` page.

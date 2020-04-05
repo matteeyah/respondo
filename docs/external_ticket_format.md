@@ -4,10 +4,10 @@ title: Documentation - External Ticket Format
 ignore: true
 ---
 
-# External Ticket Format
+# External ticket format
 
-The response URL is stored in ticket metadata. Respondo will send a POST request
-to the response URL and expects a response with the same schema that's used for
+The response URL is stored in ticket metadata. Respondo sends a POST request to
+the response URL and expects a response with the same schema that's used for
 creating tickets.
 
 [Zapier webhooks](https://zapier.com/apps/webhook/help) could be used to
@@ -136,7 +136,7 @@ endpoint in JSON format.
 All replies are sent as POST requests to the `Ticket.metadata[:response_url]`
 endpoint in JSON format. A response is expected.
 
-### Reply Schema
+### Reply schema
 
 ```jsonschema
 {
@@ -203,7 +203,7 @@ endpoint in JSON format. A response is expected.
 }
 ```
 
-### Response Schema
+### Response schema
 
 ```jsonschema
 {

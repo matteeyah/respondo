@@ -8,8 +8,8 @@ ignore: true
 
 ## Environment variables
 
-Environment variables required to run the application should be stored in an
-`.env` file in `DEVELOPMENT` and `TEST` environments.
+Environment variables required to run the app should be stored in an `.env` file
+in `DEVELOPMENT` and `TEST` environments.
 
 - Rails
   - `RAILS_MASTER_KEY`
@@ -47,7 +47,7 @@ Environment variables required to run the application should be stored in an
     - DEVELOPMENT
     - PRODUCTION
 
-## Integrating Providers
+## Integrating providers
 
 - Integrate provider OAuth
 - Create provider client
