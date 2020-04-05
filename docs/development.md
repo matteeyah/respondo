@@ -71,7 +71,7 @@ state you need to reset the database.
 
 To build the respondo image run
 
-```
+```bash
 docker build . --tag respondo
 ```
 
@@ -79,7 +79,7 @@ docker build . --tag respondo
 
 To standup an instance of respondo for development purposes run
 
-```
+```bash
 docker run -p 3000:3000 respondo
 ```
 
@@ -87,7 +87,7 @@ docker run -p 3000:3000 respondo
 
 To run tests inside the docker container run
 
-```
+```bash
 docker run respondo rspec --require rails_helper.rb
 ```
 
