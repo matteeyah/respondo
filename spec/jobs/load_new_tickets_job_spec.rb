@@ -11,20 +11,14 @@ RSpec.describe LoadNewTicketsJob, type: :job do
     let(:twitter_mentions) do
       [instance_double(
         Twitter::Tweet,
-        id: '1234', in_reply_to_tweet_id: parent.external_uid,
-        attrs: { full_text: 'hello' },
-        user: OpenStruct.new(id: '1234', screen_name: 'example'),
-        created_at: 1.day.ago.utc
+        JSON.parse(file_fixture('twitter_post_hash.json').read).merge(
+          in_reply_to_tweet_id: parent.external_uid,
+          user: instance_double(Twitter::User, id: '2', screen_name: 'test')
+        ).deep_symbolize_keys
       )]
     end
     let(:disqus_mentions) do
-      [{
-        id: '12321',
-        author: { id: '12321', username: 'bestusername' },
-        parent: '123454321',
-        raw_message: 'hello world',
-        createdAt: 1.day.ago.utc
-      }]
+      [JSON.parse(file_fixture('disqus_post_hash.json').read).deep_symbolize_keys]
     end
 
     let(:parent) { FactoryBot.create(:ticket, status: :solved, brand: brand) }

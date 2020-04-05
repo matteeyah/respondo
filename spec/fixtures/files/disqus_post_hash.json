@@ -1,0 +1,10 @@
+{
+  "id": "12321",
+  "author": {
+    "id":"12321",
+    "username":"bestusername"
+  },
+  "parent":"123454321",
+  "raw_message":"hello world",
+  "createdAt":"2019-01-02T00:29:49.366Z"
+}

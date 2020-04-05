@@ -155,7 +155,7 @@ RSpec.describe Brands::TicketsController, type: :request do
       it 'creates a reply ticket with matching attributes' do
         post_reply
 
-        expect(ticket.replies.first).to have_attributes(parent: ticket, content: 'does not matter')
+        expect(ticket.replies.first).to have_attributes(parent: ticket, content: instance_of(String))
       end
 
       it 'sets the flash' do
@@ -207,31 +207,17 @@ RSpec.describe Brands::TicketsController, type: :request do
           let(:client_response) do
             case provider
             when 'twitter'
-              instance_double(Twitter::Tweet, id: '1', attrs: { full_text: 'does not matter' },
-                                              in_reply_to_tweet_id: ticket.external_uid,
-                                              user: instance_double(Twitter::User, id: '2', screen_name: 'test'),
-                                              created_at: 1.day.ago.utc)
+              instance_double(
+                Twitter::Tweet,
+                JSON.parse(file_fixture('twitter_post_hash.json').read).merge(
+                  in_reply_to_tweet_id: ticket.external_uid,
+                  user: instance_double(Twitter::User, id: '2', screen_name: 'test')
+                ).deep_symbolize_keys
+              )
             when 'disqus'
-              {
-                id: '12321', raw_message: 'does not matter',
-                author: { id: '12321', username: 'bestusername' },
-                parent: ticket.external_uid,
-                createdAt: 1.day.ago.utc
-              }
+              JSON.parse(file_fixture('disqus_post_hash.json').read).merge(parent: ticket.external_uid).deep_symbolize_keys
             when 'external'
-              {
-                external_uid: '123hello321world',
-                content: 'does not matter',
-                metadata: {
-                  response_url: 'https://response_url.com'
-                },
-                parent_uid: ticket.external_uid,
-                author: {
-                  external_uid: 'external_ticket_author_external_uid',
-                  username: 'best_username'
-                },
-                created_at: 1.day.ago.utc
-              }.to_json
+              JSON.parse(file_fixture('external_post_hash.json').read).merge(parent_uid: ticket.external_uid).to_json
             end
           end
 
