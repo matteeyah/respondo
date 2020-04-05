@@ -33,7 +33,7 @@ the discussion on the ticket after that, it will be automatically moved to
 
 If you want to create a ticket manually, just submit a POST request to
 `https://app.respondohub.com/brands/{BRAND_ID}/external_tickets.json` using
-[this format](https://github.com/matteeyah/respondo#external-tickets).
+[this format](https://docs.respondohub.com/external_ticket_format).
 
 You will need a `Personal Access Token` for creating external tickets. You can
 review existing and create new tokens on the `User Settings` page.
