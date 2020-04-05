@@ -2,7 +2,7 @@
 
 require_relative 'boot'
 
-# Based on https://github.com/rails/rails/blob/v6.0.0/railties/lib/rails/all.rb
+# Based on https://github.com/rails/rails/blob/v6.0.2.2/railties/lib/rails/all.rb
 # Only load the railties we need instead of loading everything
 require 'active_record/railtie'
 require 'action_controller/railtie'
