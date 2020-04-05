@@ -4,7 +4,7 @@ title: Documentation
 order: 1
 ---
 
-# Respondo Docs 8-)
+# Respondo docs 8-)
 
 > Ticketing system for social media posts
 
@@ -25,9 +25,9 @@ While signed out, you can see all
 [authenticated brands](https://app.respondohub.com/brands), but can't respond to
 any ticket.
 
-When you select one of the authenticated brands, you will be able to choose
-between `Open tickets` and `Solved tickets`.
+When you select one of the authenticated brands, you can choose between
+`Open tickets` and `Solved tickets`.
 
 Every time somebody mentions the brand's handle on any social network that is
-currently integrated with that brand's Respondo, a new ticket will be created
-under `Open tickets`.
+currently integrated with that brand's Respondo, a new ticket is created under
+`Open tickets`.

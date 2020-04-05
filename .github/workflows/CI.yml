@@ -132,13 +132,20 @@ jobs:
         run: npm install --global standard@14.3.1
       - name: Run standard
         run: standard
-  markdown_lint:
+  markdownlint:
     runs-on: ubuntu-latest
-    container: ruby:2.7.0
+    container: node:13.1.0-stretch
     steps:
       - uses: actions/checkout@v1
-      - name: Install mdl
+      - name: Install markdownlint
         run: |
-          gem install mdl
-      - name: Run mdl
-        run: mdl .
+          npm install --global markdownlint-cli@0.22.0
+      - name: Run markdownlint
+        run: markdownlint docs/*.md
+  vale:
+    runs-on: ubuntu-latest
+    container: jdkato/vale:latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run vale
+        run: vale docs/*.md
