@@ -20,7 +20,7 @@ RSpec.describe 'Brand settings', type: :system do
 
   it 'allows the user to authorize an account' do
     add_oauth_mock_for_brand(brand, FactoryBot.create(:brand_account, provider: 'disqus'))
-    click_link 'Authorize Disqus'
+    click_link('Authorize Disqus', wait: 5)
 
     expect(page).to have_link('Remove Disqus')
   end

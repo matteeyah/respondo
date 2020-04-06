@@ -16,6 +16,10 @@ module ApplicationHelper
     end
   end
 
+  def safe_blank_link_to(text, url)
+    link_to text, url, target: '_blank', rel: 'noopener noreferrer'
+  end
+
   private
 
   def auth_provider_path(provider, params)
