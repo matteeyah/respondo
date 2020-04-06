@@ -26,4 +26,10 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
     end
   end
+
+  describe '#safe_blank_link_to' do
+    subject(:safe_blank_link_to) { helper.safe_blank_link_to('Link Text', 'https://example.com') }
+
+    it { is_expected.to eq('<a target="_blank" rel="noopener noreferrer" href="https://example.com">Link Text</a>') }
+  end
 end
