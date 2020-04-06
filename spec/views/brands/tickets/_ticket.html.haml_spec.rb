@@ -66,8 +66,8 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
 
   context 'when ticket is external' do
     before do
-      ticket.external!
       ticket.response_url = 'https://google.com'
+      ticket.external!
     end
 
     it 'displays response form' do

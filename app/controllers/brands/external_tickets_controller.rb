@@ -11,6 +11,8 @@ module Brands
         format.json do
           new_ticket = Ticket.from_external_ticket!(create_params, brand, nil)
           render json: new_ticket
+        rescue ActiveRecord::RecordInvalid
+          render json: { error: 'Unable to create ticket.' }
         end
       end
     end

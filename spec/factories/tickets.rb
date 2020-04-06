@@ -11,6 +11,8 @@ FactoryBot.define do
 
     after(:build) do |ticket|
       ticket.author.provider = ticket.provider
+
+      ticket.response_url = 'https://response_url.com' if ticket.provider == 'external'
     end
   end
 end

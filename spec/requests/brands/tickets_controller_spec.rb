@@ -199,9 +199,7 @@ RSpec.describe Brands::TicketsController, type: :request do
 
       Ticket.providers.keys.each do |provider|
         context "when ticket provider is #{provider}" do
-          before do
-            ticket.update(provider: provider)
-          end
+          let(:ticket) { FactoryBot.create(:ticket, provider: provider, brand: brand) }
 
           let(:client_error) { Twitter::Error::Forbidden.new('error') }
           let(:client_response) do
@@ -223,7 +221,7 @@ RSpec.describe Brands::TicketsController, type: :request do
 
           context 'when authorized as a user' do
             before do
-              account_provider = provider == 'external' ? 'twitter' : provider
+              account_provider = ticket.external? ? 'twitter' : provider
               FactoryBot.create(:user_account, provider: account_provider, user: user)
             end
 
@@ -246,7 +244,7 @@ RSpec.describe Brands::TicketsController, type: :request do
 
           context 'when authorized as a brand' do
             before do
-              account_provider = ticket.provider == 'external' ? 'twitter' : ticket.provider
+              account_provider = ticket.external? ? 'twitter' : ticket.provider
               FactoryBot.create(:brand_account, provider: account_provider, brand: brand)
               brand.users << user
             end

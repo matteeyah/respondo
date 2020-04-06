@@ -37,26 +37,52 @@ RSpec.describe Brands::ExternalTicketsController, type: :request do
           brand.users << user
         end
 
-        it 'creates a ticket' do
-          expect { post_create_json }.to change(Ticket, :count).from(0).to(1)
+        context 'when payload is valid' do
+          it 'creates a ticket' do
+            expect { post_create_json }.to change(Ticket, :count).from(0).to(1)
+          end
+
+          it 'creates a ticket with matching attributes' do
+            post_create_json
+
+            expect(Ticket.find_by(external_uid: external_json[:external_uid])).to have_attributes(content: external_json[:content])
+          end
+
+          it 'renders json' do
+            post_create_json
+
+            expect(response.content_type).to eq('application/json; charset=utf-8')
+          end
+
+          it 'renders new ticket' do
+            post_create_json
+
+            expect(response.body).to eq(Ticket.find_by(external_uid: external_json[:external_uid]).to_json)
+          end
         end
 
-        it 'creates a ticket with matching attributes' do
-          post_create_json
+        context 'when payload is invalid' do
+          let(:external_json) do
+            {
+              external_uid: '123hello321world',
+              content: 'This is content from the external ticket example.',
+              parent_uid: 'external_ticket_parent_external_uid',
+              author: {
+                external_uid: 'external_ticket_author_external_uid',
+                username: 'best_username'
+              }
+            }
+          end
 
-          expect(Ticket.find_by(external_uid: external_json[:external_uid])).to have_attributes(content: external_json[:content])
-        end
+          it 'does not create a ticket' do
+            expect { post_create_json }.not_to change(Ticket, :count).from(0)
+          end
 
-        it 'renders json' do
-          post_create_json
+          it 'renders error json' do
+            post_create_json
 
-          expect(response.content_type).to eq('application/json; charset=utf-8')
-        end
-
-        it 'renders new ticket' do
-          post_create_json
-
-          expect(response.body).to eq(Ticket.find_by(external_uid: external_json[:external_uid]).to_json)
+            expect(response.body).to eq({ error: 'Unable to create ticket.' }.to_json)
+          end
         end
       end
 

@@ -92,7 +92,7 @@ module Brands
 
     def respond!
       response = client.reply(params[:response_text], ticket.external_uid)
-      response = JSON.parse(response).deep_symbolize_keys if ticket.provider == 'external'
+      response = JSON.parse(response).deep_symbolize_keys if ticket.external?
 
       create_ticket!(ticket.provider, response)
     end

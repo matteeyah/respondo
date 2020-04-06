@@ -7,6 +7,7 @@ class Ticket < ApplicationRecord
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[provider brand_id] }
   validates :content, presence: { allow_blank: false }
   validates :provider, presence: true
+  validates :response_url, presence: true, if: ->(ticket) { ticket.external? }
   validate :parent_in_brand
 
   enum status: { open: 0, solved: 1 }

@@ -68,9 +68,9 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
     context 'when ticket is external' do
       before do
+        ticket.response_url = nested_ticket.response_url = 'https://google.com'
         ticket.external!
         nested_ticket.external!
-        ticket.response_url = nested_ticket.response_url = 'https://google.com'
       end
 
       it 'displays response form' do
@@ -199,9 +199,9 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
       context 'when ticket is external' do
         before do
+          ticket.response_url = nested_ticket.response_url = 'https://google.com'
           ticket.external!
           nested_ticket.external!
-          ticket.response_url = nested_ticket.response_url = 'https://google.com'
         end
 
         it 'does not display response form' do
