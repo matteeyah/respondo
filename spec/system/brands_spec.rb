@@ -12,7 +12,7 @@ RSpec.describe 'Brands', type: :system do
 
     click_link 'Brands'
 
-    click_link brands.first.screen_name
+    click_link(brands.first.screen_name, wait: 5)
     expect(page).to have_text("#{brands.first.screen_name}: Tickets")
 
     page.go_back
