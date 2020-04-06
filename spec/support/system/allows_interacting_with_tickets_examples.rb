@@ -32,7 +32,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     response_text = 'Hello from Respondo system tests'
     target_ticket.external!
     target_ticket.author.external!
-    target_ticket.metadata = { response_url: 'https://example.com' }
+    target_ticket.response_url = 'https://example.com'
     target_ticket.save
     response = {
       external_uid: 123_456,
@@ -40,7 +40,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
       parent_uid: target_ticket.external_uid,
       content: response_text
     }
-    stub_request(:post, target_ticket.metadata[:response_url])
+    stub_request(:post, target_ticket.response_url)
       .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
 
     within "form[action='/brands/#{target_ticket.brand.id}/tickets/#{target_ticket.id}/reply']" do

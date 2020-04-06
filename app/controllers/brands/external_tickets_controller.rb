@@ -9,7 +9,7 @@ module Brands
     def create
       respond_to do |format|
         format.json do
-          new_ticket = Ticket.from_external_ticket!(create_params.merge(metadata: metadata_param), brand, nil)
+          new_ticket = Ticket.from_external_ticket!(create_params, brand, nil)
           render json: new_ticket
         end
       end
@@ -18,11 +18,10 @@ module Brands
     private
 
     def create_params
-      params.require(:ticket).permit(:external_uid, :content, :parent_uid, author: %i[external_uid username])
-    end
-
-    def metadata_param
-      params.require(:ticket).require(:metadata)
+      params.require(:ticket).permit(
+        :external_uid, :content, :parent_uid, :response_url, :custom_provider,
+        author: %i[external_uid username]
+      )
     end
 
     def token_params
