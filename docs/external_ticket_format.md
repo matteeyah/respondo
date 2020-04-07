@@ -28,7 +28,8 @@ endpoint in JSON format.
     "content",
     "response_url",
     "author",
-    "created_at"
+    "created_at",
+    "personal_access_token"
   ],
   "properties": {
     "external_uid": {
@@ -87,6 +88,27 @@ endpoint in JSON format.
       "examples": [
         "2020-04-04 23:35:27.632879 UTC"
       ]
+    },
+    "personal_access_token": {
+      "type": "object",
+      "required": [
+        "name",
+        "token"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "examples": [
+            "token_name"
+          ]
+        },
+        "token": {
+          "type": "string",
+          "examples": [
+            "123TOKEN321"
+          ]
+        }
+      }
     }
   },
   "additionalProperties": false
@@ -104,7 +126,11 @@ endpoint in JSON format.
     "external_uid": "external_ticket_author_external_uid",
     "username": "best_username"
   },
-  "created_at": "2019-01-01 23:35:27.632879 UTC"
+  "created_at": "2019-01-01 23:35:27.632879 UTC",
+  "token": {
+    "name": "token_name",
+    "token": "123TOKEN321"
+  }
 }
 ```
 
@@ -118,7 +144,11 @@ endpoint in JSON format.
     "external_uid": "external_ticket_author_external_uid",
     "username": "best_username"
   },
-  "created_at": "2019-01-01 23:35:27.632879 UTC"
+  "created_at": "2019-01-01 23:35:27.632879 UTC",
+  "token": {
+    "name": "token_name",
+    "token": "123TOKEN321"
+  }
 }
 ```
 
@@ -267,6 +297,6 @@ JSON format. A response is expected.
   },
   "parent_uid":"parent_uid_1",
   "content": "This is content from an example external ticket reply.",
-  "created_at": "2019-01-01 23:35:27.632879 UTC"
+  "created_at": "2019-01-01 23:35:27.632879 UTC",
 }
 ```

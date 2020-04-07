@@ -9,18 +9,25 @@ module Brands
     def create
       respond_to do |format|
         format.json do
-          new_ticket = Ticket.from_external_ticket!(create_params, brand, nil)
-          render json: new_ticket
-        rescue ActiveRecord::RecordInvalid
-          render json: { error: 'Unable to create ticket.' }
+          if validate_json_payload
+            new_ticket = Ticket.from_external_ticket!(create_params, brand, nil)
+            render json: new_ticket
+          else
+            render json: { error: 'Invalid payload schema.' }
+          end
         end
       end
     end
 
     private
 
+    def validate_json_payload
+      schema = File.read(Rails.root.join('lib/external_ticket_json_schema.json'))
+      JSON::Validator.validate(schema, request.raw_post)
+    end
+
     def create_params
-      params.require(:ticket).permit(
+      params.permit(
         :external_uid, :content, :parent_uid, :response_url, :custom_provider,
         author: %i[external_uid username]
       )
