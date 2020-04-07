@@ -6,9 +6,9 @@ RSpec.describe Brands::ExternalTicketsController, type: :request do
 
   describe 'POST create.json' do
     subject(:post_create_json) do
-      post "/brands/#{brand.id}/external_tickets.json", params: {
-        ticket: external_json, personal_access_token: personal_access_token_json
-      }
+      post "/brands/#{brand.id}/external_tickets.json",
+           params: external_json.merge(personal_access_token: personal_access_token_json),
+           as: :json
     end
 
     let(:external_json) do
@@ -20,7 +20,8 @@ RSpec.describe Brands::ExternalTicketsController, type: :request do
         author: {
           external_uid: 'external_ticket_author_external_uid',
           username: 'best_username'
-        }
+        },
+        created_at: 1.day.ago.utc
       }
     end
 
@@ -81,7 +82,7 @@ RSpec.describe Brands::ExternalTicketsController, type: :request do
           it 'renders error json' do
             post_create_json
 
-            expect(response.body).to eq({ error: 'Unable to create ticket.' }.to_json)
+            expect(response.body).to eq({ error: 'Invalid payload schema.' }.to_json)
           end
         end
       end
