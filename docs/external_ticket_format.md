@@ -297,6 +297,6 @@ JSON format. A response is expected.
   },
   "parent_uid":"parent_uid_1",
   "content": "This is content from an example external ticket reply.",
-  "created_at": "2019-01-01 23:35:27.632879 UTC",
+  "created_at": "2019-01-01 23:35:27.632879 UTC"
 }
 ```

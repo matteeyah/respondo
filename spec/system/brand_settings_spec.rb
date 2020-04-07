@@ -20,7 +20,7 @@ RSpec.describe 'Brand settings', type: :system do
 
   it 'allows the user to authorize an account' do
     add_oauth_mock_for_brand(brand, FactoryBot.create(:brand_account, provider: 'disqus'))
-    click_link('Authorize Disqus', wait: 5)
+    click_link('Authorize Disqus', wait: 10)
 
     expect(page).to have_link('Remove Disqus')
   end
@@ -35,7 +35,7 @@ RSpec.describe 'Brand settings', type: :system do
   it 'allows the user to add users to brand' do
     external_user = FactoryBot.create(:user)
 
-    select(external_user.name, from: 'add-user', wait: 5)
+    select(external_user.name, from: 'add-user', wait: 10)
     click_button 'Add User'
 
     expect(page).to have_link("Remove #{external_user.name}")
@@ -44,7 +44,7 @@ RSpec.describe 'Brand settings', type: :system do
   it 'allows the user to remove users from brand' do
     existing_user = FactoryBot.create(:user, brand: brand)
 
-    click_link("Remove #{existing_user.name}", wait: 5)
+    click_link("Remove #{existing_user.name}", wait: 10)
 
     expect(page).to have_select('add-user', with_options: [existing_user.name])
   end
