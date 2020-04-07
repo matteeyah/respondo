@@ -26,6 +26,7 @@ endpoint in JSON format.
   "required": [
     "external_uid",
     "content",
+    "response_url",
     "author",
     "created_at"
   ],
@@ -42,25 +43,17 @@ endpoint in JSON format.
         "This is content from an example external ticket."
       ]
     },
-    "metadata": {
-      "type": "object",
-      "required": [
-        "response_url",
-      ],
-      "properties": {
-        "response_url": {
-          "type": "string",
-          "examples": [
-            "https://response_url.com"
-          ]
-        },
-        "custom_provider": {
-          "type": "string",
-          "examples": [
-            "hacker_news"
-          ]
-        }
-      }
+    "response_url": {
+      "type": "string",
+      "examples": [
+        "https://response_url.com"
+      ]
+    },
+    "custom_provider": {
+      "type": "string",
+      "examples": [
+        "hacker_news"
+      ]
     },
     "parent_uid": {
       "type": "string",
@@ -119,10 +112,8 @@ endpoint in JSON format.
 {
   "external_uid": "123hello321world",
   "content": "This is content from the external ticket example.",
-  "metadata": {
-    "response_url": "https://response_url.com",
-    "custom_provider": "hacker_news"
-  },
+  "response_url": "https://response_url.com",
+  "custom_provider": "hacker_news",
   "author": {
     "external_uid": "external_ticket_author_external_uid",
     "username": "best_username"
@@ -133,8 +124,8 @@ endpoint in JSON format.
 
 ## Reply
 
-All replies are sent as POST requests to the `Ticket.metadata[:response_url]`
-endpoint in JSON format. A response is expected.
+All replies are sent as POST requests to the `Ticket#response_url` endpoint in
+JSON format. A response is expected.
 
 ### Reply schema
 

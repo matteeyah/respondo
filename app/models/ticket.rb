@@ -7,8 +7,8 @@ class Ticket < ApplicationRecord
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[provider brand_id] }
   validates :content, presence: { allow_blank: false }
   validates :provider, presence: true
+  validates :response_url, presence: true, if: ->(ticket) { ticket.external? }
   validate :parent_in_brand
-  serialize :metadata
 
   enum status: { open: 0, solved: 1 }
   enum provider: { external: 0, twitter: 1, disqus: 2 }
@@ -71,8 +71,8 @@ class Ticket < ApplicationRecord
       parent = brand.tickets.external.find_by(external_uid: external_ticket_json[:parent_uid])
       brand.tickets.external.create!(
         external_uid: external_ticket_json[:external_uid], author: author, user: user, parent: parent,
-        metadata: external_ticket_json[:metadata], content: external_ticket_json[:content],
-        created_at: external_ticket_json[:created_at]
+        response_url: external_ticket_json[:response_url], custom_provider: external_ticket_json[:custom_provider],
+        content: external_ticket_json[:content], created_at: external_ticket_json[:created_at]
       )
     end
 
@@ -107,7 +107,7 @@ class Ticket < ApplicationRecord
   end
 
   def actual_provider
-    metadata&.dig(:custom_provider) || self[:provider]
+    self[:custom_provider] || self[:provider]
   end
 
   private

@@ -210,7 +210,7 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: tweet.id, provider: 'twitter', content: tweet.attrs[:full_text],
-            metadata: nil, brand: brand, author: author, user: user
+            response_url: nil, custom_provider: nil, brand: brand, author: author, user: user
           }
         end
       end
@@ -234,7 +234,7 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: disqus_post[:id], provider: 'disqus', content: disqus_post[:raw_message],
-            metadata: nil, brand: brand, author: author, user: user
+            response_url: nil, custom_provider: nil, brand: brand, author: author, user: user
           }
         end
       end
@@ -258,7 +258,7 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: external_ticket_json[:external_uid], provider: 'external',
-            content: external_ticket_json[:content], metadata: { response_url: 'https://response_url.com' },
+            content: external_ticket_json[:content], response_url: 'https://response_url.com',
             brand: brand, author: author, user: user
           }
         end
@@ -293,7 +293,7 @@ RSpec.describe Ticket, type: :model do
 
     context 'when ticket has custom provider' do
       before do
-        ticket.metadata = { custom_provider: 'hacker_news' }
+        ticket.custom_provider = 'hacker_news'
       end
 
       it 'uses custom provider' do
@@ -303,7 +303,7 @@ RSpec.describe Ticket, type: :model do
 
     context 'when ticket does not have custom provider' do
       before do
-        ticket.metadata = { provider: nil }
+        ticket.custom_provider = nil
       end
 
       it 'uses ticket provider' do

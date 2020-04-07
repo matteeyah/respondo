@@ -68,9 +68,9 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
     context 'when ticket is external' do
       before do
+        ticket.response_url = nested_ticket.response_url = 'https://google.com'
         ticket.external!
         nested_ticket.external!
-        ticket.metadata = nested_ticket.metadata = { response_url: 'https://google.com' }
       end
 
       it 'displays response form' do
@@ -87,7 +87,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
       context 'when tickets have external provider' do
         before do
-          ticket.metadata[:custom_provider] = nested_ticket.metadata[:custom_provider] = 'hacker_news'
+          ticket.custom_provider = nested_ticket.custom_provider = 'hacker_news'
         end
 
         it 'shows custom external provider for root tickets' do
@@ -199,9 +199,9 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
       context 'when ticket is external' do
         before do
+          ticket.response_url = nested_ticket.response_url = 'https://google.com'
           ticket.external!
           nested_ticket.external!
-          ticket.metadata = nested_ticket.metadata = { response_url: 'https://google.com' }
         end
 
         it 'does not display response form' do
@@ -218,7 +218,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
         context 'when tickets have external provider' do
           before do
-            ticket.metadata[:custom_provider] = nested_ticket.metadata[:custom_provider] = 'hacker_news'
+            ticket.custom_provider = nested_ticket.custom_provider = 'hacker_news'
           end
 
           it 'shows custom external provider for root tickets' do

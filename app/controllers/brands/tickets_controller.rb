@@ -61,7 +61,7 @@ module Brands
 
     def client # rubocop:disable Metrics/AbcSize
       @client ||= if ticket.external?
-                    Clients::External.new(ticket.metadata&.dig(:response_url), ticket.author.external_uid, ticket.author.username)
+                    Clients::External.new(ticket.response_url, ticket.author.external_uid, ticket.author.username)
                   elsif current_brand == brand
                     current_brand.client_for_provider(ticket.provider)
                   else
@@ -92,7 +92,7 @@ module Brands
 
     def respond!
       response = client.reply(params[:response_text], ticket.external_uid)
-      response = JSON.parse(response).deep_symbolize_keys if ticket.provider == 'external'
+      response = JSON.parse(response).deep_symbolize_keys if ticket.external?
 
       create_ticket!(ticket.provider, response)
     end

@@ -66,8 +66,8 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
 
   context 'when ticket is external' do
     before do
+      ticket.response_url = 'https://google.com'
       ticket.external!
-      ticket.metadata = { response_url: 'https://google.com' }
     end
 
     it 'displays response form' do
@@ -84,7 +84,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
 
     context 'when ticket has external provider' do
       before do
-        ticket.metadata[:custom_provider] = 'hacker_news'
+        ticket.custom_provider = 'hacker_news'
       end
 
       it 'shows custom external provider for ticket' do

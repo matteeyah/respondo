@@ -5,14 +5,14 @@ require './spec/support/sign_in_out_system_helpers.rb'
 RSpec.describe 'Brands', type: :system do
   include SignInOutSystemHelpers
 
-  let(:brands) { FactoryBot.create_list(:brand, 2) }
+  let!(:brands) { FactoryBot.create_list(:brand, 2) }
 
   it 'allows user to navigate to all brands' do
     visit '/'
 
     click_link 'Brands'
 
-    click_link(brands.first.screen_name, wait: 5)
+    click_link brands.first.screen_name
     expect(page).to have_text("#{brands.first.screen_name}: Tickets")
 
     page.go_back
