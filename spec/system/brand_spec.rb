@@ -40,6 +40,7 @@ RSpec.describe 'Brand', type: :system do
     )
 
     within('ul.list-group > li.list-group-item:first-child') do
+      click_button 'Reply'
       fill_in :response_text, with: response_text
       click_button 'Reply'
     end

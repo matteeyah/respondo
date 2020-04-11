@@ -36,7 +36,13 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
   it 'displays response form' do
     render_ticket_partial
 
-    expect(rendered).to have_field(:response_text, count: 1).and have_button('Reply', count: 1)
+    expect(rendered).to have_field(:response_text, count: 1, visible: :hidden).and have_button('Reply', count: 1, visible: :hidden)
+  end
+
+  it 'displays the form toggle buttons' do
+    render_ticket_partial
+
+    expect(rendered).to have_button('Reply', count: 1).and have_button('Internal Note', count: 1)
   end
 
   it 'displays the status button' do
@@ -48,7 +54,8 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
   it 'displays the internal note form' do
     render_ticket_partial
 
-    expect(rendered).to have_field(:internal_note_text, count: 1).and have_button('Post Internal Note', count: 1)
+    expect(rendered).to have_field(:internal_note_text, count: 1, visible: :hidden)
+      .and have_button('Post Internal Note', count: 1, visible: :hidden)
   end
 
   it 'displays internal notes' do
@@ -73,7 +80,13 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
     it 'displays response form' do
       render_ticket_partial
 
-      expect(rendered).to have_field(:response_text, count: 1).and have_button('Reply', count: 1)
+      expect(rendered).to have_field(:response_text, count: 1, visible: :hidden).and have_button('Reply', count: 1, visible: :hidden)
+    end
+
+    it 'displays the form toggle buttons' do
+      render_ticket_partial
+
+      expect(rendered).to have_button('Reply', count: 1).and have_button('Internal Note', count: 1)
     end
 
     it 'shows external provider for ticket' do

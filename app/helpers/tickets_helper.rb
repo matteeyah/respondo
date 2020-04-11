@@ -21,4 +21,8 @@ module TicketsHelper
 
     sanitize("#{header_content} - #{link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(brand, ticket))}")
   end
+
+  def flatten_hash(hash)
+    hash.flat_map { |k, v| [k, *flatten_hash(v)] }
+  end
 end
