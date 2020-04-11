@@ -24,13 +24,13 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
   it 'displays the ticket' do
     render_ticket_partial
 
-    expect(rendered).to have_text("#{ticket.author.username}:").and have_text(ticket.content)
+    expect(rendered).to have_text("#{ticket.author.username} - ").and have_text(ticket.content)
   end
 
   it 'displays provider' do
     render_ticket_partial
 
-    expect(rendered).to have_text('Provider:', count: 1).and have_text(ticket.provider, count: 1)
+    expect(rendered).to have_text(" - #{ticket.provider} - ", count: 1)
   end
 
   it 'displays response form' do
@@ -61,7 +61,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
   it 'displays ticket permalink' do
     render_ticket_partial
 
-    expect(rendered).to have_link(ticket.created_at, href: brand_ticket_path(brand, ticket))
+    expect(rendered).to have_link(ticket.created_at.to_formatted_s(:short), href: brand_ticket_path(brand, ticket))
   end
 
   context 'when ticket is external' do
@@ -79,7 +79,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
     it 'shows external provider for ticket' do
       render_ticket_partial
 
-      expect(rendered).to have_text('Provider:', count: 1).and have_text('external', count: 1)
+      expect(rendered).to have_text(' - external - ', count: 1)
     end
 
     context 'when ticket has external provider' do
@@ -90,7 +90,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
       it 'shows custom external provider for ticket' do
         render_ticket_partial
 
-        expect(rendered).to have_text('Provider:', count: 1).and have_text('hacker_news', count: 1)
+        expect(rendered).to have_text(' - hacker_news - ', count: 1)
       end
     end
   end
@@ -103,7 +103,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
     it 'displays user along with author' do
       render_ticket_partial
 
-      expect(rendered).to have_text("#{ticket.user.name} as #{ticket.author.username}:").and have_text(ticket.content)
+      expect(rendered).to have_text("#{ticket.user.name} as #{ticket.author.username} - ").and have_text(ticket.content)
     end
   end
 end

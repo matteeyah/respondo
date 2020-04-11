@@ -21,7 +21,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
       click_button 'Reply'
     end
 
-    expect(page).to have_text("#{user.name} as #{brand.screen_name}:")
+    expect(page).to have_text("#{user.name} as #{brand.screen_name} - ")
     expect(page).to have_text(response_text)
   end
 
@@ -49,7 +49,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
       click_button 'Reply'
     end
 
-    expect(page).to have_text("#{user.name} as #{brand.screen_name}:")
+    expect(page).to have_text("#{user.name} as #{brand.screen_name} - ")
     expect(page).to have_text(response_text)
   end
 
