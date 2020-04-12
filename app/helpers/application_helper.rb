@@ -20,6 +20,10 @@ module ApplicationHelper
     link_to text, url, target: '_blank', rel: 'noopener noreferrer'
   end
 
+  def fa_icon(icon)
+    sanitize("<i class='fas fa-#{icon}'></i>")
+  end
+
   private
 
   def auth_provider_path(provider, params)

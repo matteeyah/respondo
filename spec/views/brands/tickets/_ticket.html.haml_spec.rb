@@ -42,13 +42,16 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
   it 'displays the form toggle buttons' do
     render_ticket_partial
 
-    expect(rendered).to have_button('Reply', count: 1).and have_button('Internal Note', count: 1)
+    expect(rendered).to have_button("toggleReply#{ticket.id}", count: 1)
+      .and have_button("toggleInternalNote#{ticket.id}", count: 1)
   end
 
   it 'displays the status button' do
     render_ticket_partial
 
-    expect(rendered).to have_button('Solve')
+    within "form[action='#{brand_ticket_invert_status_path(ticket.brand, ticket)}']" do
+      expect(rendered).to have_button('type="submit"')
+    end
   end
 
   it 'displays the internal note form' do
@@ -86,7 +89,8 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
     it 'displays the form toggle buttons' do
       render_ticket_partial
 
-      expect(rendered).to have_button('Reply', count: 1).and have_button('Internal Note', count: 1)
+      expect(rendered).to have_button("toggleReply#{ticket.id}", count: 1)
+        .and have_button("toggleInternalNote#{ticket.id}", count: 1)
     end
 
     it 'shows external provider for ticket' do

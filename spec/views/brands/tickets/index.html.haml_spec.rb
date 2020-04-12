@@ -38,7 +38,9 @@ RSpec.describe 'brands/tickets/index', type: :view do
     end
 
     it 'renders the refresh button' do
-      expect(render).to have_button('↻')
+      within "form[action='#{refresh_brand_tickets_path(ticket.brand)}']" do
+        expect(render).to have_button('type="submit"')
+      end
     end
 
     it 'renders the manual ticket info alert' do

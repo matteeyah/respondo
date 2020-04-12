@@ -47,10 +47,18 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       expect(rendered).to have_field(:response_text, count: 2, visible: :hidden).and have_button('Reply', count: 2, visible: :hidden)
     end
 
-    it 'displays the status buttons' do
+    it 'displays the solve button' do
       render_tickets_partial
 
-      expect(rendered).to have_button('Open').and have_button('Solve')
+      within "form[action='#{brand_ticket_invert_status_path(brand, ticket)}']" do
+        expect(rendered).to have_button('type="submit"')
+      end
+    end
+
+    it 'displays the open button' do
+      within "form[action='#{brand_ticket_invert_status_path(brand, nested_ticket)}']" do
+        expect(rendered).to have_button('type="submit"')
+      end
     end
 
     it 'displays internal note forms' do
