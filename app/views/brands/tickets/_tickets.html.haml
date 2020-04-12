@@ -1,6 +1,6 @@
 %ul.list-group.mt-3
   - tickets.each do |ticket, replies|
-    %li.list-group-item.mt-3
+    %li.list-group-item
       = render partial: 'ticket', locals: { brand: brand, ticket: ticket }
 
       - if replies.any?

@@ -31,3 +31,20 @@ document.addEventListener('turbolinks:load', (event) => {
     window.localStorage.removeItem(scrollPositionKey)
   }
 })
+
+// Form Toggle click listeners setup
+function setupToggleResponseFormsClickListener (buttonName, formName, ticketId) {
+  document.getElementById(`${buttonName}${ticketId}`).addEventListener('click', function () {
+    document.getElementById(`toggleButtons${ticketId}`).classList.toggle('d-none')
+    document.getElementById(`${formName}Form${ticketId}`).toggleAttribute('hidden')
+  })
+}
+
+window.setupToggleResponseFormsClickListeners = function (ticketId) {
+  setupToggleResponseFormsClickListener('toggleReplyFormButton', 'reply', ticketId)
+  setupToggleResponseFormsClickListener('toggleInternalNoteButton', 'internalNote', ticketId)
+  setupToggleResponseFormsClickListener('replyButton', 'reply', ticketId)
+  setupToggleResponseFormsClickListener('internalNoteButton', 'internalNote', ticketId)
+  setupToggleResponseFormsClickListener('replyReset', 'reply', ticketId)
+  setupToggleResponseFormsClickListener('internalNoteReset', 'internalNote', ticketId)
+}

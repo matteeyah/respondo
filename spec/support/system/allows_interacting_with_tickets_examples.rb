@@ -16,12 +16,16 @@ RSpec.shared_examples 'allows interacting with tickets' do
       response_text
     )
 
+    within "div[id='toggleButtons#{target_ticket.id}']" do
+      click_button 'Reply'
+    end
+
     within "form[action='/brands/#{target_ticket.brand.id}/tickets/#{target_ticket.id}/reply']" do
       fill_in :response_text, with: response_text
       click_button 'Reply'
     end
 
-    expect(page).to have_text("#{user.name} as #{brand.screen_name}:")
+    expect(page).to have_text("#{user.name} as #{brand.screen_name} - ")
     expect(page).to have_text(response_text)
   end
 
@@ -44,12 +48,16 @@ RSpec.shared_examples 'allows interacting with tickets' do
     stub_request(:post, target_ticket.response_url)
       .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
 
+    within "div[id='toggleButtons#{target_ticket.id}']" do
+      click_button 'Reply'
+    end
+
     within "form[action='/brands/#{target_ticket.brand.id}/tickets/#{target_ticket.id}/reply']" do
       fill_in :response_text, with: response_text
       click_button 'Reply'
     end
 
-    expect(page).to have_text("#{user.name} as #{brand.screen_name}:")
+    expect(page).to have_text("#{user.name} as #{brand.screen_name} - ")
     expect(page).to have_text(response_text)
   end
 
@@ -58,6 +66,10 @@ RSpec.shared_examples 'allows interacting with tickets' do
     sign_in_brand(brand)
 
     internal_note_text = 'Internal note from Respondo system tests.'
+
+    within "div[id='toggleButtons#{target_ticket.id}']" do
+      click_button 'Internal Note'
+    end
 
     within "form[action='/brands/#{target_ticket.brand.id}/tickets/#{target_ticket.id}/internal_note']" do
       fill_in :internal_note_text, with: internal_note_text

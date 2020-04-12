@@ -13,11 +13,11 @@ RSpec.describe 'User settings', type: :system do
     visit '/'
 
     sign_in_user(user)
-
-    click_link 'User settings'
   end
 
   it 'allows the user to authorize an account' do
+    click_link 'User settings'
+
     add_oauth_mock_for_user(user, FactoryBot.create(:user_account, provider: 'twitter'))
     click_link 'Authorize Twitter'
 
@@ -26,12 +26,16 @@ RSpec.describe 'User settings', type: :system do
 
   it 'allows the user to remove an account' do
     FactoryBot.create(:user_account, provider: 'twitter', user: user)
+    click_link 'User settings'
+
     click_link 'Remove Twitter'
 
     expect(page).to have_link('Authorize Twitter')
   end
 
   it 'allows the user to create a personal access token' do
+    click_link 'User settings'
+
     fill_in :name, with: 'something_nice'
     click_button 'Create'
 
@@ -40,6 +44,7 @@ RSpec.describe 'User settings', type: :system do
 
   it 'allows the user to remove a personal access token' do
     FactoryBot.create(:personal_access_token, name: 'something_nice', user: user)
+    click_link 'User settings'
 
     click_link 'Remove something_nice'
 

@@ -40,6 +40,7 @@ RSpec.describe 'Brand', type: :system do
     )
 
     within('ul.list-group > li.list-group-item:first-child') do
+      click_button 'Reply'
       fill_in :response_text, with: response_text
       click_button 'Reply'
     end
@@ -57,7 +58,7 @@ RSpec.describe 'Brand', type: :system do
     target_ticket = tickets.first
 
     within('ul.list-group > li.list-group-item:first-child') do
-      click_link target_ticket.created_at
+      click_link target_ticket.created_at.to_formatted_s(:short)
     end
 
     expect(page).to have_current_path(brand_ticket_path(brand, target_ticket))

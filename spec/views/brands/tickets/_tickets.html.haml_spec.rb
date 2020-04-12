@@ -31,20 +31,20 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
     it 'displays the tickets' do
       render_tickets_partial
 
-      expect(rendered).to have_text("#{ticket.author.username}:").and have_text(ticket.content)
-        .and have_text("#{nested_ticket.author.username}:").and have_text(nested_ticket.content)
+      expect(rendered).to have_text("#{ticket.author.username} - ").and have_text(ticket.content)
+        .and have_text("#{nested_ticket.author.username} - ").and have_text(nested_ticket.content)
     end
 
     it 'displays provider for root tickets' do
       render_tickets_partial
 
-      expect(rendered).to have_text('Provider:', count: 1).and have_text(ticket.provider, count: 1)
+      expect(rendered).to have_text(" - #{ticket.provider} - ", count: 1)
     end
 
     it 'displays response forms' do
       render_tickets_partial
 
-      expect(rendered).to have_field(:response_text, count: 2).and have_button('Reply', count: 2)
+      expect(rendered).to have_field(:response_text, count: 2, visible: :hidden).and have_button('Reply', count: 2, visible: :hidden)
     end
 
     it 'displays the status buttons' do
@@ -56,7 +56,8 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
     it 'displays internal note forms' do
       render_tickets_partial
 
-      expect(rendered).to have_field(:internal_note_text, count: 2).and have_button('Post Internal Note', count: 2)
+      expect(rendered).to have_field(:internal_note_text, count: 2, visible: :hidden)
+        .and have_button('Post Internal Note', count: 2, visible: :hidden)
     end
 
     it 'displays internal notes' do
@@ -76,13 +77,13 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       it 'displays response form' do
         render_tickets_partial
 
-        expect(rendered).to have_field(:response_text, count: 2).and have_button('Reply', count: 2)
+        expect(rendered).to have_field(:response_text, count: 2, visible: :hidden).and have_button('Reply', count: 2, visible: :hidden)
       end
 
       it 'shows external provider for root tickets' do
         render_tickets_partial
 
-        expect(rendered).to have_text('Provider:', count: 1).and have_text('external', count: 1)
+        expect(rendered).to have_text(' - external - ', count: 1)
       end
 
       context 'when tickets have external provider' do
@@ -93,7 +94,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         it 'shows custom external provider for root tickets' do
           render_tickets_partial
 
-          expect(rendered).to have_text('Provider:', count: 1).and have_text('hacker_news', count: 1)
+          expect(rendered).to have_text(' - hacker_news - ', count: 1)
         end
       end
     end
@@ -106,7 +107,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       it 'displays user along with author' do
         render_tickets_partial
 
-        expect(rendered).to have_text("#{ticket.user.name} as #{ticket.author.username}:").and have_text(ticket.content)
+        expect(rendered).to have_text("#{ticket.user.name} as #{ticket.author.username} - ").and have_text(ticket.content)
       end
     end
   end
@@ -120,14 +121,14 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       it 'displays the tickets' do
         render_tickets_partial
 
-        expect(rendered).to have_text("#{ticket.author.username}:").and have_text(ticket.content)
-          .and have_text("#{nested_ticket.author.username}:").and have_text(nested_ticket.content)
+        expect(rendered).to have_text("#{ticket.author.username} - ").and have_text(ticket.content)
+          .and have_text("#{nested_ticket.author.username} - ").and have_text(nested_ticket.content)
       end
 
       it 'displays provider for root tickets' do
         render_tickets_partial
 
-        expect(rendered).to have_text('Provider:', count: 1).and have_text(ticket.provider, count: 1)
+        expect(rendered).to have_text(" - #{ticket.provider} - ", count: 1)
       end
 
       it 'does not display response textbox' do
@@ -139,7 +140,19 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       it 'does not display response button' do
         render_tickets_partial
 
+        expect(rendered).not_to have_button('Reply', visible: :hidden)
+      end
+
+      it 'does not display reply form toggle button' do
+        render_tickets_partial
+
         expect(rendered).not_to have_button('Reply')
+      end
+
+      it 'does not display internal note form toggle button' do
+        render_tickets_partial
+
+        expect(rendered).not_to have_button('Internal Note')
       end
 
       it 'does not display open buttons' do
@@ -169,14 +182,14 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       it 'displays the tickets' do
         render_tickets_partial
 
-        expect(rendered).to have_text("#{ticket.author.username}:").and have_text(ticket.content)
-          .and have_text("#{nested_ticket.author.username}:").and have_text(nested_ticket.content)
+        expect(rendered).to have_text("#{ticket.author.username} - ").and have_text(ticket.content)
+          .and have_text("#{nested_ticket.author.username} - ").and have_text(nested_ticket.content)
       end
 
-      it 'displays response forms' do
+      it 'does not display response forms' do
         render_tickets_partial
 
-        expect(rendered).to have_field(:response_text, count: 2).and have_button('Reply', count: 2)
+        expect(rendered).not_to have_field(:response_text)
       end
 
       it 'does not display open buttons' do
@@ -207,13 +220,25 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
         it 'does not display response form' do
           render_tickets_partial
 
+          expect(rendered).not_to have_button('Reply', visible: :hidden)
+        end
+
+        it 'does not display reply form toggle button' do
+          render_tickets_partial
+
           expect(rendered).not_to have_button('Reply')
+        end
+
+        it 'does not display internal note form toggle button' do
+          render_tickets_partial
+
+          expect(rendered).not_to have_button('Internal Note')
         end
 
         it 'shows external provider for root tickets' do
           render_tickets_partial
 
-          expect(rendered).to have_text('Provider:', count: 1).and have_text('external', count: 1)
+          expect(rendered).to have_text(' - external - ', count: 1)
         end
 
         context 'when tickets have external provider' do
@@ -224,7 +249,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
           it 'shows custom external provider for root tickets' do
             render_tickets_partial
 
-            expect(rendered).to have_text('Provider:', count: 1).and have_text('hacker_news', count: 1)
+            expect(rendered).to have_text(' - hacker_news - ', count: 1)
           end
         end
       end
