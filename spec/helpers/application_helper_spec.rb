@@ -32,4 +32,10 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     it { is_expected.to eq('<a target="_blank" rel="noopener noreferrer" href="https://example.com">Link Text</a>') }
   end
+
+  describe '#fa_icon' do
+    subject(:fa_icon) { helper.fa_icon('test') }
+
+    it { is_expected.to eq('<i class="fas fa-test"></i>') }
+  end
 end

@@ -16,11 +16,9 @@ RSpec.shared_examples 'allows interacting with tickets' do
       response_text
     )
 
-    within "div[id='toggleButtons#{target_ticket.id}']" do
-      click_button 'Reply'
-    end
+    click_button "toggleReply#{target_ticket.id}"
 
-    within "form[action='/brands/#{target_ticket.brand.id}/tickets/#{target_ticket.id}/reply']" do
+    within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
       fill_in :response_text, with: response_text
       click_button 'Reply'
     end
@@ -48,11 +46,9 @@ RSpec.shared_examples 'allows interacting with tickets' do
     stub_request(:post, target_ticket.response_url)
       .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
 
-    within "div[id='toggleButtons#{target_ticket.id}']" do
-      click_button 'Reply'
-    end
+    click_button "toggleReply#{target_ticket.id}"
 
-    within "form[action='/brands/#{target_ticket.brand.id}/tickets/#{target_ticket.id}/reply']" do
+    within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
       fill_in :response_text, with: response_text
       click_button 'Reply'
     end
@@ -67,11 +63,9 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     internal_note_text = 'Internal note from Respondo system tests.'
 
-    within "div[id='toggleButtons#{target_ticket.id}']" do
-      click_button 'Internal Note'
-    end
+    click_button "toggleInternalNote#{target_ticket.id}"
 
-    within "form[action='/brands/#{target_ticket.brand.id}/tickets/#{target_ticket.id}/internal_note']" do
+    within "form[action='#{brand_ticket_internal_note_path(target_ticket.brand, target_ticket)}']" do
       fill_in :internal_note_text, with: internal_note_text
       click_button 'Post Internal Note'
     end
@@ -84,8 +78,8 @@ RSpec.shared_examples 'allows interacting with tickets' do
     sign_in_user
     sign_in_brand(brand)
 
-    within "form[action='/brands/#{target_ticket.brand.id}/tickets/#{target_ticket.id}/invert_status']" do
-      click_button 'Solve'
+    within "form[action='#{brand_ticket_invert_status_path(target_ticket.brand, target_ticket)}']" do
+      find('button[type="submit"]').click
     end
 
     click_link 'Solved Tickets'

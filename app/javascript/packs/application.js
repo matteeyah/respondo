@@ -3,9 +3,6 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-// Required for use of bootstrap
-import 'bootstrap'
-
 require('@rails/ujs').start()
 require('turbolinks').start()
 
@@ -35,16 +32,16 @@ document.addEventListener('turbolinks:load', (event) => {
 // Form Toggle click listeners setup
 function setupToggleResponseFormsClickListener (buttonName, formName, ticketId) {
   document.getElementById(`${buttonName}${ticketId}`).addEventListener('click', function () {
-    document.getElementById(`toggleButtons${ticketId}`).classList.toggle('d-none')
-    document.getElementById(`${formName}Form${ticketId}`).toggleAttribute('hidden')
+    document.getElementById(`toggleButtons${ticketId}`).toggleAttribute('hidden')
+    document.getElementById(`${formName}${ticketId}`).toggleAttribute('hidden')
   })
 }
 
 window.setupToggleResponseFormsClickListeners = function (ticketId) {
-  setupToggleResponseFormsClickListener('toggleReplyFormButton', 'reply', ticketId)
-  setupToggleResponseFormsClickListener('toggleInternalNoteButton', 'internalNote', ticketId)
-  setupToggleResponseFormsClickListener('replyButton', 'reply', ticketId)
-  setupToggleResponseFormsClickListener('internalNoteButton', 'internalNote', ticketId)
-  setupToggleResponseFormsClickListener('replyReset', 'reply', ticketId)
-  setupToggleResponseFormsClickListener('internalNoteReset', 'internalNote', ticketId)
+  setupToggleResponseFormsClickListener('toggleReply', 'replyForm', ticketId)
+  setupToggleResponseFormsClickListener('toggleInternalNote', 'internalNoteForm', ticketId)
+  setupToggleResponseFormsClickListener('reply', 'replyForm', ticketId)
+  setupToggleResponseFormsClickListener('internalNote', 'internalNoteForm', ticketId)
+  setupToggleResponseFormsClickListener('replyReset', 'replyForm', ticketId)
+  setupToggleResponseFormsClickListener('internalNoteReset', 'internalNoteForm', ticketId)
 }

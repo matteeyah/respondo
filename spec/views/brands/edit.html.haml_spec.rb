@@ -29,6 +29,6 @@ RSpec.describe 'brands/edit', type: :view do
   end
 
   it 'has the brand domain text field' do
-    expect(render).to have_selector('input[name="brand[domain]"]')
+    expect(render).to have_field('brand[domain]')
   end
 end

@@ -3,9 +3,9 @@
 - user_can_reply = user_authorized || (user_can_reply_to?(current_user, ticket.actual_provider) && !ticket.external?)
 
 .row.ml-3.mb-3
-  %span.font-weight-bold.mr-1= ticket_header_content(user_authorized, ticket, brand)
+  %span.font-weight-lighter.mr-1= ticket_header_content(user_authorized, ticket, brand)
 .row.ml-3
-  %span= ticket.content
+  %span.font-weight-normal= ticket.content
 
 - if user_authorized
   - if ticket.internal_notes.any?
@@ -17,23 +17,25 @@
 
 .row.ml-3.mt-2{ id: "toggleButtons#{ticket.id}" }
   - if user_can_reply
-    = button_tag 'Reply', class: 'btn btn-secondary', id: "toggleReplyFormButton#{ticket.id}"
+    = button_tag fa_icon('reply'), class: 'btn btn-secondary', id: "toggleReply#{ticket.id}"
   - if user_authorized
-    = button_tag 'Internal Note', class: 'btn btn-secondary ml-2 mr-2', id: "toggleInternalNoteButton#{ticket.id}"
-    = button_to invert_status_action(ticket.status), brand_ticket_invert_status_path(brand, ticket),
-      form_class: 'form-inline', class: 'btn btn-success'
+    = button_tag fa_icon('comment'), class: 'btn btn-secondary ml-2 mr-2', id: "toggleInternalNote#{ticket.id}"
+    = button_to brand_ticket_invert_status_path(brand, ticket), form_class: 'form-inline', class: 'btn btn-success' do
+      = invert_status_action(ticket.status)
 
 .row.ml-3.mt-2
   - if user_can_reply
     = form_with url: brand_ticket_reply_path(brand, ticket), class: 'form-inline col-sm-12', id: "replyForm#{ticket.id}",
       html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off', hidden: '' } do |reply_form|
-      = reply_form.text_field :response_text, required: true, placeholder: 'Reply', class: 'form-control col-sm-9'
-      = reply_form.submit 'Reply', class: 'btn btn-secondary col-sm-2', id: "replyButton#{ticket.id}"
-      = reply_form.button 'X', type: :reset, class: 'btn btn-secondary col-sm-1', id: "replyReset#{ticket.id}"
+      .form-group.col-sm-9
+        = reply_form.text_field :response_text, required: true, placeholder: 'Reply', class: 'form-control col-sm-12'
+      = reply_form.submit 'Reply', class: 'btn btn-secondary', id: "reply#{ticket.id}"
+      = reply_form.button fa_icon('times'), type: :reset, class: 'btn btn-secondary ml-auto', id: "replyReset#{ticket.id}"
   - if user_authorized
     = form_with url: brand_ticket_internal_note_path(brand, ticket), class: 'form-inline col-sm-12',
       id: "internalNoteForm#{ticket.id}", html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off',
       hidden: '' } do |reply_form|
-      = reply_form.text_field :internal_note_text, required: true, placeholder: 'Post Internal Note', class: 'form-control col-sm-9'
-      = reply_form.submit 'Post Internal Note', class: 'btn btn-secondary col-sm-2', id: "internalNoteButton#{ticket.id}"
-      = reply_form.button 'X', type: :reset, class: 'btn btn-secondary col-sm-1', id: "internalNoteReset#{ticket.id}"
+      .form-group.col-sm-9
+        = reply_form.text_field :internal_note_text, required: true, placeholder: 'Post Internal Note', class: 'form-control col-sm-12'
+      = reply_form.submit 'Post Internal Note', class: 'btn btn-secondary', id: "internalNote#{ticket.id}"
+      = reply_form.button fa_icon('times'), type: :reset, class: 'btn btn-secondary ml-auto', id: "internalNoteReset#{ticket.id}"

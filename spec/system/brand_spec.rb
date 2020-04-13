@@ -30,17 +30,19 @@ RSpec.describe 'Brand', type: :system do
     account = FactoryBot.create(:user_account, provider: 'twitter', token: 'hello', secret: 'world', user: user)
     page.driver.browser.navigate.refresh
 
+    target_ticket = tickets.first
     response_text = 'Hello from Respondo system tests'
     user_nickname = 'test_nickname'
     stub_twitter_reply_response(
       account.external_uid,
       user_nickname,
-      brand.tickets.first.external_uid,
+      target_ticket.external_uid,
       response_text
     )
 
-    within('ul.list-group > li.list-group-item:first-child') do
-      click_button 'Reply'
+    click_button "toggleReply#{target_ticket.id}"
+
+    within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
       fill_in :response_text, with: response_text
       click_button 'Reply'
     end
