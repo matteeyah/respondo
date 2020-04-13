@@ -14,9 +14,6 @@
  *= require_self
  */
 
-// Custom bootstrap variables must be set or imported *before* bootstrap.
-@import "bootstrap";
-
 main > .sticky-top {
   min-height: 4em;
   top: 1em;
