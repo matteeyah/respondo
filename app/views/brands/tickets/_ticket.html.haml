@@ -3,9 +3,9 @@
 - user_can_reply = user_authorized || (user_can_reply_to?(current_user, ticket.actual_provider) && !ticket.external?)
 
 .row.ml-3.mb-3
-  %span.font-weight-bold.mr-1= ticket_header_content(user_authorized, ticket, brand)
+  %span.font-weight-lighter.mr-1= ticket_header_content(user_authorized, ticket, brand)
 .row.ml-3
-  %span= ticket.content
+  %span.font-weight-normal= ticket.content
 
 - if user_authorized
   - if ticket.internal_notes.any?
