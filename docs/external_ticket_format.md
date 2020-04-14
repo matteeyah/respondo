@@ -18,7 +18,8 @@ implement this.
 All requests are sent to the `Brands::TicketsController#create_external`
 endpoint in JSON format.
 
-### Schema
+<details>
+<summary>Schema</summary>
 
 ```jsonschema
 {
@@ -115,7 +116,10 @@ endpoint in JSON format.
 }
 ```
 
-### Examples
+</details>
+
+<details>
+<summary>Example #1</summary>
 
 ```json
 {
@@ -133,6 +137,11 @@ endpoint in JSON format.
   }
 }
 ```
+
+</details>
+
+<details>
+<summary>Example #2</summary>
 
 ```json
 {
@@ -152,12 +161,15 @@ endpoint in JSON format.
 }
 ```
 
+</details>
+
 ## Reply
 
 All replies are sent as POST requests to the `Ticket#response_url` endpoint in
 JSON format. A response is expected.
 
-### Reply schema
+<details>
+<summary>Reply schema</summary>
 
 ```jsonschema
 {
@@ -211,7 +223,10 @@ JSON format. A response is expected.
 }
 ```
 
-#### Reply Example
+</details>
+
+<details>
+<summary>Reply example</summary>
 
 ```json
 {
@@ -224,7 +239,12 @@ JSON format. A response is expected.
 }
 ```
 
-### Response schema
+</details>
+
+### Response
+
+<details>
+<summary>Response schema</summary>
 
 ```jsonschema
 {
@@ -286,7 +306,10 @@ JSON format. A response is expected.
 }
 ```
 
-#### Response Example
+</details>
+
+<details>
+<summary>Response Example</summary>
 
 ```json
 {
@@ -300,3 +323,5 @@ JSON format. A response is expected.
   "created_at": "2019-01-01 23:35:27.632879 UTC"
 }
 ```
+
+</details>

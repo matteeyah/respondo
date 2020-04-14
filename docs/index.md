@@ -10,13 +10,13 @@ order: 1
 
 ## Overview
 
-[Respondo](https://respondohub.com/) uses a ticket approach to social media
-(similar to Zendesk). You can filter tickets by status and search them by author
+[Respondo](https://respondohub.com/) uses a ticket approach (similar to Zendesk)
+to social media. You can filter tickets by status and search them by author
 name or content.
 
 ## Sign In
 
-Authentication is handled exclusively with OAuth. This allows the users to easily
+Authentication is handled exclusively with OAuth. This allows users to easily
 sign in with just one click using one of their social accounts.
 
 ## Basic navigation
