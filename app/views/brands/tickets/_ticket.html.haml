@@ -18,10 +18,10 @@
 .row.ml-3.mt-2{ id: "toggleButtons#{ticket.id}" }
   - if user_can_reply
     = button_tag fa_icon('reply'), class: 'btn btn-light', id: "toggleReply#{ticket.id}",
-      'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Toggle reply form'
+      'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Show reply form'
   - if user_authorized
     = button_tag fa_icon('sticky-note'), class: 'btn btn-light ml-2 mr-2', id: "toggleInternalNote#{ticket.id}",
-      'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Toggle internal note form'
+      'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Show internal note form'
     = button_to brand_ticket_invert_status_path(brand, ticket), form_class: 'form-inline', class: 'btn btn-outline-success',
       'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: invert_status_action_text(ticket.status) do
       = invert_status_action(ticket.status)
@@ -33,7 +33,8 @@
       .form-group.col-sm-9
         = reply_form.text_field :response_text, required: true, placeholder: 'Reply', class: 'form-control col-sm-12'
       = reply_form.submit 'Reply', class: 'btn btn-light', id: "reply#{ticket.id}"
-      = reply_form.button fa_icon('times'), type: :reset, class: 'btn btn-outline-danger ml-auto', id: "replyReset#{ticket.id}"
+      = reply_form.button fa_icon('times'), type: :reset, class: 'btn btn-outline-danger ml-auto', id: "replyReset#{ticket.id}",
+        'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Hide reply form'
   - if user_authorized
     = form_with url: brand_ticket_internal_note_path(brand, ticket), class: 'form-inline col-sm-12',
       id: "internalNoteForm#{ticket.id}", html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off',
@@ -41,4 +42,5 @@
       .form-group.col-sm-9
         = reply_form.text_field :internal_note_text, required: true, placeholder: 'Post Internal Note', class: 'form-control col-sm-12'
       = reply_form.submit 'Post Internal Note', class: 'btn btn-light', id: "internalNote#{ticket.id}"
-      = reply_form.button fa_icon('times'), type: :reset, class: 'btn btn-outline-danger ml-auto', id: "internalNoteReset#{ticket.id}"
+      = reply_form.button fa_icon('times'), type: :reset, class: 'btn btn-outline-danger ml-auto', id: "internalNoteReset#{ticket.id}",
+        'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Hide internal note form'
