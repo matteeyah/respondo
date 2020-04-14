@@ -35,5 +35,5 @@ If you want to create a ticket manually, just submit a POST request to
 `https://app.respondohub.com/brands/{BRAND_ID}/external_tickets.json` using
 [this format](https://docs.respondohub.com/external_ticket_format).
 
-You need a `Personal Access Token` for creating external tickets. You can review
-existing and create new tokens on the `User Settings` page.
+You need a `Personal Access Token` for creating external tickets. Please see the
+documentation for [managing personal access tokens](../users#personal-access-tokens).

@@ -9,7 +9,7 @@ ignore: true
 ## Environment variables
 
 Environment variables required to run the app should be stored in an `.env` file
-in `DEVELOPMENT` and `TEST` environments.
+for `DEVELOPMENT` and `TEST` environments.
 
 - Rails
   - `RAILS_MASTER_KEY`
@@ -49,10 +49,12 @@ in `DEVELOPMENT` and `TEST` environments.
 
 ## Integrating providers
 
-- Integrate provider OAuth
-- Create provider client
-- Integrate client with account model
-- Implement replying to tickets from provider
+To integrate a new provider:
+
+1. Integrate provider OAuth
+1. Create provider client
+1. Integrate client with account model
+1. Implement replying to tickets from provider
 
 ## Heroku
 
@@ -62,14 +64,14 @@ After changing the schema in a way that's not migratable from the previous
 state you need to reset the database.
 
 - `heroku pg:reset DATABASE_URL`
-- `heroku run rails db:migrate`
+- `heroku run bin/rails db:migrate`
 - `heroku restart`
 
 ## Docker
 
 ### Build
 
-To build the respondo image run
+To build the `respondo` docker image run
 
 ```bash
 docker build . --tag respondo
