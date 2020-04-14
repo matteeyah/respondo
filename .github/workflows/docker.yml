@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     container: docker:stable
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: build
         run: docker build . --file Dockerfile.CI --tag matteeyah/respondo-ci:latest
       - name: login
