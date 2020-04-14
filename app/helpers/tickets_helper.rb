@@ -10,6 +10,15 @@ module TicketsHelper
     end
   end
 
+  def invert_status_action_text(status)
+    case status
+    when 'open'
+      'Solve'
+    when 'solved'
+      'Open'
+    end
+  end
+
   def ticket_header_content(user_authorized, ticket, brand)
     header_content = ticket.author.username
 

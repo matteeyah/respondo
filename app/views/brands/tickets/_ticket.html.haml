@@ -17,10 +17,13 @@
 
 .row.ml-3.mt-2{ id: "toggleButtons#{ticket.id}" }
   - if user_can_reply
-    = button_tag fa_icon('reply'), class: 'btn btn-light', id: "toggleReply#{ticket.id}"
+    = button_tag fa_icon('reply'), class: 'btn btn-light', id: "toggleReply#{ticket.id}",
+      'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Toggle reply form'
   - if user_authorized
-    = button_tag fa_icon('comment'), class: 'btn btn-light ml-2 mr-2', id: "toggleInternalNote#{ticket.id}"
-    = button_to brand_ticket_invert_status_path(brand, ticket), form_class: 'form-inline', class: 'btn btn-outline-success' do
+    = button_tag fa_icon('comment'), class: 'btn btn-light ml-2 mr-2', id: "toggleInternalNote#{ticket.id}",
+      'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Toggle internal note form'
+    = button_to brand_ticket_invert_status_path(brand, ticket), form_class: 'form-inline', class: 'btn btn-outline-success',
+      'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: invert_status_action_text(ticket.status) do
       = invert_status_action(ticket.status)
 
 .row.ml-3.mt-2

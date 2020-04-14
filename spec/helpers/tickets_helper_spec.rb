@@ -17,6 +17,22 @@ RSpec.describe TicketsHelper, type: :helper do
     end
   end
 
+  describe '#invert_status_action_text' do
+    subject(:invert_status_action_text) { helper.invert_status_action_text(status) }
+
+    context 'when status is open' do
+      let(:status) { 'open' }
+
+      it { is_expected.to eq('Solve') }
+    end
+
+    context 'when status is solved' do
+      let(:status) { 'solved' }
+
+      it { is_expected.to eq('Open') }
+    end
+  end
+
   describe '#ticket_header_content' do
     subject(:ticket_header_content) { helper.ticket_header_content(user_authorized, ticket, ticket.brand) }
 
