@@ -11,8 +11,8 @@
     %p.lead Fill in token name.
     = form_with url: user_personal_access_tokens_path(user), html: { autocomplete: 'off' } do |create_token_form|
       .form-group
-        = create_token_form.text_field :name, required: true, placeholder: 'Token name', class: 'form-control col-sm-6'
-      = create_token_form.submit 'Create', name: nil, class: 'btn btn-primary col-sm-6'
+        = create_token_form.text_field :name, required: true, placeholder: 'Token name', class: 'form-control col-lg-6'
+      = create_token_form.submit 'Create', name: nil, class: 'btn btn-primary col-lg-6'
 
   .col
     %h3 Existing Personal Access Tokens
@@ -21,4 +21,4 @@
       - user.personal_access_tokens.each do |personal_access_token|
         = link_to "Remove #{personal_access_token.name}",
           user_personal_access_token_path(user, personal_access_token), method: :delete,
-          class: 'list-group-item list-group-item-action col-sm-6 text-center'
+          class: 'list-group-item list-group-item-action col-lg-6 text-center'

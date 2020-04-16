@@ -22,14 +22,14 @@
     class: 'list-group-item list-group-item-action text-center'
 
 = form_with url: brand_tickets_path(brand), local: true, method: :get,
-  class: 'form-inline col-sm-12', html: { autocomplete: 'off' } do |search_form|
+  class: 'form-inline col-lg-12', html: { autocomplete: 'off' } do |search_form|
   = search_form.hidden_field :status, value: request.parameters[:status]
-  .input-group.col-sm-8
+  .input-group.col-lg-8
     = search_form.text_field :query, required: true, value: request.parameters[:query],
       placeholder: 'Search by ticket content or author name', class: 'form-control'
     .input-group-append
       = link_to 'Clear Search', brand_tickets_path(brand, status: request.parameters[:status]), class: 'btn btn-outline-secondary'
-  = search_form.submit 'Search', name: nil, class: 'btn btn-outline-success col-sm-3 ml-auto'
+  = search_form.submit 'Search', name: nil, class: 'btn btn-outline-success col-lg-3 ml-auto'
 
 = render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: @tickets }
 
