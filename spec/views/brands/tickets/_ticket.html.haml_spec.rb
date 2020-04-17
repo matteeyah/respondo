@@ -42,8 +42,8 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
   it 'displays the form toggle buttons' do
     render_ticket_partial
 
-    expect(rendered).to have_button("toggleReply#{ticket.id}", count: 1)
-      .and have_button("toggleInternalNote#{ticket.id}", count: 1)
+    expect(rendered).to have_button("toggle-reply-#{ticket.id}", count: 1)
+      .and have_button("toggle-internal-note-#{ticket.id}", count: 1)
   end
 
   it 'displays the status button' do
@@ -88,8 +88,8 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
     it 'displays the form toggle buttons' do
       render_ticket_partial
 
-      expect(rendered).to have_button("toggleReply#{ticket.id}", count: 1)
-        .and have_button("toggleInternalNote#{ticket.id}", count: 1)
+      expect(rendered).to have_button("toggle-reply-#{ticket.id}", count: 1)
+        .and have_button("toggle-internal-note-#{ticket.id}", count: 1)
     end
 
     it 'shows external provider for ticket' do

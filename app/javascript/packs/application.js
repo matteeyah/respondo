@@ -23,19 +23,19 @@ const scrollPositionKey = 'scrollPosition'
 
 // Toggle Reply / Internal Note forms
 function setupToggleResponseFormsClickListener (buttonName, formName, ticketId) {
-  document.getElementById(`${buttonName}${ticketId}`).addEventListener('click', function () {
-    document.getElementById(`toggleButtons${ticketId}`).toggleAttribute('hidden')
-    document.getElementById(`${formName}${ticketId}`).toggleAttribute('hidden')
+  document.getElementById(`${buttonName}-${ticketId}`).addEventListener('click', function () {
+    document.getElementById(`toggle-buttons-${ticketId}`).toggleAttribute('hidden')
+    document.getElementById(`${formName}-${ticketId}`).toggleAttribute('hidden')
   })
 }
 
 window.setupToggleResponseFormsClickListeners = function (ticketId) {
-  setupToggleResponseFormsClickListener('toggleReply', 'replyForm', ticketId)
-  setupToggleResponseFormsClickListener('toggleInternalNote', 'internalNoteForm', ticketId)
-  setupToggleResponseFormsClickListener('reply', 'replyForm', ticketId)
-  setupToggleResponseFormsClickListener('internalNote', 'internalNoteForm', ticketId)
-  setupToggleResponseFormsClickListener('replyReset', 'replyForm', ticketId)
-  setupToggleResponseFormsClickListener('internalNoteReset', 'internalNoteForm', ticketId)
+  setupToggleResponseFormsClickListener('toggle-reply', 'reply-form', ticketId)
+  setupToggleResponseFormsClickListener('toggle-internal-note', 'internal-note-form', ticketId)
+  setupToggleResponseFormsClickListener('reply', 'reply-form', ticketId)
+  setupToggleResponseFormsClickListener('internal-note', 'internal-note-form', ticketId)
+  setupToggleResponseFormsClickListener('reply-reset', 'reply-form', ticketId)
+  setupToggleResponseFormsClickListener('internal-note-reset', 'internal-note-form', ticketId)
 }
 
 document.addEventListener('turbolinks:load', (event) => {

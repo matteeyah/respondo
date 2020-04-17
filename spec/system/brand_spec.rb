@@ -40,7 +40,7 @@ RSpec.describe 'Brand', type: :system do
       response_text
     )
 
-    click_button "toggleReply#{target_ticket.id}"
+    click_button "toggle-reply-#{target_ticket.id}"
 
     within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
       fill_in :response_text, with: response_text
