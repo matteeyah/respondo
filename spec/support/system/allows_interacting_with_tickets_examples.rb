@@ -67,7 +67,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     within "form[action='#{brand_ticket_internal_note_path(target_ticket.brand, target_ticket)}']" do
       fill_in :internal_note_text, with: internal_note_text
-      click_button 'Post Internal Note'
+      click_button 'Post'
     end
 
     expect(page).to have_text(user.name)

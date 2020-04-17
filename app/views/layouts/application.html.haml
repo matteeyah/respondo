@@ -1,8 +1,10 @@
 !!!
-%html
+%html{ lang: 'en' }
   %head
-    %meta{ content: 'text/html; charset=UTF-8', 'http-equiv': 'Content-Type' }/
     %title Respondo
+    %meta{ content: 'text/html; charset=UTF-8', 'http-equiv': 'Content-Type' }
+    %meta{ charset: 'utf-8' }
+    %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1, shrink-to-fit=no' }
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
@@ -13,19 +15,19 @@
       integrity: 'sha384-Kg2HWOJKCC1RRJe+qjssVARMOlXMtFlH3cZrZYjeZxsflGHj4kLkh7FgAu/8OV2X', crossorigin: 'anonymous' }
   %body
     %nav.navbar.navbar-expand-lg.navbar-light.bg-light.rounded
+      %a.navbar-brand{ href: root_path }
+        = image_tag('logo_white_160x160.png')
+        %span Respondo
       %button.navbar-toggler{ type: 'button', 'data-toggle' => 'collapse',
         'data-target' => '#navbar-content', 'aria-controls' => 'navbar-content',
         'aria-expanded' => 'false', 'aria-label' => 'Toggle navigation' }
         %span.navbar-toggler-icon
-      %a.navbar-brand{ href: root_path }
-        = image_tag('logo_white_160x160.png')
-        %span Respondo
       .collapse.navbar-collapse#navbar-content
         %ul.navbar-nav.mr-auto
           %li.nav-item= active_link_to 'Brands', brands_path, active: [brands: :index], class: 'nav-link'
           - if current_brand
             %li.nav-item= active_link_to 'Current Brand', brand_tickets_path(current_brand), active: :exclusive, class: 'nav-link'
-        .mr-sm-2
+        .mr-2
           %ul.navbar-nav
             - if user_signed_in?
               - if current_brand.nil?

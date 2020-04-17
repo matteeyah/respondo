@@ -2,18 +2,18 @@
 %hr
 
 = form_with url: brands_path, local: true, method: :get,
-  class: 'form-inline col-sm-12', html: { autocomplete: 'off' } do |search_form|
-  .input-group.col-sm-8
+  class: 'form-inline', html: { autocomplete: 'off' } do |search_form|
+  .input-group.col-12.col-lg-8
     = search_form.text_field :query, required: true, value: request.parameters[:query],
       placeholder: 'Search by brand screen name', class: 'form-control'
     .input-group-append
       = link_to 'Clear Search', brands_path, class: 'btn btn-outline-secondary'
-  = search_form.submit 'Search', name: nil, class: 'btn btn-outline-success col-sm-3 ml-auto'
+  = search_form.submit 'Search', name: nil, class: 'btn btn-outline-success col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0'
 
-.list-group.list-group-horizontal.flex-wrap.mt-3
+.list-group.list-group-horizontal-lg.flex-wrap.mt-3
   - @brands.each do |brand|
-    = link_to brand.screen_name, brand_tickets_path(brand), class: 'list-group-item list-group-item-action col-sm-3 text-center'
+    = link_to brand.screen_name, brand_tickets_path(brand), class: 'list-group-item list-group-item-action col-lg-3 text-center'
 
 .row.mt-3
-  .ml-auto.mr-auto
+  .mx-auto
     != pagy_bootstrap_nav(@pagy)

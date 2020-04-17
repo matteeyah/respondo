@@ -1,18 +1,18 @@
 .row
-  .col
+  .col-12.my-3.col-lg-6
     %h3 New accounts
     %p.lead Click to add.
-    .list-group.list-group-horizontal.flex-wrap
+    .list-group.list-group-horizontal-lg.flex-wrap
       - providers.each do |provider|
         - unless model.account_for_provider?(provider)
           = auth_provider_link("Authorize #{provider_human_name(provider)}",
-            provider, model.class.to_s.downcase, class: 'list-group-item list-group-item-action col-sm-6 text-center')
+            provider, model.class.to_s.downcase, class: 'list-group-item list-group-item-action col-lg-6 text-center')
 
-  .col
+  .col-12.my-3.col-lg-6
     %h3 Existing accounts
     %p.lead Click to remove.
-    .list-group.list-group-horizontal.flex-wrap
+    .list-group.list-group-horizontal-lg.flex-wrap
       - model.accounts.each do |account|
         = link_to "Remove #{provider_human_name(account.provider)}",
           [model, account], method: :delete,
-          class: 'list-group-item list-group-item-action col-sm-6 text-center'
+          class: 'list-group-item list-group-item-action col-lg-6 text-center'

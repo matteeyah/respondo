@@ -65,7 +65,7 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
       render_tickets_partial
 
       expect(rendered).to have_field(:internal_note_text, count: 2, visible: :hidden)
-        .and have_button('Post Internal Note', count: 2, visible: :hidden)
+        .and have_button('Post', count: 2, visible: :hidden)
     end
 
     it 'displays internal notes' do

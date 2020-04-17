@@ -57,7 +57,7 @@ RSpec.describe 'Brand settings', type: :system do
     click_link 'Brand settings'
 
     fill_in 'brand[domain]', with: 'example.com'
-    click_button 'Update domain'
+    click_button 'Update'
 
     expect(page).to have_field('brand[domain]', with: 'example.com')
   end
@@ -66,7 +66,7 @@ RSpec.describe 'Brand settings', type: :system do
     click_link 'Brand settings'
 
     fill_in 'brand[domain]', with: 'invalid!domain.com'
-    click_button 'Update domain'
+    click_button 'Update'
 
     expect(page).to have_field('brand[domain]', with: '')
   end
