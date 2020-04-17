@@ -57,8 +57,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
   it 'displays the internal note form' do
     render_ticket_partial
 
-    expect(rendered).to have_field(:internal_note_text, count: 1, visible: :hidden)
-      .and have_button('Post Internal Note', count: 1, visible: :hidden)
+    expect(rendered).to have_field(:internal_note_text, count: 1, visible: :hidden).and have_button('Post', count: 1, visible: :hidden)
   end
 
   it 'displays internal notes' do

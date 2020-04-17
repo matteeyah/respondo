@@ -1,4 +1,4 @@
-%ul.list-group.mt-3
+%ul.list-group
   - tickets.each do |ticket, replies|
     %li.list-group-item
       = render partial: 'ticket', locals: { brand: brand, ticket: ticket }
