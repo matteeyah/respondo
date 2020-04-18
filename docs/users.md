@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: docs
 title: Documentation - Users
 order: 2
 ---
