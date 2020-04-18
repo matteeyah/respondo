@@ -47,6 +47,17 @@ for `DEVELOPMENT` and `TEST` environments.
     - DEVELOPMENT
     - PRODUCTION
 
+- `GITHUB_PAT`
+  - DEVELOPMENT
+
+## Rebuilding the documentation
+
+To rebuild the documentation run:
+
+```bash
+bundle exec dotenv bin/rebuild_pages.sh
+```
+
 ## Integrating providers
 
 To integrate a new provider:
