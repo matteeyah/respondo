@@ -16,8 +16,8 @@ module ApplicationHelper
     end
   end
 
-  def safe_blank_link_to(text, url)
-    link_to text, url, target: '_blank', rel: 'noopener noreferrer'
+  def safe_blank_link_to(text, url, html_options = {})
+    link_to text, url, target: '_blank', rel: 'noopener noreferrer', **html_options
   end
 
   def fa_icon(icon)
