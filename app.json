@@ -7,7 +7,7 @@
     "social",
     "hub"
   ],
-  "website": "https://app.respondohub.com/",
+  "website": "https://respondohub.com/",
   "repository": "https://github.com/matteeyah/respondo",
   "stack": "heroku-18",
   "env": {
