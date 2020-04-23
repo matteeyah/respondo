@@ -66,14 +66,6 @@
     {
       "plan": "heroku-postgresql:hobby-dev",
       "as": "DATABASE"
-    },
-    {
-      "plan": "newrelic:wayne",
-      "as": "NEW_RELIC"
-    },
-    {
-      "plan": "papertrail:choklad",
-      "as": "PAPERTRAIL"
     }
   ],
   "environments": {

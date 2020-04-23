@@ -180,10 +180,3 @@
     :versions:
     - 1.2.12
     :when: 2020-02-07 17:24:29.090340000 Z
-- - :approve
-  - newrelic_rpm
-  - :who: matteeyah
-    :why: 
-    :versions:
-    - 6.9.0.363
-    :when: 2020-02-07 17:23:48.798013000 Z
