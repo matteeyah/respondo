@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Documentation - Users
-order: 2
+nav_order: 2
 ---
 
 # Managing users

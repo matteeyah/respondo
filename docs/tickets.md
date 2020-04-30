@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Documentation - Tickets
-order: 4
+nav_order: 4
 ---
 
 # Working with tickets

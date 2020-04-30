@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Documentation
-order: 1
+nav_order: 1
 ---
 
 # Respondo docs 8-)

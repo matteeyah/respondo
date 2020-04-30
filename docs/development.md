@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Documentation - Development
-ignore: true
+nav_skip: true
 ---
 
 # Development

@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Documentation - Brands
-order: 3
+nav_order: 3
 ---
 
 # Managing brands

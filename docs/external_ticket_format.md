@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Documentation - External Ticket Format
-ignore: true
+nav_skip: true
 ---
 
 # External ticket format
