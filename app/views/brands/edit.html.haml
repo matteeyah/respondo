@@ -34,3 +34,39 @@
     = form_with model: brand, method: :patch, class: 'form-inline' do |update_brand_form|
       = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control col-8'
       = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary col-3 ml-auto'
+
+%hr
+
+.row
+  .col-12
+    %h3 Subscription
+    = button_tag 'Buy Subscription', class: 'btn btn-light', id: 'buy'
+    = button_tag 'Update Payment Details', class: 'btn btn-light', id: 'buy'
+    = button_tag 'Cancel Subscription', class: 'btn btn-light', id: 'buy'
+
+= content_for :custom_javascript do
+  %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
+  :javascript
+    Paddle.Setup({ vendor: 113283 })
+
+    function checkoutClosed(data) {
+      console.log(data);
+      alert('Your purchase has been cancelled, we hope to see you again soon!');
+    }
+
+    function checkoutComplete(data) {
+      console.log(data);
+      alert('Thanks for your purchase.');
+    }
+
+    function openCheckout() {
+      Paddle.Checkout.open({
+        product: 592438,
+        allowQuantity: false,
+        quantity: "#{@brand.users.count}",
+        successCallback: 'checkoutComplete',
+        closeCallback: 'checkoutClosed'
+      })
+    }
+
+    document.getElementById('buy').addEventListener('click', openCheckout, false)
