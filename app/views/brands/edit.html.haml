@@ -66,6 +66,7 @@
         quantity: "#{@brand.users.count}",
         successCallback: 'checkoutComplete',
         closeCallback: 'checkoutClosed'
+        passthrough: "{\"brand_id\": #{@brand.id}}"
       })
     }
 
