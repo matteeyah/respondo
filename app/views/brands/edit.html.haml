@@ -52,7 +52,7 @@
 = content_for :custom_javascript do
   %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
   :javascript
-    Paddle.Setup({ vendor: 113283 })
+    Paddle.Setup({ vendor: #{ENV['PADDLE_VENDOR_ID']} })
   - if brand.subscription
     :javascript
       function cancelSubscription() {
