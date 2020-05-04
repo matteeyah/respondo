@@ -40,34 +40,44 @@
 .row
   .col-12
     %h3 Subscription
-    = button_tag 'Buy Subscription', class: 'btn btn-light', id: 'buy'
-    = button_tag 'Update Payment Details', class: 'btn btn-light', id: 'buy'
-    = button_tag 'Cancel Subscription', class: 'btn btn-light', id: 'buy'
+    %p.lead Manage your subscription.
+    %p Subscription status: #{brand.subscription&.status || 'no subscription'}
+    - if brand.subscription
+      = button_tag 'Update Payment Details', class: 'btn btn-light', id: 'update-subscription'
+      = button_tag 'Cancel Subscription', class: 'btn btn-light', id: 'cancel-subscription'
+    - else
+      = button_tag 'Buy Subscription', class: 'btn btn-light', id: 'buy-subscription'
+
 
 = content_for :custom_javascript do
   %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
   :javascript
     Paddle.Setup({ vendor: 113283 })
+  - if brand.subscription
+    :javascript
+      function cancelSubscription() {
+        Paddle.Checkout.open({
+          override: "#{brand.subscription&.cancel_url}"
+        })
+      }
 
-    function checkoutClosed(data) {
-      console.log(data);
-      alert('Your purchase has been cancelled, we hope to see you again soon!');
-    }
+      function updateSubscription() {
+        Paddle.Checkout.open({
+          override: "#{brand.subscription&.update_url}"
+        })
+      }
 
-    function checkoutComplete(data) {
-      console.log(data);
-      alert('Thanks for your purchase.');
-    }
+      document.getElementById('cancel-subscription').addEventListener('click', cancelSubscription, false)
+      document.getElementById('update-subscription').addEventListener('click', updateSubscription, false)
+  - else
+    :javascript
+      function buySubscription() {
+        Paddle.Checkout.open({
+          product: 592438,
+          allowQuantity: false,
+          quantity: "#{brand.users.count}",
+          passthrough: "{\"brand_id\": #{brand.id}}"
+        })
+      }
 
-    function openCheckout() {
-      Paddle.Checkout.open({
-        product: 592438,
-        allowQuantity: false,
-        quantity: "#{@brand.users.count}",
-        successCallback: 'checkoutComplete',
-        closeCallback: 'checkoutClosed'
-        passthrough: "{\"brand_id\": #{@brand.id}}"
-      })
-    }
-
-    document.getElementById('buy').addEventListener('click', openCheckout, false)
+      document.getElementById('buy-subscription').addEventListener('click', buySubscription, false)
