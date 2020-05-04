@@ -10,6 +10,8 @@ class Brand < ApplicationRecord
   has_many :users, dependent: :nullify
   has_many :tickets, dependent: :restrict_with_error
 
+  has_one :subscription, dependent: :restrict_with_error
+
   BrandAccount.providers.each do |provider, value|
     has_one :"#{provider}_account", -> { where(provider: value) }, class_name: 'BrandAccount', inverse_of: :brand
   end
