@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_24_000315) do
+ActiveRecord::Schema.define(version: 2020_05_04_160415) do
 
   create_table "authors", force: :cascade do |t|
     t.string "external_uid", null: false
@@ -64,6 +64,18 @@ ActiveRecord::Schema.define(version: 2019_11_24_000315) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_personal_access_tokens_on_name", unique: true
     t.index ["user_id"], name: "index_personal_access_tokens_on_user_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "external_uid", null: false
+    t.integer "status", null: false
+    t.string "email", null: false
+    t.string "cancel_url", null: false
+    t.string "update_url", null: false
+    t.integer "brand_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["brand_id"], name: "index_subscriptions_on_brand_id"
   end
 
   create_table "tickets", force: :cascade do |t|
