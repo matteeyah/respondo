@@ -21,6 +21,44 @@ RSpec.describe Brand, type: :model do
     end
   end
 
+  describe 'Callbacks' do
+    describe '#before_add' do
+      subject(:add_user) { brand.users << FactoryBot.create(:user) }
+
+      let(:brand) { FactoryBot.create(:brand) }
+      let(:subscription) { instance_spy(Subscription) }
+
+      before do
+        allow(brand).to receive(:subscription).and_return(subscription)
+      end
+
+      it 'increments subscription quantity' do
+        add_user
+
+        expect(subscription).to have_received(:change_quantity).with(1)
+      end
+    end
+
+    describe '#before_remove' do
+      subject(:remove_user) { brand.users.delete(brand.users.first) }
+
+      let(:brand) { FactoryBot.create(:brand) }
+      let(:subscription) { instance_spy(Subscription) }
+
+      before do
+        allow(brand).to receive(:subscription).and_return(subscription)
+
+        FactoryBot.create_list(:user, 2, brand: brand)
+      end
+
+      it 'decrements subscription quantity' do
+        remove_user
+
+        expect(subscription).to have_received(:change_quantity).with(1)
+      end
+    end
+  end
+
   it_behaves_like 'has_accounts'
 
   describe '.search' do
