@@ -42,6 +42,22 @@ RSpec.describe Brands::UsersController, type: :request do
 
             expect(response).to redirect_to(edit_brand_path(brand))
           end
+
+          context 'when brand has subscription' do
+            let(:paddle_client_class_spy) { class_spy(Paddle::Client, new: paddle_client_spy) }
+            let(:paddle_client_spy) { instance_spy(Paddle::Client) }
+            let!(:subscription) { FactoryBot.create(:subscription, brand: brand) }
+
+            before do
+              stub_const('Paddle::Client', paddle_client_class_spy)
+            end
+
+            it 'updates quantity on subscription' do
+              post_create
+
+              expect(paddle_client_spy).to have_received(:change_quantity).with(subscription.external_uid, brand.users.count)
+            end
+          end
         end
 
         context 'when user belongs to other brand' do
@@ -63,6 +79,22 @@ RSpec.describe Brands::UsersController, type: :request do
             post_create
 
             expect(response).to redirect_to(root_path)
+          end
+
+          context 'when brand has subscription' do
+            let(:paddle_client_class_spy) { class_spy(Paddle::Client) }
+
+            before do
+              FactoryBot.create(:subscription, brand: brand)
+
+              stub_const('Paddle::Client', paddle_client_class_spy)
+            end
+
+            it 'does not update subscription quantity' do
+              post_create
+
+              expect(paddle_client_class_spy).not_to have_received(:new)
+            end
           end
         end
       end
@@ -98,7 +130,7 @@ RSpec.describe Brands::UsersController, type: :request do
           brand.users << browsing_user
         end
 
-        context 'when removing other user from brand' do
+        shared_examples 'removes user from brand' do
           it 'removes the user from the brand' do
             expect { delete_destroy }.to change { user.reload.brand_id }.from(brand.id).to(nil)
           end
@@ -109,30 +141,40 @@ RSpec.describe Brands::UsersController, type: :request do
             expect(controller.flash[:success]).to eq('User was successfully removed from the brand.')
           end
 
-          it 'redirects to edit brand path' do
+          it 'redirects back' do
             delete_destroy
 
-            expect(response).to redirect_to(edit_brand_path(brand))
+            expect(response).to redirect_to(redirect_path)
+          end
+
+          context 'when brand has subscription' do
+            let(:paddle_client_class_spy) { class_spy(Paddle::Client, new: paddle_client_spy) }
+            let(:paddle_client_spy) { instance_spy(Paddle::Client) }
+            let!(:subscription) { FactoryBot.create(:subscription, brand: brand) }
+
+            before do
+              stub_const('Paddle::Client', paddle_client_class_spy)
+            end
+
+            it 'updates quantity on subscription' do
+              delete_destroy
+
+              expect(paddle_client_spy).to have_received(:change_quantity).with(subscription.external_uid, brand.users.count)
+            end
+          end
+        end
+
+        context 'when removing other user from brand' do
+          it_behaves_like 'removes user from brand' do
+            let(:redirect_path) { edit_brand_path(brand) }
           end
         end
 
         context 'when user is removing self from brand' do
           let(:user) { browsing_user }
 
-          it 'removes the user from the brand' do
-            expect { delete_destroy }.to change { user.reload.brand_id }.from(brand.id).to(nil)
-          end
-
-          it 'sets the flash' do
-            delete_destroy
-
-            expect(controller.flash[:success]).to eq('User was successfully removed from the brand.')
-          end
-
-          it 'redirects to root path' do
-            delete_destroy
-
-            expect(response).to redirect_to(root_path)
+          it_behaves_like 'removes user from brand' do
+            let(:redirect_path) { root_path }
           end
         end
       end
