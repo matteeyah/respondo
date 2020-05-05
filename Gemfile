@@ -30,6 +30,8 @@ gem 'aasm', '~> 5.0.6' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
 gem 'attr_encrypted', '~> 3.1.0' # encrypted attributes
 gem 'disqus_api', '~> 0.0.7' # Disqus client
+gem 'flipper', '~> 0.17.2' # Feature flags
+gem 'flipper-active_record', '~> 0.17.2' # ActiveRecord adapter for flipper
 gem 'hamlit', '~> 2.11.0' # High-Performance HAML markup processing
 gem 'hashie', '~> 4.1.0' # Hash utilities
 gem 'json-schema', '~> 2.8.1' # JSON schema validation
