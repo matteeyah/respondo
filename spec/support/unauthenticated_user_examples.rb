@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.shared_examples 'unauthenticated user examples' do
-  it 'sets the alert flash' do
+  it 'sets the warning flash' do
     subject
     follow_redirect!
 
