@@ -37,8 +37,9 @@
           = reply_form.text_field :response_text, required: true, placeholder: 'Reply Text', class: 'form-control'
           .input-group-append
             = reply_form.submit 'Reply', class: 'btn btn-outline-secondary', id: "reply-#{ticket.id}"
-        = reply_form.button fa_icon('times'), type: :reset, class: 'btn btn-outline-danger col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0',
-          id: "reply-reset-#{ticket.id}", 'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Hide reply form'
+        = reply_form.button fa_icon('times'), type: :reset, id: "reply-reset-#{ticket.id}",
+          class: 'btn btn-outline-danger col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0',
+          'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Hide reply form'
     - if user_authorized
       = form_with url: brand_ticket_internal_note_path(brand, ticket), class: 'form-inline col-12',
         id: "internal-note-form-#{ticket.id}", html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off',
