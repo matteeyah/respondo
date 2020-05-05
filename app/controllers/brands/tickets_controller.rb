@@ -110,6 +110,7 @@ module Brands
     end
 
     def check_subscription!
+      return if Flipper.enabled?(:skip_subscription_check)
       return if brand.subscription&.active?
 
       redirect_back fallback_location: root_path,
