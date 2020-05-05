@@ -118,10 +118,15 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
   end
 
   context 'when brand does not have subscription' do
-    it 'does not display the toggle buttons' do
+    it 'does not display the reply form toggle button' do
       render_ticket_partial
 
       expect(rendered).not_to have_button("toggle-reply-#{ticket.id}")
+    end
+
+    it 'does not display the internal note form toggle button' do
+      render_ticket_partial
+
       expect(rendered).not_to have_button("toggle-internal-note-#{ticket.id}")
     end
 
@@ -129,14 +134,12 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
       render_ticket_partial
 
       expect(rendered).not_to have_field(:internal_note_text, visible: :hidden)
-      expect(rendered).not_to have_button('Post', visible: :hidden)
     end
 
     it 'does not display the response form' do
       render_ticket_partial
 
       expect(rendered).not_to have_field(:response_text, visible: :hidden)
-      expect(rendered).not_to have_button('Reply', visible: :hidden)
     end
 
     it 'does not display the status button' do
