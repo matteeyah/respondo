@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SubscriptionsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def create
     subscription.update(update_params)
   end
