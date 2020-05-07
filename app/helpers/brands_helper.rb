@@ -21,9 +21,9 @@ module BrandsHelper
     case subscription_status
     when nil, 'deleted'
       'danger'
-    when 'trialing'
+    when 'past_due'
       'warning'
-    when 'active'
+    when 'trialing', 'active'
       'success'
     end
   end

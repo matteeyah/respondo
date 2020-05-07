@@ -89,7 +89,7 @@ RSpec.describe BrandsHelper, type: :helper do
   describe '#subscription_badge_class' do
     subject(:subscription_badge_class) { helper.subscription_badge_class(subscription_status) }
 
-    [[nil, 'danger'], %w[deleted danger], %w[trialing warning], %w[active success]].each do |status_pair|
+    [[nil, 'danger'], %w[deleted danger], %w[past_due warning], %w[trialing success], %w[active success]].each do |status_pair|
       context "when subscription is #{status_pair.first}" do
         let(:subscription_status) { status_pair.first }
 

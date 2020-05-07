@@ -3,7 +3,7 @@
 class Subscription < ApplicationRecord
   belongs_to :brand
 
-  enum status: { active: 0, trialing: 1, paused: 2, deleted: 3 }
+  enum status: { trialing: 0, active: 1, past_due: 2, paused: 3, deleted: 4 }
 
   validates :external_uid, presence: { allow_blank: false }
   validates :status, presence: true
@@ -13,6 +13,10 @@ class Subscription < ApplicationRecord
 
   def change_quantity(new_quantity)
     paddle_client.change_quantity(external_uid, new_quantity)
+  end
+
+  def running?
+    active? || trialing? || past_due?
   end
 
   private

@@ -111,7 +111,7 @@ module Brands
 
     def check_subscription!
       return if Flipper.enabled?(:skip_subscription_check)
-      return if brand.subscription&.active?
+      return if brand.subscription&.running?
 
       redirect_back fallback_location: root_path,
                     flash: {
