@@ -17,6 +17,15 @@ module BrandsHelper
     user&.client_for_provider(provider).present?
   end
 
+  def subscription_badge_class(subscription_status)
+    case subscription_status
+    when nil, 'deleted'
+      'danger'
+    when 'active'
+      'success'
+    end
+  end
+
   private
 
   def users_not_in_brand

@@ -5,6 +5,7 @@ module Brands
     include Pagy::Backend
 
     before_action :authenticate!, except: %i[index show]
+    before_action :check_subscription!, only: %i[reply internal_note invert_status]
     before_action :authorize!, except: %i[index reply show]
     before_action :authorize_reply!, only: [:reply]
 
@@ -106,6 +107,19 @@ module Brands
       when 'external'
         Ticket.from_external_ticket!(response, brand, current_user)
       end
+    end
+
+    def check_subscription!
+      return if Flipper.enabled?(:skip_subscription_check)
+      return if brand.subscription&.active?
+
+      redirect_back fallback_location: root_path,
+                    flash: {
+                      warning: <<~WARNING_MESSAGE
+                        You do not have an active subscription.
+                        To be able to use outbound Respondo features please update your subscription in #{view_context.link_to('brand settings', edit_brand_path(brand))}.
+                      WARNING_MESSAGE
+                    }
     end
   end
 end

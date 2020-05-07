@@ -1,3 +1,5 @@
+- subscription_status = brand.subscription&.status
+
 %h4= brand.screen_name
 %hr
 
@@ -34,3 +36,52 @@
     = form_with model: brand, method: :patch, class: 'form-inline' do |update_brand_form|
       = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control col-8'
       = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary col-3 ml-auto'
+
+%hr
+
+.row
+  .col-12
+    %h3 Subscription
+    %p.lead Manage your subscription.
+    %p
+      Subscription status:
+      %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status
+    - if brand.subscription
+      = button_tag 'Update Payment Details', class: 'btn btn-light', id: 'update-subscription'
+      = button_tag 'Cancel Subscription', class: 'btn btn-light', id: 'cancel-subscription'
+    - else
+      = button_tag 'Buy Subscription', class: 'btn btn-light', id: 'buy-subscription'
+
+
+= content_for :custom_javascript do
+  %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
+  :javascript
+    Paddle.Setup({ vendor: #{ENV['PADDLE_VENDOR_ID']} })
+  - if brand.subscription
+    :javascript
+      function cancelSubscription() {
+        Paddle.Checkout.open({
+          override: "#{brand.subscription&.cancel_url}"
+        })
+      }
+
+      function updateSubscription() {
+        Paddle.Checkout.open({
+          override: "#{brand.subscription&.update_url}"
+        })
+      }
+
+      document.getElementById('cancel-subscription').addEventListener('click', cancelSubscription, false)
+      document.getElementById('update-subscription').addEventListener('click', updateSubscription, false)
+  - else
+    :javascript
+      function buySubscription() {
+        Paddle.Checkout.open({
+          product: 592438,
+          allowQuantity: false,
+          quantity: "#{brand.users.count}",
+          passthrough: "{\"brand_id\": #{brand.id}}"
+        })
+      }
+
+      document.getElementById('buy-subscription').addEventListener('click', buySubscription, false)

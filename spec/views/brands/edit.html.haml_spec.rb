@@ -31,4 +31,36 @@ RSpec.describe 'brands/edit', type: :view do
   it 'has the brand domain text field' do
     expect(render).to have_field('brand[domain]')
   end
+
+  context 'when brand has subscription' do
+    before do
+      FactoryBot.create(:subscription, brand: brand)
+    end
+
+    it 'does not show buy subscription button' do
+      expect(render).not_to have_button('buy-subscription')
+    end
+
+    it 'shows update subscription button' do
+      expect(render).to have_button('update-subscription')
+    end
+
+    it 'shows cancel subscription button' do
+      expect(render).to have_button('cancel-subscription')
+    end
+  end
+
+  context 'when brand does not have subscription' do
+    it 'shows buy subscription button' do
+      expect(render).to have_button('buy-subscription')
+    end
+
+    it 'does not show update subscription button' do
+      expect(render).not_to have_button('update-subscription')
+    end
+
+    it 'does not show cancel subscription button' do
+      expect(render).not_to have_button('cancel-subscription')
+    end
+  end
 end

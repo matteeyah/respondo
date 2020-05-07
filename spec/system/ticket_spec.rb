@@ -10,6 +10,8 @@ RSpec.describe 'Ticket', type: :system do
   let(:ticket) { FactoryBot.create(:ticket, brand: brand) }
 
   before do
+    FactoryBot.create(:subscription, brand: brand)
+
     visit brand_ticket_path(ticket.brand, ticket)
   end
 

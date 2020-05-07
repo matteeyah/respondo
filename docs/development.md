@@ -41,6 +41,12 @@ for `DEVELOPMENT` and `TEST` environments.
     - DEVELOPMENT
     - PRODUCTION
 
+- Paddle
+  - `PADDLE_VENDOR_ID`
+    - PRODUCTION
+  - `PADDLE_AUTH_CODE`
+    - PRODUCTION
+
 - `GITHUB_PAT`
   - DEVELOPMENT
 
@@ -60,6 +66,15 @@ To integrate a new provider:
 1. Create provider client
 1. Integrate client with account model
 1. Implement replying to tickets from provider
+
+## Feature Flags
+
+Document all feature flags introduced in the code. Along with the feature
+flag name provide what it does and when it should be removed.
+
+- `skip_subscription_check`
+  - WHAT: Skips subscription checks for features
+  - REMOVE: After BETA
 
 ## Heroku
 

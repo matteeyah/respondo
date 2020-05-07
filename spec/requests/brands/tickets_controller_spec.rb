@@ -3,6 +3,7 @@
 require './spec/support/sign_in_out_request_helpers.rb'
 require './spec/support/unauthenticated_user_examples.rb'
 require './spec/support/unauthorized_user_examples.rb'
+require './spec/support/unsubscribed_brand_examples.rb'
 
 RSpec.describe Brands::TicketsController, type: :request do
   include SignInOutRequestHelpers
@@ -197,79 +198,90 @@ RSpec.describe Brands::TicketsController, type: :request do
         sign_in(user)
       end
 
-      Ticket.providers.keys.each do |provider|
-        context "when ticket provider is #{provider}" do
-          let(:ticket) { FactoryBot.create(:ticket, provider: provider, brand: brand) }
+      context 'when brand has subscription' do
+        before do
+          FactoryBot.create(:subscription, brand: brand)
+        end
 
-          let(:client_error) { Twitter::Error::Forbidden.new('error') }
-          let(:client_response) do
-            case provider
-            when 'twitter'
-              instance_double(
-                Twitter::Tweet,
-                JSON.parse(file_fixture('twitter_post_hash.json').read).merge(
-                  in_reply_to_tweet_id: ticket.external_uid,
-                  user: instance_double(Twitter::User, id: '2', screen_name: 'test')
-                ).deep_symbolize_keys
-              )
-            when 'disqus'
-              JSON.parse(file_fixture('disqus_post_hash.json').read).merge(parent: ticket.external_uid).deep_symbolize_keys
-            when 'external'
-              JSON.parse(file_fixture('external_post_hash.json').read).merge(parent_uid: ticket.external_uid).to_json
+        Ticket.providers.keys.each do |provider|
+          context "when ticket provider is #{provider}" do
+            let(:ticket) { FactoryBot.create(:ticket, provider: provider, brand: brand) }
+
+            let(:client_error) { Twitter::Error::Forbidden.new('error') }
+            let(:client_response) do
+              case provider
+              when 'twitter'
+                instance_double(
+                  Twitter::Tweet,
+                  JSON.parse(file_fixture('twitter_post_hash.json').read).merge(
+                    in_reply_to_tweet_id: ticket.external_uid,
+                    user: instance_double(Twitter::User, id: '2', screen_name: 'test')
+                  ).deep_symbolize_keys
+                )
+              when 'disqus'
+                JSON.parse(file_fixture('disqus_post_hash.json').read).merge(parent: ticket.external_uid).deep_symbolize_keys
+              when 'external'
+                JSON.parse(file_fixture('external_post_hash.json').read).merge(parent_uid: ticket.external_uid).to_json
+              end
             end
-          end
 
-          context 'when authorized as a user' do
-            before do
-              account_provider = ticket.external? ? 'twitter' : provider
-              FactoryBot.create(:user_account, provider: account_provider, user: user)
-            end
-
-            context 'when reply is valid' do
+            context 'when authorized as a user' do
               before do
-                allow(client).to receive(:reply).and_return(client_response)
+                account_provider = ticket.external? ? 'twitter' : provider
+                FactoryBot.create(:user_account, provider: account_provider, user: user)
               end
 
-              it_behaves_like 'valid reply'
-            end
+              context 'when reply is valid' do
+                before do
+                  allow(client).to receive(:reply).and_return(client_response)
+                end
 
-            context 'when reply is invalid' do
-              before do
-                allow(client).to receive(:reply).and_raise(client_error)
+                it_behaves_like 'valid reply'
               end
 
-              it_behaves_like 'invalid reply'
-            end
-          end
+              context 'when reply is invalid' do
+                before do
+                  allow(client).to receive(:reply).and_raise(client_error)
+                end
 
-          context 'when authorized as a brand' do
-            before do
-              account_provider = ticket.external? ? 'twitter' : ticket.provider
-              FactoryBot.create(:brand_account, provider: account_provider, brand: brand)
-              brand.users << user
+                it_behaves_like 'invalid reply'
+              end
             end
 
-            context 'when reply is valid' do
+            context 'when authorized as a brand' do
               before do
-                allow(client).to receive(:reply).and_return(client_response)
+                account_provider = ticket.external? ? 'twitter' : ticket.provider
+                FactoryBot.create(:brand_account, provider: account_provider, brand: brand)
+
+                user.update(brand: brand)
               end
 
-              it_behaves_like 'valid reply'
-            end
+              context 'when reply is valid' do
+                before do
+                  allow(client).to receive(:reply).and_return(client_response)
+                end
 
-            context 'when reply is invalid' do
-              before do
-                allow(client).to receive(:reply).and_raise(client_error)
+                it_behaves_like 'valid reply'
               end
 
-              it_behaves_like 'invalid reply'
+              context 'when reply is invalid' do
+                before do
+                  allow(client).to receive(:reply).and_raise(client_error)
+                end
+
+                it_behaves_like 'invalid reply'
+              end
             end
           end
         end
+
+        context 'when user is not authorized' do
+          include_examples 'unauthorized user examples', 'You are not allowed to reply to the ticket.'
+        end
       end
 
-      context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not allowed to reply to the ticket.'
+      context 'when brand does not have subscription' do
+        include_examples 'unsubscribed brand examples'
       end
     end
 
@@ -294,52 +306,62 @@ RSpec.describe Brands::TicketsController, type: :request do
         sign_in(user)
       end
 
-      context 'when user is authorized' do
+      context 'when brand has subscription' do
         before do
-          brand.users << user
+          FactoryBot.create(:subscription, brand: brand)
         end
 
-        context 'when internal note is valid' do
-          let(:internal_note_text) { 'does not matter' }
-
-          it 'creates an internal note' do
-            expect { post_internal_note }.to change(InternalNote, :count).from(0).to(1)
+        context 'when user is authorized' do
+          before do
+            user.update(brand: brand)
           end
 
-          it 'sets the flash' do
-            post_internal_note
+          context 'when internal note is valid' do
+            let(:internal_note_text) { 'does not matter' }
 
-            expect(controller.flash[:success]).to eq('Internal note was successfully submitted.')
+            it 'creates an internal note' do
+              expect { post_internal_note }.to change(InternalNote, :count).from(0).to(1)
+            end
+
+            it 'sets the flash' do
+              post_internal_note
+
+              expect(controller.flash[:success]).to eq('Internal note was successfully submitted.')
+            end
+
+            it 'redirects to brand tickets path' do
+              post_internal_note
+
+              expect(response).to redirect_to(brand_tickets_path(brand))
+            end
           end
 
-          it 'redirects to brand tickets path' do
-            post_internal_note
+          context 'when internal note is not valid' do
+            it 'does not create an internal note' do
+              expect { post_internal_note }.not_to change(InternalNote, :count)
+            end
 
-            expect(response).to redirect_to(brand_tickets_path(brand))
+            it 'sets the flash' do
+              post_internal_note
+
+              expect(controller.flash[:warning]).to eq('Unable to create internal note.')
+            end
+
+            it 'redirects to brand tickets path' do
+              post_internal_note
+
+              expect(response).to redirect_to(brand_tickets_path(brand))
+            end
           end
         end
 
-        context 'when internal note is not valid' do
-          it 'does not create an internal note' do
-            expect { post_internal_note }.not_to change(InternalNote, :count)
-          end
-
-          it 'sets the flash' do
-            post_internal_note
-
-            expect(controller.flash[:warning]).to eq('Unable to create internal note.')
-          end
-
-          it 'redirects to brand tickets path' do
-            post_internal_note
-
-            expect(response).to redirect_to(brand_tickets_path(brand))
-          end
+        context 'when user is not authorized' do
+          include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
         end
       end
 
-      context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
+      context 'when brand does not have subscription' do
+        include_examples 'unsubscribed brand examples'
       end
     end
 
@@ -360,58 +382,68 @@ RSpec.describe Brands::TicketsController, type: :request do
         sign_in(user)
       end
 
-      context 'when user is authorized' do
+      context 'when brand has subscription' do
         before do
-          brand.users << user
+          FactoryBot.create(:subscription, brand: brand)
         end
 
-        context 'when the ticket is open' do
+        context 'when user is authorized' do
           before do
-            ticket.update(status: 'open')
+            user.update(brand: brand)
           end
 
-          it 'solves the ticket' do
-            expect { post_invert_status }.to change { ticket.reload.status }.from('open').to('solved')
+          context 'when the ticket is open' do
+            before do
+              ticket.update(status: 'open')
+            end
+
+            it 'solves the ticket' do
+              expect { post_invert_status }.to change { ticket.reload.status }.from('open').to('solved')
+            end
+
+            it 'sets the flash' do
+              post_invert_status
+
+              expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
+            end
+
+            it 'redirects to brand tickets path' do
+              post_invert_status
+
+              expect(response).to redirect_to(brand_tickets_path(brand))
+            end
           end
 
-          it 'sets the flash' do
-            post_invert_status
+          context 'when the ticket is solved' do
+            before do
+              ticket.update(status: 'solved')
+            end
 
-            expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
-          end
+            it 'opens the ticket' do
+              expect { post_invert_status }.to change { ticket.reload.status }.from('solved').to('open')
+            end
 
-          it 'redirects to brand tickets path' do
-            post_invert_status
+            it 'sets the flash' do
+              post_invert_status
 
-            expect(response).to redirect_to(brand_tickets_path(brand))
+              expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
+            end
+
+            it 'redirects to brand tickets path' do
+              post_invert_status
+
+              expect(response).to redirect_to(brand_tickets_path(brand))
+            end
           end
         end
 
-        context 'when the ticket is solved' do
-          before do
-            ticket.update(status: 'solved')
-          end
-
-          it 'opens the ticket' do
-            expect { post_invert_status }.to change { ticket.reload.status }.from('solved').to('open')
-          end
-
-          it 'sets the flash' do
-            post_invert_status
-
-            expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
-          end
-
-          it 'redirects to brand tickets path' do
-            post_invert_status
-
-            expect(response).to redirect_to(brand_tickets_path(brand))
-          end
+        context 'when user is not authorized' do
+          include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
         end
       end
 
-      context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
+      context 'when brand does not have subscription' do
+        include_examples 'unsubscribed brand examples'
       end
     end
 
