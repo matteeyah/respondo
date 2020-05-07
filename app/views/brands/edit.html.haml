@@ -1,4 +1,5 @@
 - subscription_status = brand.subscription&.status
+- checkout_redirect_path = request.original_url
 
 %h4= brand.screen_name
 %hr
@@ -57,17 +58,21 @@
   %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
   :javascript
     Paddle.Setup({ vendor: #{ENV['PADDLE_VENDOR_ID']} })
+
+  -# rubocop:disable Style/IdenticalConditionalBranches
   - if brand.subscription&.running?
     :javascript
       function cancelSubscription() {
         Paddle.Checkout.open({
-          override: "#{brand.subscription&.cancel_url}"
+          override: "#{brand.subscription.cancel_url}",
+          success: "#{checkout_redirect_path}"
         })
       }
 
       function updateSubscription() {
         Paddle.Checkout.open({
-          override: "#{brand.subscription&.update_url}"
+          override: "#{brand.subscription.update_url}",
+          success: "#{checkout_redirect_path}"
         })
       }
 
@@ -80,8 +85,10 @@
           product: 592438,
           allowQuantity: false,
           quantity: "#{brand.users.count}",
-          passthrough: "{\"brand_id\": #{brand.id}}"
+          passthrough: "{\"brand_id\": #{brand.id}}",
+          success: "#{checkout_redirect_path}"
         })
       }
 
       document.getElementById('buy-subscription').addEventListener('click', buySubscription, false)
+  -# rubocop:enable Style/IdenticalConditionalBranches

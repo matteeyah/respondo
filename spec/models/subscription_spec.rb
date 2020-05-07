@@ -9,12 +9,12 @@ RSpec.describe Subscription, type: :model do
   it { is_expected.to validate_presence_of(:cancel_url) }
   it { is_expected.to validate_presence_of(:update_url) }
 
-  it { is_expected.to define_enum_for(:status).with_values(%i[trialing active past_due paused deleted]) }
+  it { is_expected.to define_enum_for(:status).with_values(%i[trialing active past_due deleted]) }
 
   describe '#running?' do
     subject(:running) { subscription.running? }
 
-    [[:active, true], [:trialing, true], [:past_due, true], [:paused, false], [:deleted, false]].each do |status_pair|
+    [[:trialing, true], [:active, true], [:past_due, true], [:deleted, false]].each do |status_pair|
       context "when status is #{status_pair.first}" do
         before do
           subscription.update(status: status_pair.first)

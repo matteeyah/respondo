@@ -3,7 +3,7 @@
 class Subscription < ApplicationRecord
   belongs_to :brand
 
-  enum status: { trialing: 0, active: 1, past_due: 2, paused: 3, deleted: 4 }
+  enum status: { trialing: 0, active: 1, past_due: 2, deleted: 3 }
 
   validates :external_uid, presence: { allow_blank: false }
   validates :status, presence: true
