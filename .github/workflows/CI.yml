@@ -164,7 +164,7 @@ jobs:
         run: bin/yarn exec markdownlint "docs/*.md"
   vale:
     runs-on: ubuntu-latest
-    container: jdkato/vale:latest
+    container: jdkato/vale:v2.1.1
     steps:
       - uses: actions/checkout@v2
       - name: Run vale
