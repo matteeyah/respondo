@@ -45,7 +45,7 @@
     %p.lead Manage your subscription.
     %p
       Subscription status:
-      %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status
+      %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status || 'no subscription'
     - if brand.subscription
       = button_tag 'Update Payment Details', class: 'btn btn-light', id: 'update-subscription'
       = button_tag 'Cancel Subscription', class: 'btn btn-light', id: 'cancel-subscription'

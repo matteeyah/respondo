@@ -42,6 +42,12 @@
     "DISQUS_SECRET_KEY": {
       "required": true
     },
+    "PADDLE_VENDOR_ID": {
+      "required": true
+    },
+    "PADDLE_VENDOR_AUTH": {
+      "required": true
+    },
     "ERROR_PAGE_URL": {
       "value": "https://www.herokucdn.com/error-pages/application-error.html",
       "required": true

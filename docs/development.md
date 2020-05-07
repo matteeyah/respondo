@@ -44,7 +44,7 @@ for `DEVELOPMENT` and `TEST` environments.
 - Paddle
   - `PADDLE_VENDOR_ID`
     - PRODUCTION
-  - `PADDLE_AUTH_CODE`
+  - `PADDLE_VENDOR_AUTH`
     - PRODUCTION
 
 - `GITHUB_PAT`
