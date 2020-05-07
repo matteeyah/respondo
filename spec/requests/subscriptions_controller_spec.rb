@@ -27,6 +27,12 @@ RSpec.describe SubscriptionsController, type: :request do
       it 'creates a subscription' do
         expect { post_create }.to change(Subscription, :count).from(0).to(1)
       end
+
+      it 'returns ok' do
+        post_create
+
+        expect(response).to have_http_status(:ok)
+      end
     end
 
     context 'when subscription is updated' do
@@ -36,6 +42,12 @@ RSpec.describe SubscriptionsController, type: :request do
       it 'updates the subscription' do
         expect { post_create }.to change { subscription.reload.update_url }.to('https://example.com/update')
       end
+
+      it 'returns ok' do
+        post_create
+
+        expect(response).to have_http_status(:ok)
+      end
     end
 
     context 'when subscription is cancelled' do
@@ -44,6 +56,22 @@ RSpec.describe SubscriptionsController, type: :request do
 
       it 'changes the subscription status to deleted' do
         expect { post_create }.to change { subscription.reload.status }.from('active').to('deleted')
+      end
+
+      it 'returns ok' do
+        post_create
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'when parameters are invalid' do
+      let(:webhook_params) { default_params.merge(cancel_url: nil) }
+
+      it 'returns bad request' do
+        post_create
+
+        expect(response).to have_http_status(:bad_request)
       end
     end
   end

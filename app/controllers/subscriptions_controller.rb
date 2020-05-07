@@ -4,7 +4,11 @@ class SubscriptionsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-    subscription.update(update_params)
+    if subscription.update(update_params)
+      head :ok
+    else
+      head :bad_request
+    end
   end
 
   private
