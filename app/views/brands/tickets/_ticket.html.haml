@@ -16,9 +16,9 @@
           %span.font-weight-bold.mr-1 #{internal_note.user.name}:
           %span= internal_note.content
 
-- if brand_has_subscription
+- if brand_has_subscription || Flipper.enabled?(:skip_subscription_check)
   .row.ml-lg-3.justify-content-around.justify-content-lg-start{ id: "toggle-buttons-#{ticket.id}" }
-    - if user_can_reply || Flipper.enabled?(:skip_subscription_check)
+    - if user_can_reply
       = button_tag fa_icon('reply'), class: 'btn btn-light', id: "toggle-reply-#{ticket.id}",
         'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Show reply form'
     - if user_authorized

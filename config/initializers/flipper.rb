@@ -2,10 +2,10 @@
 
 Flipper.configure do |config|
   config.default do
-    # pick an adapter, this uses memory, any will do
+    # Persist feature flag settings in the database
     adapter = Flipper::Adapters::ActiveRecord.new
 
-    # pass adapter to handy DSL instance
+    # Default flipper instance
     Flipper.new(adapter)
   end
 end
