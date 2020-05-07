@@ -1,3 +1,5 @@
+- subscription_status = brand.subscription&.status
+
 %h4= brand.screen_name
 %hr
 
@@ -41,7 +43,9 @@
   .col-12
     %h3 Subscription
     %p.lead Manage your subscription.
-    %p Subscription status: #{brand.subscription&.status || 'no subscription'}
+    %p
+      Subscription status:
+      %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status
     - if brand.subscription
       = button_tag 'Update Payment Details', class: 'btn btn-light', id: 'update-subscription'
       = button_tag 'Cancel Subscription', class: 'btn btn-light', id: 'cancel-subscription'
