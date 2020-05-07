@@ -164,8 +164,13 @@ jobs:
         run: bin/yarn exec markdownlint "docs/*.md"
   vale:
     runs-on: ubuntu-latest
-    container: jdkato/vale:latest
     steps:
       - uses: actions/checkout@v2
       - name: Run vale
-        run: vale "docs/*.md"
+        uses: errata-ai/vale-action@v1.0.4
+        with:
+          styles: |
+            https://github.com/errata-ai/Google/releases/latest/download/Google.zip
+          files: docs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
