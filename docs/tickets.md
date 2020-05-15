@@ -9,14 +9,37 @@ nav_order: 4
 If someone leaves a public reply on a ticket that's closed, it's automatically
 re-opened.
 
+## Filtering
+
+### Searching by content
+
+You can search tickets based on their content. Enter the search query then press
+the Search button.
+
+### Searching by author name
+
+You can search tickets based on the author name. Enter the search query then
+press the Search button.
+
+### Filtering by status
+
+You can filter tickets based on ther status. Click the "Open Tickets" or "Solved
+Tickets" button to filter tickets.
+
 ## Responding to tickets
+
+### Replying
 
 You can reply to social media posts. To open the response form, click the reply
 (<i class="fas fa-reply"></i>) button below the ticket you want to respond to.
 
+### Internal Notes
+
 You can leave internal notes, visible only to other brand members. To open the
 internal note form, click the note (<i class="fas fa-sticky-note"></i>) button
 below the ticket you want to respond to.
+
+### Solving / Opening
 
 You can Solve open tickets and Open solved tickets. Click the solve or open
 (<i class="fas fa-check"></i>/<i class="fas fa-folder-open"></i>) button below
