@@ -21,7 +21,7 @@ endpoint in JSON format.
 <details>
 <summary>Schema</summary>
 
-<pre>
+{% highlight json %}
 {
   "type": "object",
   "required": [
@@ -114,7 +114,7 @@ endpoint in JSON format.
   },
   "additionalProperties": false
 }
-</pre>
+{% endhighlight %}
 
 </details>
 
@@ -122,6 +122,7 @@ endpoint in JSON format.
 <summary>Example #1</summary>
 
 <pre>
+{% highlight json %}
 {
   "external_uid": "123hello321world",
   "content": "This is content from the external ticket example.",
@@ -136,6 +137,7 @@ endpoint in JSON format.
     "token": "123TOKEN321"
   }
 }
+{% endhighlight %}
 </pre>
 
 </details>
@@ -144,6 +146,7 @@ endpoint in JSON format.
 <summary>Example #2</summary>
 
 <pre>
+{% highlight json %}
 {
   "external_uid": "123hello321world",
   "content": "This is content from the external ticket example.",
@@ -159,6 +162,7 @@ endpoint in JSON format.
     "token": "123TOKEN321"
   }
 }
+{% endhighlight %}
 </pre>
 
 </details>
@@ -172,6 +176,7 @@ JSON format. A response is expected.
 <summary>Schema</summary>
 
 <pre>
+{% highlight json %}
 {
   "type": "object",
   "required": [
@@ -221,6 +226,7 @@ JSON format. A response is expected.
     }
   }
 }
+{% endhighlight %}
 </pre>
 
 </details>
@@ -229,6 +235,7 @@ JSON format. A response is expected.
 <summary>Example</summary>
 
 <pre>
+{% highlight json %}
 {
   "response_text": "This is content from an example external ticket reply.",
   "author": {
@@ -237,6 +244,7 @@ JSON format. A response is expected.
   },
   "parent_id": "external_ticket_uid_1"
 }
+{% endhighlight %}
 </pre>
 
 </details>
@@ -247,6 +255,7 @@ JSON format. A response is expected.
 <summary>Schema</summary>
 
 <pre>
+{% highlight json %}
 {
   "type": "object",
   "required": [
@@ -304,6 +313,7 @@ JSON format. A response is expected.
     }
   }
 }
+{% endhighlight %}
 </pre>
 
 </details>
@@ -312,6 +322,7 @@ JSON format. A response is expected.
 <summary>Example</summary>
 
 <pre>
+{% highlight json %}
 {
   "external_uid": "external_ticket_uid_2",
   "author": {
@@ -322,6 +333,7 @@ JSON format. A response is expected.
   "content": "This is content from an example external ticket reply.",
   "created_at": "2019-01-01 23:35:27.632879 UTC"
 }
+{% endhighlight %}
 </pre>
 
 </details>
