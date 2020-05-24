@@ -8,7 +8,7 @@ end
 
 # omniauth-disqus currently has a problem with #callback_url because it passes
 # the query parameters to it. This should be removed once upstream is fixed.
-# https://github.com/matteeyah/respondo/issues/135
+# https://github.com/Respondo/respondo/issues/135
 OmniAuth::Strategies::Disqus.class_eval do
   def callback_url
     full_host + script_name + callback_path
@@ -19,5 +19,5 @@ end
 # It should be removed when upstream is fixed.
 # This isnt't in the environment initializers because we want to make sure
 # there's no Omniauth GET request when testing the application.
-# https://github.com/matteeyah/respondo/issues/68
+# https://github.com/Respondo/respondo/issues/68
 OmniAuth.config.allowed_request_methods = [:post]

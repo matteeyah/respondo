@@ -114,6 +114,6 @@ Rails.application.configure do
 
   # This prevents CSRF in Omniauth authentication requests
   # It should be removed when upstream is fixed
-  # https://github.com/matteeyah/respondo/issues/68
+  # https://github.com/Respondo/respondo/issues/68
   OmniAuth.config.before_request_phase = OmniauthCsrfTokenVerifier.new
 end

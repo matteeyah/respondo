@@ -14,10 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: build
-        run: docker build . --file Dockerfile.CI --tag matteeyah/respondo-ci:latest
+        run: docker build . --file Dockerfile.CI --tag respondo/respondo-ci:latest
       - name: login
         env:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         run: docker login --username matteeyah --password ${DOCKER_HUB_TOKEN}
       - name: publish
-        run: docker push matteeyah/respondo-ci:latest
+        run: docker push respondo/respondo-ci:latest

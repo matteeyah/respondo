@@ -2,7 +2,7 @@
 
 ## Opening issues
 
-Please open a [GitHub Issue](https://github.com/matteeyah/respondo/issues/new).
+Please open a [GitHub Issue](https://github.com/Respondo/respondo/issues/new).
 
 * Search through existing issues to make sure you're not creating a duplicate
 * Label the issue with appropriate labels
@@ -10,7 +10,7 @@ Please open a [GitHub Issue](https://github.com/matteeyah/respondo/issues/new).
 
 ## Submitting changes
 
-Please send a [GitHub Pull Request](https://github.com/matteeyah/respondo/pull/new/master) (read more about [pull requests](http://help.github.com/pull-requests/)).
+Please send a [GitHub Pull Request](https://github.com/Respondo/respondo/pull/new/master) (read more about [pull requests](http://help.github.com/pull-requests/)).
 
 * Include a clear list of what you've done
 * Include unit, integration and functional tests for any new functionality you introduce where applicable

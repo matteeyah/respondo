@@ -8,7 +8,7 @@
     "hub"
   ],
   "website": "https://respondohub.com/",
-  "repository": "https://github.com/matteeyah/respondo",
+  "repository": "https://github.com/Respondo/respondo",
   "stack": "heroku-18",
   "env": {
     "RAILS_MASTER_KEY": {

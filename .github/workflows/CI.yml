@@ -5,7 +5,7 @@ on: push
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    container: matteeyah/respondo-ci:latest
+    container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v1
@@ -32,7 +32,7 @@ jobs:
         run: bundle exec rspec --tag ~type:system
   rspec-system:
     runs-on: ubuntu-latest
-    container: matteeyah/respondo-ci:latest
+    container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v1
@@ -59,7 +59,7 @@ jobs:
         run: bundle exec rspec --tag type:system
   license_finder:
     runs-on: ubuntu-latest
-    container: matteeyah/respondo-ci:latest
+    container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v1
@@ -84,7 +84,7 @@ jobs:
         run: bundle exec license_finder --decisions_file dependency_decisions.yml
   rubocop:
     runs-on: ubuntu-latest
-    container: matteeyah/respondo-ci:latest
+    container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v1
@@ -100,7 +100,7 @@ jobs:
         run: bundle exec rubocop
   haml-lint:
     runs-on: ubuntu-latest
-    container: matteeyah/respondo-ci:latest
+    container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v1
@@ -116,7 +116,7 @@ jobs:
         run: bundle exec haml-lint
   stylelint:
     runs-on: ubuntu-latest
-    container: matteeyah/respondo-ci:latest
+    container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v1
@@ -132,7 +132,7 @@ jobs:
         run: bin/yarn exec stylelint '**/*.scss'
   standard:
     runs-on: ubuntu-latest
-    container: matteeyah/respondo-ci:latest
+    container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v1
@@ -148,7 +148,7 @@ jobs:
         run: bin/yarn exec standard
   markdownlint:
     runs-on: ubuntu-latest
-    container: matteeyah/respondo-ci:latest
+    container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v1

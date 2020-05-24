@@ -117,7 +117,7 @@ docker run respondo rspec --require rails_helper.rb
 
 To update the CI docker image run:
 
-- `docker build . --file Dockerfile.CI --tag matteeyah/respondo-ci:latest`
-- `docker push matteeyah/respondo-ci:latest`
+- `docker build . --file Dockerfile.CI --tag respondo/respondo-ci:latest`
+- `docker push respondo/respondo-ci:latest`
 
 This is required when bumping the ruby version.

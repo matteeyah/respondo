@@ -1,6 +1,6 @@
 # README
 
-![](https://github.com/matteeyah/respondo/workflows/CI/badge.svg)
+![](https://github.com/Respondo/respondo/workflows/CI/badge.svg)
 
 ## Limitations
 
