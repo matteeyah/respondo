@@ -11,7 +11,7 @@ module Brands
 
     def index
       @pagy, tickets_relation = pagy(tickets)
-      @tickets = tickets_relation.with_descendants_hash(:author, :user, internal_notes: [:user])
+      @tickets = tickets_relation.with_descendants_hash(:author, :user, ticketable: [:base_ticket], internal_notes: [:user])
     end
 
     def show
@@ -62,7 +62,7 @@ module Brands
 
     def client # rubocop:disable Metrics/AbcSize
       @client ||= if ticket.external?
-                    Clients::External.new(ticket.response_url, ticket.author.external_uid, ticket.author.username)
+                    Clients::External.new(ticket.external_ticket.response_url, ticket.author.external_uid, ticket.author.username)
                   elsif current_brand == brand
                     current_brand.client_for_provider(ticket.provider)
                   else

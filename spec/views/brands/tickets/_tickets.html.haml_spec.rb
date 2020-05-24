@@ -9,8 +9,8 @@ RSpec.describe 'brands/tickets/_tickets', type: :view do
 
   let(:brand) { FactoryBot.create(:brand) }
   let(:user) { FactoryBot.create(:user) }
-  let(:ticket) { FactoryBot.create(:ticket, brand: brand, status: :open) }
-  let(:nested_ticket) { FactoryBot.create(:ticket, brand: brand, parent: ticket, status: :solved) }
+  let(:ticket) { FactoryBot.create(:internal_ticket, brand: brand, status: :open).base_ticket }
+  let(:nested_ticket) { FactoryBot.create(:internal_ticket, brand: brand, parent: ticket, status: :solved).base_ticket }
   let(:tickets) { { ticket => { nested_ticket => {} } } }
 
   before do

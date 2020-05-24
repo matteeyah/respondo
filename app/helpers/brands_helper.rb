@@ -12,6 +12,7 @@ module BrandsHelper
   end
 
   def user_can_reply_to?(user, provider)
+    return false unless user
     return true if provider == 'external'
 
     user&.client_for_provider(provider).present?

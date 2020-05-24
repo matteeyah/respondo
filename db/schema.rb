@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_05_221738) do
+ActiveRecord::Schema.define(version: 2020_05_24_021243) do
 
   create_table "authors", force: :cascade do |t|
     t.string "external_uid", null: false
@@ -46,6 +46,13 @@ ActiveRecord::Schema.define(version: 2020_05_05_221738) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "external_tickets", force: :cascade do |t|
+    t.string "response_url", null: false
+    t.string "custom_provider"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "flipper_features", force: :cascade do |t|
     t.string "key", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -72,6 +79,11 @@ ActiveRecord::Schema.define(version: 2020_05_05_221738) do
     t.index ["user_id"], name: "index_internal_notes_on_user_id"
   end
 
+  create_table "internal_tickets", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "personal_access_tokens", force: :cascade do |t|
     t.string "name", null: false
     t.string "token_digest", null: false
@@ -96,11 +108,11 @@ ActiveRecord::Schema.define(version: 2020_05_05_221738) do
 
   create_table "tickets", force: :cascade do |t|
     t.string "external_uid", null: false
-    t.integer "provider", null: false
     t.text "content", null: false
     t.integer "status", default: 0, null: false
-    t.string "response_url"
-    t.string "custom_provider"
+    t.integer "provider", null: false
+    t.string "ticketable_type", null: false
+    t.integer "ticketable_id", null: false
     t.integer "brand_id", null: false
     t.integer "author_id", null: false
     t.integer "user_id"
@@ -109,7 +121,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_221738) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["author_id"], name: "index_tickets_on_author_id"
     t.index ["brand_id"], name: "index_tickets_on_brand_id"
-    t.index ["external_uid", "provider", "brand_id"], name: "index_tickets_on_external_uid_and_provider_and_brand_id", unique: true
+    t.index ["external_uid", "ticketable_type", "brand_id"], name: "index_tickets_on_external_uid_and_ticketable_type_and_brand_id", unique: true
     t.index ["parent_id"], name: "index_tickets_on_parent_id"
     t.index ["user_id"], name: "index_tickets_on_user_id"
   end

@@ -2,8 +2,8 @@
 
 RSpec.describe 'brands/tickets/index', type: :view do
   let(:brand) { FactoryBot.create(:brand) }
-  let(:ticket) { FactoryBot.create(:ticket, status: :open, brand: brand) }
-  let(:nested_ticket) { FactoryBot.create(:ticket, brand: brand, parent: ticket, status: :solved) }
+  let(:ticket) { FactoryBot.create(:internal_ticket, status: :open, brand: brand).base_ticket }
+  let(:nested_ticket) { FactoryBot.create(:internal_ticket, brand: brand, parent: ticket, status: :solved).base_ticket }
   let(:tickets) { { ticket => { nested_ticket => {} } } }
 
   before do

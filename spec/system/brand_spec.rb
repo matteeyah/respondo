@@ -7,7 +7,7 @@ RSpec.describe 'Brand', type: :system do
   include SignInOutSystemHelpers
 
   let(:brand) { FactoryBot.create(:brand, :with_account) }
-  let!(:tickets) { FactoryBot.create_list(:ticket, 2, brand: brand) }
+  let!(:tickets) { FactoryBot.create_list(:internal_ticket, 2, brand: brand).map(&:base_ticket) }
 
   before do
     FactoryBot.create(:subscription, brand: brand)
@@ -92,7 +92,7 @@ RSpec.describe 'Brand', type: :system do
     end
 
     it 'keeps ticket status context when searching' do
-      solved_tickets = FactoryBot.create_list(:ticket, 2, status: :solved, brand: brand)
+      solved_tickets = FactoryBot.create_list(:internal_ticket, 2, status: :solved, brand: brand).map(&:base_ticket)
       tickets.first.update(content: solved_tickets.first.content)
 
       sign_in_user
@@ -113,8 +113,8 @@ RSpec.describe 'Brand', type: :system do
     end
 
     it 'allows searching by nested ticket content' do
-      nested_ticket = FactoryBot.create(:ticket, brand: brand, parent: tickets.first)
-      nested_nested_ticket = FactoryBot.create(:ticket, brand: brand, parent: nested_ticket)
+      nested_ticket = FactoryBot.create(:internal_ticket, brand: brand, parent: tickets.first).base_ticket
+      nested_nested_ticket = FactoryBot.create(:internal_ticket, brand: brand, parent: nested_ticket).base_ticket
 
       sign_in_user
       sign_in_brand(brand)

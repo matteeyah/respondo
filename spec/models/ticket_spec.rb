@@ -2,12 +2,12 @@
 
 RSpec.describe Ticket, type: :model do
   describe 'Validations' do
-    subject(:ticket) { FactoryBot.create(:ticket) }
+    subject(:ticket) { FactoryBot.create(:internal_ticket).base_ticket }
 
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:content) }
     it { is_expected.to validate_presence_of(:provider) }
-    it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider, :brand_id) }
+    it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:ticketable_type, :brand_id) }
 
     describe '#parent_in_brand' do
       context 'when parent does not exist' do
@@ -18,7 +18,7 @@ RSpec.describe Ticket, type: :model do
 
       context 'when parent is in brand' do
         before do
-          ticket.parent = FactoryBot.create(:ticket, brand: ticket.brand)
+          ticket.parent = FactoryBot.create(:internal_ticket, brand: ticket.brand).base_ticket
         end
 
         it 'does not invalidate the ticket' do
@@ -28,7 +28,7 @@ RSpec.describe Ticket, type: :model do
 
       context 'when parent is not in brand' do
         before do
-          ticket.parent = FactoryBot.create(:ticket)
+          ticket.parent = FactoryBot.create(:internal_ticket).base_ticket
         end
 
         it 'invalidates the ticket' do
@@ -57,11 +57,14 @@ RSpec.describe Ticket, type: :model do
   end
 
   describe 'State Machine' do
-    let(:root) { FactoryBot.create(:ticket, status: status) }
-    let(:parent) { FactoryBot.create(:ticket, status: status, parent: root, brand: root.brand) }
-    let(:ticket) { FactoryBot.create(:ticket, status: status, parent: parent, brand: root.brand) }
-    let(:nested_ticket) { FactoryBot.create(:ticket, status: status, parent: ticket, brand: root.brand) }
-    let!(:nested_nested_ticket) { FactoryBot.create(:ticket, status: status, parent: nested_ticket, brand: root.brand) }
+    let(:root) { FactoryBot.create(:internal_ticket, status: status).base_ticket }
+    let(:parent) { FactoryBot.create(:internal_ticket, status: status, parent: root, brand: root.brand).base_ticket }
+    let(:ticket) { FactoryBot.create(:internal_ticket, status: status, parent: parent, brand: root.brand).base_ticket }
+    let(:nested_ticket) { FactoryBot.create(:internal_ticket, status: status, parent: ticket, brand: root.brand).base_ticket }
+
+    let!(:nested_nested_ticket) do
+      FactoryBot.create(:internal_ticket, status: status, parent: nested_ticket, brand: root.brand).base_ticket
+    end
 
     describe 'open' do
       subject(:open_ticket) { ticket.open! }
@@ -99,10 +102,10 @@ RSpec.describe Ticket, type: :model do
   describe '.root' do
     subject(:root) { described_class.root }
 
-    let(:parentless_ticket) { FactoryBot.create(:ticket) }
+    let(:parentless_ticket) { FactoryBot.create(:internal_ticket).base_ticket }
 
     before do
-      FactoryBot.create(:ticket, parent: parentless_ticket, brand: parentless_ticket.brand)
+      FactoryBot.create(:internal_ticket, parent: parentless_ticket, brand: parentless_ticket.brand)
     end
 
     it 'only returns parentless tickets' do
@@ -113,9 +116,9 @@ RSpec.describe Ticket, type: :model do
   describe '.search' do
     subject(:search) { described_class.search('hello_world') }
 
-    let!(:author_hit) { FactoryBot.create(:ticket, author: FactoryBot.create(:author, username: 'hello_world')) }
-    let!(:content_hit) { FactoryBot.create(:ticket, content: 'hello_world') }
-    let!(:miss) { FactoryBot.create(:ticket) }
+    let!(:author_hit) { FactoryBot.create(:internal_ticket, author: FactoryBot.create(:author, username: 'hello_world')).base_ticket }
+    let!(:content_hit) { FactoryBot.create(:internal_ticket, content: 'hello_world').base_ticket }
+    let!(:miss) { FactoryBot.create(:internal_ticket).base_ticket }
 
     it 'searches by author name' do
       expect(search).to include(author_hit)
@@ -152,7 +155,11 @@ RSpec.describe Ticket, type: :model do
         end
 
         context 'when parent exists' do
-          let!(:parent) { FactoryBot.create(:ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand: brand) }
+          let!(:parent) do
+            FactoryBot.create(
+              :internal_ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand: brand
+            ).base_ticket
+          end
 
           it 'assigns the parent to the ticket' do
             expect(subject).to have_attributes(parent: parent)
@@ -180,7 +187,11 @@ RSpec.describe Ticket, type: :model do
         end
 
         context 'when parent exists' do
-          let!(:parent) { FactoryBot.create(:ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand: brand) }
+          let!(:parent) do
+            FactoryBot.create(
+              :internal_ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand: brand
+            ).base_ticket
+          end
 
           it 'assigns the parent to the ticket' do
             expect(subject).to have_attributes(parent: parent)
@@ -210,7 +221,7 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: tweet.id, provider: 'twitter', content: tweet.attrs[:full_text],
-            response_url: nil, custom_provider: nil, brand: brand, author: author, user: user
+            brand: brand, author: author, user: user
           }
         end
       end
@@ -234,7 +245,7 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: disqus_post[:id], provider: 'disqus', content: disqus_post[:raw_message],
-            response_url: nil, custom_provider: nil, brand: brand, author: author, user: user
+            brand: brand, author: author, user: user
           }
         end
       end
@@ -245,6 +256,7 @@ RSpec.describe Ticket, type: :model do
 
       let(:brand) { FactoryBot.create(:brand) }
       let(:author) { FactoryBot.create(:author) }
+      let(:user) { nil }
 
       let(:external_ticket_json) { JSON.parse(file_fixture('external_post_hash.json').read).deep_symbolize_keys }
 
@@ -258,10 +270,14 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: external_ticket_json[:external_uid], provider: 'external',
-            content: external_ticket_json[:content], response_url: 'https://response_url.com',
+            content: external_ticket_json[:content],
             brand: brand, author: author, user: user
           }
         end
+      end
+
+      it 'sets the response url' do
+        expect(from_external_ticket!.external_ticket).to have_attributes(response_url: 'https://response_url.com')
       end
     end
   end
@@ -269,10 +285,15 @@ RSpec.describe Ticket, type: :model do
   describe '.with_descendants_hash' do
     subject(:with_descendants_hash) { described_class.root.with_descendants_hash }
 
-    let(:first_root_ticket) { FactoryBot.create(:ticket) }
-    let(:second_root_ticket) { FactoryBot.create(:ticket) }
-    let!(:first_child_ticket) { FactoryBot.create(:ticket, parent: first_root_ticket, brand: first_root_ticket.brand) }
-    let!(:second_child_ticket) { FactoryBot.create(:ticket, parent: second_root_ticket, brand: second_root_ticket.brand) }
+    let(:first_root_ticket) { FactoryBot.create(:internal_ticket).base_ticket }
+    let(:second_root_ticket) { FactoryBot.create(:internal_ticket).base_ticket }
+
+    let!(:first_child_ticket) do
+      FactoryBot.create(:internal_ticket, parent: first_root_ticket, brand: first_root_ticket.brand).base_ticket
+    end
+    let!(:second_child_ticket) do
+      FactoryBot.create(:internal_ticket, parent: second_root_ticket, brand: second_root_ticket.brand).base_ticket
+    end
 
     it 'returns tickets in hash format' do
       expect(with_descendants_hash).to be_an_instance_of(Hash)
@@ -283,32 +304,6 @@ RSpec.describe Ticket, type: :model do
         first_root_ticket => { first_child_ticket => {} },
         second_root_ticket => { second_child_ticket => {} }
       )
-    end
-  end
-
-  describe '#actual_provider' do
-    subject(:actual_provider) { ticket.actual_provider }
-
-    let(:ticket) { FactoryBot.create(:ticket) }
-
-    context 'when ticket has custom provider' do
-      before do
-        ticket.custom_provider = 'hacker_news'
-      end
-
-      it 'uses custom provider' do
-        expect(actual_provider).to eq('hacker_news')
-      end
-    end
-
-    context 'when ticket does not have custom provider' do
-      before do
-        ticket.custom_provider = nil
-      end
-
-      it 'uses ticket provider' do
-        expect(actual_provider).to eq(ticket.provider)
-      end
     end
   end
 end
