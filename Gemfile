@@ -8,8 +8,8 @@ ruby '2.7.1'
 # Core
 gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
 gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
-gem 'puma', '~> 4.3.3' # Use Puma as the application server
-gem 'rails', '~> 6.0.3'
+gem 'puma', '~> 4.3.5' # Use Puma as the application server
+gem 'rails', '~> 6.0.3.1'
 gem 'turbolinks', '~> 5' # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'webpacker', '~> 5.1.1' # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 
@@ -42,8 +42,8 @@ gem 'twitter', '~> 7.0.0' # Twitter client
 group :development, :test do
   # Linters
   ## Ruby linter
-  gem 'rubocop', '~> 0.82.0', require: false
-  gem 'rubocop-performance', '~> 1.5.2', require: false
+  gem 'rubocop', '~> 0.84.0', require: false
+  gem 'rubocop-performance', '~> 1.6.0', require: false
   gem 'rubocop-rails', '~> 2.5.0', require: false
   gem 'rubocop-rspec', '~> 1.39.0', require: false
   ## Haml linter
@@ -52,9 +52,9 @@ group :development, :test do
   gem 'bullet', '~> 6.1.0' # N+1 monitoring
   gem 'factory_bot_rails', '~> 5.2.0' # Use factory_bot
   gem 'faker', '~> 2.11.0' # Sample data
-  gem 'license_finder', '~> 6.3.0' # license checking
+  gem 'license_finder', '~> 6.4.0' # license checking
   gem 'pry-byebug', '~> 3.9.0' # pry debugging
-  gem 'rspec-rails', '4.0.0' # rspec testing framework
+  gem 'rspec-rails', '4.0.1' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
 end
 
