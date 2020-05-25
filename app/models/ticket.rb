@@ -54,7 +54,7 @@ class Ticket < ApplicationRecord
 
     def from_tweet!(tweet, brand, user)
       author = Author.from_twitter_user!(tweet.user)
-      parent = brand.tickets.twitter.find_by(external_uid: parse_tweet_reply_id(tweet.in_reply_to_tweet_id))
+      parent = brand.tickets.twitter.find_by(external_uid: tweet.in_reply_to_tweet_id.presence)
       brand.tickets.twitter.create!(external_uid: tweet.id, author: author, user: user, parent: parent,
                                     content: tweet.attrs[:full_text], created_at: tweet.created_at)
     end
@@ -97,12 +97,6 @@ class Ticket < ApplicationRecord
           (hash.deep_find(parent) || hash).merge!(ticket => {})
         end
       end
-    end
-
-    def parse_tweet_reply_id(tweet_id)
-      # `Twitter::NullObject#presence` returned another `Twitter::NullObject`
-      # https://github.com/sferik/twitter/issues/959
-      tweet_id.nil? ? nil : tweet_id
     end
   end
 
