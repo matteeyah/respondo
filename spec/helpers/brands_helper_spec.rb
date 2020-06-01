@@ -81,7 +81,7 @@ RSpec.describe BrandsHelper, type: :helper do
       context 'when provider is external' do
         let(:provider) { 'external' }
 
-        it { is_expected.to eq(true) }
+        it { is_expected.to eq(false) }
       end
     end
   end
