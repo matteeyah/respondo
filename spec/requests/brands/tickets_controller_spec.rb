@@ -17,8 +17,8 @@ RSpec.describe Brands::TicketsController, type: :request do
       let(:query) { nil }
 
       context 'when pagination is not required' do
-        let!(:open_ticket) { FactoryBot.create(:ticket, status: :open, brand: brand) }
-        let!(:solved_ticket) { FactoryBot.create(:ticket, status: :solved, brand: brand) }
+        let!(:open_ticket) { FactoryBot.create(:internal_ticket, status: :open, brand: brand).base_ticket }
+        let!(:solved_ticket) { FactoryBot.create(:internal_ticket, status: :solved, brand: brand).base_ticket }
 
         context 'when status parameter is not specified' do
           let(:status) { nil }
@@ -62,7 +62,7 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when pagination is required' do
-        let!(:open_tickets) { FactoryBot.create_list(:ticket, 21, status: :open, brand: brand) }
+        let!(:open_tickets) { FactoryBot.create_list(:internal_ticket, 21, status: :open, brand: brand).map(&:base_ticket) }
 
         it 'paginates tickets' do
           get_index
@@ -79,7 +79,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when searching by author name' do
-      let(:tickets) { FactoryBot.create_list(:ticket, 2, brand: brand) }
+      let(:tickets) { FactoryBot.create_list(:internal_ticket, 2, brand: brand).map(&:base_ticket) }
       let(:query) { tickets.first.author.username }
 
       it 'shows matching tickets' do
@@ -96,7 +96,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when searching by ticket content' do
-      let(:tickets) { FactoryBot.create_list(:ticket, 2, brand: brand) }
+      let(:tickets) { FactoryBot.create_list(:internal_ticket, 2, brand: brand).map(&:base_ticket) }
       let(:query) { tickets.first.content }
 
       it 'shows matching tickets' do
@@ -116,7 +116,7 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'GET show' do
     subject(:get_show) { get "/brands/#{brand.id}/tickets/#{ticket.id}" }
 
-    let!(:ticket) { FactoryBot.create(:ticket, provider: 'twitter', brand: brand) }
+    let!(:ticket) { FactoryBot.create(:internal_ticket, provider: 'twitter', brand: brand).base_ticket }
 
     context 'when user is not signed in' do
       it 'shows the ticket' do
@@ -130,7 +130,7 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'POST reply' do
     subject(:post_reply) { post "/brands/#{brand.id}/tickets/#{ticket.id}/reply", params: { response_text: 'does not matter' } }
 
-    let!(:ticket) { FactoryBot.create(:ticket, provider: 'twitter', brand: brand) }
+    let!(:ticket) { FactoryBot.create(:internal_ticket, provider: 'twitter', brand: brand).base_ticket }
     let(:client) { instance_spy(Clients::Client) }
     let(:twitter_client_class) { class_spy(Clients::Twitter, new: client) }
     let(:disqus_client_class) { class_spy(Clients::Disqus, new: client) }
@@ -205,7 +205,13 @@ RSpec.describe Brands::TicketsController, type: :request do
 
         Ticket.providers.keys.each do |provider|
           context "when ticket provider is #{provider}" do
-            let(:ticket) { FactoryBot.create(:ticket, provider: provider, brand: brand) }
+            let(:ticket) do
+              if provider == 'external'
+                FactoryBot.create(:external_ticket, brand: brand).base_ticket
+              else
+                FactoryBot.create(:internal_ticket, provider: provider, brand: brand).base_ticket
+              end
+            end
 
             let(:client_error) { Twitter::Error::Forbidden.new('error') }
             let(:client_response) do
@@ -296,7 +302,7 @@ RSpec.describe Brands::TicketsController, type: :request do
            params: { internal_note_text: internal_note_text }
     end
 
-    let(:ticket) { FactoryBot.create(:ticket, brand: brand) }
+    let(:ticket) { FactoryBot.create(:internal_ticket, brand: brand).base_ticket }
     let(:internal_note_text) { nil }
 
     context 'when user is signed in' do
@@ -373,7 +379,7 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'POST invert_status' do
     subject(:post_invert_status) { post "/brands/#{brand.id}/tickets/#{ticket.id}/invert_status" }
 
-    let(:ticket) { FactoryBot.create(:ticket, brand: brand) }
+    let(:ticket) { FactoryBot.create(:internal_ticket, brand: brand).base_ticket }
 
     context 'when user is signed in' do
       let(:user) { FactoryBot.create(:user, :with_account) }

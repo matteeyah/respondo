@@ -5,6 +5,6 @@ FactoryBot.define do
     content { Faker::Lorem.sentence }
 
     user
-    ticket
+    ticket { FactoryBot.build(:internal_ticket).base_ticket }
   end
 end

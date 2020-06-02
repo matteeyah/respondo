@@ -1,6 +1,6 @@
 - user_authorized = user_authorized_for?(current_user, brand)
 -# Only authorized users can respond to external tickets
-- user_can_reply = user_authorized || (user_can_reply_to?(current_user, ticket.actual_provider) && !ticket.external?)
+- user_can_reply = user_authorized || user_can_reply_to?(current_user, ticket.provider)
 - brand_has_subscription = brand.subscription&.running?
 
 .row.ml-3.mb-3

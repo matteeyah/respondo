@@ -9,7 +9,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
 
   let(:brand) { FactoryBot.create(:brand) }
   let(:user) { FactoryBot.create(:user) }
-  let(:ticket) { FactoryBot.create(:ticket, brand: brand, status: :open) }
+  let(:ticket) { FactoryBot.create(:internal_ticket, brand: brand, status: :open).base_ticket }
   let!(:internal_notes) { FactoryBot.create_list(:internal_note, 2, ticket: ticket) }
 
   before do
@@ -92,9 +92,10 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
     end
 
     context 'when ticket is external' do
+      let(:ticket) { FactoryBot.create(:external_ticket, brand: brand, status: :open).base_ticket }
+
       before do
-        ticket.response_url = 'https://google.com'
-        ticket.external!
+        ticket.external_ticket.response_url = 'https://google.com'
       end
 
       it 'shows external provider for ticket' do
@@ -105,7 +106,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
 
       context 'when ticket has custom external provider' do
         before do
-          ticket.custom_provider = 'hacker_news'
+          ticket.external_ticket.custom_provider = 'hacker_news'
         end
 
         it 'shows custom external provider for ticket' do

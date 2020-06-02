@@ -7,7 +7,7 @@ RSpec.describe 'Ticket', type: :system do
   include SignInOutSystemHelpers
 
   let(:brand) { FactoryBot.create(:brand, :with_account) }
-  let(:ticket) { FactoryBot.create(:ticket, brand: brand) }
+  let(:ticket) { FactoryBot.create(:internal_ticket, brand: brand).base_ticket }
 
   before do
     FactoryBot.create(:subscription, brand: brand)

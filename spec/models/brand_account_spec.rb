@@ -224,7 +224,7 @@ RSpec.describe BrandAccount, type: :model do
 
         context 'when brand has tickets' do
           before do
-            FactoryBot.create(:ticket, provider: provider, brand: account.brand)
+            FactoryBot.create(:internal_ticket, provider: provider, brand: account.brand)
           end
 
           it 'calls client new mentions with last ticket identifier' do

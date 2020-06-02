@@ -21,7 +21,7 @@ RSpec.describe LoadNewTicketsJob, type: :job do
       [JSON.parse(file_fixture('disqus_post_hash.json').read).deep_symbolize_keys]
     end
 
-    let(:parent) { FactoryBot.create(:ticket, status: :solved, brand: brand) }
+    let(:parent) { FactoryBot.create(:internal_ticket, status: :solved, brand: brand).base_ticket }
 
     before do
       allow(twitter_account).to receive(:new_mentions).and_return(twitter_mentions)

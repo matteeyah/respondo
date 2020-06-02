@@ -50,39 +50,39 @@ RSpec.describe BrandsHelper, type: :helper do
   describe '#user_can_reply_to?' do
     subject(:user_can_reply_to?) { helper.user_can_reply_to?(user, provider) }
 
+    context 'when user is nil' do
+      let(:user) { nil }
+      let(:provider) { 'does_not_matter' }
+
+      it { is_expected.to eq(false) }
+    end
+
     context 'when user is not nil' do
       let(:user) { FactoryBot.create(:user) }
 
-      context 'when user has account' do
-        before do
-          FactoryBot.create(:user_account, provider: provider, user: user)
-        end
+      (Ticket.providers.keys - ['external']).each do |ticket_provider|
+        context "when provider is #{ticket_provider}" do
+          let(:provider) { ticket_provider }
 
-        context 'when account has client' do
-          let(:provider) { 'twitter' }
+          context 'when user has account' do
+            before do
+              FactoryBot.create(:user_account, provider: provider, user: user)
+            end
 
-          it { is_expected.to eq(true) }
-        end
+            it { is_expected.to eq(true) }
+          end
 
-        context 'when account does not have client' do
-          let(:provider) { 'google_oauth2' }
-
-          it { is_expected.to eq(false) }
+          context 'when user does not have account' do
+            it { is_expected.to eq(false) }
+          end
         end
       end
 
-      context 'when user does not have account' do
-        let(:provider) { 'something_else' }
+      context 'when provider is external' do
+        let(:provider) { 'external' }
 
         it { is_expected.to eq(false) }
       end
-    end
-
-    context 'when user is nil' do
-      let(:user) { nil }
-      let(:provider) { 'something_else' }
-
-      it { is_expected.to eq(false) }
     end
   end
 

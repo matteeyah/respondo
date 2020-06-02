@@ -4,14 +4,16 @@ class Ticket < ApplicationRecord
   include AASM
   extend RecursiveCte
 
-  validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[provider brand_id] }
+  validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[ticketable_type brand_id] }
   validates :content, presence: { allow_blank: false }
   validates :provider, presence: true
-  validates :response_url, presence: true, if: ->(ticket) { ticket.external? }
   validate :parent_in_brand
 
   enum status: { open: 0, solved: 1 }
   enum provider: { external: 0, twitter: 1, disqus: 2 }
+
+  delegated_type :ticketable, types: %w[InternalTicket ExternalTicket]
+  delegate :actual_provider, to: :ticketable
 
   aasm column: :status, enum: true do
     state :open, initial: true
@@ -53,26 +55,29 @@ class Ticket < ApplicationRecord
     end
 
     def from_tweet!(tweet, brand, user)
-      author = Author.from_twitter_user!(tweet.user)
-      parent = brand.tickets.twitter.find_by(external_uid: tweet.in_reply_to_tweet_id.presence)
-      brand.tickets.twitter.create!(external_uid: tweet.id, author: author, user: user, parent: parent,
-                                    content: tweet.attrs[:full_text], created_at: tweet.created_at)
+      brand.tickets.twitter.create!(
+        external_uid: tweet.id, content: tweet.attrs[:full_text], created_at: tweet.created_at,
+        parent: brand.tickets.twitter.find_by(external_uid: tweet.in_reply_to_tweet_id.presence),
+        user: user, author: Author.from_twitter_user!(tweet.user), ticketable: InternalTicket.new
+      )
     end
 
     def from_disqus_post!(post, brand, user)
-      author = Author.from_disqus_user!(post[:author])
-      parent = brand.tickets.disqus.find_by(external_uid: post[:parent])
-      brand.tickets.disqus.create!(external_uid: post[:id], author: author, user: user, parent: parent,
-                                   content: post[:raw_message], created_at: post[:createdAt])
+      brand.tickets.disqus.create!(
+        external_uid: post[:id], content: post[:raw_message], created_at: post[:createdAt],
+        parent: brand.tickets.disqus.find_by(external_uid: post[:parent]),
+        user: user, author: Author.from_disqus_user!(post[:author]), ticketable: InternalTicket.new
+      )
     end
 
     def from_external_ticket!(external_ticket_json, brand, user)
-      author = Author.from_external_author!(external_ticket_json[:author])
-      parent = brand.tickets.external.find_by(external_uid: external_ticket_json[:parent_uid])
       brand.tickets.external.create!(
-        external_uid: external_ticket_json[:external_uid], author: author, user: user, parent: parent,
-        response_url: external_ticket_json[:response_url], custom_provider: external_ticket_json[:custom_provider],
-        content: external_ticket_json[:content], created_at: external_ticket_json[:created_at]
+        external_uid: external_ticket_json[:external_uid], content: external_ticket_json[:content],
+        created_at: external_ticket_json[:created_at],
+        parent: brand.tickets.external.find_by(external_uid: external_ticket_json[:parent_uid]),
+        user: user, author: Author.from_external_author!(external_ticket_json[:author]),
+        ticketable: ExternalTicket.new(response_url: external_ticket_json[:response_url],
+                                       custom_provider: external_ticket_json[:custom_provider])
       )
     end
 
@@ -98,10 +103,6 @@ class Ticket < ApplicationRecord
         end
       end
     end
-  end
-
-  def actual_provider
-    self[:custom_provider] || self[:provider]
   end
 
   private
