@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/concerns/models/account_examples.rb'
+require './spec/support/concerns/models/accountable_examples.rb'
 
 RSpec.describe UserAccount, type: :model do
   describe 'Validations' do
@@ -17,7 +17,7 @@ RSpec.describe UserAccount, type: :model do
     it { is_expected.to belong_to(:user) }
   end
 
-  it_behaves_like 'account'
+  it_behaves_like 'accountable'
 
   describe '.from_omniauth' do
     described_class.providers.keys.each do |provider|
