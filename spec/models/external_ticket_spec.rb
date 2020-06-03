@@ -18,7 +18,7 @@ RSpec.describe ExternalTicket, type: :model do
 
     context 'when ticket has custom provider' do
       before do
-        external_ticket.update(custom_provider: 'hacker_news')
+        external_ticket.update!(custom_provider: 'hacker_news')
       end
 
       it { is_expected.to eq('hacker_news') }

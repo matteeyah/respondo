@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/concerns/models/account_examples.rb'
+require './spec/support/concerns/models/accountable_examples.rb'
 
 RSpec.describe UserAccount, type: :model do
   describe 'Validations' do
@@ -17,7 +17,7 @@ RSpec.describe UserAccount, type: :model do
     it { is_expected.to belong_to(:user) }
   end
 
-  it_behaves_like 'account'
+  it_behaves_like 'accountable'
 
   describe '.from_omniauth' do
     described_class.providers.keys.each do |provider|
@@ -213,7 +213,7 @@ RSpec.describe UserAccount, type: :model do
 
           context 'when email does not change' do
             before do
-              account.update(email: auth_hash.info.email)
+              account.update!(email: auth_hash.info.email)
             end
 
             it 'does not update email' do
@@ -233,7 +233,7 @@ RSpec.describe UserAccount, type: :model do
 
           context 'when token does not change' do
             before do
-              account.update(token: auth_hash.credentials.token)
+              account.update!(token: auth_hash.credentials.token)
             end
 
             it 'does not update token' do
@@ -249,7 +249,7 @@ RSpec.describe UserAccount, type: :model do
 
           context 'when secret does not change' do
             before do
-              account.update(secret: auth_hash.credentials.secret)
+              account.update!(secret: auth_hash.credentials.secret)
             end
 
             it 'does not update secret' do

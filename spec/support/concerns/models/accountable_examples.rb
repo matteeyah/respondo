@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples 'account' do
+RSpec.shared_examples 'accountable' do
   describe 'Validations' do
     subject(:account) { FactoryBot.create(described_class.to_s.underscore) }
 

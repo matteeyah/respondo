@@ -53,7 +53,7 @@ RSpec.describe Author, type: :model do
 
       context 'when username does not change' do
         before do
-          author.update(username: twitter_user.screen_name)
+          author.update!(username: twitter_user.screen_name)
         end
 
         it 'does not update username' do
@@ -105,7 +105,7 @@ RSpec.describe Author, type: :model do
 
       context 'when username does not change' do
         before do
-          author.update(username: disqus_user[:username])
+          author.update!(username: disqus_user[:username])
         end
 
         it 'does not update username' do
@@ -164,7 +164,7 @@ RSpec.describe Author, type: :model do
 
       context 'when username does not change' do
         before do
-          author.update(username: external_author_json[:username])
+          author.update!(username: external_author_json[:username])
         end
 
         it 'does not update username' do

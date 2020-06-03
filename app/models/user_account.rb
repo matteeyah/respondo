@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserAccount < ApplicationRecord
-  include Account
+  include Accountable
 
   validates :external_uid, uniqueness: { scope: :provider }
   validates :provider, presence: true, uniqueness: { scope: :user_id }

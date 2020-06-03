@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class BrandAccount < ApplicationRecord
-  include Account
+  include Accountable
 
   validates :external_uid, uniqueness: { scope: :provider }
   validates :provider, presence: true, uniqueness: { scope: :brand_id }

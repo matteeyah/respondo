@@ -6,7 +6,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     sign_in_brand(brand)
 
     account = brand.accounts.first
-    account.update(token: 'hello', secret: 'world')
+    account.update!(token: 'hello', secret: 'world')
 
     response_text = 'Hello from Respondo system tests'
     stub_twitter_reply_response(
