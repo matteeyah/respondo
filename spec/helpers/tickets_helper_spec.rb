@@ -42,7 +42,7 @@ RSpec.describe TicketsHelper, type: :helper do
 
     context 'when ticket is root' do
       before do
-        ticket.update(parent: nil)
+        ticket.update!(parent: nil)
       end
 
       it 'shows provider' do

@@ -165,7 +165,7 @@ RSpec.describe Brands::UsersController, type: :request do
         end
 
         context 'when removing other user from brand' do
-          it_behaves_like 'removes user from brand' do
+          include_examples 'removes user from brand' do
             let(:redirect_path) { edit_brand_path(brand) }
           end
         end
@@ -173,7 +173,7 @@ RSpec.describe Brands::UsersController, type: :request do
         context 'when user is removing self from brand' do
           let(:user) { browsing_user }
 
-          it_behaves_like 'removes user from brand' do
+          include_examples 'removes user from brand' do
             let(:redirect_path) { root_path }
           end
         end

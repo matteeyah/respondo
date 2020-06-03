@@ -93,7 +93,7 @@ RSpec.describe 'Brand', type: :system do
 
     it 'keeps ticket status context when searching' do
       solved_tickets = FactoryBot.create_list(:internal_ticket, 2, status: :solved, brand: brand).map(&:base_ticket)
-      tickets.first.update(content: solved_tickets.first.content)
+      tickets.first.update!(content: solved_tickets.first.content)
 
       sign_in_user
       sign_in_brand(brand)

@@ -48,7 +48,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
 
   context 'when ticket has user' do
     before do
-      ticket.update(user: user)
+      ticket.update!(user: user)
     end
 
     it 'displays user along with author' do

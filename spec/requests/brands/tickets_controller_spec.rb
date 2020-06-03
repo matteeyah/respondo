@@ -259,7 +259,7 @@ RSpec.describe Brands::TicketsController, type: :request do
                 account_provider = ticket.external? ? 'twitter' : ticket.provider
                 FactoryBot.create(:brand_account, provider: account_provider, brand: brand)
 
-                user.update(brand: brand)
+                user.update!(brand: brand)
               end
 
               context 'when reply is valid' do
@@ -319,7 +319,7 @@ RSpec.describe Brands::TicketsController, type: :request do
 
         context 'when user is authorized' do
           before do
-            user.update(brand: brand)
+            user.update!(brand: brand)
           end
 
           context 'when internal note is valid' do
@@ -395,12 +395,12 @@ RSpec.describe Brands::TicketsController, type: :request do
 
         context 'when user is authorized' do
           before do
-            user.update(brand: brand)
+            user.update!(brand: brand)
           end
 
           context 'when the ticket is open' do
             before do
-              ticket.update(status: 'open')
+              ticket.update!(status: 'open')
             end
 
             it 'solves the ticket' do
@@ -422,7 +422,7 @@ RSpec.describe Brands::TicketsController, type: :request do
 
           context 'when the ticket is solved' do
             before do
-              ticket.update(status: 'solved')
+              ticket.update!(status: 'solved')
             end
 
             it 'opens the ticket' do

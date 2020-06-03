@@ -17,7 +17,7 @@ RSpec.describe Subscription, type: :model do
     [[:trialing, true], [:active, true], [:past_due, true], [:deleted, false]].each do |status_pair|
       context "when status is #{status_pair.first}" do
         before do
-          subscription.update(status: status_pair.first)
+          subscription.update!(status: status_pair.first)
         end
 
         it { is_expected.to eq(status_pair.second) }

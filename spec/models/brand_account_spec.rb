@@ -151,7 +151,7 @@ RSpec.describe BrandAccount, type: :model do
 
           context 'when email does not change' do
             before do
-              account.update(email: auth_hash.info.email)
+              account.update!(email: auth_hash.info.email)
             end
 
             it 'does not update email' do
@@ -171,7 +171,7 @@ RSpec.describe BrandAccount, type: :model do
 
           context 'when token does not change' do
             before do
-              account.update(token: auth_hash.credentials.token)
+              account.update!(token: auth_hash.credentials.token)
             end
 
             it 'does not update token' do
@@ -187,7 +187,7 @@ RSpec.describe BrandAccount, type: :model do
 
           context 'when secret does not change' do
             before do
-              account.update(secret: auth_hash.credentials.secret)
+              account.update!(secret: auth_hash.credentials.secret)
             end
 
             it 'does not update secret' do
