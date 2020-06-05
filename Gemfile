@@ -42,8 +42,8 @@ gem 'twitter', '~> 7.0.0' # Twitter client
 group :development, :test do
   # Linters
   ## Ruby linter
-  gem 'rubocop', '~> 0.84.0', require: false
-  gem 'rubocop-performance', '~> 1.6.0', require: false
+  gem 'rubocop', '~> 0.85.0', require: false
+  gem 'rubocop-performance', '~> 1.6.1', require: false
   gem 'rubocop-rails', '~> 2.5.0', require: false
   gem 'rubocop-rspec', '~> 1.39.0', require: false
   ## Haml linter
@@ -51,8 +51,8 @@ group :development, :test do
   # Other
   gem 'bullet', '~> 6.1.0' # N+1 monitoring
   gem 'factory_bot_rails', '~> 5.2.0' # Use factory_bot
-  gem 'faker', '~> 2.11.0' # Sample data
-  gem 'license_finder', '~> 6.4.0' # license checking
+  gem 'faker', '~> 2.12.0' # Sample data
+  gem 'license_finder', '~> 6.5.0' # license checking
   gem 'pry-byebug', '~> 3.9.0' # pry debugging
   gem 'rspec-rails', '4.0.1' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
