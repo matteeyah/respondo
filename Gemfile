@@ -52,6 +52,7 @@ group :development, :test do
   gem 'bullet', '~> 6.1.0' # N+1 monitoring
   gem 'factory_bot_rails', '~> 5.2.0' # Use factory_bot
   gem 'faker', '~> 2.12.0' # Sample data
+  gem 'html-proofer', '~> 3.15.0' # Runtime HTML proofer
   gem 'license_finder', '~> 6.5.0' # license checking
   gem 'pry-byebug', '~> 3.9.0' # pry debugging
   gem 'rspec-rails', '4.0.1' # rspec testing framework

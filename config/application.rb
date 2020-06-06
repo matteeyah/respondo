@@ -26,5 +26,8 @@ module Respondo
 
     # Load ruby files in lib/
     config.autoload_paths << Rails.root.join('lib')
+
+    # Use HTMLProofer in test and development
+    config.middleware.use HTMLProofer::Middleware if Rails.env.test? || Rails.env.development?
   end
 end
