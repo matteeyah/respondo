@@ -5,6 +5,7 @@ class BrandAccount < ApplicationRecord
 
   validates :external_uid, uniqueness: { scope: :provider }
   validates :provider, presence: true, uniqueness: { scope: :brand_id }
+
   enum provider: { twitter: 0, disqus: 1 }
 
   belongs_to :brand
@@ -31,6 +32,15 @@ class BrandAccount < ApplicationRecord
                              end
 
     client.new_mentions(last_ticket_identifier)
+  end
+
+  def client
+    case provider
+    when 'twitter'
+      twitter_client
+    when 'disqus'
+      disqus_client
+    end
   end
 
   private

@@ -270,4 +270,20 @@ RSpec.describe UserAccount, type: :model do
       end
     end
   end
+
+  describe '#client' do
+    subject(:client) { account.client }
+
+    let(:account) { FactoryBot.build(:user_account) }
+
+    %w[twitter disqus].each do |provider|
+      context "when provider is #{provider}" do
+        before do
+          account.provider = provider
+        end
+
+        it { is_expected.to be_kind_of(Clients::Client) }
+      end
+    end
+  end
 end

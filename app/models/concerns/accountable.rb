@@ -11,15 +11,6 @@ module Accountable
     attr_encrypted :secret, key: attr_encrypted_encryption_key
   end
 
-  def client
-    case provider
-    when 'twitter'
-      twitter_client
-    when 'disqus'
-      disqus_client
-    end
-  end
-
   private
 
   def twitter_client
