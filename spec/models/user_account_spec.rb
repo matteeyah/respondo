@@ -20,7 +20,7 @@ RSpec.describe UserAccount, type: :model do
   it_behaves_like 'accountable'
 
   describe '.from_omniauth' do
-    described_class.providers.keys.each do |provider|
+    described_class.providers.each_key do |provider|
       context "when provider is #{provider}" do
         subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_user) }
 

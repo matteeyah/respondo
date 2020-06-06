@@ -20,7 +20,7 @@ RSpec.describe BrandAccount, type: :model do
   it_behaves_like 'accountable'
 
   describe '.from_omniauth' do
-    described_class.providers.keys.each do |provider|
+    described_class.providers.each_key do |provider|
       context "when provider is #{provider}" do
         subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_brand) }
 
@@ -215,7 +215,7 @@ RSpec.describe BrandAccount, type: :model do
     let(:account) { FactoryBot.build(:brand_account) }
     let(:client_spy) { instance_spy(Clients::Client) }
 
-    described_class.providers.keys.each do |provider|
+    described_class.providers.each_key do |provider|
       context "when provider is #{provider}" do
         before do
           allow(account).to receive(:"#{provider}_client").and_return(client_spy)

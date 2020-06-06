@@ -30,7 +30,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
     context 'when model is user' do
       let(:model) { 'user' }
 
-      UserAccount.providers.keys.each do |provider_param|
+      UserAccount.providers.each_key do |provider_param|
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 
@@ -184,7 +184,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
     context 'when model is brand' do
       let(:model) { 'brand' }
 
-      BrandAccount.providers.keys.each do |provider_param|
+      BrandAccount.providers.each_key do |provider_param|
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 
