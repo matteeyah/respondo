@@ -20,7 +20,7 @@ RSpec.describe UserAccount, type: :model do
   it_behaves_like 'accountable'
 
   describe '.from_omniauth' do
-    described_class.providers.keys.each do |provider|
+    described_class.providers.each_key do |provider|
       context "when provider is #{provider}" do
         subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_user) }
 
@@ -191,7 +191,7 @@ RSpec.describe UserAccount, type: :model do
             it 'removes the account from existing user' do
               previous_user = account.user
 
-              expect { from_omniauth }.to change { previous_user.reload.public_send("#{provider}_account") }.from(account).to(nil)
+              expect { from_omniauth }.to change { previous_user.reload.accounts.find_by(provider: provider) }.from(account).to(nil)
             end
 
             it 'associates the account to current user' do
@@ -267,6 +267,22 @@ RSpec.describe UserAccount, type: :model do
             end
           end
         end
+      end
+    end
+  end
+
+  describe '#client' do
+    subject(:client) { account.client }
+
+    let(:account) { FactoryBot.build(:user_account) }
+
+    %w[twitter disqus].each do |provider|
+      context "when provider is #{provider}" do
+        before do
+          account.provider = provider
+        end
+
+        it { is_expected.to be_kind_of(Clients::Client) }
       end
     end
   end

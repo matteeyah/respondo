@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/concerns/models/has_accounts_examples.rb'
+require './spec/support/has_accounts_examples.rb'
 
 RSpec.describe Brand, type: :model do
   describe 'Validations' do
@@ -15,10 +15,6 @@ RSpec.describe Brand, type: :model do
     it { is_expected.to have_many(:users).dependent(:nullify) }
     it { is_expected.to have_many(:accounts).dependent(:destroy) }
     it { is_expected.to have_many(:tickets).dependent(:restrict_with_error) }
-
-    BrandAccount.providers.keys.each do |provider|
-      it { is_expected.to have_one(:"#{provider}_account") }
-    end
   end
 
   describe 'Callbacks' do

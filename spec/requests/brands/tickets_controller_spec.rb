@@ -203,7 +203,7 @@ RSpec.describe Brands::TicketsController, type: :request do
           FactoryBot.create(:subscription, brand: brand)
         end
 
-        Ticket.providers.keys.each do |provider|
+        Ticket.providers.each_key do |provider|
           context "when ticket provider is #{provider}" do
             let(:ticket) do
               if provider == 'external'

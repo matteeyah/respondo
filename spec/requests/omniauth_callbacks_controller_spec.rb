@@ -30,7 +30,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
     context 'when model is user' do
       let(:model) { 'user' }
 
-      UserAccount.providers.keys.each do |provider_param|
+      UserAccount.providers.each_key do |provider_param|
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 
@@ -123,7 +123,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
                 end
 
                 it 'associates the account with the current user' do
-                  expect { post_authenticate }.to change { user.reload.public_send("#{provider}_account") }
+                  expect { post_authenticate }.to change { user.reload.accounts.find_by(provider: provider) }
                     .from(nil).to(an_instance_of(UserAccount))
                 end
               end
@@ -184,7 +184,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
     context 'when model is brand' do
       let(:model) { 'brand' }
 
-      BrandAccount.providers.keys.each do |provider_param|
+      BrandAccount.providers.each_key do |provider_param|
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 
@@ -227,7 +227,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
                   end
 
                   it 'associates the account with the current brand' do
-                    expect { post_authenticate }.to change { brand.reload.public_send("#{provider}_account") }
+                    expect { post_authenticate }.to change { brand.reload.accounts.find_by(provider: provider) }
                       .from(nil).to(an_instance_of(BrandAccount))
                   end
                 end

@@ -20,7 +20,7 @@ RSpec.describe BrandAccount, type: :model do
   it_behaves_like 'accountable'
 
   describe '.from_omniauth' do
-    described_class.providers.keys.each do |provider|
+    described_class.providers.each_key do |provider|
       context "when provider is #{provider}" do
         subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_brand) }
 
@@ -141,7 +141,7 @@ RSpec.describe BrandAccount, type: :model do
             it 'removes the account from existing brand' do
               previous_brand = account.brand
 
-              expect { from_omniauth }.to change { previous_brand.reload.public_send("#{provider}_account") }.from(account).to(nil)
+              expect { from_omniauth }.to change { previous_brand.reload.accounts.find_by(provider: provider) }.from(account).to(nil)
             end
 
             it 'associates the account to current brand' do
@@ -215,7 +215,7 @@ RSpec.describe BrandAccount, type: :model do
     let(:account) { FactoryBot.build(:brand_account) }
     let(:client_spy) { instance_spy(Clients::Client) }
 
-    described_class.providers.keys.each do |provider|
+    described_class.providers.each_key do |provider|
       context "when provider is #{provider}" do
         before do
           allow(account).to receive(:"#{provider}_client").and_return(client_spy)
@@ -241,6 +241,22 @@ RSpec.describe BrandAccount, type: :model do
             expect(client_spy).to have_received(:new_mentions).with(nil)
           end
         end
+      end
+    end
+  end
+
+  describe '#client' do
+    subject(:client) { account.client }
+
+    let(:account) { FactoryBot.build(:user_account) }
+
+    %w[twitter disqus].each do |provider|
+      context "when provider is #{provider}" do
+        before do
+          account.provider = provider
+        end
+
+        it { is_expected.to be_kind_of(Clients::Client) }
       end
     end
   end
