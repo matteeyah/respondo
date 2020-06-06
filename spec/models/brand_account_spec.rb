@@ -141,7 +141,7 @@ RSpec.describe BrandAccount, type: :model do
             it 'removes the account from existing brand' do
               previous_brand = account.brand
 
-              expect { from_omniauth }.to change { previous_brand.reload.public_send("#{provider}_account") }.from(account).to(nil)
+              expect { from_omniauth }.to change { previous_brand.reload.accounts.find_by(provider: provider) }.from(account).to(nil)
             end
 
             it 'associates the account to current brand' do

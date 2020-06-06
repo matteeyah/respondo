@@ -12,10 +12,6 @@ class Brand < ApplicationRecord
 
   has_one :subscription, dependent: :restrict_with_error
 
-  BrandAccount.providers.each do |provider, value|
-    has_one :"#{provider}_account", -> { where(provider: value) }, class_name: 'BrandAccount', inverse_of: :brand
-  end
-
   class << self
     def search(query)
       where(arel_table[:screen_name].matches("%#{query}%"))

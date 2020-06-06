@@ -9,8 +9,4 @@ class User < ApplicationRecord
   has_many :accounts, class_name: 'UserAccount', inverse_of: :user, dependent: :destroy
   has_many :personal_access_tokens, dependent: :destroy
   has_many :internal_notes, dependent: :restrict_with_error
-
-  UserAccount.providers.each do |provider, value|
-    has_one :"#{provider}_account", -> { where(provider: value) }, class_name: 'UserAccount', inverse_of: :user
-  end
 end
