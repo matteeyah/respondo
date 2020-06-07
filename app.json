@@ -66,22 +66,20 @@
     "web": {
       "quantity": 1,
       "size": "hobby"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "free"
     }
   },
   "addons": [
     {
       "plan": "heroku-postgresql:hobby-dev",
       "as": "DATABASE"
+    },
+    {
+      "plan": "heroku-redis:hobby-dev",
+      "as": "REDIS"
     }
-  ],
-  "environments": {
-    "review": {
-      "formation": {
-        "web": {
-          "quantity": 1,
-          "size": "free"
-        }
-      }
-    }
-  }
+  ]
 }

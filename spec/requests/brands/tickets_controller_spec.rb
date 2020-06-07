@@ -482,7 +482,7 @@ RSpec.describe Brands::TicketsController, type: :request do
         it 'calls the background worker' do
           post_refresh
 
-          expect(load_new_tickets_job_class).to have_received(:perform_now)
+          expect(load_new_tickets_job_class).to have_received(:perform_later)
         end
 
         it 'sets the flash' do
