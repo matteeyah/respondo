@@ -36,6 +36,7 @@ gem 'hamlit', '~> 2.11.0' # High-Performance HAML markup processing
 gem 'hashie', '~> 4.1.0' # Hash utilities
 gem 'json-schema', '~> 2.8.1' # JSON schema validation
 gem 'pagy', '~> 3.5' # Pagination
+gem 'pundit', '~> 2.1.0' # OO Policy objects
 gem 'sass-rails', '~> 6.0.0' # SCSS CSS pre-processor
 gem 'sidekiq', '~> 6.0.7' # Background job processing
 gem 'twitter', '~> 7.0.0' # Twitter client
