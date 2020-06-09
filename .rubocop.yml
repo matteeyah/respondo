@@ -44,5 +44,14 @@ RSpec/MultipleExpectations:
 RSpec/NestedGroups:
   Max: 5
 
+RSpec/RepeatedExample:
+  Exclude:
+    - 'spec/policies/**/*'
+
+RSpec/RepeatedDescription:
+  Exclude:
+    - 'spec/policies/**/*'
+
+
 Style/Documentation:
   Enabled: false

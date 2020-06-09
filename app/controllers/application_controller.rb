@@ -3,12 +3,20 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   protected
 
   def authenticate!
     return if user_signed_in?
 
     redirect_back fallback_location: root_path, flash: { warning: 'You are not signed in.' }
+  end
+
+  def user_not_authorized(exception)
+    flash[:warning] = ApplicationPolicy::NOT_AUTHORIZED_ERROR_MESSAGES[exception.query] || 'You are not authorized.'
+
+    redirect_back fallback_location: root_path
   end
 
   def sign_in(user)
