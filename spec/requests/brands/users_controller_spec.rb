@@ -72,7 +72,7 @@ RSpec.describe Brands::UsersController, type: :request do
           it 'sets the flash' do
             post_create
 
-            expect(controller.flash[:warning]).to eq('Unable to add the user to the brand. User already belongs to a brand.')
+            expect(controller.flash[:warning]).to eq('You are not authorized.')
           end
 
           it 'redirects to root path' do
@@ -100,7 +100,7 @@ RSpec.describe Brands::UsersController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
+        include_examples 'unauthorized user examples', 'You are not authorized.'
       end
     end
 
@@ -180,7 +180,7 @@ RSpec.describe Brands::UsersController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
+        include_examples 'unauthorized user examples', 'You are not authorized.'
       end
     end
 
