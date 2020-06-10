@@ -2,10 +2,11 @@
 
 module Brands
   class BrandAccountsController < ApplicationController
-    before_action :authenticate!
-    before_action :authorize!
+    include Pundit
 
     def destroy
+      authorize(account)
+
       if brand.accounts.count == 1
         flash[:danger] = 'You can not remove your last account.'
       else

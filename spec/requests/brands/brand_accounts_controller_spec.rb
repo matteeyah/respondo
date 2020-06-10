@@ -67,7 +67,7 @@ RSpec.describe Brands::BrandAccountsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
+        include_examples 'unauthorized user examples', 'You are not authorized.'
       end
     end
 
