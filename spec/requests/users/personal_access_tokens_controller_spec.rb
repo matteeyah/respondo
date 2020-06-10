@@ -95,7 +95,7 @@ RSpec.describe Users::PersonalAccessTokensController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not allowed to edit the user.'
+        include_examples 'unauthorized user examples', 'You are not authorized.'
       end
     end
 
@@ -142,7 +142,7 @@ RSpec.describe Users::PersonalAccessTokensController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not allowed to edit the user.'
+        include_examples 'unauthorized user examples', 'You are not authorized.'
       end
     end
 
