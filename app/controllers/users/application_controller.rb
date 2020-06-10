@@ -8,5 +8,11 @@ module Users
       @user ||= User.find(params[:user_id] || params[:id])
     end
     helper_method :user
+
+    def authorize!
+      return if user == current_user
+
+      redirect_back fallback_location: root_path, flash: { warning: 'You are not allowed to edit the user.' }
+    end
   end
 end
