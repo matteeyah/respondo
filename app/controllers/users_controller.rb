@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class UsersController < Users::ApplicationController
-  before_action :authenticate!
-  before_action :authorize!
+  include Pundit
 
-  def edit; end
+  def edit
+    authorize(user)
+  end
 end

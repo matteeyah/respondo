@@ -198,20 +198,10 @@ RSpec.describe Brands::TicketsController, type: :request do
         sign_in(user)
       end
 
-      context 'when brand has subscription' do
-        before do
-          FactoryBot.create(:subscription, brand: brand)
-        end
-
-        Ticket.providers.each_key do |provider|
+      context 'when ticket is internal' do
+        (Ticket.providers.keys - ['external']).each do |provider|
           context "when ticket provider is #{provider}" do
-            let(:ticket) do
-              if provider == 'external'
-                FactoryBot.create(:external_ticket, brand: brand).base_ticket
-              else
-                FactoryBot.create(:internal_ticket, provider: provider, brand: brand).base_ticket
-              end
-            end
+            let(:ticket) { FactoryBot.create(:internal_ticket, provider: provider, brand: brand).base_ticket }
 
             let(:client_error) { Twitter::Error::Forbidden.new('error') }
             let(:client_response) do
@@ -226,68 +216,159 @@ RSpec.describe Brands::TicketsController, type: :request do
                 )
               when 'disqus'
                 JSON.parse(file_fixture('disqus_post_hash.json').read).merge(parent: ticket.external_uid).deep_symbolize_keys
-              when 'external'
-                JSON.parse(file_fixture('external_post_hash.json').read).merge(parent_uid: ticket.external_uid).to_json
               end
             end
 
             context 'when authorized as a user' do
               before do
-                account_provider = ticket.external? ? 'twitter' : provider
-                FactoryBot.create(:user_account, provider: account_provider, user: user)
+                FactoryBot.create(:user_account, provider: provider, user: user)
               end
 
-              context 'when reply is valid' do
+              context 'when brand has subscription' do
                 before do
-                  allow(client).to receive(:reply).and_return(client_response)
+                  FactoryBot.create(:subscription, brand: brand)
                 end
 
-                it_behaves_like 'valid reply'
+                context 'when reply is valid' do
+                  before do
+                    allow(client).to receive(:reply).and_return(client_response)
+                  end
+
+                  it_behaves_like 'valid reply'
+                end
+
+                context 'when reply is invalid' do
+                  before do
+                    allow(client).to receive(:reply).and_raise(client_error)
+                  end
+
+                  it_behaves_like 'invalid reply'
+                end
               end
 
-              context 'when reply is invalid' do
-                before do
-                  allow(client).to receive(:reply).and_raise(client_error)
-                end
-
-                it_behaves_like 'invalid reply'
+              context 'when brand does not have subscription' do
+                include_examples 'unsubscribed brand examples'
               end
             end
 
             context 'when authorized as a brand' do
               before do
-                account_provider = ticket.external? ? 'twitter' : ticket.provider
-                FactoryBot.create(:brand_account, provider: account_provider, brand: brand)
+                FactoryBot.create(:brand_account, provider: provider, brand: brand)
 
                 user.update!(brand: brand)
               end
 
-              context 'when reply is valid' do
+              context 'when brand has subscription' do
                 before do
-                  allow(client).to receive(:reply).and_return(client_response)
+                  FactoryBot.create(:subscription, brand: brand)
                 end
 
-                it_behaves_like 'valid reply'
+                context 'when reply is valid' do
+                  before do
+                    allow(client).to receive(:reply).and_return(client_response)
+                  end
+
+                  it_behaves_like 'valid reply'
+                end
+
+                context 'when reply is invalid' do
+                  before do
+                    allow(client).to receive(:reply).and_raise(client_error)
+                  end
+
+                  it_behaves_like 'invalid reply'
+                end
               end
 
-              context 'when reply is invalid' do
-                before do
-                  allow(client).to receive(:reply).and_raise(client_error)
-                end
-
-                it_behaves_like 'invalid reply'
+              context 'when brand does not have subscription' do
+                include_examples 'unsubscribed brand examples'
               end
             end
+
+            context 'when user is not authorized' do
+              include_examples 'unauthorized user examples', 'You are not authorized.'
+            end
+          end
+        end
+      end
+
+      context 'when ticket is external' do
+        let(:ticket) { FactoryBot.create(:external_ticket, brand: brand).base_ticket }
+
+        let(:client_error) { Twitter::Error::Forbidden.new('error') }
+        let(:client_response) do
+          JSON.parse(file_fixture('external_post_hash.json').read).merge(parent_uid: ticket.external_uid).to_json
+        end
+
+        context 'when authorized as a user' do
+          before do
+            FactoryBot.create(:user_account, provider: 'twitter', user: user)
+          end
+
+          context 'when brand has subscription' do
+            before do
+              FactoryBot.create(:subscription, brand: brand)
+            end
+
+            context 'when reply is valid' do
+              before do
+                allow(client).to receive(:reply).and_return(client_response)
+              end
+
+              include_examples 'unauthorized user examples', 'You are not authorized.'
+            end
+
+            context 'when reply is invalid' do
+              before do
+                allow(client).to receive(:reply).and_raise(client_error)
+              end
+
+              include_examples 'unauthorized user examples', 'You are not authorized.'
+            end
+          end
+
+          context 'when brand does not have subscription' do
+            include_examples 'unauthorized user examples', 'You are not authorized.'
+          end
+        end
+
+        context 'when authorized as a brand' do
+          before do
+            FactoryBot.create(:brand_account, provider: 'twitter', brand: brand)
+
+            user.update!(brand: brand)
+          end
+
+          context 'when brand has subscription' do
+            before do
+              FactoryBot.create(:subscription, brand: brand)
+            end
+
+            context 'when reply is valid' do
+              before do
+                allow(client).to receive(:reply).and_return(client_response)
+              end
+
+              it_behaves_like 'valid reply'
+            end
+
+            context 'when reply is invalid' do
+              before do
+                allow(client).to receive(:reply).and_raise(client_error)
+              end
+
+              it_behaves_like 'invalid reply'
+            end
+          end
+
+          context 'when brand does not have subscription' do
+            include_examples 'unsubscribed brand examples'
           end
         end
 
         context 'when user is not authorized' do
-          include_examples 'unauthorized user examples', 'You are not allowed to reply to the ticket.'
+          include_examples 'unauthorized user examples', 'You are not authorized.'
         end
-      end
-
-      context 'when brand does not have subscription' do
-        include_examples 'unsubscribed brand examples'
       end
     end
 
@@ -312,14 +393,14 @@ RSpec.describe Brands::TicketsController, type: :request do
         sign_in(user)
       end
 
-      context 'when brand has subscription' do
+      context 'when user is authorized' do
         before do
-          FactoryBot.create(:subscription, brand: brand)
+          user.update!(brand: brand)
         end
 
-        context 'when user is authorized' do
+        context 'when brand has subscription' do
           before do
-            user.update!(brand: brand)
+            FactoryBot.create(:subscription, brand: brand)
           end
 
           context 'when internal note is valid' do
@@ -361,13 +442,13 @@ RSpec.describe Brands::TicketsController, type: :request do
           end
         end
 
-        context 'when user is not authorized' do
-          include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
+        context 'when brand does not have subscription' do
+          include_examples 'unsubscribed brand examples'
         end
       end
 
-      context 'when brand does not have subscription' do
-        include_examples 'unsubscribed brand examples'
+      context 'when user is not authorized' do
+        include_examples 'unauthorized user examples', 'You are not authorized.'
       end
     end
 
@@ -388,14 +469,14 @@ RSpec.describe Brands::TicketsController, type: :request do
         sign_in(user)
       end
 
-      context 'when brand has subscription' do
+      context 'when user is authorized' do
         before do
-          FactoryBot.create(:subscription, brand: brand)
+          user.update!(brand: brand)
         end
 
-        context 'when user is authorized' do
+        context 'when brand has subscription' do
           before do
-            user.update!(brand: brand)
+            FactoryBot.create(:subscription, brand: brand)
           end
 
           context 'when the ticket is open' do
@@ -443,13 +524,13 @@ RSpec.describe Brands::TicketsController, type: :request do
           end
         end
 
-        context 'when user is not authorized' do
-          include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
+        context 'when brand does not have subscription' do
+          include_examples 'unsubscribed brand examples'
         end
       end
 
-      context 'when brand does not have subscription' do
-        include_examples 'unsubscribed brand examples'
+      context 'when user is not authorized' do
+        include_examples 'unauthorized user examples', 'You are not authorized.'
       end
     end
 
@@ -499,7 +580,7 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not allowed to edit the brand.'
+        include_examples 'unauthorized user examples', 'You are not authorized.'
       end
     end
 

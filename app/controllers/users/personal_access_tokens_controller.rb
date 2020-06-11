@@ -2,13 +2,13 @@
 
 module Users
   class PersonalAccessTokensController < ApplicationController
-    before_action :authenticate!
-    before_action :authorize!
+    include Pundit
 
     def create
-      pat = create_personal_access_token!
+      pat = build_personal_access_token!
+      authorize(pat)
 
-      if pat.persisted?
+      if pat.save
         flash[:success] = "User personal access token was successfully created. Please write it down: #{pat.token}"
       else
         flash[:warning] = "Unable to create personal access token.\n#{pat.errors.full_messages.join(', ')}."
@@ -18,6 +18,8 @@ module Users
     end
 
     def destroy
+      authorize(personal_access_token)
+
       personal_access_token.destroy
 
       flash[:success] = 'User personal access token was successfully deleted.'
@@ -31,8 +33,8 @@ module Users
       @personal_access_token ||= user.personal_access_tokens.find(params[:personal_access_token] || params[:id])
     end
 
-    def create_personal_access_token!
-      user.personal_access_tokens.create(name: params[:name], token: SecureRandom.base64(10))
+    def build_personal_access_token!
+      user.personal_access_tokens.build(name: params[:name], token: SecureRandom.base64(10))
     end
   end
 end

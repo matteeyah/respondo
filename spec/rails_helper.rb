@@ -8,6 +8,7 @@ SimpleCov.start do
   add_filter 'vendor/ruby/'
 
   add_group 'Controllers', 'app/controllers'
+  add_group 'Policies',    'app/policies'
   add_group 'Models',      'app/models'
   add_group 'Helpers',     'app/helpers'
   add_group 'Jobs',        'app/jobs'
