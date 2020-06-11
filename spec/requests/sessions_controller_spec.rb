@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_request_helpers.rb'
-require './spec/support/unauthenticated_user_examples.rb'
+require './spec/support/unauthorized_user_examples.rb'
 
 RSpec.describe SessionsController, type: :request do
   include SignInOutRequestHelpers
@@ -30,7 +30,7 @@ RSpec.describe SessionsController, type: :request do
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthenticated user examples'
+      include_examples 'unauthorized user examples', 'You are not signed in.'
     end
   end
 end
