@@ -6,6 +6,20 @@ RSpec.describe UserPolicy do
   let(:brand) { FactoryBot.create(:brand) }
   let(:user) { FactoryBot.create(:user, brand: brand) }
 
+  permissions :edit? do
+    it 'denies access to guests' do
+      expect { Pundit.authorize(nil, user, :edit?) }.to raise_error(Pundit::NotAuthorizedError)
+    end
+
+    it 'denies access to other users' do
+      expect(user_policy).not_to permit(FactoryBot.create(:user), user)
+    end
+
+    it 'allows access to self' do
+      expect(user_policy).to permit(user, user)
+    end
+  end
+
   permissions :create? do
     it 'denies access to guests' do
       expect { Pundit.authorize(nil, user, :create?) }.to raise_error(Pundit::NotAuthorizedError)
