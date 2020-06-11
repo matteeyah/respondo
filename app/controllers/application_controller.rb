@@ -7,12 +7,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def authenticate!
-    return if user_signed_in?
-
-    redirect_back fallback_location: root_path, flash: { warning: 'You are not signed in.' }
-  end
-
   def user_not_authorized(exception)
     flash[:warning] = ApplicationPolicy::NOT_AUTHORIZED_ERROR_MESSAGES[exception.query] || 'You are not authorized.'
 
