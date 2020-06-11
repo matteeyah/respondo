@@ -5,6 +5,20 @@ RSpec.describe BrandPolicy do
 
   let(:brand) { FactoryBot.create(:brand) }
 
+  permissions :edit?, :update? do
+    it 'denies access to guests' do
+      expect { Pundit.authorize(nil, brand, :edit?) }.to raise_error(Pundit::NotAuthorizedError)
+    end
+
+    it 'denies access to users outside brand' do
+      expect(brand_policy).not_to permit(FactoryBot.create(:user), brand)
+    end
+
+    it 'allows access to users in brand' do
+      expect(brand_policy).to permit(FactoryBot.create(:user, brand: brand), brand)
+    end
+  end
+
   permissions :subscription? do
     it 'allows if subscription checks are skipped' do
       allow(Flipper).to receive(:enabled?).with(:skip_subscription_check).and_return(true)

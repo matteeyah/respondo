@@ -1,20 +1,22 @@
 # frozen_string_literal: true
 
 class BrandsController < Brands::ApplicationController
+  include Pundit
   include Pagy::Backend
-
-  before_action :authenticate!, except: [:index]
-  before_action :authorize!, except: [:index]
 
   def index
     @pagy, @brands = pagy(brands)
   end
 
   def edit
+    authorize(brand)
+
     @pagy, @brand_users = pagy(brand.users)
   end
 
   def update
+    authorize(brand)
+
     if brand.update(update_params)
       flash[:success] = 'Brand was successfully updated.'
     else
