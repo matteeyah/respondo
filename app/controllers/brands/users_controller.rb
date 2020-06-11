@@ -5,7 +5,7 @@ module Brands
     include Pundit
 
     def create
-      authorize(external_user)
+      authorize([:brands, external_user])
       authorize(brand, :user_in_brand?)
 
       brand.users << external_user
@@ -15,7 +15,7 @@ module Brands
     end
 
     def destroy
-      authorize(brand_user)
+      authorize([:brands, brand_user])
 
       brand.users.delete(brand_user)
 
