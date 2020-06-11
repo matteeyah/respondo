@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe PersonalAccessTokenPolicy do
+RSpec.describe PersonalAccessTokenPolicy, type: :policy do
   subject(:personal_access_token_policy) { described_class }
 
   let(:personal_access_token) { FactoryBot.create(:personal_access_token) }

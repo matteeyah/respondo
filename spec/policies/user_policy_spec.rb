@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe UserPolicy do
+RSpec.describe UserPolicy, type: :policy do
   subject(:user_policy) { described_class }
 
   let(:brand) { FactoryBot.create(:brand) }

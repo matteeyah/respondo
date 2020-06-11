@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe TicketPolicy do
+RSpec.describe TicketPolicy, type: :policy do
   subject(:ticket_policy) { described_class }
 
   let(:ticket) { FactoryBot.create(:internal_ticket).base_ticket }
