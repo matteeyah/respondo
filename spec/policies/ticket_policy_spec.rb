@@ -5,12 +5,6 @@ RSpec.describe TicketPolicy do
 
   let(:ticket) { FactoryBot.create(:internal_ticket).base_ticket }
 
-  permissions :index?, :show? do
-    it 'allows everyone access' do
-      expect(ticket_policy).to permit(nil, ticket)
-    end
-  end
-
   permissions :reply? do
     it 'denies access to guests' do
       expect { Pundit.authorize(nil, ticket, :refresh?) }.to raise_error(Pundit::NotAuthorizedError)

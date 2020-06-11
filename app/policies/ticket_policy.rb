@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
 class TicketPolicy < ApplicationPolicy
-  def index?
-    true
-  end
-
-  def show?
-    true
-  end
-
   def reply?
     raise Pundit::NotAuthorizedError, query: :authenticate? unless user
 
