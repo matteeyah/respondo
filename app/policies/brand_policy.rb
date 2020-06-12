@@ -2,15 +2,13 @@
 
 class BrandPolicy < ApplicationPolicy
   def edit?
-    raise Pundit::NotAuthorizedError, query: :authenticate? unless user
-
-    record == user.brand
+    user &&
+      record == user.brand
   end
 
   def update?
-    raise Pundit::NotAuthorizedError, query: :authenticate? unless user
-
-    record == user.brand
+    user &&
+      record == user.brand
   end
 
   def subscription?
@@ -19,6 +17,7 @@ class BrandPolicy < ApplicationPolicy
   end
 
   def user_in_brand?
-    record == user.brand
+    user &&
+      record == user.brand
   end
 end

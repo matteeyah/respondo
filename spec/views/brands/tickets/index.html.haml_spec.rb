@@ -5,6 +5,7 @@ RSpec.describe 'brands/tickets/index', type: :view do
   let(:ticket) { FactoryBot.create(:internal_ticket, status: :open, brand: brand).base_ticket }
   let(:nested_ticket) { FactoryBot.create(:internal_ticket, brand: brand, parent: ticket, status: :solved).base_ticket }
   let(:tickets) { { ticket => { nested_ticket => {} } } }
+  let(:policy_double) { double }
 
   before do
     assign(:tickets, tickets)
@@ -12,16 +13,23 @@ RSpec.describe 'brands/tickets/index', type: :view do
     without_partial_double_verification do
       allow(view).to receive(:brand).and_return(brand)
       allow(view).to receive(:current_user).and_return(FactoryBot.build(:user))
+      allow(view).to receive(:policy).and_return(policy_double)
     end
 
-    allow(view).to receive(:user_authorized_for?).and_return(false)
-    allow(view).to receive(:user_can_reply_to?).and_return(false)
+    allow(policy_double).to receive_messages(
+      refresh?: false, user_in_brand?: false,
+      reply?: false, internal_note?: false, invert_status?: false,
+      subscription?: true
+    )
     allow(view).to receive(:pagy_bootstrap_nav)
   end
 
   context 'when user is authorized' do
     before do
-      allow(view).to receive(:user_authorized_for?).and_return(true)
+      allow(policy_double).to receive_messages(
+        refresh?: true, user_in_brand?: true,
+        reply?: true, internal_note?: true, invert_status?: true
+      )
     end
 
     it 'renders tickets' do

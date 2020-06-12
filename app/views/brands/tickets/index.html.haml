@@ -1,13 +1,11 @@
-- user_authorized = user_authorized_for?(current_user, brand)
-
 %h4
   %span #{brand.screen_name}: Tickets
-  - if user_authorized
+  - if policy(:ticket).refresh? && policy(brand).user_in_brand?
     = button_to refresh_brand_tickets_path(brand), form_class: 'd-inline-block', class: 'btn btn-light' do
       = fa_icon('sync')
 %hr
 
-- if user_authorized
+- if policy(brand).user_in_brand?
   .alert.alert-secondary
     %p.mb-0.pb-0
       You can create tickets manually by submitting a POST request to
