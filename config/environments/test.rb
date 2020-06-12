@@ -61,6 +61,7 @@ Rails.application.configure do
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'UserAccount', association: :user
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'BrandAccount', association: :brand
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :user
+    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :brand
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :ticketable
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :internal_notes
     Bullet.add_whitelist type: :unused_eager_loading, class_name: 'InternalTicket', association: :base_ticket
