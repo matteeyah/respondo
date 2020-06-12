@@ -7,7 +7,7 @@ RSpec.describe BrandPolicy, type: :policy do
 
   permissions :edit?, :update? do
     it 'denies access to guests' do
-      expect { Pundit.authorize(nil, brand, :edit?) }.to raise_error(Pundit::NotAuthorizedError)
+      expect(brand_policy).not_to permit(nil, brand)
     end
 
     it 'denies access to users outside brand' do

@@ -7,7 +7,7 @@ RSpec.describe TicketPolicy, type: :policy do
 
   permissions :reply? do
     it 'denies access to guests' do
-      expect { Pundit.authorize(nil, ticket, :refresh?) }.to raise_error(Pundit::NotAuthorizedError)
+      expect(ticket_policy).not_to permit(nil, ticket)
     end
 
     it 'allows access to users in brand' do
@@ -21,7 +21,7 @@ RSpec.describe TicketPolicy, type: :policy do
 
   permissions :internal_note?, :invert_status? do
     it 'denies access to guests' do
-      expect { Pundit.authorize(nil, ticket, :refresh?) }.to raise_error(Pundit::NotAuthorizedError)
+      expect(ticket_policy).not_to permit(nil, ticket)
     end
 
     it 'denies access to users outside of brand' do
@@ -35,7 +35,7 @@ RSpec.describe TicketPolicy, type: :policy do
 
   permissions :refresh? do
     it 'denies access to guests' do
-      expect { Pundit.authorize(nil, ticket, :refresh?) }.to raise_error(Pundit::NotAuthorizedError)
+      expect(ticket_policy).not_to permit(nil, ticket)
     end
 
     it 'allows all users access' do

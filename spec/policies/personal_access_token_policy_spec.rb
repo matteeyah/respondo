@@ -7,7 +7,7 @@ RSpec.describe PersonalAccessTokenPolicy, type: :policy do
 
   permissions :create?, :destroy? do
     it 'denies access to guests' do
-      expect { Pundit.authorize(nil, personal_access_token, :destroy?) }.to raise_error(Pundit::NotAuthorizedError)
+      expect(personal_access_token_policy).not_to permit(nil, personal_access_token)
     end
 
     it 'denies access to other users' do

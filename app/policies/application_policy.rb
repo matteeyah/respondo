@@ -4,7 +4,6 @@ class ApplicationPolicy
   attr_reader :user, :record
 
   NOT_AUTHORIZED_ERROR_MESSAGES = {
-    authenticate?: 'You are not signed in.',
     subscription?: 'You do not have an active subscription.'
   }.freeze
 

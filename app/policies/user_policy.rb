@@ -2,8 +2,7 @@
 
 class UserPolicy < ApplicationPolicy
   def edit?
-    raise Pundit::NotAuthorizedError, query: :authenticate? unless user
-
-    user == record
+    user &&
+      user == record
   end
 end

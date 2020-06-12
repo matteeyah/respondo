@@ -7,7 +7,7 @@ RSpec.describe UserPolicy, type: :policy do
 
   permissions :edit? do
     it 'denies access to guests' do
-      expect { Pundit.authorize(nil, user, :edit?) }.to raise_error(Pundit::NotAuthorizedError)
+      expect(user_policy).not_to permit(nil, user)
     end
 
     it 'denies access to other users' do

@@ -7,7 +7,7 @@ RSpec.describe UserAccountPolicy, type: :policy do
 
   permissions :destroy? do
     it 'denies access to guests' do
-      expect { Pundit.authorize(nil, user_account, :destroy?) }.to raise_error(Pundit::NotAuthorizedError)
+      expect(user_account_policy).not_to permit(nil, user_account)
     end
 
     it 'denies access to other users' do
