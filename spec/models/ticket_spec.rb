@@ -113,26 +113,6 @@ RSpec.describe Ticket, type: :model do
     end
   end
 
-  describe '.search' do
-    subject(:search) { described_class.search('hello_world') }
-
-    let!(:author_hit) { FactoryBot.create(:internal_ticket, author: FactoryBot.create(:author, username: 'hello_world')).base_ticket }
-    let!(:content_hit) { FactoryBot.create(:internal_ticket, content: 'hello_world').base_ticket }
-    let!(:miss) { FactoryBot.create(:internal_ticket).base_ticket }
-
-    it 'searches by author name' do
-      expect(search).to include(author_hit)
-    end
-
-    it 'searches by ticket content' do
-      expect(search).to include(content_hit)
-    end
-
-    it 'does not include misses' do
-      expect(search).not_to include(miss)
-    end
-  end
-
   describe '.from_ methods' do
     shared_examples 'from method' do
       context 'when user is not specified' do

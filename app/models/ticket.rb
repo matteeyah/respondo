@@ -48,12 +48,6 @@ class Ticket < ApplicationRecord
   has_many :internal_notes, dependent: :restrict_with_error
 
   class << self
-    def search(query)
-      authors = Author.arel_table
-      where(arel_table[:content].matches("%#{query}%")
-        .or(arel_table[:author_id].in(authors.project(authors[:id]).where(authors[:username].matches(query)))))
-    end
-
     def from_tweet!(tweet, brand, user)
       brand.tickets.twitter.create!(
         external_uid: tweet.id, content: tweet.attrs[:full_text], created_at: tweet.created_at,
