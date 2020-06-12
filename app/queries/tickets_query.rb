@@ -1,17 +1,10 @@
 # frozen_string_literal: true
 
-class TicketsQuery
-  attr_reader :initial_relation, :params
-
+class TicketsQuery < ApplicationQuery
   DEFAULT_STATUS = 'open'
 
-  def initialize(initial_relation = Ticket.all, params = {})
-    @initial_relation = initial_relation
-    @params = params
-  end
-
   def call
-    items = @initial_relation
+    items = initial_relation
 
     items = by_status(items, params[:status])
     return items.root unless params[:query]
