@@ -10,12 +10,6 @@ class Brand < ApplicationRecord
 
   has_one :subscription, dependent: :restrict_with_error
 
-  class << self
-    def search(query)
-      where(arel_table[:screen_name].matches("%#{query}%"))
-    end
-  end
-
   def account_for_provider?(provider)
     accounts.exists?(provider: provider)
   end
