@@ -1,14 +1,9 @@
-- user_authorized = user_authorized_for?(current_user, brand)
--# Only authorized users can respond to external tickets
-- user_can_reply = user_authorized || user_can_reply_to?(current_user, ticket.provider)
-- brand_has_subscription = brand.subscription&.running?
-
 .row.ml-3.mb-3
-  %span.font-weight-lighter.mr-1= ticket_header_content(user_authorized, ticket, brand)
+  %span.font-weight-lighter.mr-1= ticket_header_content(policy(brand).user_in_brand?, ticket, brand)
 .row.ml-3.mb-3
   %span.font-weight-normal= ticket.content
 
-- if user_authorized
+- if policy(ticket).internal_note?
   - if ticket.internal_notes.any?
     %ul.list-group.mb-3
       - ticket.internal_notes.each do |internal_note|
@@ -16,21 +11,22 @@
           %span.font-weight-bold.mr-1 #{internal_note.user.name}:
           %span= internal_note.content
 
-- if brand_has_subscription || Flipper.enabled?(:skip_subscription_check)
+- if policy(brand).subscription? || Flipper.enabled?(:skip_subscription_check)
   .row.ml-lg-3.justify-content-around.justify-content-lg-start{ id: "toggle-buttons-#{ticket.id}" }
-    - if user_can_reply
+    - if policy(ticket).reply?
       = button_tag fa_icon('reply'), class: 'btn btn-light', id: "toggle-reply-#{ticket.id}",
         'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Show reply form'
-    - if user_authorized
+    - if policy(ticket).internal_note?
       = button_tag fa_icon('sticky-note'), class: 'btn btn-light mx-3', id: "toggle-internal-note-#{ticket.id}",
         'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Show internal note form'
+    - if policy(ticket).invert_status?
       = button_to brand_ticket_invert_status_path(brand, ticket), form_class: 'form-inline',
         class: 'btn btn-outline-success form-control', 'data-toggle' => 'tooltip', 'data-placement': 'bottom',
         title: invert_status_action_text(ticket.status) do
         = invert_status_action(ticket.status)
 
   .row.mt-2
-    - if user_can_reply
+    - if policy(ticket).reply?
       = form_with url: brand_ticket_reply_path(brand, ticket), class: 'form-inline col-12', id: "reply-form-#{ticket.id}",
         html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off', hidden: '' } do |reply_form|
         .input-group.col-12.col-lg-9
@@ -40,7 +36,7 @@
         = reply_form.button fa_icon('times'), type: :reset, id: "reply-reset-#{ticket.id}",
           class: 'btn btn-outline-danger col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0',
           'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Hide reply form'
-    - if user_authorized
+    - if policy(ticket).internal_note?
       = form_with url: brand_ticket_internal_note_path(brand, ticket), class: 'form-inline col-12',
         id: "internal-note-form-#{ticket.id}", html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off',
         hidden: '' } do |reply_form|

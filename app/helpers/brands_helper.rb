@@ -7,17 +7,6 @@ module BrandsHelper
     users_not_in_brand.pluck(:name, :id)
   end
 
-  def user_authorized_for?(user, brand)
-    user&.brand == brand
-  end
-
-  def user_can_reply_to?(user, provider)
-    return false unless user
-    return false if provider == 'external'
-
-    user&.client_for_provider(provider).present?
-  end
-
   def subscription_badge_class(subscription_status)
     case subscription_status
     when nil, 'deleted'

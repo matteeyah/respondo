@@ -10,15 +10,20 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
   let(:brand) { FactoryBot.create(:brand) }
   let(:user) { FactoryBot.create(:user) }
   let(:ticket) { FactoryBot.create(:internal_ticket, brand: brand, status: :open).base_ticket }
+  let(:policy_double) { double }
   let!(:internal_notes) { FactoryBot.create_list(:internal_note, 2, ticket: ticket) }
 
   before do
     without_partial_double_verification do
       allow(view).to receive(:current_user).and_return(user)
+      allow(view).to receive(:policy).and_return(policy_double)
     end
 
-    allow(view).to receive(:user_authorized_for?).and_return(true)
-    allow(view).to receive(:user_can_reply_to?).and_return(false)
+    allow(policy_double).to receive_messages(
+      refresh?: true, user_in_brand?: true,
+      reply?: true, internal_note?: true, invert_status?: true,
+      subscription?: false
+    )
   end
 
   it 'displays the ticket' do
@@ -60,7 +65,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
 
   context 'when brand has subscription' do
     before do
-      FactoryBot.create(:subscription, brand: brand)
+      allow(policy_double).to receive(:subscription?).and_return(true)
     end
 
     it 'displays the form toggle buttons' do
