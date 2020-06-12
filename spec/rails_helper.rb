@@ -10,6 +10,7 @@ SimpleCov.start do
   add_group 'Controllers', 'app/controllers'
   add_group 'Policies',    'app/policies'
   add_group 'Models',      'app/models'
+  add_group 'Queries',     'app/queries'
   add_group 'Helpers',     'app/helpers'
   add_group 'Jobs',        'app/jobs'
   add_group 'Clients',     'lib/clients'
