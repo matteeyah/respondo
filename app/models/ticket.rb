@@ -2,7 +2,6 @@
 
 class Ticket < ApplicationRecord
   include AASM
-  extend RecursiveCte
 
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[ticketable_type brand_id] }
   validates :content, presence: { allow_blank: false }
@@ -21,7 +20,7 @@ class Ticket < ApplicationRecord
 
     event :open do
       before do
-        Ticket.where(ancestors_query).update_all(status: 'open') # rubocop:disable Rails/SkipsModelValidations
+        ancestors.update_all(status: 'open') # rubocop:disable Rails/SkipsModelValidations
       end
 
       transitions from: :solved, to: :open
@@ -29,7 +28,7 @@ class Ticket < ApplicationRecord
 
     event :solve do
       before do
-        Ticket.where(descendants_query).update_all(status: 'solved') # rubocop:disable Rails/SkipsModelValidations
+        descendants.update_all(status: 'solved') # rubocop:disable Rails/SkipsModelValidations
       end
 
       transitions from: :open, to: :solved
@@ -48,12 +47,6 @@ class Ticket < ApplicationRecord
   has_many :internal_notes, dependent: :restrict_with_error
 
   class << self
-    def search(query)
-      authors = Author.arel_table
-      where(arel_table[:content].matches("%#{query}%")
-        .or(arel_table[:author_id].in(authors.project(authors[:id]).where(authors[:username].matches(query)))))
-    end
-
     def from_tweet!(tweet, brand, user)
       brand.tickets.twitter.create!(
         external_uid: tweet.id, content: tweet.attrs[:full_text], created_at: tweet.created_at,
@@ -82,13 +75,16 @@ class Ticket < ApplicationRecord
     end
 
     def with_descendants_hash(*included_relations)
-      ids_query = arel_table[:id].in(self_and_descendants_arel(all.select(:id).arel))
-      tickets = Ticket.unscoped.includes(included_relations).where(ids_query)
+      tickets = all.with_descendants.includes(included_relations)
       convert_ticket_array_to_hash(tickets)
     end
 
-    def self_and_descendants_arel(ticket_ids)
-      self_and_recursive_cte_query_arel(:parent_id, :id, ticket_ids)
+    def with_descendants
+      RecursiveCteQuery.new(all, model_column: :parent_id, recursive_cte_column: :id).call
+    end
+
+    def with_ancestors
+      RecursiveCteQuery.new(all, model_column: :id, recursive_cte_column: :parent_id).call
     end
 
     private
@@ -114,17 +110,11 @@ class Ticket < ApplicationRecord
     errors.add(:parent, 'must be in same brand as ticket')
   end
 
-  def arel_ids_query_minus_self(query)
-    # This removes the calling object's ID from an arel query that queries a list of IDs
-    self.class.arel_table[:id].in(query).and(self.class.arel_table[:id].not_eq(id))
+  def descendants
+    Ticket.where(id: id).with_descendants.where.not(id: id)
   end
 
-  def descendants_query
-    arel_ids_query_minus_self(self.class.self_and_descendants_arel(id))
-  end
-
-  def ancestors_query
-    self_and_ancestors_arel = self.class.self_and_recursive_cte_query_arel(:id, :parent_id, id)
-    arel_ids_query_minus_self(self_and_ancestors_arel)
+  def ancestors
+    Ticket.where(id: id).with_ancestors.where.not(id: id)
   end
 end

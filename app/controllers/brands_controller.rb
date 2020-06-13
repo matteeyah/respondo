@@ -29,13 +29,7 @@ class BrandsController < Brands::ApplicationController
   private
 
   def brands
-    query = params[:query]
-
-    if query.present?
-      Brand.search(query)
-    else
-      Brand.all
-    end
+    BrandsQuery.new(Brand.all, params.slice(:query)).call
   end
 
   def update_params

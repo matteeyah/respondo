@@ -85,12 +85,7 @@ module Brands
     end
 
     def tickets
-      status = params[:status].presence || 'open'
-      query = params[:query]
-
-      filtered_tickets = brand.tickets.where(status: status)
-
-      query.present? ? filtered_tickets.search(query) : filtered_tickets.root
+      TicketsQuery.new(brand.tickets, params.slice(:status, :query)).call
     end
 
     def respond!
