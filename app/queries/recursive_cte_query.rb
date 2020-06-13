@@ -1,17 +1,22 @@
 # frozen_string_literal: true
 
-module RecursiveCte
+class RecursiveCteQuery < ApplicationQuery
+  # WITH RECURSIVE "RECURSIVE_CTE" AS (
+  #   SELECT "MODEL_TABLE".* FROM "MODEL_TABLE" WHERE "MODEL_TABLE"."id" IN (MODEL_IDS)
+  #   UNION ALL
+  #   SELECT "MODEL_TABLE".* FROM "MODEL_TABLE"
+  #     INNER JOIN "RECURSIVE_CTE" ON "MODEL_TABLE"."MODEL_TABLE_COLUMN" = "RECURSIVE_CTE"."RECURSIVE_CTE_COLUMN"
+  # ) SELECT "RECURSIVE_CTE"."id" FROM "RECURSIVE_CTE"
+  # This recursive SQL allows us to get all ancestor or descendant models
+  # given a list of model ids. The method itself represents this recursive
+  # CTE SQL query in arel.
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-  def self_and_recursive_cte_query_arel(model_table_column, recursive_cte_column, model_ids)
-    # WITH RECURSIVE "RECURSIVE_CTE" AS (
-    #   SELECT "MODEL_TABLE".* FROM "MODEL_TABLE" WHERE "MODEL_TABLE"."id" IN (MODEL_IDS)
-    #   UNION ALL
-    #   SELECT "MODEL_TABLE".* FROM "MODEL_TABLE"
-    #     INNER JOIN "RECURSIVE_CTE" ON "MODEL_TABLE"."AREL_TABLE_COLUMN" = "RECURSIVE_CTE"."RECURSIVE_CTE_COLUMN"
-    # ) SELECT "RECURSIVE_CTE"."id" FROM "RECURSIVE_CTE"
-    # This recursive SQL allows us to get all ancestor or descendant models
-    # given a list of model ids. The method itself represents this recursive
-    # CTE SQL query in arel.
+  def call
+    arel_table = initial_relation.klass.arel_table
+    model_ids = initial_relation.select(:id).arel
+    model_table_column = params[:model_column]
+    recursive_cte_column = params[:recursive_cte_column]
+
     recursive_cte = Arel::Table.new(:recursive_cte)
     select_manager = Arel::SelectManager.new(ActiveRecord::Base).freeze
 
@@ -31,11 +36,13 @@ module RecursiveCte
     union = non_recursive_term.union(:all, recursive_term)
     as_statement = Arel::Nodes::As.new(recursive_cte, union)
 
-    select_manager.dup.tap do |m|
+    query = select_manager.dup.tap do |m|
       m.from(recursive_cte)
       m.with(:recursive, as_statement)
       m.project(recursive_cte[:id])
     end
+
+    initial_relation.klass.unscoped.where(arel_table[:id].in(query))
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 end
