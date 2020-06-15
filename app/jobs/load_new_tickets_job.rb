@@ -16,13 +16,6 @@ class LoadNewTicketsJob < ApplicationJob
   private
 
   def create_ticket!(provider, mention, brand)
-    ticket = case provider
-             when 'twitter'
-               Ticket.from_tweet!(mention, brand, nil)
-             when 'disqus'
-               Ticket.from_disqus_post!(mention, brand, nil)
-             end
-
-    ticket.parent.open! if ticket.parent&.solved?
+    TicketCreator.new(provider, mention, brand, nil).call
   end
 end

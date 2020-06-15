@@ -96,14 +96,7 @@ module Brands
     end
 
     def create_ticket!(provider, response)
-      case provider
-      when 'twitter'
-        Ticket.from_tweet!(response, brand, current_user)
-      when 'disqus'
-        Ticket.from_disqus_post!(response, brand, current_user)
-      when 'external'
-        Ticket.from_external_ticket!(response, brand, current_user)
-      end
+      TicketCreator.new(provider, response, brand, current_user).call
     end
   end
 end
