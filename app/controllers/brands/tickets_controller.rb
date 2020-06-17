@@ -70,16 +70,6 @@ module Brands
 
     private
 
-    def client # rubocop:disable Metrics/AbcSize
-      @client ||= if ticket.external?
-                    Clients::External.new(ticket.external_ticket.response_url, ticket.author.external_uid, ticket.author.username)
-                  elsif current_brand == brand
-                    current_brand.client_for_provider(ticket.provider)
-                  else
-                    current_user.client_for_provider(ticket.provider)
-                  end
-    end
-
     def ticket
       @ticket ||= brand.tickets.find(params[:ticket_id] || params[:id])
     end
@@ -89,21 +79,7 @@ module Brands
     end
 
     def respond!
-      response = client.reply(params[:response_text], ticket.external_uid)
-      response = JSON.parse(response).deep_symbolize_keys if ticket.external?
-
-      create_ticket!(ticket.provider, response)
-    end
-
-    def create_ticket!(provider, response)
-      case provider
-      when 'twitter'
-        Ticket.from_tweet!(response, brand, current_user)
-      when 'disqus'
-        Ticket.from_disqus_post!(response, brand, current_user)
-      when 'external'
-        Ticket.from_external_ticket!(response, brand, current_user)
-      end
+      TicketResponder.new(ticket, params[:response_text], current_user).call
     end
   end
 end

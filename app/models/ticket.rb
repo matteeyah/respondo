@@ -15,7 +15,7 @@ class Ticket < ApplicationRecord
   delegate :actual_provider, to: :ticketable
 
   aasm column: :status, enum: true do
-    state :open, initial: true
+    state :open, initial: true, before_enter: proc { parent&.solved? && parent&.open! }
     state :solved
 
     event :open do

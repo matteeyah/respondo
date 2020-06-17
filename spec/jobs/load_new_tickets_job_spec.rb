@@ -7,6 +7,7 @@ RSpec.describe LoadNewTicketsJob, type: :job do
     let(:brand) { FactoryBot.create(:brand) }
     let(:twitter_account) { FactoryBot.create(:brand_account, provider: 'twitter', brand: brand) }
     let(:disqus_account) { FactoryBot.create(:brand_account, provider: 'disqus', brand: brand) }
+    let!(:parent) { FactoryBot.create(:internal_ticket, status: :solved, brand: brand).base_ticket }
 
     let(:twitter_mentions) do
       [instance_double(
@@ -20,8 +21,6 @@ RSpec.describe LoadNewTicketsJob, type: :job do
     let(:disqus_mentions) do
       [JSON.parse(file_fixture('disqus_post_hash.json').read).deep_symbolize_keys]
     end
-
-    let(:parent) { FactoryBot.create(:internal_ticket, status: :solved, brand: brand).base_ticket }
 
     before do
       allow(twitter_account).to receive(:new_mentions).and_return(twitter_mentions)

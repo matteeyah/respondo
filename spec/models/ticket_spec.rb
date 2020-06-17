@@ -66,6 +66,31 @@ RSpec.describe Ticket, type: :model do
       FactoryBot.create(:internal_ticket, status: status, parent: nested_ticket, brand: root.brand).base_ticket
     end
 
+    describe 'initial state' do
+      subject(:create_ticket) do
+        described_class.create(
+          external_uid: 'test123', content: 'Sample content', provider: parent.provider,
+          parent: parent, author: FactoryBot.build(:author), brand: parent.brand
+        )
+      end
+
+      context 'when parent is solved' do
+        let(:status) { :solved }
+
+        it 'opens parent' do
+          expect { create_ticket }.to change { parent.reload.status }.from('solved').to('open')
+        end
+      end
+
+      context 'when parent is open' do
+        let(:status) { :open }
+
+        it 'does not change parent status' do
+          expect { create_ticket }.not_to change { parent.reload.status }.from('open')
+        end
+      end
+    end
+
     describe 'open' do
       subject(:open_ticket) { ticket.open! }
 
