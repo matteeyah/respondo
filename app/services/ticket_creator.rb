@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TicketCreator
+class TicketCreator < ApplicationService
   attr_reader :provider, :body, :brand, :user
 
   def initialize(provider, body, brand, user)

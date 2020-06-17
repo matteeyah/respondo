@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TicketResponder
+class TicketResponder < ApplicationService
   attr_reader :ticket, :response, :user
 
   def initialize(ticket, response, user)
