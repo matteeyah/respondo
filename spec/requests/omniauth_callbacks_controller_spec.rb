@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/sign_in_out_request_helpers.rb'
+require './spec/support/sign_in_out_request_helpers'
 
 RSpec.describe OmniauthCallbacksController, type: :request do
   include SignInOutRequestHelpers

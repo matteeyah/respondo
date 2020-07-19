@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require './spec/support/sign_in_out_system_helpers.rb'
-require './spec/support/system/allows_interacting_with_tickets_examples.rb'
+require './spec/support/sign_in_out_system_helpers'
+require './spec/support/system/allows_interacting_with_tickets_examples'
 
 RSpec.describe 'Brand', type: :system do
   include SignInOutSystemHelpers

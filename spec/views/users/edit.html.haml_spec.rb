@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/concerns/views/_accounts_examples.rb'
+require './spec/support/concerns/views/_accounts_examples'
 
 RSpec.describe 'users/edit', type: :view do
   let(:user) { FactoryBot.create(:user) }

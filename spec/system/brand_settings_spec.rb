@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require './spec/support/omniauth_helpers.rb'
-require './spec/support/sign_in_out_system_helpers.rb'
+require './spec/support/omniauth_helpers'
+require './spec/support/sign_in_out_system_helpers'
 
 RSpec.describe 'Brand settings', type: :system do
   include OmniauthHelpers

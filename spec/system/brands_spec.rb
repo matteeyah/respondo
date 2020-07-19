@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/sign_in_out_system_helpers.rb'
+require './spec/support/sign_in_out_system_helpers'
 
 RSpec.describe 'Brands', type: :system do
   include SignInOutSystemHelpers

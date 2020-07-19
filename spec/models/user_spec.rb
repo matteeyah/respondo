@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/has_accounts_examples.rb'
+require './spec/support/has_accounts_examples'
 
 RSpec.describe User, type: :model do
   describe 'Validations' do

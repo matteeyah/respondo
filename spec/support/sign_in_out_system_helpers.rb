@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/omniauth_helpers.rb'
+require './spec/support/omniauth_helpers'
 
 # This is an abstraction on top of OmniauthHelpers for system type specs.
 module SignInOutSystemHelpers

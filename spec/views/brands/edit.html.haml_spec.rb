@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/concerns/views/_accounts_examples.rb'
+require './spec/support/concerns/views/_accounts_examples'
 
 RSpec.describe 'brands/edit', type: :view do
   let(:brand) { FactoryBot.create(:brand) }

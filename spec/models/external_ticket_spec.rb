@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/concerns/models/ticketable_examples.rb'
+require './spec/support/concerns/models/ticketable_examples'
 
 RSpec.describe ExternalTicket, type: :model do
   describe 'Validations' do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/concerns/models/accountable_examples.rb'
+require './spec/support/concerns/models/accountable_examples'
 
 RSpec.describe UserAccount, type: :model do
   describe 'Validations' do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './spec/support/omniauth_helpers.rb'
+require './spec/support/omniauth_helpers'
 
 RSpec.describe 'Homepage', type: :system do
   include OmniauthHelpers
