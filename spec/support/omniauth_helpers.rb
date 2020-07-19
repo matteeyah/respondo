@@ -6,6 +6,12 @@
 #
 # In some cases it's acceptable to include this directly as well.
 module OmniauthHelpers
+  PROVIDER_OAUTH_FIXTURE = {
+    'twitter' => 'twitter_oauth_hash.json',
+    'google_oauth2' => 'google_oauth_hash.json',
+    'disqus' => 'disqus_oauth_hash.json'
+  }.freeze
+
   # Clear OmniAuth mocks in all specs that include this module.
   def self.included(base)
     base.class_eval do
@@ -27,6 +33,15 @@ module OmniauthHelpers
         end
       end
     end
+  end
+
+  def self.fixture_for_provider(provider)
+    JSON.parse(
+      Pathname.new(
+        File.join('spec/fixtures/files', PROVIDER_OAUTH_FIXTURE[provider])
+      ).read,
+      object_class: OpenStruct
+    )
   end
 
   def add_oauth_mock(provider, external_uid, info, credentials)

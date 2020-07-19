@@ -1,19 +1,24 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  PROVIDER_HUMAN_NAMES = {
+    'twitter' => 'Twitter',
+    'google_oauth2' => 'Google',
+    'disqus' => 'Disqus'
+  }.freeze
+
+  PROVIDER_AUTH_PATHS = {
+    'twitter' => '/auth/twitter',
+    'google_oauth2' => '/auth/google_oauth2',
+    'disqus' => '/auth/disqus'
+  }.freeze
+
   def auth_provider_link(text, provider, model, html_options = {})
     link_to text, auth_provider_path(provider, state: model), method: :post, **html_options
   end
 
   def provider_human_name(provider)
-    case provider
-    when 'twitter'
-      'Twitter'
-    when 'google_oauth2'
-      'Google'
-    when 'disqus'
-      'Disqus'
-    end
+    PROVIDER_HUMAN_NAMES[provider]
   end
 
   def safe_blank_link_to(text, url, html_options = {})
@@ -27,15 +32,6 @@ module ApplicationHelper
   private
 
   def auth_provider_path(provider, params)
-    path = case provider
-           when 'twitter'
-             '/auth/twitter'
-           when 'google_oauth2'
-             '/auth/google_oauth2'
-           when 'disqus'
-             '/auth/disqus'
-           end
-
-    "#{path}?#{params.to_query}"
+    "#{PROVIDER_AUTH_PATHS[provider]}?#{params.to_query}"
   end
 end

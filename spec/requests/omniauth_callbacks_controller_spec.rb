@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_request_helpers'
+require './spec/support/omniauth_helpers'
 
 RSpec.describe OmniauthCallbacksController, type: :request do
   include SignInOutRequestHelpers
@@ -11,17 +12,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
       follow_redirect!
     end
 
-    let(:auth_hash) do
-      fixture_name = case provider
-                     when 'twitter'
-                       'twitter_oauth_hash.json'
-                     when 'google_oauth2'
-                       'google_oauth_hash.json'
-                     when 'disqus'
-                       'disqus_oauth_hash.json'
-                     end
-      JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)
-    end
+    let(:auth_hash) { OmniauthHelpers.fixture_for_provider(provider) }
 
     before do
       OmniAuth.config.add_mock(provider.to_sym, auth_hash)

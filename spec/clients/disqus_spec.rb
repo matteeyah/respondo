@@ -10,7 +10,7 @@ RSpec.describe Clients::Disqus do
       v3: double( # rubocop:disable RSpec/VerifiedDoubles
         users: double( # rubocop:disable RSpec/VerifiedDoubles
           listForums: instance_double(
-            DisqusApi::Response, response: ['id' => '12321']
+            DisqusApi::Response, response: [{ 'id' => '12321' }]
           )
         ), posts: posts_spy
       )

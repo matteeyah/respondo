@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require './spec/support/omniauth_helpers'
 require './spec/support/concerns/models/accountable_examples'
 
 RSpec.describe UserAccount, type: :model do
@@ -24,18 +25,7 @@ RSpec.describe UserAccount, type: :model do
       context "when provider is #{provider}" do
         subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_user) }
 
-        let(:auth_hash) do
-          fixture_name = case provider
-                         when 'twitter'
-                           'twitter_oauth_hash.json'
-                         when 'google_oauth2'
-                           'google_oauth_hash.json'
-                         when 'disqus'
-                           'disqus_oauth_hash.json'
-                         end
-
-          JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)
-        end
+        let(:auth_hash) { OmniauthHelpers.fixture_for_provider(provider) }
 
         context 'when there is no matching account' do
           context 'when creating a new user' do
