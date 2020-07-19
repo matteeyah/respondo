@@ -6,24 +6,6 @@
     :versions: []
     :when: 2020-05-08 00:22:04.656090000 Z
 - - :permit
-  - ISC
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:27:55.184175000 Z
-- - :permit
-  - MIT
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:28:02.416053000 Z
-- - :permit
-  - MIT*
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:43:45.672009000 Z
-- - :permit
   - BSD
   - :who: matteeyah
     :why:
@@ -47,6 +29,36 @@
     :why:
     :versions: []
     :when: 2019-11-13 18:29:16.288051000 Z
+- - :permit
+  - 2-clause BSDL
+  - :who: matteeyah
+    :why:
+    :versions: []
+    :when: 2019-11-13 18:32:21.429419000 Z
+- - :permit
+  - BSD-3-Clause
+  - :who: matteeyah
+    :why:
+    :versions: []
+    :when: 2020-07-19 16:28:24.256466000 Z
+- - :permit
+  - ISC
+  - :who: matteeyah
+    :why:
+    :versions: []
+    :when: 2019-11-13 18:27:55.184175000 Z
+- - :permit
+  - MIT
+  - :who: matteeyah
+    :why:
+    :versions: []
+    :when: 2019-11-13 18:28:02.416053000 Z
+- - :permit
+  - MIT*
+  - :who: matteeyah
+    :why:
+    :versions: []
+    :when: 2019-11-13 18:43:45.672009000 Z
 - - :permit
   - CC0-1.0
   - :who: matteeyah
@@ -78,6 +90,18 @@
     :versions: []
     :when: 2019-11-13 18:31:39.764031000 Z
 - - :permit
+  - LGPL
+  - :who: matteeyah
+    :why:
+    :versions: []
+    :when: 2020-06-07 20:14:37.930987000 Z
+- - :permit
+  - Zlib
+  - :who: matteeyah
+    :why:
+    :versions: []
+    :when: 2020-07-19 16:27:48.387337000 Z
+- - :permit
   - ruby
   - :who: matteeyah
     :why:
@@ -89,12 +113,6 @@
     :why:
     :versions: []
     :when: 2019-11-13 18:29:39.428781000 Z
-- - :permit
-  - WTFPL
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:30:35.449386000 Z
 - - :restrict
   - AGPL
   - :who: matteeyah
@@ -125,60 +143,6 @@
     :why:
     :versions: []
     :when: 2019-11-13 18:51:40.521101000 Z
-- - :permit
-  - "(BSD-3-Clause OR GPL-2.0)"
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:30:18.502483000 Z
-- - :permit
-  - "(MIT AND BSD-3-Clause)"
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:30:27.472735000 Z
-- - :permit
-  - "(MIT AND Zlib)"
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:31:19.491188000 Z
-- - :permit
-  - "(BSD-2-Clause OR MIT OR Apache-2.0)"
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:31:28.172585000 Z
-- - :permit
-  - "(MIT OR Apache-2.0)"
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:32:03.497814000 Z
-- - :permit
-  - "(MIT OR CC0-1.0)"
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-19 15:57:31.115977000 Z
-- - :permit
-  - BSD-3-Clause OR MIT
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:32:12.050310000 Z
-- - :permit
-  - 2-clause BSDL
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:32:21.429419000 Z
-- - :permit
-  - "(WTFPL OR MIT)"
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2019-11-13 18:33:02.450067000 Z
 - - :approve
   - fsevents
   - :who: matteeyah
@@ -187,9 +151,3 @@
     - 1.2.13
     - 2.1.3
     :when: 2020-02-07 17:24:29.090340000 Z
-- - :permit
-  - LGPL
-  - :who: matteeyah
-    :why:
-    :versions: []
-    :when: 2020-06-07 20:14:37.930987000 Z
