@@ -30,32 +30,32 @@ gem 'aasm', '~> 5.0.6' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
 gem 'attr_encrypted', '~> 3.1.0' # encrypted attributes
 gem 'disqus_api', '~> 0.0.7' # Disqus client
-gem 'flipper', '~> 0.17.2' # Feature flags
-gem 'flipper-active_record', '~> 0.17.2' # ActiveRecord adapter for flipper
+gem 'flipper', '~> 0.18.0' # Feature flags
+gem 'flipper-active_record', '~> 0.18.0' # ActiveRecord adapter for flipper
 gem 'hamlit', '~> 2.11.0' # High-Performance HAML markup processing
 gem 'hashie', '~> 4.1.0' # Hash utilities
 gem 'json-schema', '~> 2.8.1' # JSON schema validation
 gem 'pagy', '~> 3.5' # Pagination
 gem 'pundit', '~> 2.1.0' # OO Policy objects
 gem 'sass-rails', '~> 6.0.0' # SCSS CSS pre-processor
-gem 'sidekiq', '~> 6.0.7' # Background job processing
+gem 'sidekiq', '~> 6.1.0' # Background job processing
 gem 'twitter', '~> 7.0.0' # Twitter client
 
 group :development, :test do
   # Linters
   ## Ruby linter
-  gem 'rubocop', '~> 0.85.0', require: false
-  gem 'rubocop-performance', '~> 1.6.1', require: false
-  gem 'rubocop-rails', '~> 2.5.0', require: false
-  gem 'rubocop-rspec', '~> 1.39.0', require: false
+  gem 'rubocop', '~> 0.88.0', require: false
+  gem 'rubocop-performance', '~> 1.7.1', require: false
+  gem 'rubocop-rails', '~> 2.6.0', require: false
+  gem 'rubocop-rspec', '~> 1.42.0', require: false
   ## Haml linter
   gem 'haml_lint', '~> 0.35.0', require: false
   # Other
   gem 'bullet', '~> 6.1.0' # N+1 monitoring
-  gem 'factory_bot_rails', '~> 5.2.0' # Use factory_bot
-  gem 'faker', '~> 2.12.0' # Sample data
+  gem 'factory_bot_rails', '~> 6.1.0' # Use factory_bot
+  gem 'faker', '~> 2.13.0' # Sample data
   gem 'html-proofer', '~> 3.15.0' # Runtime HTML proofer
-  gem 'license_finder', '~> 6.5.0' # license checking
+  gem 'license_finder', '~> 6.6.2' # license checking
   gem 'pry-byebug', '~> 3.9.0' # pry debugging
   gem 'rspec-rails', '4.0.1' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
