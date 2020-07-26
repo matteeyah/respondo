@@ -11,7 +11,7 @@
           %span.font-weight-bold.mr-1 #{internal_note.creator.name}:
           %span= internal_note.content
 
-- if policy(brand).subscription? || Flipper.enabled?(:skip_subscription_check)
+- if policy(brand).subscription? || Flipper.enabled?(:disable_subscriptions)
   .row.ml-lg-3.justify-content-around.justify-content-lg-start{ id: "toggle-buttons-#{ticket.id}" }
     - if policy(ticket).reply?
       = button_tag fa_icon('reply'), class: 'btn btn-light', id: "toggle-reply-#{ticket.id}",

@@ -38,21 +38,21 @@
       = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control col-8'
       = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary col-3 ml-auto'
 
-%hr
+- unless Flipper.enabled?(:disable_subscriptions)
+  %hr
 
-.row
-  .col-12
-    %h3 Subscription
-    %p.lead Manage your subscription.
-    %p
-      Subscription status:
-      %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status || 'no subscription'
-    - if brand.subscription&.running?
-      = button_tag 'Update Payment Details', class: 'btn btn-light', id: 'update-subscription'
-      = button_tag 'Cancel Subscription', class: 'btn btn-light', id: 'cancel-subscription'
-    - else
-      = button_tag 'Buy Subscription', class: 'btn btn-light', id: 'buy-subscription'
-
+  .row
+    .col-12
+      %h3 Subscription
+      %p.lead Manage your subscription.
+      %p
+        Subscription status:
+        %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status || 'no subscription'
+      - if brand.subscription&.running?
+        = button_tag 'Update Payment Details', class: 'btn btn-light', id: 'update-subscription'
+        = button_tag 'Cancel Subscription', class: 'btn btn-light', id: 'cancel-subscription'
+      - else
+        = button_tag 'Buy Subscription', class: 'btn btn-light', id: 'buy-subscription'
 
 = content_for :custom_javascript do
   %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
