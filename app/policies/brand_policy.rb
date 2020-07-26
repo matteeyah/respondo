@@ -12,7 +12,7 @@ class BrandPolicy < ApplicationPolicy
   end
 
   def subscription?
-    Flipper.enabled?(:skip_subscription_check) ||
+    Flipper.enabled?(:disable_subscriptions) ||
       record.subscription&.running?
   end
 

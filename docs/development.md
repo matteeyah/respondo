@@ -72,7 +72,7 @@ To integrate a new provider:
 Document all feature flags introduced in the code. Along with the feature
 flag name provide what it does and when it should be removed.
 
-- `skip_subscription_check`
+- `disable_subscriptions`
   - WHAT: Skips subscription checks for features
   - REMOVE: After BETA
 
