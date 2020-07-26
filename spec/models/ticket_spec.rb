@@ -50,7 +50,7 @@ RSpec.describe Ticket, type: :model do
   describe 'Relations' do
     it { is_expected.to belong_to(:author) }
     it { is_expected.to belong_to(:brand) }
-    it { is_expected.to belong_to(:user).optional }
+    it { is_expected.to belong_to(:creator).optional }
     it { is_expected.to belong_to(:parent).optional }
     it { is_expected.to have_many(:replies).dependent(:destroy) }
     it { is_expected.to have_many(:internal_notes).dependent(:restrict_with_error) }
@@ -226,7 +226,7 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: tweet.id, provider: 'twitter', content: tweet.attrs[:full_text],
-            brand: brand, author: author, user: user
+            brand: brand, author: author, creator: user
           }
         end
       end
@@ -250,7 +250,7 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: disqus_post[:id], provider: 'disqus', content: disqus_post[:raw_message],
-            brand: brand, author: author, user: user
+            brand: brand, author: author, creator: user
           }
         end
       end
@@ -276,7 +276,7 @@ RSpec.describe Ticket, type: :model do
           {
             external_uid: external_ticket_json[:external_uid], provider: 'external',
             content: external_ticket_json[:content],
-            brand: brand, author: author, user: user
+            brand: brand, author: author, creator: user
           }
         end
       end
