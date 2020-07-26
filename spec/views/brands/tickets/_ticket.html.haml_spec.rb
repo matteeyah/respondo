@@ -47,8 +47,8 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
   it 'displays internal notes' do
     render_ticket_partial
 
-    expect(rendered).to have_text("#{internal_notes.first.user.name}:").and have_text(internal_notes.first.content)
-      .and have_text("#{internal_notes.second.user.name}:").and have_text(internal_notes.second.content)
+    expect(rendered).to have_text("#{internal_notes.first.creator.name}:").and have_text(internal_notes.first.content)
+      .and have_text("#{internal_notes.second.creator.name}:").and have_text(internal_notes.second.content)
   end
 
   context 'when ticket has creator' do

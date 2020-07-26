@@ -71,12 +71,12 @@ ActiveRecord::Schema.define(version: 2020_05_24_021243) do
 
   create_table "internal_notes", force: :cascade do |t|
     t.text "content", null: false
-    t.integer "user_id", null: false
+    t.integer "creator_id", null: false
     t.integer "ticket_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_internal_notes_on_creator_id"
     t.index ["ticket_id"], name: "index_internal_notes_on_ticket_id"
-    t.index ["user_id"], name: "index_internal_notes_on_user_id"
   end
 
   create_table "internal_tickets", force: :cascade do |t|
@@ -152,5 +152,6 @@ ActiveRecord::Schema.define(version: 2020_05_24_021243) do
     t.index ["brand_id"], name: "index_users_on_brand_id"
   end
 
+  add_foreign_key "internal_notes", "users", column: "creator_id"
   add_foreign_key "tickets", "users", column: "creator_id"
 end
