@@ -22,8 +22,8 @@ module TicketsHelper
   def ticket_header_content(user_authorized, ticket, brand)
     header_content = ticket.author.username
 
-    if user_authorized && ticket.user
-      header_content = "#{ticket.user.name} as #{header_content}"
+    if user_authorized && ticket.creator
+      header_content = "#{ticket.creator.name} as #{header_content}"
     elsif ticket.parent_id.nil?
       header_content = "#{header_content} - #{ticket.actual_provider}"
     end

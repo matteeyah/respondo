@@ -55,12 +55,12 @@ RSpec.describe TicketsHelper, type: :helper do
       let(:user_authorized) { true }
 
       before do
-        ticket.user = FactoryBot.create(:user)
+        ticket.creator = FactoryBot.create(:user)
       end
 
       it 'shows local ticket author' do
         ticket_link = link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket))
-        expect(ticket_header_content).to eq("#{ticket.user.name} as #{ticket.author.username} - #{ticket_link}")
+        expect(ticket_header_content).to eq("#{ticket.creator.name} as #{ticket.author.username} - #{ticket_link}")
       end
     end
   end

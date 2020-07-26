@@ -51,15 +51,15 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
       .and have_text("#{internal_notes.second.user.name}:").and have_text(internal_notes.second.content)
   end
 
-  context 'when ticket has user' do
+  context 'when ticket has creator' do
     before do
-      ticket.update!(user: user)
+      ticket.update!(creator: user)
     end
 
-    it 'displays user along with author' do
+    it 'displays creator along with author' do
       render_ticket_partial
 
-      expect(rendered).to have_text("#{ticket.user.name} as #{ticket.author.username} - ").and have_text(ticket.content)
+      expect(rendered).to have_text("#{ticket.creator.name} as #{ticket.author.username} - ").and have_text(ticket.content)
     end
   end
 

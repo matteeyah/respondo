@@ -12,7 +12,7 @@ RSpec.describe TicketCreator, type: :service do
           let(:provider) { provider_param }
           let!(:parent) { FactoryBot.create(:internal_ticket, provider: provider).base_ticket }
           let(:brand) { parent.brand }
-          let(:user) { parent.user }
+          let(:user) { parent.creator }
 
           let(:ticket_body) do
             case provider
@@ -40,7 +40,7 @@ RSpec.describe TicketCreator, type: :service do
       let!(:parent) { FactoryBot.create(:external_ticket).base_ticket }
       let(:provider) { 'external' }
       let(:brand) { parent.brand }
-      let(:user) { parent.user }
+      let(:user) { parent.creator }
 
       let(:ticket_body) do
         JSON.parse(file_fixture('external_post_hash.json').read).merge(parent_uid: parent.external_uid).deep_symbolize_keys

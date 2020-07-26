@@ -37,7 +37,7 @@ class Ticket < ApplicationRecord
 
   scope :root, -> { where(parent: nil) }
 
-  belongs_to :user, optional: true
+  belongs_to :creator, optional: true, class_name: 'User'
   belongs_to :author
   belongs_to :brand
 
@@ -51,7 +51,7 @@ class Ticket < ApplicationRecord
       brand.tickets.twitter.create!(
         external_uid: tweet.id, content: tweet.attrs[:full_text], created_at: tweet.created_at,
         parent: brand.tickets.twitter.find_by(external_uid: tweet.in_reply_to_tweet_id.presence),
-        user: user, author: Author.from_twitter_user!(tweet.user), ticketable: InternalTicket.new
+        creator: user, author: Author.from_twitter_user!(tweet.user), ticketable: InternalTicket.new
       )
     end
 
@@ -59,7 +59,7 @@ class Ticket < ApplicationRecord
       brand.tickets.disqus.create!(
         external_uid: post[:id], content: post[:raw_message], created_at: post[:createdAt],
         parent: brand.tickets.disqus.find_by(external_uid: post[:parent]),
-        user: user, author: Author.from_disqus_user!(post[:author]), ticketable: InternalTicket.new
+        creator: user, author: Author.from_disqus_user!(post[:author]), ticketable: InternalTicket.new
       )
     end
 
@@ -68,7 +68,7 @@ class Ticket < ApplicationRecord
         external_uid: external_ticket_json[:external_uid], content: external_ticket_json[:content],
         created_at: external_ticket_json[:created_at],
         parent: brand.tickets.external.find_by(external_uid: external_ticket_json[:parent_uid]),
-        user: user, author: Author.from_external_author!(external_ticket_json[:author]),
+        creator: user, author: Author.from_external_author!(external_ticket_json[:author]),
         ticketable: ExternalTicket.new(response_url: external_ticket_json[:response_url],
                                        custom_provider: external_ticket_json[:custom_provider])
       )

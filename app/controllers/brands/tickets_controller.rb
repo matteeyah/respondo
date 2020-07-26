@@ -7,7 +7,7 @@ module Brands
 
     def index
       @pagy, tickets_relation = pagy(tickets)
-      @tickets = tickets_relation.with_descendants_hash(:author, :user, :brand, ticketable: [:base_ticket], internal_notes: [:user])
+      @tickets = tickets_relation.with_descendants_hash(:author, :creator, :brand, ticketable: [:base_ticket], internal_notes: [:user])
     end
 
     def show
