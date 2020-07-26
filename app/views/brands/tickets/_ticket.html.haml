@@ -1,49 +1,51 @@
-.row.ml-3.mb-3
-  %span.font-weight-lighter.mr-1= ticket_header_content(policy(brand).user_in_brand?, ticket, brand)
-.row.ml-3.mb-3
-  %span.font-weight-normal= ticket.content
+.row
+  .col-lg-8
+    .row.ml-3.mb-3
+      %span.font-weight-lighter.mr-1= ticket_header_content(policy(brand).user_in_brand?, ticket, brand)
+    .row.ml-3.mb-3
+      %span.font-weight-normal= ticket.content
 
-- if policy(ticket).internal_note?
-  - if ticket.internal_notes.any?
-    %ul.list-group.mb-3
-      - ticket.internal_notes.each do |internal_note|
-        %li.list-group-item.list-group-item-warning
-          %span.font-weight-bold.mr-1 #{internal_note.creator.name}:
-          %span= internal_note.content
-
-- if policy(brand).subscription? || Flipper.enabled?(:disable_subscriptions)
-  .row.ml-lg-3.justify-content-around.justify-content-lg-start{ id: "toggle-buttons-#{ticket.id}" }
-    - if policy(ticket).reply?
-      = button_tag fa_icon('reply'), class: 'btn btn-light', id: "toggle-reply-#{ticket.id}",
-        'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Show reply form'
     - if policy(ticket).internal_note?
-      = button_tag fa_icon('sticky-note'), class: 'btn btn-light mx-3', id: "toggle-internal-note-#{ticket.id}",
-        'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Show internal note form'
-    - if policy(ticket).invert_status?
-      = button_to brand_ticket_invert_status_path(brand, ticket), form_class: 'form-inline',
-        class: 'btn btn-outline-success form-control', 'data-toggle' => 'tooltip', 'data-placement': 'bottom',
-        title: invert_status_action_text(ticket.status) do
-        = invert_status_action(ticket.status)
+      - if ticket.internal_notes.any?
+        %ul.list-group.mb-3
+          - ticket.internal_notes.each do |internal_note|
+            %li.list-group-item.list-group-item-warning
+              %span.font-weight-bold.mr-1 #{internal_note.creator.name}:
+              %span= internal_note.content
 
-  .row.mt-2
-    - if policy(ticket).reply?
-      = form_with url: brand_ticket_reply_path(brand, ticket), class: 'form-inline col-12', id: "reply-form-#{ticket.id}",
-        html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off', hidden: '' } do |reply_form|
-        .input-group.col-12.col-lg-9
-          = reply_form.text_field :response_text, required: true, placeholder: 'Reply Text', class: 'form-control'
-          .input-group-append
-            = reply_form.submit 'Reply', class: 'btn btn-outline-secondary', id: "reply-#{ticket.id}"
-        = reply_form.button fa_icon('times'), type: :reset, id: "reply-reset-#{ticket.id}",
-          class: 'btn btn-outline-danger col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0',
-          'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Hide reply form'
-    - if policy(ticket).internal_note?
-      = form_with url: brand_ticket_internal_note_path(brand, ticket), class: 'form-inline col-12',
-        id: "internal-note-form-#{ticket.id}", html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off',
-        hidden: '' } do |reply_form|
-        .input-group.col-12.col-lg-9
-          = reply_form.text_field :internal_note_text, required: true, placeholder: 'Internal Note Text', class: 'form-control'
-          .input-group-append
-            = reply_form.submit 'Post', class: 'btn btn-outline-secondary', id: "internal-note-#{ticket.id}"
-        = reply_form.button fa_icon('times'), type: :reset, id: "internal-note-reset-#{ticket.id}", title: 'Hide internal note form',
-          class: 'btn btn-outline-danger col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0',
-          'data-toggle' => 'tooltip', 'data-placement': 'bottom'
+    - if policy(brand).subscription? || Flipper.enabled?(:disable_subscriptions)
+      .row.ml-lg-3.justify-content-around.justify-content-lg-start{ id: "toggle-buttons-#{ticket.id}" }
+        - if policy(ticket).reply?
+          = button_tag fa_icon('reply'), class: 'btn btn-light', id: "toggle-reply-#{ticket.id}",
+            'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Show reply form'
+        - if policy(ticket).internal_note?
+          = button_tag fa_icon('sticky-note'), class: 'btn btn-light mx-3', id: "toggle-internal-note-#{ticket.id}",
+            'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Show internal note form'
+        - if policy(ticket).invert_status?
+          = button_to brand_ticket_invert_status_path(brand, ticket), form_class: 'form-inline',
+            class: 'btn btn-outline-success form-control', 'data-toggle' => 'tooltip', 'data-placement': 'bottom',
+            title: invert_status_action_text(ticket.status) do
+            = invert_status_action(ticket.status)
+
+      .row.mt-2
+        - if policy(ticket).reply?
+          = form_with url: brand_ticket_reply_path(brand, ticket), class: 'form-inline col-12', id: "reply-form-#{ticket.id}",
+            html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off', hidden: '' } do |reply_form|
+            .input-group.col-12.col-lg-9
+              = reply_form.text_field :response_text, required: true, placeholder: 'Reply Text', class: 'form-control'
+              .input-group-append
+                = reply_form.submit 'Reply', class: 'btn btn-outline-secondary', id: "reply-#{ticket.id}"
+            = reply_form.button fa_icon('times'), type: :reset, id: "reply-reset-#{ticket.id}",
+              class: 'btn btn-outline-danger col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0',
+              'data-toggle' => 'tooltip', 'data-placement': 'bottom', title: 'Hide reply form'
+        - if policy(ticket).internal_note?
+          = form_with url: brand_ticket_internal_note_path(brand, ticket), class: 'form-inline col-12',
+            id: "internal-note-form-#{ticket.id}", html: { 'data-turbolinks-persist-scroll' => true, autocomplete: 'off',
+            hidden: '' } do |reply_form|
+            .input-group.col-12.col-lg-9
+              = reply_form.text_field :internal_note_text, required: true, placeholder: 'Internal Note Text', class: 'form-control'
+              .input-group-append
+                = reply_form.submit 'Post', class: 'btn btn-outline-secondary', id: "internal-note-#{ticket.id}"
+            = reply_form.button fa_icon('times'), type: :reset, id: "internal-note-reset-#{ticket.id}",
+              class: 'btn btn-outline-danger col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0',
+              title: 'Hide internal note form', 'data-toggle' => 'tooltip', 'data-placement': 'bottom'
