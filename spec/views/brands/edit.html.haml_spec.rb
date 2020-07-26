@@ -32,27 +32,51 @@ RSpec.describe 'brands/edit', type: :view do
     expect(render).to have_field('brand[domain]')
   end
 
-  context 'when brand has subscription' do
+  context 'when subscriptions are enabled' do
     before do
-      FactoryBot.create(:subscription, brand: brand)
+      allow(Flipper).to receive(:enabled?).with(:disable_subscriptions).and_return(false)
+    end
+
+    context 'when brand has subscription' do
+      before do
+        FactoryBot.create(:subscription, brand: brand)
+      end
+
+      it 'does not show buy subscription button' do
+        expect(render).not_to have_button('buy-subscription')
+      end
+
+      it 'shows update subscription button' do
+        expect(render).to have_button('update-subscription')
+      end
+
+      it 'shows cancel subscription button' do
+        expect(render).to have_button('cancel-subscription')
+      end
+    end
+
+    context 'when brand does not have subscription' do
+      it 'shows buy subscription button' do
+        expect(render).to have_button('buy-subscription')
+      end
+
+      it 'does not show update subscription button' do
+        expect(render).not_to have_button('update-subscription')
+      end
+
+      it 'does not show cancel subscription button' do
+        expect(render).not_to have_button('cancel-subscription')
+      end
+    end
+  end
+
+  context 'when subscriptions are disabled' do
+    before do
+      allow(Flipper).to receive(:enabled?).with(:disable_subscriptions).and_return(true)
     end
 
     it 'does not show buy subscription button' do
       expect(render).not_to have_button('buy-subscription')
-    end
-
-    it 'shows update subscription button' do
-      expect(render).to have_button('update-subscription')
-    end
-
-    it 'shows cancel subscription button' do
-      expect(render).to have_button('cancel-subscription')
-    end
-  end
-
-  context 'when brand does not have subscription' do
-    it 'shows buy subscription button' do
-      expect(render).to have_button('buy-subscription')
     end
 
     it 'does not show update subscription button' do
