@@ -44,7 +44,7 @@ class Ticket < ApplicationRecord
   belongs_to :parent, class_name: 'Ticket', optional: true
   has_many :replies, class_name: 'Ticket', foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
 
-  has_many :internal_notes, dependent: :restrict_with_error
+  has_many :internal_notes, dependent: :destroy
 
   class << self
     def from_tweet!(tweet, brand, user)
