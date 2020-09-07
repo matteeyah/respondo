@@ -4,7 +4,7 @@ title: Documentation
 nav_order: 1
 ---
 
-# Respondo docs 8-)
+# Respondo docs
 
 > Ticketing system for social media posts
 
