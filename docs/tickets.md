@@ -1,6 +1,7 @@
 ---
 layout: docs
-title: Documentation - Tickets
+title: Tickets
+description: Documentation relating to working with tickets.
 nav_order: 4
 ---
 

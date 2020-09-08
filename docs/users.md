@@ -1,6 +1,7 @@
 ---
 layout: docs
-title: Documentation - Users
+title: Users
+description: Documentation relating to managing users.
 nav_order: 2
 ---
 

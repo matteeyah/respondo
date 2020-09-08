@@ -1,6 +1,7 @@
 ---
 layout: docs
-title: Documentation - External Ticket Format
+title: External Ticket Format
+description: External ticket format for manually submitting tickets via API.
 nav_skip: true
 ---
 

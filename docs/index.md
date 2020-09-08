@@ -1,6 +1,7 @@
 ---
 layout: docs
-title: Documentation
+title: Home
+description: Welcome to Respondo's documentation!
 nav_order: 1
 ---
 
