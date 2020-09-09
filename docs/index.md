@@ -2,6 +2,9 @@
 layout: docs
 title: Home
 description: Welcome to Respondo's documentation!
+cta_button:
+  title: See Demo
+  url: https://respondohub.com/features#quick-demo
 nav_order: 1
 ---
 
