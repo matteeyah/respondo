@@ -11,7 +11,7 @@ gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching;
 gem 'puma', '~> 4.3.5' # Use Puma as the application server
 gem 'rails', '~> 6.0.3.1'
 gem 'turbolinks', '~> 5' # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'webpacker', '~> 5.1.1' # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
+gem 'webpacker', '~> 5.2.1' # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 
 # Not used
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -26,7 +26,7 @@ gem 'omniauth-disqus', '~> 1.0.1'
 gem 'omniauth-google-oauth2', '~> 0.8.0'
 gem 'omniauth-twitter', '~> 1.4.0'
 # Other
-gem 'aasm', '~> 5.0.6' # state machine
+gem 'aasm', '~> 5.1.1' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
 gem 'attr_encrypted', '~> 3.1.0' # encrypted attributes
 gem 'disqus_api', '~> 0.0.7' # Disqus client
@@ -44,18 +44,18 @@ gem 'twitter', '~> 7.0.0' # Twitter client
 group :development, :test do
   # Linters
   ## Ruby linter
-  gem 'rubocop', '~> 0.88.0', require: false
-  gem 'rubocop-performance', '~> 1.7.1', require: false
-  gem 'rubocop-rails', '~> 2.6.0', require: false
-  gem 'rubocop-rspec', '~> 1.42.0', require: false
+  gem 'rubocop', '~> 0.90.0', require: false
+  gem 'rubocop-performance', '~> 1.8.0', require: false
+  gem 'rubocop-rails', '~> 2.8.0', require: false
+  gem 'rubocop-rspec', '~> 1.43.0', require: false
   ## Haml linter
   gem 'haml_lint', '~> 0.35.0', require: false
   # Other
   gem 'bullet', '~> 6.1.0' # N+1 monitoring
   gem 'factory_bot_rails', '~> 6.1.0' # Use factory_bot
   gem 'faker', '~> 2.13.0' # Sample data
-  gem 'html-proofer', '~> 3.15.0' # Runtime HTML proofer
-  gem 'license_finder', '~> 6.6.2' # license checking
+  gem 'html-proofer', '~> 3.16.0' # Runtime HTML proofer
+  gem 'license_finder', '~> 6.8.2' # license checking
   gem 'pry-byebug', '~> 3.9.0' # pry debugging
   gem 'rspec-rails', '4.0.1' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
@@ -79,9 +79,9 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers' # Easy installation and use of web drivers to run system tests with browsers
   # Other
-  gem 'mini_racer', '~> 0.2.6' # JS runtime for execjs
-  gem 'shoulda-matchers', '~> 4.3.0' # One-liner matchers
-  gem 'simplecov', '~> 0.18.5', require: false # Code coverage
+  gem 'mini_racer', '~> 0.3.1' # JS runtime for execjs
+  gem 'shoulda-matchers', '~> 4.4.1' # One-liner matchers
+  gem 'simplecov', '~> 0.19.0', require: false # Code coverage
   gem 'webmock', '~> 3.8.3' # Stubs and expectations for HTTP requests
 end
 
