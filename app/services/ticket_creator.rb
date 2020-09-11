@@ -4,6 +4,8 @@ class TicketCreator < ApplicationService
   attr_reader :provider, :body, :brand, :user
 
   def initialize(provider, body, brand, user)
+    super()
+
     @provider = provider
     @body = body
     @brand = brand

@@ -4,6 +4,8 @@ class TicketResponder < ApplicationService
   attr_reader :ticket, :response, :user
 
   def initialize(ticket, response, user)
+    super()
+
     @ticket = ticket
     @response = response
     @user = user

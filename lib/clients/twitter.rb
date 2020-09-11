@@ -3,6 +3,8 @@
 module Clients
   class Twitter < Clients::Client
     def initialize(api_key, api_secret, token, secret)
+      super()
+
       @api_key = api_key
       @api_secret = api_secret
       @token = token

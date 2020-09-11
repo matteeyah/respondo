@@ -5,13 +5,12 @@
     .row.ml-3.mb-3
       %span.font-weight-normal= ticket.content
 
-    - if policy(ticket).internal_note?
-      - if ticket.internal_notes.any?
-        %ul.list-group.mb-3
-          - ticket.internal_notes.each do |internal_note|
-            %li.list-group-item.list-group-item-warning
-              %span.font-weight-bold.mr-1 #{internal_note.creator.name}:
-              %span= internal_note.content
+    - if policy(ticket).internal_note? && ticket.internal_notes.any?
+      %ul.list-group.mb-3
+        - ticket.internal_notes.each do |internal_note|
+          %li.list-group-item.list-group-item-warning
+            %span.font-weight-bold.mr-1 #{internal_note.creator.name}:
+            %span= internal_note.content
 
     - if policy(brand).subscription? || Flipper.enabled?(:disable_subscriptions)
       .row.ml-lg-3.justify-content-around.justify-content-lg-start{ id: "toggle-buttons-#{ticket.id}" }
