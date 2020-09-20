@@ -3,14 +3,14 @@
   "private": true,
   "dependencies": {
     "@rails/ujs": "^6.0.3",
-    "@rails/webpacker": "5.1.1",
+    "@rails/webpacker": "5.2.1",
     "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",
   "devDependencies": {
     "markdownlint-cli": "^0.23.1",
     "standard": "^14.3.4",
-    "stylelint": "^13.6.0",
+    "stylelint": "^13.7.1",
     "stylelint-config-standard": "^20.0.0",
     "webpack-dev-server": "^3.11.0"
   },
