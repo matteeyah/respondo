@@ -1,8 +1,7 @@
 %h4
   %span #{brand.screen_name}: Tickets
   - if policy(:ticket).refresh? && policy(brand).user_in_brand?
-    = button_to refresh_brand_tickets_path(brand), form_class: 'd-inline-block', class: 'btn btn-light' do
-      = fa_icon('sync')
+    = button_to 'Load Tickets', refresh_brand_tickets_path(brand), form_class: 'd-inline-block', class: 'btn btn-primary'
 %hr
 
 - if policy(brand).user_in_brand?

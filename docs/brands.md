@@ -14,7 +14,7 @@ When you first sign in, you can click `Authorize Brand` to connect your brand
 Twitter account.
 
 When signed in, you can load new tickets associated with your Brand by pressing
-the `Refresh` (<i class="fas fa-sync"></i>) button.
+the `Load Tickets` button.
 
 ## Brand accounts
 
