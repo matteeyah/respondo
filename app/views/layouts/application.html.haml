@@ -24,9 +24,8 @@
         %span.navbar-toggler-icon
       .collapse.navbar-collapse#navbar-content
         %ul.navbar-nav.mr-auto
-          %li.nav-item= active_link_to 'Brands', brands_path, active: [{ brands: :index }], class: 'nav-link'
           - if current_brand
-            %li.nav-item= active_link_to 'Current Brand', brand_tickets_path(current_brand), active: :exclusive, class: 'nav-link'
+            %li.nav-item= active_link_to 'Tickets', brand_tickets_path(current_brand), active: :exclusive, class: 'nav-link'
           %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link'
           %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link'
           %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link'

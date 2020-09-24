@@ -4,10 +4,6 @@ class BrandsController < Brands::ApplicationController
   include Pundit
   include Pagy::Backend
 
-  def index
-    @pagy, @brands = pagy(brands)
-  end
-
   def edit
     authorize(brand)
 
