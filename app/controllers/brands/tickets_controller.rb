@@ -67,7 +67,7 @@ module Brands
       LoadNewTicketsJob.perform_later(brand.id)
 
       redirect_to brand_tickets_path(brand),
-                  flash: { success: 'Ticket refresh successfully initiated.' }
+                  flash: { success: 'Tickets will be loaded in the background. Refresh the page to see new tickets once they load.' }
     end
 
     private

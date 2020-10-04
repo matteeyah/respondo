@@ -567,7 +567,9 @@ RSpec.describe Brands::TicketsController, type: :request do
         it 'sets the flash' do
           post_refresh
 
-          expect(controller.flash[:success]).to eq('Ticket refresh successfully initiated.')
+          expect(controller.flash[:success]).to eq(
+            'Tickets will be loaded in the background. Refresh the page to see new tickets once they load.'
+          )
         end
 
         it 'redirects to brand tickets path' do
