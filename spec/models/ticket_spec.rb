@@ -91,8 +91,8 @@ RSpec.describe Ticket, type: :model do
       end
     end
 
-    describe 'open' do
-      subject(:open_ticket) { ticket.open! }
+    describe 'reopen' do
+      subject(:open_ticket) { ticket.reopen! }
 
       let(:status) { :solved }
 

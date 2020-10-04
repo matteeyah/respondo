@@ -15,10 +15,10 @@ class Ticket < ApplicationRecord
   delegate :actual_provider, to: :ticketable
 
   aasm column: :status, enum: true do
-    state :open, initial: true, before_enter: proc { parent&.solved? && parent&.open! }
+    state :open, initial: true, before_enter: proc { parent&.solved? && parent&.reopen! }
     state :solved
 
-    event :open do
+    event :reopen do
       before do
         ancestors.update_all(status: 'open') # rubocop:disable Rails/SkipsModelValidations
       end

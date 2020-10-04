@@ -11,7 +11,7 @@ nav_order: 4
 # Working with tickets
 
 If someone leaves a public reply on a ticket that's closed, it's automatically
-re-opened.
+reopened.
 
 ## Filtering
 
@@ -43,15 +43,15 @@ You can leave internal notes, visible only to other brand members. To open the
 internal note form, click the note (<i class="fas fa-sticky-note"></i>) button
 below the ticket you want to respond to.
 
-### Solving / Opening
+### Solving / Re-Opening
 
-You can Solve open tickets and Open solved tickets. Click the solve or open
+You can Solve open tickets and Re-Open solved tickets. Click the solve or reopen
 (<i class="fas fa-check"></i>/<i class="fas fa-folder-open"></i>) button below
 the ticket you want to change the status of. Only members of a brand can Solve
-or Open tickets that belong to that brand. If you solve a ticket that has
-replies, all of its descendants will automatically be solved as well. If you open
-a ticket that has replies, all of its ascendants will automatically be opened as
-well.
+or Reopen tickets that belong to that brand. If you solve a ticket that has
+replies, all of its descendants will automatically be solved as well. If you
+reopen a ticket that has replies, all of its ascendants will automatically be
+reopened as well.
 
 ### Personal account
 

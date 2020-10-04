@@ -53,7 +53,7 @@ module Brands
       when 'open'
         ticket.solve!
       when 'solved'
-        ticket.open!
+        ticket.reopen!
       end
 
       redirect_to brand_tickets_path(brand),
