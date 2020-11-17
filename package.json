@@ -8,9 +8,9 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "markdownlint-cli": "^0.23.1",
-    "standard": "^14.3.4",
-    "stylelint": "^13.7.1",
+    "markdownlint-cli": "^0.25.0",
+    "standard": "^16.0.2",
+    "stylelint": "^13.7.2",
     "stylelint-config-standard": "^20.0.0",
     "webpack-dev-server": "^3.11.0"
   },
