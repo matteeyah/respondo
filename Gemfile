@@ -8,8 +8,8 @@ ruby '2.7.1'
 # Core
 gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
 gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
-gem 'puma', '~> 5.0.0' # Use Puma as the application server
-gem 'rails', '~> 6.0.3.4'
+gem 'puma', '~> 5.1.1' # Use Puma as the application server
+gem 'rails', '~> 6.1.0'
 gem 'turbolinks', '~> 5' # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'webpacker', '~> 5.2.1' # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 
@@ -44,18 +44,18 @@ gem 'twitter', '~> 7.0.0' # Twitter client
 group :development, :test do
   # Linters
   ## Ruby linter
-  gem 'rubocop', '~> 1.3.1', require: false
+  gem 'rubocop', '~> 1.6.1', require: false
   gem 'rubocop-performance', '~> 1.9.0', require: false
-  gem 'rubocop-rails', '~> 2.8.1', require: false
+  gem 'rubocop-rails', '~> 2.9.0', require: false
   gem 'rubocop-rspec', '~> 2.0.0', require: false
   ## Haml linter
   gem 'haml_lint', '~> 0.36.0', require: false
   # Other
   gem 'bullet', '~> 6.1.0' # N+1 monitoring
   gem 'factory_bot_rails', '~> 6.1.0' # Use factory_bot
-  gem 'faker', '~> 2.14.0' # Sample data
-  gem 'html-proofer', '~> 3.17.0' # Runtime HTML proofer
-  gem 'license_finder', '~> 6.9.0' # license checking
+  gem 'faker', '~> 2.15.1' # Sample data
+  gem 'html-proofer', '~> 3.18.0' # Runtime HTML proofer
+  gem 'license_finder', '~> 6.10.0' # license checking
   gem 'pry-byebug', '~> 3.9.0' # pry debugging
   gem 'rspec-rails', '4.0.1' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
@@ -81,7 +81,7 @@ group :test do
   # Other
   gem 'mini_racer', '~> 0.3.1' # JS runtime for execjs
   gem 'shoulda-matchers', '~> 4.4.1' # One-liner matchers
-  gem 'simplecov', '~> 0.19.0', require: false # Code coverage
+  gem 'simplecov', '~> 0.20.0', require: false # Code coverage
   gem 'webmock', '~> 3.10.0' # Stubs and expectations for HTTP requests
 end
 
