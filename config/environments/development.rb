@@ -64,11 +64,6 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # This prevents CSRF in Omniauth authentication requests
-  # It should be removed when upstream is fixed
-  # https://github.com/Respondo/respondo/issues/68
-  OmniAuth.config.before_request_phase = OmniauthCsrfTokenVerifier.new
-
   # Bullet N+1 monitoring
   # config.after_initialize do
   #   Bullet.enable = true

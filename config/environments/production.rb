@@ -111,9 +111,4 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
-
-  # This prevents CSRF in Omniauth authentication requests
-  # It should be removed when upstream is fixed
-  # https://github.com/Respondo/respondo/issues/68
-  OmniAuth.config.before_request_phase = OmniauthCsrfTokenVerifier.new
 end
