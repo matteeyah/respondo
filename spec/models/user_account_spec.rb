@@ -119,7 +119,7 @@ RSpec.describe UserAccount, type: :model do
               end
 
               it 'has an error about provider being taken' do
-                expect(from_omniauth.errors.details).to include(provider: array_including(a_hash_including(error: :taken)))
+                expect(from_omniauth.errors.details.to_hash).to include(provider: array_including(a_hash_including(error: :taken)))
               end
 
               context 'when the user email belongs to brand domain' do
