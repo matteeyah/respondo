@@ -8,14 +8,14 @@ jobs:
     container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         name: Cache yarn dependencies
         with:
           path: vendor/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         name: Cache bundler dependencies
         with:
           path: vendor/bundle
@@ -35,14 +35,14 @@ jobs:
     container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         name: Cache yarn dependencies
         with:
           path: vendor/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         name: Cache bundler dependencies
         with:
           path: vendor/bundle
@@ -62,14 +62,14 @@ jobs:
     container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         name: Cache yarn dependencies
         with:
           path: vendor/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         name: Cache bundler dependencies
         with:
           path: vendor/bundle
@@ -87,7 +87,7 @@ jobs:
     container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         name: Cache bundler dependencies
         with:
           path: vendor/bundle
@@ -103,7 +103,7 @@ jobs:
     container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         name: Cache bundler dependencies
         with:
           path: vendor/bundle
@@ -119,7 +119,7 @@ jobs:
     container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         name: Cache yarn dependencies
         with:
           path: vendor/yarn
@@ -135,7 +135,7 @@ jobs:
     container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         name: Cache yarn dependencies
         with:
           path: vendor/yarn
@@ -151,7 +151,7 @@ jobs:
     container: respondo/respondo-ci:latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         name: Cache yarn dependencies
         with:
           path: vendor/yarn
