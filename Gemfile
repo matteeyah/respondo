@@ -51,7 +51,9 @@ group :development, :test do
   ## Haml linter
   gem 'haml_lint', '~> 0.36.0', require: false
   # Other
-  gem 'bullet', '~> 6.1.0' # N+1 monitoring
+  # Bullet does not support Rails 6.1 currently
+  # https://github.com/Respondo/respondo/issues/247
+  # gem 'bullet', '~> 6.1.0' # N+1 monitoring
   gem 'factory_bot_rails', '~> 6.1.0' # Use factory_bot
   gem 'faker', '~> 2.15.1' # Sample data
   gem 'html-proofer', '~> 3.18.0' # Runtime HTML proofer

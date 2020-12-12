@@ -52,19 +52,19 @@ Rails.application.configure do
   OmniAuth.config.test_mode = true
 
   # Bullet N+1 monitoring
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.bullet_logger = true
-    Bullet.raise = true
+  # config.after_initialize do
+  #   Bullet.enable = true
+  #   Bullet.bullet_logger = true
+  #   Bullet.raise = true
 
-    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'User', association: :brand
-    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'UserAccount', association: :user
-    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'BrandAccount', association: :brand
-    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :creator
-    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :brand
-    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :ticketable
-    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :internal_notes
-    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'InternalTicket', association: :base_ticket
-    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'ExternalTicket', association: :base_ticket
-  end
+  #   Bullet.add_whitelist type: :unused_eager_loading, class_name: 'User', association: :brand
+  #   Bullet.add_whitelist type: :unused_eager_loading, class_name: 'UserAccount', association: :user
+  #   Bullet.add_whitelist type: :unused_eager_loading, class_name: 'BrandAccount', association: :brand
+  #   Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :creator
+  #   Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :brand
+  #   Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :ticketable
+  #   Bullet.add_whitelist type: :unused_eager_loading, class_name: 'Ticket', association: :internal_notes
+  #   Bullet.add_whitelist type: :unused_eager_loading, class_name: 'InternalTicket', association: :base_ticket
+  #   Bullet.add_whitelist type: :unused_eager_loading, class_name: 'ExternalTicket', association: :base_ticket
+  # end
 end

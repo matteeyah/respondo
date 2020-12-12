@@ -70,19 +70,19 @@ Rails.application.configure do
   OmniAuth.config.before_request_phase = OmniauthCsrfTokenVerifier.new
 
   # Bullet N+1 monitoring
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.alert = true
-    Bullet.bullet_logger = true
-    Bullet.console = true
-    Bullet.rails_logger = true
-    Bullet.add_footer = true
+  # config.after_initialize do
+  #   Bullet.enable = true
+  #   Bullet.alert = true
+  #   Bullet.bullet_logger = true
+  #   Bullet.console = true
+  #   Bullet.rails_logger = true
+  #   Bullet.add_footer = true
 
-    # This seems to come from AR itself - when saving an account AR verifies
-    # that there is a user associated with the account and this triggers bullet
-    # unused_eager_loading for some reason.
-    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'UserAccount', association: :user
-    # This doesn't have a Bullet Call Stack when triggering.
-    Bullet.add_whitelist type: :unused_eager_loading, class_name: 'User', association: :brand
-  end
+  #   # This seems to come from AR itself - when saving an account AR verifies
+  #   # that there is a user associated with the account and this triggers bullet
+  #   # unused_eager_loading for some reason.
+  #   Bullet.add_whitelist type: :unused_eager_loading, class_name: 'UserAccount', association: :user
+  #   # This doesn't have a Bullet Call Stack when triggering.
+  #   Bullet.add_whitelist type: :unused_eager_loading, class_name: 'User', association: :brand
+  # end
 end
