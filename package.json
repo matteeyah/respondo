@@ -8,11 +8,11 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "markdownlint-cli": "^0.25.0",
+    "markdownlint-cli": "^0.26.0",
     "standard": "^16.0.3",
     "stylelint": "^13.8.0",
     "stylelint-config-standard": "^20.0.0",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.1"
   },
   "stylelint": {
     "extends": "stylelint-config-standard"

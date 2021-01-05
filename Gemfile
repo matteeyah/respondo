@@ -34,8 +34,7 @@ gem 'aasm', '~> 5.1.1' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
 gem 'attr_encrypted', '~> 3.1.0' # encrypted attributes
 gem 'disqus_api', '~> 0.0.7' # Disqus client
-gem 'flipper', '~> 0.19.0' # Feature flags
-gem 'flipper-active_record', '~> 0.19.0' # ActiveRecord adapter for flipper
+gem 'flipper-active_record', '~> 0.20.1' # ActiveRecord adapter for flipper
 gem 'hamlit', '~> 2.13.0' # High-Performance HAML markup processing
 gem 'hashie', '~> 4.1.0' # Hash utilities
 gem 'json-schema', '~> 2.8.1' # JSON schema validation
@@ -48,10 +47,10 @@ gem 'twitter', '~> 7.0.0' # Twitter client
 group :development, :test do
   # Linters
   ## Ruby linter
-  gem 'rubocop', '~> 1.6.1', require: false
-  gem 'rubocop-performance', '~> 1.9.0', require: false
-  gem 'rubocop-rails', '~> 2.9.0', require: false
-  gem 'rubocop-rspec', '~> 2.0.0', require: false
+  gem 'rubocop', '~> 1.7.0', require: false
+  gem 'rubocop-performance', '~> 1.9.1', require: false
+  gem 'rubocop-rails', '~> 2.9.1', require: false
+  gem 'rubocop-rspec', '~> 2.1.0', require: false
   ## Haml linter
   gem 'haml_lint', '~> 0.36.0', require: false
   # Other
@@ -63,13 +62,13 @@ group :development, :test do
   gem 'html-proofer', '~> 3.18.0' # Runtime HTML proofer
   gem 'license_finder', '~> 6.10.0' # license checking
   gem 'pry-byebug', '~> 3.9.0' # pry debugging
-  gem 'rspec-rails', '4.0.1' # rspec testing framework
+  gem 'rspec-rails', '4.0.2' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
 end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'listen', '~> 3.3.1'
+  gem 'listen', '~> 3.4.0'
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
@@ -87,8 +86,8 @@ group :test do
   # Other
   gem 'mini_racer', '~> 0.3.1' # JS runtime for execjs
   gem 'shoulda-matchers', '~> 4.4.1' # One-liner matchers
-  gem 'simplecov', '~> 0.20.0', require: false # Code coverage
-  gem 'webmock', '~> 3.10.0' # Stubs and expectations for HTTP requests
+  gem 'simplecov', '~> 0.21.1', require: false # Code coverage
+  gem 'webmock', '~> 3.11.0' # Stubs and expectations for HTTP requests
 end
 
 group :production do
