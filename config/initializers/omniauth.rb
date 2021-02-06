@@ -14,10 +14,3 @@ OmniAuth::Strategies::Disqus.class_eval do
     full_host + script_name + callback_path
   end
 end
-
-# This prevents CSRF in Omniauth authentication requests.
-# It should be removed when upstream is fixed.
-# This isnt't in the environment initializers because we want to make sure
-# there's no Omniauth GET request when testing the application.
-# https://github.com/Respondo/respondo/issues/68
-OmniAuth.config.allowed_request_methods = [:post]

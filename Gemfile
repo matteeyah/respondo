@@ -28,7 +28,7 @@ gem 'omniauth-twitter', '~> 1.4.0'
 # This prevents CSRF in Omniauth authentication requests
 # It should be removed when upstream is fixed
 # https://github.com/Respondo/respondo/issues/68
-gem 'omniauth-rails_csrf_protection', '~> 0.1'
+gem 'omniauth-rails_csrf_protection', '~> 1.0.0'
 # Other
 gem 'aasm', '~> 5.1.1' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
