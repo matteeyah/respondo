@@ -8,7 +8,7 @@ ruby '2.7.1'
 # Core
 gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
 gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
-gem 'puma', '~> 5.1.1' # Use Puma as the application server
+gem 'puma', '~> 5.2.1' # Use Puma as the application server
 gem 'rails', '~> 6.1.0'
 gem 'turbolinks', '~> 5' # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'webpacker', '~> 5.2.1' # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -35,7 +35,7 @@ gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
 gem 'attr_encrypted', '~> 3.1.0' # encrypted attributes
 gem 'disqus_api', '~> 0.0.7' # Disqus client
 gem 'flipper-active_record', '~> 0.20.1' # ActiveRecord adapter for flipper
-gem 'hamlit', '~> 2.13.0' # High-Performance HAML markup processing
+gem 'hamlit', '~> 2.14.4' # High-Performance HAML markup processing
 gem 'hashie', '~> 4.1.0' # Hash utilities
 gem 'json-schema', '~> 2.8.1' # JSON schema validation
 gem 'pagy', '~> 3.5' # Pagination
@@ -47,12 +47,12 @@ gem 'twitter', '~> 7.0.0' # Twitter client
 group :development, :test do
   # Linters
   ## Ruby linter
-  gem 'rubocop', '~> 1.7.0', require: false
+  gem 'rubocop', '~> 1.9.1', require: false
   gem 'rubocop-performance', '~> 1.9.1', require: false
   gem 'rubocop-rails', '~> 2.9.1', require: false
-  gem 'rubocop-rspec', '~> 2.1.0', require: false
+  gem 'rubocop-rspec', '~> 2.2.0', require: false
   ## Haml linter
-  gem 'haml_lint', '~> 0.36.0', require: false
+  gem 'haml_lint', '~> 0.37.0', require: false
   # Other
   # Bullet does not support Rails 6.1 currently
   # https://github.com/Respondo/respondo/issues/247
@@ -85,7 +85,7 @@ group :test do
   gem 'webdrivers' # Easy installation and use of web drivers to run system tests with browsers
   # Other
   gem 'mini_racer', '~> 0.3.1' # JS runtime for execjs
-  gem 'shoulda-matchers', '~> 4.4.1' # One-liner matchers
+  gem 'shoulda-matchers', '~> 4.5.1' # One-liner matchers
   gem 'simplecov', '~> 0.21.1', require: false # Code coverage
   gem 'webmock', '~> 3.11.0' # Stubs and expectations for HTTP requests
 end
