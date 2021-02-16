@@ -47,7 +47,7 @@ gem 'twitter', '~> 7.0.0' # Twitter client
 group :development, :test do
   # Linters
   ## Ruby linter
-  gem 'rubocop', '~> 1.9.1', require: false
+  gem 'rubocop', '~> 1.10.0', require: false
   gem 'rubocop-performance', '~> 1.9.1', require: false
   gem 'rubocop-rails', '~> 2.9.1', require: false
   gem 'rubocop-rspec', '~> 2.2.0', require: false
@@ -58,7 +58,7 @@ group :development, :test do
   # https://github.com/Respondo/respondo/issues/247
   # gem 'bullet', '~> 6.1.0' # N+1 monitoring
   gem 'factory_bot_rails', '~> 6.1.0' # Use factory_bot
-  gem 'faker', '~> 2.15.1' # Sample data
+  gem 'faker', '~> 2.16.0' # Sample data
   gem 'html-proofer', '~> 3.18.0' # Runtime HTML proofer
   gem 'license_finder', '~> 6.10.0' # license checking
   gem 'pry-byebug', '~> 3.9.0' # pry debugging
