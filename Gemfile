@@ -9,7 +9,7 @@ ruby '2.7.1'
 gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
 gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
 gem 'puma', '~> 5.2.1' # Use Puma as the application server
-gem 'rails', '~> 6.1.0'
+gem 'rails', '~> 6.1.3'
 gem 'turbolinks', '~> 5' # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'webpacker', '~> 5.2.1' # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 
