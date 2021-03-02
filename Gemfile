@@ -47,8 +47,8 @@ gem 'twitter', '~> 7.0.0' # Twitter client
 group :development, :test do
   # Linters
   ## Ruby linter
-  gem 'rubocop', '~> 1.10.0', require: false
-  gem 'rubocop-performance', '~> 1.9.1', require: false
+  gem 'rubocop', '~> 1.11.0', require: false
+  gem 'rubocop-performance', '~> 1.10.1', require: false
   gem 'rubocop-rails', '~> 2.9.1', require: false
   gem 'rubocop-rspec', '~> 2.2.0', require: false
   ## Haml linter
@@ -87,7 +87,7 @@ group :test do
   gem 'mini_racer', '~> 0.3.1' # JS runtime for execjs
   gem 'shoulda-matchers', '~> 4.5.1' # One-liner matchers
   gem 'simplecov', '~> 0.21.1', require: false # Code coverage
-  gem 'webmock', '~> 3.11.0' # Stubs and expectations for HTTP requests
+  gem 'webmock', '~> 3.12.0' # Stubs and expectations for HTTP requests
 end
 
 group :production do
