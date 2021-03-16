@@ -23,7 +23,7 @@ gem 'webpacker', '~> 5.2.1' # Transpile app-like JavaScript. Read more: https://
 
 # Omniauth
 gem 'omniauth-disqus', '~> 1.0.1'
-gem 'omniauth-google-oauth2', '~> 0.8.0'
+gem 'omniauth-google-oauth2', '~> 1.0.0'
 gem 'omniauth-twitter', '~> 1.4.0'
 # This prevents CSRF in Omniauth authentication requests
 # It should be removed when upstream is fixed
@@ -38,10 +38,10 @@ gem 'flipper-active_record', '~> 0.20.1' # ActiveRecord adapter for flipper
 gem 'hamlit', '~> 2.14.4' # High-Performance HAML markup processing
 gem 'hashie', '~> 4.1.0' # Hash utilities
 gem 'json-schema', '~> 2.8.1' # JSON schema validation
-gem 'pagy', '~> 3.5' # Pagination
+gem 'pagy', '~> 4.1.0' # Pagination
 gem 'pundit', '~> 2.1.0' # OO Policy objects
 gem 'sass-rails', '~> 6.0.0' # SCSS CSS pre-processor
-gem 'sidekiq', '~> 6.1.0' # Background job processing
+gem 'sidekiq', '~> 6.2.0' # Background job processing
 gem 'twitter', '~> 7.0.0' # Twitter client
 
 group :development, :test do
@@ -58,11 +58,11 @@ group :development, :test do
   # https://github.com/Respondo/respondo/issues/247
   # gem 'bullet', '~> 6.1.0' # N+1 monitoring
   gem 'factory_bot_rails', '~> 6.1.0' # Use factory_bot
-  gem 'faker', '~> 2.16.0' # Sample data
+  gem 'faker', '~> 2.17.0' # Sample data
   gem 'html-proofer', '~> 3.18.0' # Runtime HTML proofer
-  gem 'license_finder', '~> 6.10.0' # license checking
+  gem 'license_finder', '~> 6.12.0' # license checking
   gem 'pry-byebug', '~> 3.9.0' # pry debugging
-  gem 'rspec-rails', '4.0.2' # rspec testing framework
+  gem 'rspec-rails', '~> 5.0.0' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
 end
 
