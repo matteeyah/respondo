@@ -47,7 +47,7 @@ gem 'twitter', '~> 7.0.0' # Twitter client
 group :development, :test do
   # Linters
   ## Ruby linter
-  gem 'rubocop', '~> 1.11.0', require: false
+  gem 'rubocop', '~> 1.12.0', require: false
   gem 'rubocop-performance', '~> 1.10.1', require: false
   gem 'rubocop-rails', '~> 2.9.1', require: false
   gem 'rubocop-rspec', '~> 2.2.0', require: false
