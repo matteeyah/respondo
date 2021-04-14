@@ -1,0 +1,1 @@
+Handle cursor size in the custom GTK integration
