@@ -1,5 +1,4 @@
 'use strict'
-/* global Alert */
 
 // This file is automatically compiled by Webpack, along with any other files
 // present in this directory. You're encouraged to place your actual application logic in
@@ -39,13 +38,6 @@ window.setupToggleResponseFormsClickListeners = function (ticketId) {
 }
 
 document.addEventListener('turbolinks:load', (event) => {
-  // Automatically dismiss alerts
-  document.querySelectorAll('[role="alert"]').forEach((element) => {
-    window.setTimeout(function () {
-      new Alert(element).close()
-    }, 2000)
-  })
-
   // Remember scroll position
   document.querySelectorAll('[data-turbolinks-persist-scroll="true"]').forEach((element) => {
     element.addEventListener('click', () => {
