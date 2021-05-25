@@ -22,6 +22,14 @@ class Subscription < ApplicationRecord
   private
 
   def paddle_client
-    @paddle_client ||= Paddle::Client.new(ENV['PADDLE_VENDOR_ID'], ENV['PADDLE_VENDOR_AUTH'])
+    @paddle_client ||= Paddle::Client.new(vendor_id, vendor_auth)
+  end
+
+  def vendor_id
+    @vendor_id ||= Rails.application.config.paddle.vendor_id
+  end
+
+  def vendor_auth
+    @vendor_auth ||= Rails.application.config.paddle.vendor_auth
   end
 end
