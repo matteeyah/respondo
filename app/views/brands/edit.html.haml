@@ -57,7 +57,7 @@
 = content_for :custom_javascript do
   %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
   :javascript
-    Paddle.Setup({ vendor: #{Rails.application.config.paddle.vendor_id} })
+    Paddle.Setup({ vendor: #{Rails.application.config.x.paddle.vendor_id} })
 
   -# rubocop:disable Style/IdenticalConditionalBranches
   - if brand.subscription&.running?

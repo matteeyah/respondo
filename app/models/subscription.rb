@@ -26,10 +26,10 @@ class Subscription < ApplicationRecord
   end
 
   def vendor_id
-    @vendor_id ||= Rails.application.config.paddle.vendor_id
+    @vendor_id ||= Rails.application.config.x.paddle.vendor_id
   end
 
   def vendor_auth
-    @vendor_auth ||= Rails.application.config.paddle.vendor_auth
+    @vendor_auth ||= Rails.application.config.x.paddle.vendor_auth
   end
 end

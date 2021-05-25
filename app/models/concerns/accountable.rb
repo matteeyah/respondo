@@ -22,18 +22,18 @@ module Accountable
   end
 
   def twitter_api_key
-    @twitter_api_key ||= Rails.application.config.twitter.api_key
+    @twitter_api_key ||= Rails.application.config.x.twitter.api_key
   end
 
   def twitter_api_secret
-    @twitter_api_secret ||= Rails.application.config.twitter.api_secret
+    @twitter_api_secret ||= Rails.application.config.x.twitter.api_secret
   end
 
   def disqus_public_key
-    @disqus_public_key ||= Rails.application.config.disqus.public_key
+    @disqus_public_key ||= Rails.application.config.x.disqus.public_key
   end
 
   def disqus_secret_key
-    @disqus_secret_key ||= Rails.application.config.disqus.secret_key
+    @disqus_secret_key ||= Rails.application.config.x.disqus.secret_key
   end
 end
