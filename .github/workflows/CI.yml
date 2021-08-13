@@ -32,7 +32,7 @@ jobs:
         run: bundle exec rspec --tag ~type:system
   rspec-system:
     runs-on: ubuntu-latest
-    container: ruby-yarn-chromium:3.0.2-1.22.5-90.0.4430.212
+    container: matteeyah/ruby-yarn-chromium:3.0.2-1.22.5-90.0.4430.212
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
