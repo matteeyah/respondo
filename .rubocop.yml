@@ -31,6 +31,9 @@ Metrics/MethodLength:
   Exclude:
     - 'db/migrate/*'
 
+Naming/InclusiveLanguage:
+  Enabled: false
+
 RSpec/ExampleLength:
   Exclude:
     - 'spec/system/**/*'
