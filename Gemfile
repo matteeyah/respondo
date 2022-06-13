@@ -9,7 +9,7 @@ ruby '3.1.2'
 gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
 gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
 gem 'puma', '~> 5.6.4' # Use Puma as the application server
-gem 'rails', '~> 6.1.3'
+gem 'rails', '~> 7.0.3'
 gem 'turbolinks', '~> 5' # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'webpacker', '~> 5.4.0' # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 
@@ -54,12 +54,8 @@ group :development, :test do
   ## Haml linter
   gem 'haml_lint', '~> 0.40.0', require: false
   # Other
-  # Bullet does not support Rails 6.1 currently
-  # https://github.com/Respondo/respondo/issues/247
-  # gem 'bullet', '~> 6.1.0' # N+1 monitoring
   gem 'factory_bot_rails', '~> 6.2.0' # Use factory_bot
   gem 'faker', '~> 2.21.0' # Sample data
-  gem 'html-proofer', '~> 3.19.1' # Runtime HTML proofer
   gem 'license_finder', '~> 7.0.1' # license checking
   gem 'pry-byebug', '~> 3.9.0' # pry debugging
   gem 'rspec-rails', '~> 5.1.2' # rspec testing framework
