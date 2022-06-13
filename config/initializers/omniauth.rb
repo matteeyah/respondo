@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET']
-  provider :twitter, ENV['TWITTER_API_KEY'], ENV['TWITTER_API_SECRET']
-  provider :disqus, ENV['DISQUS_PUBLIC_KEY'], ENV['DISQUS_SECRET_KEY']
+  provider :google_oauth2, ENV.fetch('GOOGLE_CLIENT_ID', nil), ENV.fetch('GOOGLE_CLIENT_SECRET', nil)
+  provider :twitter, ENV.fetch('TWITTER_API_KEY', nil), ENV.fetch('TWITTER_API_SECRET', nil)
+  provider :disqus, ENV.fetch('DISQUS_PUBLIC_KEY', nil), ENV.fetch('DISQUS_SECRET_KEY', nil)
 end
 
 # omniauth-disqus currently has a problem with #callback_url because it passes

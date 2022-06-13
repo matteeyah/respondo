@@ -9,11 +9,11 @@ RSpec.describe Users::UserAccountsController, type: :request do
   describe 'DELETE destroy' do
     subject(:delete_destroy) { delete "/users/#{user.id}/user_accounts/#{account.id}" }
 
-    let(:user) { FactoryBot.create(:user) }
-    let!(:account) { FactoryBot.create(:user_account, provider: 'google_oauth2', user: user) }
+    let(:user) { create(:user) }
+    let!(:account) { create(:user_account, provider: 'google_oauth2', user:) }
 
     context 'when user is signed in' do
-      let(:browsing_user) { FactoryBot.create(:user, :with_account) }
+      let(:browsing_user) { create(:user, :with_account) }
 
       before do
         sign_in(browsing_user)
@@ -46,7 +46,7 @@ RSpec.describe Users::UserAccountsController, type: :request do
 
         context 'when user has multiple accounts' do
           before do
-            FactoryBot.create(:user_account, provider: 'twitter', user: user)
+            create(:user_account, provider: 'twitter', user:)
           end
 
           it 'destroys the account' do

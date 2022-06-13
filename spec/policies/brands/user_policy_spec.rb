@@ -3,8 +3,8 @@
 RSpec.describe Brands::UserPolicy, type: :policy do
   subject(:user_policy) { described_class }
 
-  let(:brand) { FactoryBot.create(:brand) }
-  let(:user) { FactoryBot.create(:user, brand: brand) }
+  let(:brand) { create(:brand) }
+  let(:user) { create(:user, brand:) }
 
   permissions :create? do
     it 'denies access to guests' do
@@ -12,13 +12,13 @@ RSpec.describe Brands::UserPolicy, type: :policy do
     end
 
     it 'denies access if external user already has brand' do
-      expect(user_policy).not_to permit(FactoryBot.create(:user), user)
+      expect(user_policy).not_to permit(create(:user), user)
     end
 
     it 'allows access if external user does not have brand' do
       user.update!(brand: nil)
 
-      expect(user_policy).to permit(FactoryBot.create(:user, brand: user.brand), user)
+      expect(user_policy).to permit(create(:user, brand: user.brand), user)
     end
   end
 
@@ -28,11 +28,11 @@ RSpec.describe Brands::UserPolicy, type: :policy do
     end
 
     it 'denies access to users outside of brand' do
-      expect(user_policy).not_to permit(FactoryBot.create(:user), user)
+      expect(user_policy).not_to permit(create(:user), user)
     end
 
     it 'allows access to users in brand' do
-      expect(user_policy).to permit(FactoryBot.create(:user, brand: user.brand), user)
+      expect(user_policy).to permit(create(:user, brand: user.brand), user)
     end
   end
 end

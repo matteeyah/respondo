@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < Users::ApplicationController
-  include Pundit
+  include Pundit::Authorization
 
   def edit
     authorize(user)

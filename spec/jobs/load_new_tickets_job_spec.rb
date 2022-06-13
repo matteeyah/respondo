@@ -4,10 +4,10 @@ RSpec.describe LoadNewTicketsJob, type: :job do
   describe '#perform' do
     subject(:perform_now) { described_class.perform_now(brand.id) }
 
-    let(:brand) { FactoryBot.create(:brand) }
-    let(:twitter_account) { FactoryBot.create(:brand_account, provider: 'twitter', brand: brand) }
-    let(:disqus_account) { FactoryBot.create(:brand_account, provider: 'disqus', brand: brand) }
-    let!(:parent) { FactoryBot.create(:internal_ticket, status: :solved, brand: brand).base_ticket }
+    let(:brand) { create(:brand) }
+    let(:twitter_account) { create(:brand_account, provider: 'twitter', brand:) }
+    let(:disqus_account) { create(:brand_account, provider: 'disqus', brand:) }
+    let!(:parent) { create(:internal_ticket, status: :solved, brand:).base_ticket }
 
     let(:twitter_mentions) do
       [instance_double(

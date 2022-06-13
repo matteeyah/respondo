@@ -2,17 +2,17 @@
   "name": "respondo",
   "private": true,
   "dependencies": {
-    "@rails/ujs": "^6.1.4",
-    "@rails/webpacker": "5.4.0",
+    "@rails/ujs": "^6.1.6",
+    "@rails/webpacker": "5.4.3",
     "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",
   "devDependencies": {
-    "markdownlint-cli": "^0.28.1",
-    "standard": "^16.0.3",
-    "stylelint": "^13.13.1",
-    "stylelint-config-standard": "^22.0.0",
-    "webpack-dev-server": "^3.11.2"
+    "markdownlint-cli": "^0.31.1",
+    "standard": "^17.0.0",
+    "stylelint": "^14.9.1",
+    "stylelint-config-standard": "^26.0.0",
+    "webpack-dev-server": "^4.9.2"
   },
   "stylelint": {
     "extends": "stylelint-config-standard"

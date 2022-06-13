@@ -18,7 +18,8 @@ module Clients
     end
 
     def reply(response_text, tweet_id)
-      twitter_client.update(response_text, in_reply_to_status_id: tweet_id, auto_populate_reply_metadata: true, tweet_mode: 'extended')
+      twitter_client.update(response_text, in_reply_to_status_id: tweet_id, auto_populate_reply_metadata: true,
+                                           tweet_mode: 'extended')
     end
 
     private

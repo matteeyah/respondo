@@ -4,7 +4,7 @@ require './spec/support/concerns/models/accountable_examples'
 
 RSpec.describe BrandAccount, type: :model do
   describe 'Validations' do
-    subject(:account) { FactoryBot.create(:brand_account) }
+    subject(:account) { create(:brand_account) }
 
     it { is_expected.to validate_presence_of(:provider) }
     it { is_expected.to validate_uniqueness_of(:provider).scoped_to(:brand_id).ignoring_case_sensitivity }
@@ -32,7 +32,8 @@ RSpec.describe BrandAccount, type: :model do
                            'disqus_oauth_hash.json'
                          end
 
-          JSON.parse(file_fixture(fixture_name).read, object_class: OpenStruct)
+          response_content = JSON.parse(file_fixture(fixture_name).read)
+          instance_double(Net::HTTPResponse, response_content)
         end
 
         context 'when there is no matching account' do
@@ -45,7 +46,7 @@ RSpec.describe BrandAccount, type: :model do
 
             it 'builds an account entity with correct information' do
               expect(from_omniauth).to have_attributes(
-                external_uid: auth_hash.uid, provider: provider,
+                external_uid: auth_hash.uid, provider:,
                 token: auth_hash.credentials.token, secret: auth_hash.credentials.secret,
                 email: auth_hash.info.email
               )
@@ -61,7 +62,7 @@ RSpec.describe BrandAccount, type: :model do
           end
 
           context 'when adding the account to existing brand' do
-            let!(:current_brand) { FactoryBot.create(:brand) }
+            let!(:current_brand) { create(:brand) }
 
             context 'when existing brand does not have account for provider' do
               it 'returns a new account' do
@@ -70,7 +71,7 @@ RSpec.describe BrandAccount, type: :model do
 
               it 'builds an account entity with correct information' do
                 expect(from_omniauth).to have_attributes(
-                  external_uid: auth_hash.uid, provider: provider,
+                  external_uid: auth_hash.uid, provider:,
                   token: auth_hash.credentials.token, secret: auth_hash.credentials.secret,
                   email: auth_hash.info.email
                 )
@@ -91,7 +92,7 @@ RSpec.describe BrandAccount, type: :model do
 
             context 'when existing brand has account for provider' do
               before do
-                FactoryBot.create(:brand_account, provider: provider, brand: current_brand)
+                create(:brand_account, provider:, brand: current_brand)
               end
 
               it 'does not create new brands' do
@@ -103,14 +104,16 @@ RSpec.describe BrandAccount, type: :model do
               end
 
               it 'has an error about provider being taken' do
-                expect(from_omniauth.errors.details.to_hash).to include(provider: array_including(a_hash_including(error: :taken)))
+                expect(from_omniauth.errors.details.to_hash).to(
+                  include(provider: array_including(a_hash_including(error: :taken)))
+                )
               end
             end
           end
         end
 
         context 'when there is a matching account' do
-          let!(:account) { FactoryBot.create(:brand_account, external_uid: auth_hash.uid, provider: auth_hash.provider) }
+          let!(:account) { create(:brand_account, external_uid: auth_hash.uid, provider: auth_hash.provider) }
           let(:current_brand) { account.brand }
 
           context 'when account belongs to current brand' do
@@ -128,7 +131,7 @@ RSpec.describe BrandAccount, type: :model do
           end
 
           context 'when switching account from different brand' do
-            let!(:current_brand) { FactoryBot.create(:brand) }
+            let!(:current_brand) { create(:brand) }
 
             it 'returns the matching account' do
               expect(from_omniauth).to eq(account)
@@ -141,7 +144,9 @@ RSpec.describe BrandAccount, type: :model do
             it 'removes the account from existing brand' do
               previous_brand = account.brand
 
-              expect { from_omniauth }.to change { previous_brand.reload.accounts.find_by(provider: provider) }.from(account).to(nil)
+              expect { from_omniauth }.to change {
+                                            previous_brand.reload.accounts.find_by(provider:)
+                                          }.from(account).to(nil)
             end
 
             it 'associates the account to current brand' do
@@ -164,7 +169,7 @@ RSpec.describe BrandAccount, type: :model do
               auth_hash.info.email = 'hello@world.com'
             end
 
-            it 'updates email ' do
+            it 'updates email' do
               expect { from_omniauth }.to change { account.reload.email }.to(auth_hash.info.email)
             end
           end
@@ -212,7 +217,7 @@ RSpec.describe BrandAccount, type: :model do
   describe '#new_mentions' do
     subject(:new_mentions) { account.new_mentions }
 
-    let(:account) { FactoryBot.build(:brand_account) }
+    let(:account) { build(:brand_account) }
     let(:client_spy) { instance_spy(Clients::Client) }
 
     described_class.providers.each_key do |provider|
@@ -224,7 +229,7 @@ RSpec.describe BrandAccount, type: :model do
 
         context 'when brand has tickets' do
           before do
-            FactoryBot.create(:internal_ticket, provider: provider, brand: account.brand)
+            create(:internal_ticket, provider:, brand: account.brand)
           end
 
           it 'calls client new mentions with last ticket identifier' do
@@ -248,7 +253,7 @@ RSpec.describe BrandAccount, type: :model do
   describe '#client' do
     subject(:client) { account.client }
 
-    let(:account) { FactoryBot.build(:user_account) }
+    let(:account) { build(:user_account) }
 
     %w[twitter disqus].each do |provider|
       context "when provider is #{provider}" do

@@ -9,10 +9,10 @@ class User < ApplicationRecord
   has_many :internal_notes, inverse_of: :creator, foreign_key: :creator_id, dependent: :restrict_with_error
 
   def account_for_provider?(provider)
-    accounts.exists?(provider: provider)
+    accounts.exists?(provider:)
   end
 
   def client_for_provider(provider)
-    accounts.find_by(provider: provider)&.client
+    accounts.find_by(provider:)&.client
   end
 end

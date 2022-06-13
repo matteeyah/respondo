@@ -7,13 +7,13 @@ RSpec.describe Users::PersonalAccessTokensController, type: :request do
   include SignInOutRequestHelpers
 
   describe 'POST create' do
-    subject(:post_create) { post "/users/#{user.id}/personal_access_tokens", params: { name: name } }
+    subject(:post_create) { post "/users/#{user.id}/personal_access_tokens", params: { name: } }
 
     let(:name) { nil }
-    let(:user) { FactoryBot.create(:user, :with_account) }
+    let(:user) { create(:user, :with_account) }
 
     context 'when user is signed in' do
-      let(:browsing_user) { FactoryBot.create(:user, :with_account) }
+      let(:browsing_user) { create(:user, :with_account) }
 
       before do
         sign_in(browsing_user)
@@ -52,7 +52,7 @@ RSpec.describe Users::PersonalAccessTokensController, type: :request do
           let(:name) { 'something_nice' }
 
           before do
-            FactoryBot.create(:personal_access_token, name: name, user: user)
+            create(:personal_access_token, name:, user:)
           end
 
           it 'does not create a new personal access token' do
@@ -62,7 +62,9 @@ RSpec.describe Users::PersonalAccessTokensController, type: :request do
           it 'sets the flash' do
             post_create
 
-            expect(controller.flash[:warning]).to eq("Unable to create personal access token.\nName has already been taken.")
+            expect(controller.flash[:warning]).to(
+              eq("Unable to create personal access token.\nName has already been taken.")
+            )
           end
 
           it 'redirects to edit user path' do
@@ -106,11 +108,11 @@ RSpec.describe Users::PersonalAccessTokensController, type: :request do
   describe 'DELETE destroy' do
     subject(:delete_destroy) { delete "/users/#{user.id}/personal_access_tokens/#{personal_access_token.id}" }
 
-    let(:user) { FactoryBot.create(:user, :with_account) }
-    let!(:personal_access_token) { FactoryBot.create(:personal_access_token, user: user) }
+    let(:user) { create(:user, :with_account) }
+    let!(:personal_access_token) { create(:personal_access_token, user:) }
 
     context 'when user is signed in' do
-      let(:browsing_user) { FactoryBot.create(:user, :with_account) }
+      let(:browsing_user) { create(:user, :with_account) }
 
       before do
         sign_in(browsing_user)

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe 'brands/tickets/index', type: :view do
-  let(:brand) { FactoryBot.create(:brand) }
-  let(:ticket) { FactoryBot.create(:internal_ticket, status: :open, brand: brand).base_ticket }
-  let(:nested_ticket) { FactoryBot.create(:internal_ticket, brand: brand, parent: ticket, status: :solved).base_ticket }
+  let(:brand) { create(:brand) }
+  let(:ticket) { create(:internal_ticket, status: :open, brand:).base_ticket }
+  let(:nested_ticket) { create(:internal_ticket, brand:, parent: ticket, status: :solved).base_ticket }
   let(:tickets) { { ticket => { nested_ticket => {} } } }
   let(:policy_double) { double }
 
@@ -12,7 +12,7 @@ RSpec.describe 'brands/tickets/index', type: :view do
 
     without_partial_double_verification do
       allow(view).to receive(:brand).and_return(brand)
-      allow(view).to receive(:current_user).and_return(FactoryBot.build(:user))
+      allow(view).to receive(:current_user).and_return(build(:user))
       allow(view).to receive(:policy).and_return(policy_double)
     end
 

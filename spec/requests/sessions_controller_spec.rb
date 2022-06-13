@@ -11,7 +11,7 @@ RSpec.describe SessionsController, type: :request do
 
     context 'when user is signed in' do
       before do
-        sign_in(FactoryBot.create(:user, :with_account))
+        sign_in(create(:user, :with_account))
       end
 
       it 'logs the user out' do

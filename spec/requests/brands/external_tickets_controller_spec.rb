@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Brands::ExternalTicketsController, type: :request do
-  let(:brand) { FactoryBot.create(:brand) }
-  let(:user) { FactoryBot.create(:user) }
+  let(:brand) { create(:brand) }
+  let(:user) { create(:user) }
 
   describe 'POST create.json' do
     subject(:post_create_json) do
@@ -27,10 +27,10 @@ RSpec.describe Brands::ExternalTicketsController, type: :request do
 
     context 'when token is authorized' do
       let(:token) { '123hello321world' }
-      let(:personal_access_token_json) { { name: 'something_nice', token: token } }
+      let(:personal_access_token_json) { { name: 'something_nice', token: } }
 
       before do
-        FactoryBot.create(:personal_access_token, name: 'something_nice', token: token, user: user)
+        create(:personal_access_token, name: 'something_nice', token:, user:)
       end
 
       context 'when user is authorized' do
@@ -46,7 +46,9 @@ RSpec.describe Brands::ExternalTicketsController, type: :request do
           it 'creates a ticket with matching attributes' do
             post_create_json
 
-            expect(Ticket.find_by(external_uid: external_json[:external_uid])).to have_attributes(content: external_json[:content])
+            expect(Ticket.find_by(external_uid: external_json[:external_uid])).to(
+              have_attributes(content: external_json[:content])
+            )
           end
 
           it 'renders json' do
@@ -106,7 +108,7 @@ RSpec.describe Brands::ExternalTicketsController, type: :request do
       let(:personal_access_token_json) { { name: 'something_nice', token: 'bogus' } }
 
       before do
-        FactoryBot.create(:personal_access_token, name: 'something_nice', user: user)
+        create(:personal_access_token, name: 'something_nice', user:)
       end
 
       it 'returns a forbidden response' do

@@ -8,7 +8,7 @@ RSpec.shared_examples '_accounts_partial' do |model_class|
 
   providers.each do |provider_name|
     context "when provider is #{provider_name}" do
-      let(:model) { FactoryBot.create(model_class_slug) }
+      let(:model) { create(model_class_slug) }
 
       before do
         without_partial_double_verification do
@@ -18,7 +18,7 @@ RSpec.shared_examples '_accounts_partial' do |model_class|
 
       context 'when account for provider exists' do
         before do
-          FactoryBot.create(account_class_slug, model_class_slug => model, provider: provider_name)
+          create(account_class_slug, model_class_slug => model, provider: provider_name)
         end
 
         it "renders remove #{provider_name} account link" do

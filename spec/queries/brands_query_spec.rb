@@ -7,8 +7,8 @@ RSpec.describe BrandsQuery, type: :query do
     subject(:call) { query.call }
 
     let(:params) { { query: 'hello_world' } }
-    let!(:hit) { FactoryBot.create(:brand, screen_name: 'hello_world') }
-    let!(:miss) { FactoryBot.create(:brand) }
+    let!(:hit) { create(:brand, screen_name: 'hello_world') }
+    let!(:miss) { create(:brand) }
 
     it 'includes search hits' do
       expect(call).to include(hit)

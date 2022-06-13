@@ -28,7 +28,7 @@
       = link_to 'Clear Search', brand_tickets_path(brand, status: request.parameters[:status]), class: 'btn btn-outline-secondary'
   = search_form.submit 'Search', name: nil, class: 'btn btn-outline-success col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0'
 
-= render partial: 'brands/tickets/tickets', locals: { brand: brand, tickets: @tickets }
+= render partial: 'brands/tickets/tickets', locals: { brand:, tickets: @tickets }
 
 .row.mt-3
   .mx-auto

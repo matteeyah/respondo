@@ -2,7 +2,7 @@
 
 RSpec.describe InternalNote, type: :model do
   describe 'Validations' do
-    subject(:internal_note) { FactoryBot.create(:internal_note) }
+    subject(:internal_note) { create(:internal_note) }
 
     it { is_expected.to validate_presence_of(:content) }
   end

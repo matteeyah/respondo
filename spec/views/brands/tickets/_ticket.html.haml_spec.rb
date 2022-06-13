@@ -3,15 +3,15 @@
 RSpec.describe 'brands/tickets/_ticket', type: :view do
   subject(:render_ticket_partial) do
     render partial: 'brands/tickets/ticket', locals: {
-      brand: brand, ticket: ticket
+      brand:, ticket:
     }
   end
 
-  let(:brand) { FactoryBot.create(:brand) }
-  let(:user) { FactoryBot.create(:user) }
-  let(:ticket) { FactoryBot.create(:internal_ticket, brand: brand, status: :open).base_ticket }
+  let(:brand) { create(:brand) }
+  let(:user) { create(:user) }
+  let(:ticket) { create(:internal_ticket, brand:, status: :open).base_ticket }
   let(:policy_double) { double }
-  let!(:internal_notes) { FactoryBot.create_list(:internal_note, 2, ticket: ticket) }
+  let!(:internal_notes) { create_list(:internal_note, 2, ticket:) }
 
   before do
     without_partial_double_verification do
@@ -59,7 +59,9 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
     it 'displays creator along with author' do
       render_ticket_partial
 
-      expect(rendered).to have_text("#{ticket.creator.name} as #{ticket.author.username} - ").and have_text(ticket.content)
+      expect(rendered).to(
+        have_text("#{ticket.creator.name} as #{ticket.author.username} - ").and(have_text(ticket.content))
+      )
     end
   end
 
@@ -78,7 +80,9 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
     it 'displays response form' do
       render_ticket_partial
 
-      expect(rendered).to have_field(:response_text, count: 1, visible: :hidden).and have_button('Reply', count: 1, visible: :hidden)
+      expect(rendered).to have_field(:response_text, count: 1,
+                                                     visible: :hidden).and have_button('Reply', count: 1,
+                                                                                                visible: :hidden)
     end
 
     it 'displays the internal note form' do
@@ -97,7 +101,7 @@ RSpec.describe 'brands/tickets/_ticket', type: :view do
     end
 
     context 'when ticket is external' do
-      let(:ticket) { FactoryBot.create(:external_ticket, brand: brand, status: :open).base_ticket }
+      let(:ticket) { create(:external_ticket, brand:, status: :open).base_ticket }
 
       before do
         ticket.external_ticket.response_url = 'https://google.com'

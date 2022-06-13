@@ -111,10 +111,10 @@ class Ticket < ApplicationRecord
   end
 
   def descendants
-    Ticket.where(id: id).with_descendants.where.not(id: id)
+    Ticket.where(id:).with_descendants.where.not(id:)
   end
 
   def ancestors
-    Ticket.where(id: id).with_ancestors.where.not(id: id)
+    Ticket.where(id:).with_ancestors.where.not(id:)
   end
 end

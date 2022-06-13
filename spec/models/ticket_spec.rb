@@ -2,7 +2,7 @@
 
 RSpec.describe Ticket, type: :model do
   describe 'Validations' do
-    subject(:ticket) { FactoryBot.create(:internal_ticket).base_ticket }
+    subject(:ticket) { create(:internal_ticket).base_ticket }
 
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:content) }
@@ -18,7 +18,7 @@ RSpec.describe Ticket, type: :model do
 
       context 'when parent is in brand' do
         before do
-          ticket.parent = FactoryBot.create(:internal_ticket, brand: ticket.brand).base_ticket
+          ticket.parent = create(:internal_ticket, brand: ticket.brand).base_ticket
         end
 
         it 'does not invalidate the ticket' do
@@ -28,7 +28,7 @@ RSpec.describe Ticket, type: :model do
 
       context 'when parent is not in brand' do
         before do
-          ticket.parent = FactoryBot.create(:internal_ticket).base_ticket
+          ticket.parent = create(:internal_ticket).base_ticket
         end
 
         it 'invalidates the ticket' do
@@ -57,20 +57,20 @@ RSpec.describe Ticket, type: :model do
   end
 
   describe 'State Machine' do
-    let(:root) { FactoryBot.create(:internal_ticket, status: status).base_ticket }
-    let(:parent) { FactoryBot.create(:internal_ticket, status: status, parent: root, brand: root.brand).base_ticket }
-    let(:ticket) { FactoryBot.create(:internal_ticket, status: status, parent: parent, brand: root.brand).base_ticket }
-    let(:nested_ticket) { FactoryBot.create(:internal_ticket, status: status, parent: ticket, brand: root.brand).base_ticket }
+    let(:root) { create(:internal_ticket, status:).base_ticket }
+    let(:parent) { create(:internal_ticket, status:, parent: root, brand: root.brand).base_ticket }
+    let(:ticket) { create(:internal_ticket, status:, parent:, brand: root.brand).base_ticket }
+    let(:nested_ticket) { create(:internal_ticket, status:, parent: ticket, brand: root.brand).base_ticket }
 
     let!(:nested_nested_ticket) do
-      FactoryBot.create(:internal_ticket, status: status, parent: nested_ticket, brand: root.brand).base_ticket
+      create(:internal_ticket, status:, parent: nested_ticket, brand: root.brand).base_ticket
     end
 
     describe 'initial state' do
       subject(:create_ticket) do
         described_class.create(
           external_uid: 'test123', content: 'Sample content', provider: parent.provider,
-          parent: parent, author: FactoryBot.build(:author), brand: parent.brand
+          parent:, author: build(:author), brand: parent.brand
         )
       end
 
@@ -127,10 +127,10 @@ RSpec.describe Ticket, type: :model do
   describe '.root' do
     subject(:root) { described_class.root }
 
-    let(:parentless_ticket) { FactoryBot.create(:internal_ticket).base_ticket }
+    let(:parentless_ticket) { create(:internal_ticket).base_ticket }
 
     before do
-      FactoryBot.create(:internal_ticket, parent: parentless_ticket, brand: parentless_ticket.brand)
+      create(:internal_ticket, parent: parentless_ticket, brand: parentless_ticket.brand)
     end
 
     it 'only returns parentless tickets' do
@@ -161,19 +161,19 @@ RSpec.describe Ticket, type: :model do
 
         context 'when parent exists' do
           let!(:parent) do
-            FactoryBot.create(
-              :internal_ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand: brand
+            create(
+              :internal_ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand:
             ).base_ticket
           end
 
           it 'assigns the parent to the ticket' do
-            expect(subject).to have_attributes(parent: parent)
+            expect(subject).to have_attributes(parent:)
           end
         end
       end
 
       context 'when the user is specified' do
-        let(:user) { FactoryBot.create(:user) }
+        let(:user) { create(:user) }
 
         it 'creates a new ticket' do
           expect { subject }.to change(described_class, :count).from(0).to(1)
@@ -193,13 +193,13 @@ RSpec.describe Ticket, type: :model do
 
         context 'when parent exists' do
           let!(:parent) do
-            FactoryBot.create(
-              :internal_ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand: brand
+            create(
+              :internal_ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand:
             ).base_ticket
           end
 
           it 'assigns the parent to the ticket' do
-            expect(subject).to have_attributes(parent: parent)
+            expect(subject).to have_attributes(parent:)
           end
         end
       end
@@ -208,8 +208,8 @@ RSpec.describe Ticket, type: :model do
     describe '.from_tweet!' do
       subject(:from_tweet!) { described_class.from_tweet!(tweet, brand, user) }
 
-      let(:brand) { FactoryBot.create(:brand) }
-      let(:author) { FactoryBot.create(:author) }
+      let(:brand) { create(:brand) }
+      let(:author) { create(:author) }
 
       let(:tweet) do
         instance_double(Twitter::Tweet,
@@ -226,7 +226,7 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: tweet.id, provider: 'twitter', content: tweet.attrs[:full_text],
-            brand: brand, author: author, creator: user
+            brand:, author:, creator: user
           }
         end
       end
@@ -235,8 +235,8 @@ RSpec.describe Ticket, type: :model do
     describe '.from_disqus_post!' do
       subject(:from_disqus_post!) { described_class.from_disqus_post!(disqus_post, brand, user) }
 
-      let(:brand) { FactoryBot.create(:brand) }
-      let(:author) { FactoryBot.create(:author) }
+      let(:brand) { create(:brand) }
+      let(:author) { create(:author) }
 
       let(:disqus_post) { JSON.parse(file_fixture('disqus_post_hash.json').read).deep_symbolize_keys }
 
@@ -250,7 +250,7 @@ RSpec.describe Ticket, type: :model do
         let(:expected_attributes) do
           {
             external_uid: disqus_post[:id], provider: 'disqus', content: disqus_post[:raw_message],
-            brand: brand, author: author, creator: user
+            brand:, author:, creator: user
           }
         end
       end
@@ -259,8 +259,8 @@ RSpec.describe Ticket, type: :model do
     describe '.from_external_ticket!' do
       subject(:from_external_ticket!) { described_class.from_external_ticket!(external_ticket_json, brand, user) }
 
-      let(:brand) { FactoryBot.create(:brand) }
-      let(:author) { FactoryBot.create(:author) }
+      let(:brand) { create(:brand) }
+      let(:author) { create(:author) }
       let(:user) { nil }
 
       let(:external_ticket_json) { JSON.parse(file_fixture('external_post_hash.json').read).deep_symbolize_keys }
@@ -276,7 +276,7 @@ RSpec.describe Ticket, type: :model do
           {
             external_uid: external_ticket_json[:external_uid], provider: 'external',
             content: external_ticket_json[:content],
-            brand: brand, author: author, creator: user
+            brand:, author:, creator: user
           }
         end
       end
@@ -290,14 +290,14 @@ RSpec.describe Ticket, type: :model do
   describe '.with_descendants_hash' do
     subject(:with_descendants_hash) { described_class.root.with_descendants_hash }
 
-    let(:first_root_ticket) { FactoryBot.create(:internal_ticket).base_ticket }
-    let(:second_root_ticket) { FactoryBot.create(:internal_ticket).base_ticket }
+    let(:first_root_ticket) { create(:internal_ticket).base_ticket }
+    let(:second_root_ticket) { create(:internal_ticket).base_ticket }
 
     let!(:first_child_ticket) do
-      FactoryBot.create(:internal_ticket, parent: first_root_ticket, brand: first_root_ticket.brand).base_ticket
+      create(:internal_ticket, parent: first_root_ticket, brand: first_root_ticket.brand).base_ticket
     end
     let!(:second_child_ticket) do
-      FactoryBot.create(:internal_ticket, parent: second_root_ticket, brand: second_root_ticket.brand).base_ticket
+      create(:internal_ticket, parent: second_root_ticket, brand: second_root_ticket.brand).base_ticket
     end
 
     it 'returns tickets in hash format' do

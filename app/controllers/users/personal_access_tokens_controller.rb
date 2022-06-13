@@ -2,7 +2,7 @@
 
 module Users
   class PersonalAccessTokensController < ApplicationController
-    include Pundit
+    include Pundit::Authorization
 
     def create
       pat = build_personal_access_token!

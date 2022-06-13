@@ -3,10 +3,10 @@
 require './spec/support/concerns/views/_accounts_examples'
 
 RSpec.describe 'users/edit', type: :view do
-  let(:user) { FactoryBot.create(:user) }
+  let(:user) { create(:user) }
 
   before do
-    FactoryBot.create(:personal_access_token, name: 'something_nice', user: user)
+    create(:personal_access_token, name: 'something_nice', user:)
 
     without_partial_double_verification do
       allow(view).to receive(:user).and_return(user)

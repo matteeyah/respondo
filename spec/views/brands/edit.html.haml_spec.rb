@@ -3,9 +3,9 @@
 require './spec/support/concerns/views/_accounts_examples'
 
 RSpec.describe 'brands/edit', type: :view do
-  let(:brand) { FactoryBot.create(:brand) }
-  let(:user_in_brand) { FactoryBot.create(:user) }
-  let!(:user_outside_brand) { FactoryBot.create(:user) }
+  let(:brand) { create(:brand) }
+  let(:user_in_brand) { create(:user) }
+  let!(:user_outside_brand) { create(:user) }
 
   before do
     brand.users << user_in_brand
@@ -39,7 +39,7 @@ RSpec.describe 'brands/edit', type: :view do
 
     context 'when brand has subscription' do
       before do
-        FactoryBot.create(:subscription, brand: brand)
+        create(:subscription, brand:)
       end
 
       it 'does not show buy subscription button' do

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class BrandsController < Brands::ApplicationController
-  include Pundit
+  include Pundit::Authorization
   include Pagy::Backend
 
   def edit

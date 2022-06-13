@@ -6,17 +6,17 @@ require './spec/support/unauthorized_user_examples'
 RSpec.describe Brands::TicketsController, type: :request do
   include SignInOutRequestHelpers
 
-  let(:brand) { FactoryBot.create(:brand) }
+  let(:brand) { create(:brand) }
 
   describe 'GET index' do
-    subject(:get_index) { get "/brands/#{brand.id}/tickets", params: { status: status, query: query } }
+    subject(:get_index) { get "/brands/#{brand.id}/tickets", params: { status:, query: } }
 
     context 'without search' do
       let(:query) { nil }
 
       context 'when pagination is not required' do
-        let!(:open_ticket) { FactoryBot.create(:internal_ticket, status: :open, brand: brand).base_ticket }
-        let!(:solved_ticket) { FactoryBot.create(:internal_ticket, status: :solved, brand: brand).base_ticket }
+        let!(:open_ticket) { create(:internal_ticket, status: :open, brand:).base_ticket }
+        let!(:solved_ticket) { create(:internal_ticket, status: :solved, brand:).base_ticket }
 
         context 'when status parameter is not specified' do
           let(:status) { nil }
@@ -60,7 +60,7 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when pagination is required' do
-        let!(:open_tickets) { FactoryBot.create_list(:internal_ticket, 21, status: :open, brand: brand).map(&:base_ticket) }
+        let!(:open_tickets) { create_list(:internal_ticket, 21, status: :open, brand:).map(&:base_ticket) }
 
         it 'paginates tickets' do
           get_index
@@ -77,7 +77,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when searching by author name' do
-      let(:tickets) { FactoryBot.create_list(:internal_ticket, 2, brand: brand).map(&:base_ticket) }
+      let(:tickets) { create_list(:internal_ticket, 2, brand:).map(&:base_ticket) }
       let(:query) { tickets.first.author.username }
 
       it 'shows matching tickets' do
@@ -94,7 +94,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when searching by ticket content' do
-      let(:tickets) { FactoryBot.create_list(:internal_ticket, 2, brand: brand).map(&:base_ticket) }
+      let(:tickets) { create_list(:internal_ticket, 2, brand:).map(&:base_ticket) }
       let(:query) { tickets.first.content }
 
       it 'shows matching tickets' do
@@ -114,7 +114,7 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'GET show' do
     subject(:get_show) { get "/brands/#{brand.id}/tickets/#{ticket.id}" }
 
-    let!(:ticket) { FactoryBot.create(:internal_ticket, provider: 'twitter', brand: brand).base_ticket }
+    let!(:ticket) { create(:internal_ticket, provider: 'twitter', brand:).base_ticket }
 
     context 'when user is not signed in' do
       it 'shows the ticket' do
@@ -126,9 +126,11 @@ RSpec.describe Brands::TicketsController, type: :request do
   end
 
   describe 'POST reply' do
-    subject(:post_reply) { post "/brands/#{brand.id}/tickets/#{ticket.id}/reply", params: { response_text: 'does not matter' } }
+    subject(:post_reply) do
+      post "/brands/#{brand.id}/tickets/#{ticket.id}/reply", params: { response_text: 'does not matter' }
+    end
 
-    let!(:ticket) { FactoryBot.create(:internal_ticket, provider: 'twitter', brand: brand).base_ticket }
+    let!(:ticket) { create(:internal_ticket, provider: 'twitter', brand:).base_ticket }
     let(:client) { instance_spy(Clients::Client) }
     let(:twitter_client_class) { class_spy(Clients::Twitter, new: client) }
     let(:disqus_client_class) { class_spy(Clients::Disqus, new: client) }
@@ -189,17 +191,17 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when user is signed in' do
-      let(:user) { FactoryBot.create(:user) }
+      let(:user) { create(:user) }
 
       before do
-        FactoryBot.create(:user_account, provider: 'google_oauth2', user: user)
+        create(:user_account, provider: 'google_oauth2', user:)
         sign_in(user)
       end
 
       context 'when ticket is internal' do
         (Ticket.providers.keys - ['external']).each do |provider|
           context "when ticket provider is #{provider}" do
-            let(:ticket) { FactoryBot.create(:internal_ticket, provider: provider, brand: brand).base_ticket }
+            let(:ticket) { create(:internal_ticket, provider:, brand:).base_ticket }
 
             let(:client_error) { Twitter::Error::Forbidden.new('error') }
             let(:client_response) do
@@ -213,18 +215,19 @@ RSpec.describe Brands::TicketsController, type: :request do
                   ).deep_symbolize_keys
                 )
               when 'disqus'
-                JSON.parse(file_fixture('disqus_post_hash.json').read).merge(parent: ticket.external_uid).deep_symbolize_keys
+                JSON.parse(file_fixture('disqus_post_hash.json').read)
+                  .merge(parent: ticket.external_uid).deep_symbolize_keys
               end
             end
 
             context 'when authorized as a user' do
               before do
-                FactoryBot.create(:user_account, provider: provider, user: user)
+                create(:user_account, provider:, user:)
               end
 
               context 'when brand has subscription' do
                 before do
-                  FactoryBot.create(:subscription, brand: brand)
+                  create(:subscription, brand:)
                 end
 
                 context 'when reply is valid' do
@@ -251,14 +254,14 @@ RSpec.describe Brands::TicketsController, type: :request do
 
             context 'when authorized as a brand' do
               before do
-                FactoryBot.create(:brand_account, provider: provider, brand: brand)
+                create(:brand_account, provider:, brand:)
 
-                user.update!(brand: brand)
+                user.update!(brand:)
               end
 
               context 'when brand has subscription' do
                 before do
-                  FactoryBot.create(:subscription, brand: brand)
+                  create(:subscription, brand:)
                 end
 
                 context 'when reply is valid' do
@@ -291,7 +294,7 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when ticket is external' do
-        let(:ticket) { FactoryBot.create(:external_ticket, brand: brand).base_ticket }
+        let(:ticket) { create(:external_ticket, brand:).base_ticket }
 
         let(:client_error) { Twitter::Error::Forbidden.new('error') }
         let(:client_response) do
@@ -300,12 +303,12 @@ RSpec.describe Brands::TicketsController, type: :request do
 
         context 'when authorized as a user' do
           before do
-            FactoryBot.create(:user_account, provider: 'twitter', user: user)
+            create(:user_account, provider: 'twitter', user:)
           end
 
           context 'when brand has subscription' do
             before do
-              FactoryBot.create(:subscription, brand: brand)
+              create(:subscription, brand:)
             end
 
             context 'when reply is valid' do
@@ -332,14 +335,14 @@ RSpec.describe Brands::TicketsController, type: :request do
 
         context 'when authorized as a brand' do
           before do
-            FactoryBot.create(:brand_account, provider: 'twitter', brand: brand)
+            create(:brand_account, provider: 'twitter', brand:)
 
-            user.update!(brand: brand)
+            user.update!(brand:)
           end
 
           context 'when brand has subscription' do
             before do
-              FactoryBot.create(:subscription, brand: brand)
+              create(:subscription, brand:)
             end
 
             context 'when reply is valid' do
@@ -378,14 +381,14 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'POST internal_note' do
     subject(:post_internal_note) do
       post "/brands/#{brand.id}/tickets/#{ticket.id}/internal_note",
-           params: { internal_note_text: internal_note_text }
+           params: { internal_note_text: }
     end
 
-    let(:ticket) { FactoryBot.create(:internal_ticket, brand: brand).base_ticket }
+    let(:ticket) { create(:internal_ticket, brand:).base_ticket }
     let(:internal_note_text) { nil }
 
     context 'when user is signed in' do
-      let(:user) { FactoryBot.create(:user, :with_account) }
+      let(:user) { create(:user, :with_account) }
 
       before do
         sign_in(user)
@@ -393,12 +396,12 @@ RSpec.describe Brands::TicketsController, type: :request do
 
       context 'when user is authorized' do
         before do
-          user.update!(brand: brand)
+          user.update!(brand:)
         end
 
         context 'when brand has subscription' do
           before do
-            FactoryBot.create(:subscription, brand: brand)
+            create(:subscription, brand:)
           end
 
           context 'when internal note is valid' do
@@ -458,10 +461,10 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'POST invert_status' do
     subject(:post_invert_status) { post "/brands/#{brand.id}/tickets/#{ticket.id}/invert_status" }
 
-    let(:ticket) { FactoryBot.create(:internal_ticket, brand: brand).base_ticket }
+    let(:ticket) { create(:internal_ticket, brand:).base_ticket }
 
     context 'when user is signed in' do
-      let(:user) { FactoryBot.create(:user, :with_account) }
+      let(:user) { create(:user, :with_account) }
 
       before do
         sign_in(user)
@@ -469,12 +472,12 @@ RSpec.describe Brands::TicketsController, type: :request do
 
       context 'when user is authorized' do
         before do
-          user.update!(brand: brand)
+          user.update!(brand:)
         end
 
         context 'when brand has subscription' do
           before do
-            FactoryBot.create(:subscription, brand: brand)
+            create(:subscription, brand:)
           end
 
           context 'when the ticket is open' do
@@ -547,7 +550,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when user is signed in' do
-      let(:user) { FactoryBot.create(:user, :with_account) }
+      let(:user) { create(:user, :with_account) }
 
       before do
         sign_in(user)

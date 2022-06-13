@@ -15,8 +15,8 @@ FactoryBot.define do
 
     base_ticket do
       Ticket.new(
-        external_uid: external_uid, status: status, content: content, provider: 'external',
-        parent: parent, author: author, brand: brand
+        external_uid:, status:, content:, provider: 'external',
+        parent:, author:, brand:
       )
     end
 

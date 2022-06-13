@@ -3,19 +3,19 @@
 RSpec.describe 'brands/tickets/_tickets', type: :view do
   subject(:render_tickets_partial) do
     render partial: 'brands/tickets/tickets', locals: {
-      brand: brand, tickets: tickets
+      brand:, tickets:
     }
   end
 
-  let(:brand) { FactoryBot.create(:brand) }
-  let(:user) { FactoryBot.create(:user) }
-  let(:ticket) { FactoryBot.create(:internal_ticket, brand: brand, status: :open).base_ticket }
-  let(:nested_ticket) { FactoryBot.create(:internal_ticket, brand: brand, parent: ticket, status: :solved).base_ticket }
+  let(:brand) { create(:brand) }
+  let(:user) { create(:user) }
+  let(:ticket) { create(:internal_ticket, brand:, status: :open).base_ticket }
+  let(:nested_ticket) { create(:internal_ticket, brand:, parent: ticket, status: :solved).base_ticket }
   let(:tickets) { { ticket => { nested_ticket => {} } } }
   let(:policy_double) { double }
 
   before do
-    FactoryBot.create_list(:internal_note, 2, ticket: ticket)
+    create_list(:internal_note, 2, ticket:)
 
     without_partial_double_verification do
       allow(view).to receive(:current_user).and_return(user)
