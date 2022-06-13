@@ -7,8 +7,8 @@ module Accountable
     validates :external_uid, presence: { allow_blank: false }
     validates :email, presence: { allow_blank: false, allow_nil: true }
 
-    attr_encrypted :token, key: attr_encrypted_encryption_key
-    attr_encrypted :secret, key: attr_encrypted_encryption_key
+    encrypts :token
+    encrypts :secret
   end
 
   private

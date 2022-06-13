@@ -14,7 +14,7 @@ module ApplicationHelper
   }.freeze
 
   def auth_provider_link(text, provider, model, html_options = {})
-    link_to text, auth_provider_path(provider, state: model), method: :post, **html_options
+    button_to text, auth_provider_path(provider, state: model), method: :post, **html_options
   end
 
   def provider_human_name(provider)
