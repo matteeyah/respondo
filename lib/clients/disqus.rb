@@ -11,7 +11,7 @@ module Clients
     end
 
     def new_mentions(last_ticket_identifier)
-      options_hash = { forum: forum, order: :asc }.merge(permission_params)
+      options_hash = { forum:, order: :asc }.merge(permission_params)
       options_hash[:since] = last_ticket_identifier if last_ticket_identifier
 
       ::DisqusApi.v3.posts.list(options_hash).response

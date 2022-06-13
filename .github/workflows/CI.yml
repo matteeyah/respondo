@@ -16,7 +16,7 @@ jobs:
           cache: 'yarn'
       - name: Install node dependencies
         run: bin/yarn install --production true --frozen-lockfile
-      - name: Install bundler dependencies
+      - name: Run rspec specs
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bundle exec rspec --tag ~type:system

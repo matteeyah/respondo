@@ -8,7 +8,7 @@ RSpec.describe SubscriptionsController, type: :request do
            as: :json
     end
 
-    let(:brand) { FactoryBot.create(:brand) }
+    let(:brand) { create(:brand) }
 
     let(:default_params) do
       {
@@ -36,7 +36,7 @@ RSpec.describe SubscriptionsController, type: :request do
     end
 
     context 'when subscription is updated' do
-      let(:subscription) { FactoryBot.create(:subscription, brand: brand) }
+      let(:subscription) { create(:subscription, brand:) }
       let(:webhook_params) { default_params.merge(subscription_id: subscription.external_uid) }
 
       it 'updates the subscription' do
@@ -51,7 +51,7 @@ RSpec.describe SubscriptionsController, type: :request do
     end
 
     context 'when subscription is cancelled' do
-      let(:subscription) { FactoryBot.create(:subscription, brand: brand) }
+      let(:subscription) { create(:subscription, brand:) }
       let(:webhook_params) { default_params.merge(subscription_id: subscription.external_uid, status: 'deleted') }
 
       it 'changes the subscription status to deleted' do

@@ -2,7 +2,7 @@
 
 RSpec.describe TicketResponder, type: :service do
   let(:service) { described_class.new(ticket, response, user) }
-  let(:user) { FactoryBot.create(:user) }
+  let(:user) { create(:user) }
   let(:response) { 'Sample response' }
 
   describe '#call' do
@@ -16,8 +16,10 @@ RSpec.describe TicketResponder, type: :service do
     end
 
     context 'when ticket is internal' do
-      let(:ticket) { FactoryBot.create(:internal_ticket).base_ticket }
-      let(:client_response) { JSON.parse(file_fixture('disqus_post_hash.json').read).merge(raw_message: response).deep_symbolize_keys }
+      let(:ticket) { create(:internal_ticket).base_ticket }
+      let(:client_response) do
+        JSON.parse(file_fixture('disqus_post_hash.json').read).merge(raw_message: response).deep_symbolize_keys
+      end
 
       context 'when authorized as user' do
         before do
@@ -51,8 +53,10 @@ RSpec.describe TicketResponder, type: :service do
     end
 
     context 'when ticket is external' do
-      let(:ticket) { FactoryBot.create(:external_ticket).base_ticket }
-      let(:client_response) { JSON.parse(file_fixture('external_post_hash.json').read).merge(content: response).to_json }
+      let(:ticket) { create(:external_ticket).base_ticket }
+      let(:client_response) do
+        JSON.parse(file_fixture('external_post_hash.json').read).merge(content: response).to_json
+      end
 
       before do
         allow(Clients::External).to receive(:new).with(

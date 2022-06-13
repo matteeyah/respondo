@@ -7,7 +7,7 @@ RSpec.describe 'User settings', type: :system do
   include OmniauthHelpers
   include SignInOutSystemHelpers
 
-  let(:user) { FactoryBot.create(:user, :with_account) }
+  let(:user) { create(:user, :with_account) }
 
   before do
     visit '/'
@@ -18,14 +18,14 @@ RSpec.describe 'User settings', type: :system do
   it 'allows the user to authorize an account' do
     click_link 'User settings'
 
-    add_oauth_mock_for_user(user, FactoryBot.create(:user_account, provider: 'twitter'))
+    add_oauth_mock_for_user(user, create(:user_account, provider: 'twitter'))
     click_link 'Authorize Twitter'
 
     expect(page).to have_link('Remove Twitter')
   end
 
   it 'allows the user to remove an account' do
-    FactoryBot.create(:user_account, provider: 'twitter', user: user)
+    create(:user_account, provider: 'twitter', user:)
     click_link 'User settings'
 
     click_link 'Remove Twitter'
@@ -43,7 +43,7 @@ RSpec.describe 'User settings', type: :system do
   end
 
   it 'allows the user to remove a personal access token' do
-    FactoryBot.create(:personal_access_token, name: 'something_nice', user: user)
+    create(:personal_access_token, name: 'something_nice', user:)
     click_link 'User settings'
 
     click_link 'Remove something_nice'

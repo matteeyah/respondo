@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   # OmniAuth routing
-  get 'auth/:provider/callback', to: 'omniauth_callbacks#authenticate', constraints: { provider: /twitter|google_oauth2|disqus/ }
+  get 'auth/:provider/callback', to: 'omniauth_callbacks#authenticate',
+                                 constraints: { provider: /twitter|google_oauth2|disqus/ }
   get 'auth/failure', to: redirect('/')
   delete :sign_out, to: 'sessions#destroy'
 

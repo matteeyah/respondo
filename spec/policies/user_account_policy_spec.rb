@@ -3,7 +3,7 @@
 RSpec.describe UserAccountPolicy, type: :policy do
   subject(:user_account_policy) { described_class }
 
-  let(:user_account) { FactoryBot.create(:user_account) }
+  let(:user_account) { create(:user_account) }
 
   permissions :destroy? do
     it 'denies access to guests' do
@@ -11,7 +11,7 @@ RSpec.describe UserAccountPolicy, type: :policy do
     end
 
     it 'denies access to other users' do
-      expect(user_account_policy).not_to permit(FactoryBot.create(:user), user_account)
+      expect(user_account_policy).not_to permit(create(:user), user_account)
     end
 
     it 'allows access to themselves' do

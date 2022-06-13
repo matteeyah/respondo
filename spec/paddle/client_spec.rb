@@ -2,7 +2,7 @@
 
 RSpec.describe Paddle::Client do
   let(:client) { described_class.new('vendor_id', 'vendor_auth_code') }
-  let(:net_http_spy) { class_spy(Net::HTTP, post_form: OpenStruct.new(body: nil)) }
+  let(:net_http_spy) { class_spy(Net::HTTP, post_form: instance_double(Net::HTTPResponse, body: nil)) }
 
   describe '#change_quantity' do
     subject(:change_quantity) { client.change_quantity(1, 10) }

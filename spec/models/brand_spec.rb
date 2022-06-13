@@ -4,7 +4,7 @@ require './spec/support/has_accounts_examples'
 
 RSpec.describe Brand, type: :model do
   describe 'Validations' do
-    subject(:brand) { FactoryBot.create(:brand) }
+    subject(:brand) { create(:brand) }
 
     it { is_expected.to validate_presence_of(:screen_name) }
     it { is_expected.to allow_value('example.com').for(:domain) }
@@ -19,9 +19,9 @@ RSpec.describe Brand, type: :model do
 
   describe 'Callbacks' do
     describe '#before_add' do
-      subject(:add_user) { brand.users << FactoryBot.create(:user) }
+      subject(:add_user) { brand.users << create(:user) }
 
-      let(:brand) { FactoryBot.create(:brand) }
+      let(:brand) { create(:brand) }
       let(:subscription) { instance_spy(Subscription) }
 
       before do
@@ -38,13 +38,13 @@ RSpec.describe Brand, type: :model do
     describe '#before_remove' do
       subject(:remove_user) { brand.users.delete(brand.users.first) }
 
-      let(:brand) { FactoryBot.create(:brand) }
+      let(:brand) { create(:brand) }
       let(:subscription) { instance_spy(Subscription) }
 
       before do
         allow(brand).to receive(:subscription).and_return(subscription)
 
-        FactoryBot.create_list(:user, 2, brand: brand)
+        create_list(:user, 2, brand:)
       end
 
       it 'decrements subscription quantity' do

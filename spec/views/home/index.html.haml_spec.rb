@@ -29,7 +29,7 @@ RSpec.describe 'home/index', type: :view do
     end
 
     context 'when brand is signed in' do
-      let(:brand) { FactoryBot.create(:brand) }
+      let(:brand) { create(:brand) }
 
       it 'renders the brand tickets link' do
         expect(render).to have_link('Brand Tickets')

@@ -6,11 +6,11 @@ require './spec/support/system/allows_interacting_with_tickets_examples'
 RSpec.describe 'Brand', type: :system do
   include SignInOutSystemHelpers
 
-  let(:brand) { FactoryBot.create(:brand, :with_account) }
-  let!(:tickets) { FactoryBot.create_list(:internal_ticket, 2, brand: brand).map(&:base_ticket) }
+  let(:brand) { create(:brand, :with_account) }
+  let!(:tickets) { create_list(:internal_ticket, 2, brand:).map(&:base_ticket) }
 
   before do
-    FactoryBot.create(:subscription, brand: brand)
+    create(:subscription, brand:)
 
     visit brand_tickets_path(brand)
   end
@@ -29,7 +29,7 @@ RSpec.describe 'Brand', type: :system do
 
   it 'allows replying to tickets from other brands' do
     user = sign_in_user
-    account = FactoryBot.create(:user_account, provider: 'twitter', token: 'hello', secret: 'world', user: user)
+    account = create(:user_account, provider: 'twitter', token: 'hello', secret: 'world', user:)
     page.driver.browser.navigate.refresh
 
     target_ticket = tickets.first
@@ -92,7 +92,7 @@ RSpec.describe 'Brand', type: :system do
     end
 
     it 'keeps ticket status context when searching' do
-      solved_tickets = FactoryBot.create_list(:internal_ticket, 2, status: :solved, brand: brand).map(&:base_ticket)
+      solved_tickets = create_list(:internal_ticket, 2, status: :solved, brand:).map(&:base_ticket)
       tickets.first.update!(content: solved_tickets.first.content)
 
       sign_in_user
@@ -113,8 +113,8 @@ RSpec.describe 'Brand', type: :system do
     end
 
     it 'allows searching by nested ticket content' do
-      nested_ticket = FactoryBot.create(:internal_ticket, brand: brand, parent: tickets.first).base_ticket
-      nested_nested_ticket = FactoryBot.create(:internal_ticket, brand: brand, parent: nested_ticket).base_ticket
+      nested_ticket = create(:internal_ticket, brand:, parent: tickets.first).base_ticket
+      nested_nested_ticket = create(:internal_ticket, brand:, parent: nested_ticket).base_ticket
 
       sign_in_user
       sign_in_brand(brand)
@@ -135,7 +135,7 @@ RSpec.describe 'Brand', type: :system do
     response = {
       id: 123_456,
       user: { id: user_external_uid, screen_name: user_screen_name },
-      in_reply_to_status_id: in_reply_to_status_id,
+      in_reply_to_status_id:,
       full_text: response_text
     }
     stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')

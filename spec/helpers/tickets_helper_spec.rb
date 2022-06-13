@@ -36,8 +36,8 @@ RSpec.describe TicketsHelper, type: :helper do
   describe '#ticket_header_content' do
     subject(:ticket_header_content) { helper.ticket_header_content(user_authorized, ticket, ticket.brand) }
 
-    let(:parent_ticket) { FactoryBot.create(:internal_ticket).base_ticket }
-    let(:ticket) { FactoryBot.create(:internal_ticket, parent: parent_ticket, brand: parent_ticket.brand).base_ticket }
+    let(:parent_ticket) { create(:internal_ticket).base_ticket }
+    let(:ticket) { create(:internal_ticket, parent: parent_ticket, brand: parent_ticket.brand).base_ticket }
     let(:user_authorized) { false }
 
     context 'when ticket is root' do
@@ -55,7 +55,7 @@ RSpec.describe TicketsHelper, type: :helper do
       let(:user_authorized) { true }
 
       before do
-        ticket.creator = FactoryBot.create(:user)
+        ticket.creator = create(:user)
       end
 
       it 'shows local ticket author' do

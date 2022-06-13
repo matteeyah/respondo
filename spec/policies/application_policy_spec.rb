@@ -5,12 +5,12 @@ RSpec.describe ApplicationPolicy, type: :policy do
 
   permissions :index?, :show?, :create?, :new?, :update?, :edit?, :destroy? do
     it 'denies access to everyone' do
-      expect(application_policy).not_to permit(FactoryBot.create(:user))
+      expect(application_policy).not_to permit(create(:user))
     end
   end
 
   describe ApplicationPolicy::Scope do
-    let(:scope) { described_class.new(FactoryBot.create(:user), Ticket.all) }
+    let(:scope) { described_class.new(create(:user), Ticket.all) }
 
     describe '#resolve' do
       it 'resolves whole relation' do

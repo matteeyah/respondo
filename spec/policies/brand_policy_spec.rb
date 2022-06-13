@@ -3,7 +3,7 @@
 RSpec.describe BrandPolicy, type: :policy do
   subject(:brand_policy) { described_class }
 
-  let(:brand) { FactoryBot.create(:brand) }
+  let(:brand) { create(:brand) }
 
   permissions :edit?, :update? do
     it 'denies access to guests' do
@@ -11,11 +11,11 @@ RSpec.describe BrandPolicy, type: :policy do
     end
 
     it 'denies access to users outside brand' do
-      expect(brand_policy).not_to permit(FactoryBot.create(:user), brand)
+      expect(brand_policy).not_to permit(create(:user), brand)
     end
 
     it 'allows access to users in brand' do
-      expect(brand_policy).to permit(FactoryBot.create(:user, brand: brand), brand)
+      expect(brand_policy).to permit(create(:user, brand:), brand)
     end
   end
 
@@ -27,7 +27,7 @@ RSpec.describe BrandPolicy, type: :policy do
     end
 
     it 'allows if brand has subscription' do
-      FactoryBot.create(:subscription, brand: brand)
+      create(:subscription, brand:)
 
       expect(brand_policy).to permit(nil, brand)
     end

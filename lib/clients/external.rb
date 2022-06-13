@@ -13,7 +13,7 @@ module Clients
     def reply(response_text, parent_external_post_id)
       Net::HTTP.post_form(
         URI(@response_url),
-        response_text: response_text,
+        response_text:,
         parent_id: parent_external_post_id,
         author: { external_uid: @author_external_uid, username: @author_username }
       ).body

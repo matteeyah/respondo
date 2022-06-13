@@ -9,11 +9,11 @@ RSpec.describe Brands::BrandAccountsController, type: :request do
   describe 'DELETE destroy' do
     subject(:delete_destroy) { delete "/brands/#{brand.id}/brand_accounts/#{account.id}" }
 
-    let(:brand) { FactoryBot.create(:brand) }
-    let!(:account) { FactoryBot.create(:brand_account, provider: 'twitter', brand: brand) }
+    let(:brand) { create(:brand) }
+    let!(:account) { create(:brand_account, provider: 'twitter', brand:) }
 
     context 'when user is signed in' do
-      let(:browsing_user) { FactoryBot.create(:user, :with_account) }
+      let(:browsing_user) { create(:user, :with_account) }
 
       before do
         sign_in(browsing_user)
@@ -44,7 +44,7 @@ RSpec.describe Brands::BrandAccountsController, type: :request do
 
         context 'when brand has multiple accounts' do
           before do
-            FactoryBot.create(:brand_account, provider: 'disqus', brand: brand)
+            create(:brand_account, provider: 'disqus', brand:)
           end
 
           it 'destroys the account' do

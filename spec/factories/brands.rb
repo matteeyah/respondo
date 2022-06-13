@@ -7,7 +7,7 @@ FactoryBot.define do
 
   trait :with_account do
     after(:create) do |brand|
-      create(:brand_account, brand: brand)
+      create(:brand_account, brand:)
     end
   end
 end

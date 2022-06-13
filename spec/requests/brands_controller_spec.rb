@@ -9,10 +9,10 @@ RSpec.describe BrandsController, type: :request do
   describe 'GET edit' do
     subject(:get_edit) { get "/brands/#{brand.id}/edit" }
 
-    let(:brand) { FactoryBot.create(:brand) }
+    let(:brand) { create(:brand) }
 
     context 'when user is signed in' do
-      let(:user) { FactoryBot.create(:user, :with_account) }
+      let(:user) { create(:user, :with_account) }
 
       before do
         sign_in(user)
@@ -44,7 +44,7 @@ RSpec.describe BrandsController, type: :request do
         end
 
         context 'when pagination is required' do
-          let!(:extra_users) { FactoryBot.create_list(:user, 20, brand: brand) }
+          let!(:extra_users) { create_list(:user, 20, brand:) }
 
           it 'paginates users' do
             get_edit
@@ -73,11 +73,11 @@ RSpec.describe BrandsController, type: :request do
   describe 'PATCH update' do
     subject(:patch_update) { patch "/brands/#{brand.id}", params: { brand: { domain: new_domain } } }
 
-    let(:brand) { FactoryBot.create(:brand) }
+    let(:brand) { create(:brand) }
     let(:new_domain) { nil }
 
     context 'when user is signed in' do
-      let(:user) { FactoryBot.create(:user, :with_account) }
+      let(:user) { create(:user, :with_account) }
 
       before do
         sign_in(user)

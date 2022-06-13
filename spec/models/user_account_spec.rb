@@ -5,7 +5,7 @@ require './spec/support/concerns/models/accountable_examples'
 
 RSpec.describe UserAccount, type: :model do
   describe 'Validations' do
-    subject(:account) { FactoryBot.create(:user_account) }
+    subject(:account) { create(:user_account) }
 
     it { is_expected.to validate_presence_of(:provider) }
     it { is_expected.to validate_uniqueness_of(:provider).scoped_to(:user_id).ignoring_case_sensitivity }
@@ -25,7 +25,7 @@ RSpec.describe UserAccount, type: :model do
       context "when provider is #{provider}" do
         subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_user) }
 
-        let(:auth_hash) { OmniauthHelpers.fixture_for_provider(provider) }
+        let(:auth_hash) { instance_double(Net::HTTPResponse, OmniauthHelpers.fixture_for_provider(provider)) }
 
         context 'when there is no matching account' do
           context 'when creating a new user' do
@@ -37,7 +37,7 @@ RSpec.describe UserAccount, type: :model do
 
             it 'builds an account entity with correct information' do
               expect(from_omniauth).to have_attributes(
-                external_uid: auth_hash.uid, provider: provider,
+                external_uid: auth_hash.uid, provider:,
                 token: auth_hash.credentials.token, secret: auth_hash.credentials.secret,
                 email: auth_hash.info.email
               )
@@ -52,7 +52,7 @@ RSpec.describe UserAccount, type: :model do
             end
 
             context 'when the user email belongs to brand domain' do
-              let!(:brand) { FactoryBot.create(:brand, domain: 'example.com') }
+              let!(:brand) { create(:brand, domain: 'example.com') }
 
               before do
                 auth_hash.info.email = 'test@example.com'
@@ -65,7 +65,7 @@ RSpec.describe UserAccount, type: :model do
           end
 
           context 'when adding the account to existing user' do
-            let!(:current_user) { FactoryBot.create(:user) }
+            let!(:current_user) { create(:user) }
 
             context 'when existing user does not have account for provider' do
               it 'returns a new account' do
@@ -74,7 +74,7 @@ RSpec.describe UserAccount, type: :model do
 
               it 'builds an account entity with correct information' do
                 expect(from_omniauth).to have_attributes(
-                  external_uid: auth_hash.uid, provider: provider,
+                  external_uid: auth_hash.uid, provider:,
                   token: auth_hash.credentials.token, secret: auth_hash.credentials.secret,
                   email: auth_hash.info.email
                 )
@@ -93,7 +93,7 @@ RSpec.describe UserAccount, type: :model do
               end
 
               context 'when the user email belongs to brand domain' do
-                let!(:brand) { FactoryBot.create(:brand, domain: 'example.com') }
+                let!(:brand) { create(:brand, domain: 'example.com') }
 
                 before do
                   auth_hash.info.email = 'test@example.com'
@@ -107,7 +107,7 @@ RSpec.describe UserAccount, type: :model do
 
             context 'when existing user has account for provider' do
               before do
-                FactoryBot.create(:user_account, provider: provider, user: current_user)
+                create(:user_account, provider:, user: current_user)
               end
 
               it 'does not create new users' do
@@ -119,11 +119,13 @@ RSpec.describe UserAccount, type: :model do
               end
 
               it 'has an error about provider being taken' do
-                expect(from_omniauth.errors.details.to_hash).to include(provider: array_including(a_hash_including(error: :taken)))
+                expect(from_omniauth.errors.details.to_hash).to(
+                  include(provider: array_including(a_hash_including(error: :taken)))
+                )
               end
 
               context 'when the user email belongs to brand domain' do
-                let!(:brand) { FactoryBot.create(:brand, domain: 'example.com') }
+                let!(:brand) { create(:brand, domain: 'example.com') }
 
                 before do
                   auth_hash.info.email = 'test@example.com'
@@ -138,7 +140,7 @@ RSpec.describe UserAccount, type: :model do
         end
 
         context 'when there is a matching account' do
-          let!(:account) { FactoryBot.create(:user_account, external_uid: auth_hash.uid, provider: auth_hash.provider) }
+          let!(:account) { create(:user_account, external_uid: auth_hash.uid, provider: auth_hash.provider) }
           let(:current_user) { account.user }
 
           context 'when account belongs to current user' do
@@ -155,7 +157,7 @@ RSpec.describe UserAccount, type: :model do
             end
 
             context 'when the user email belongs to brand domain' do
-              let!(:brand) { FactoryBot.create(:brand, domain: 'example.com') }
+              let!(:brand) { create(:brand, domain: 'example.com') }
 
               before do
                 auth_hash.info.email = 'test@example.com'
@@ -168,7 +170,7 @@ RSpec.describe UserAccount, type: :model do
           end
 
           context 'when switching account from different user' do
-            let!(:current_user) { FactoryBot.create(:user) }
+            let!(:current_user) { create(:user) }
 
             it 'returns the matching account' do
               expect(from_omniauth).to eq(account)
@@ -181,7 +183,9 @@ RSpec.describe UserAccount, type: :model do
             it 'removes the account from existing user' do
               previous_user = account.user
 
-              expect { from_omniauth }.to change { previous_user.reload.accounts.find_by(provider: provider) }.from(account).to(nil)
+              expect { from_omniauth }.to change {
+                                            previous_user.reload.accounts.find_by(provider:)
+                                          }.from(account).to(nil)
             end
 
             it 'associates the account to current user' do
@@ -189,7 +193,7 @@ RSpec.describe UserAccount, type: :model do
             end
 
             context 'when the user email belongs to brand domain' do
-              let!(:brand) { FactoryBot.create(:brand, domain: 'example.com') }
+              let!(:brand) { create(:brand, domain: 'example.com') }
 
               before do
                 auth_hash.info.email = 'test@example.com'
@@ -216,7 +220,7 @@ RSpec.describe UserAccount, type: :model do
               auth_hash.info.email = 'hello@world.com'
             end
 
-            it 'updates email ' do
+            it 'updates email' do
               expect { from_omniauth }.to change { account.reload.email }.to(auth_hash.info.email)
             end
           end
@@ -264,7 +268,7 @@ RSpec.describe UserAccount, type: :model do
   describe '#client' do
     subject(:client) { account.client }
 
-    let(:account) { FactoryBot.build(:user_account) }
+    let(:account) { build(:user_account) }
 
     %w[twitter disqus].each do |provider|
       context "when provider is #{provider}" do

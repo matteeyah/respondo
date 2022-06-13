@@ -3,7 +3,7 @@
 RSpec.describe PersonalAccessTokenPolicy, type: :policy do
   subject(:personal_access_token_policy) { described_class }
 
-  let(:personal_access_token) { FactoryBot.create(:personal_access_token) }
+  let(:personal_access_token) { create(:personal_access_token) }
 
   permissions :create?, :destroy? do
     it 'denies access to guests' do
@@ -11,7 +11,7 @@ RSpec.describe PersonalAccessTokenPolicy, type: :policy do
     end
 
     it 'denies access to other users' do
-      expect(personal_access_token_policy).not_to permit(FactoryBot.create(:user), personal_access_token)
+      expect(personal_access_token_policy).not_to permit(create(:user), personal_access_token)
     end
 
     it 'allows access to themselves' do

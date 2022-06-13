@@ -2,7 +2,7 @@
 
 module Brands
   class TicketsController < ApplicationController
-    include Pundit
+    include Pundit::Authorization
     include Pagy::Backend
 
     def index
@@ -66,8 +66,8 @@ module Brands
 
       LoadNewTicketsJob.perform_later(brand.id)
 
-      redirect_to brand_tickets_path(brand),
-                  flash: { success: 'Tickets will be loaded in the background. Refresh the page to see new tickets once they load.' }
+      flash = { success: 'Tickets will be loaded asynchronously. Refresh the page to see new tickets once they load.' }
+      redirect_to brand_tickets_path(brand), flash:
     end
 
     private

@@ -28,6 +28,8 @@ class TicketsQuery < ApplicationQuery
     return items_relation unless query
 
     authors = Author.arel_table
-    items_relation.where(Ticket.arel_table[:author_id].in(authors.project(authors[:id]).where(authors[:username].matches(query))))
+    items_relation.where(
+      Ticket.arel_table[:author_id].in(authors.project(authors[:id]).where(authors[:username].matches(query)))
+    )
   end
 end

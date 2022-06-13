@@ -9,10 +9,10 @@ RSpec.describe UsersController, type: :request do
   describe 'GET edit' do
     subject(:get_edit) { get "/users/#{user.id}/edit" }
 
-    let(:user) { FactoryBot.create(:user, :with_account) }
+    let(:user) { create(:user, :with_account) }
 
     context 'when user is signed in' do
-      let(:browsing_user) { FactoryBot.create(:user, :with_account) }
+      let(:browsing_user) { create(:user, :with_account) }
 
       before do
         sign_in(browsing_user)

@@ -2,7 +2,7 @@
 
 RSpec.describe Author, type: :model do
   describe 'Validations' do
-    subject(:author) { FactoryBot.create(:author) }
+    subject(:author) { create(:author) }
 
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:username) }
@@ -41,7 +41,7 @@ RSpec.describe Author, type: :model do
     end
 
     context 'when author exists' do
-      let!(:author) { FactoryBot.create(:author, external_uid: twitter_user.id, provider: 'twitter') }
+      let!(:author) { create(:author, external_uid: twitter_user.id, provider: 'twitter') }
 
       it 'returns the matching author' do
         expect(from_twitter_user!).to eq(author)
@@ -93,7 +93,7 @@ RSpec.describe Author, type: :model do
     end
 
     context 'when author exists' do
-      let!(:author) { FactoryBot.create(:author, external_uid: disqus_user[:id], provider: 'disqus') }
+      let!(:author) { create(:author, external_uid: disqus_user[:id], provider: 'disqus') }
 
       it 'returns the matching author' do
         expect(from_disqus_user!).to eq(author)
@@ -152,7 +152,7 @@ RSpec.describe Author, type: :model do
     end
 
     context 'when author exists' do
-      let!(:author) { FactoryBot.create(:author, external_uid: external_author_json[:external_uid], provider: 'external') }
+      let!(:author) { create(:author, external_uid: external_author_json[:external_uid], provider: 'external') }
 
       it 'returns the matching author' do
         expect(from_external_author!).to eq(author)
@@ -168,7 +168,9 @@ RSpec.describe Author, type: :model do
         end
 
         it 'does not update username' do
-          expect { from_external_author! }.not_to change { author.reload.username }.from(external_author_json[:username])
+          expect { from_external_author! }.not_to change {
+                                                    author.reload.username
+                                                  }.from(external_author_json[:username])
         end
       end
 

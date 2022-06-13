@@ -2,7 +2,7 @@
 
 module Users
   class UserAccountsController < ApplicationController
-    include Pundit
+    include Pundit::Authorization
 
     def destroy
       authorize(account)

@@ -2,7 +2,7 @@
 
 module Brands
   class UsersController < ApplicationController
-    include Pundit
+    include Pundit::Authorization
 
     def create
       authorize([:brands, external_user])

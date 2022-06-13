@@ -32,7 +32,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     sign_in_brand(brand)
 
     response_text = 'Hello from Respondo system tests'
-    target_ticket.ticketable = FactoryBot.create(:external_ticket, response_url: 'https://example.com')
+    target_ticket.ticketable = create(:external_ticket, response_url: 'https://example.com')
     target_ticket.external!
     target_ticket.author.external!
     target_ticket.save
@@ -94,7 +94,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     response = {
       id: 123_456,
       user: { id: user_external_uid, screen_name: user_screen_name },
-      in_reply_to_status_id: in_reply_to_status_id,
+      in_reply_to_status_id:,
       full_text: response_text
     }
     stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Subscription, type: :model do
-  subject(:subscription) { FactoryBot.create(:subscription) }
+  subject(:subscription) { create(:subscription) }
 
   it { is_expected.to validate_presence_of(:external_uid) }
   it { is_expected.to validate_presence_of(:status) }

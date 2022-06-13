@@ -7,7 +7,7 @@ RSpec.describe 'Brand settings', type: :system do
   include OmniauthHelpers
   include SignInOutSystemHelpers
 
-  let!(:brand) { FactoryBot.create(:brand, :with_account) }
+  let!(:brand) { create(:brand, :with_account) }
 
   before do
     visit '/'
@@ -19,14 +19,14 @@ RSpec.describe 'Brand settings', type: :system do
   it 'allows the user to authorize an account' do
     click_link 'Brand settings'
 
-    add_oauth_mock_for_brand(brand, FactoryBot.create(:brand_account, provider: 'disqus'))
+    add_oauth_mock_for_brand(brand, create(:brand_account, provider: 'disqus'))
     click_link 'Authorize Disqus'
 
     expect(page).to have_link('Remove Disqus')
   end
 
   it 'allows the user to remove an account' do
-    FactoryBot.create(:brand_account, provider: 'disqus', brand: brand)
+    create(:brand_account, provider: 'disqus', brand:)
     click_link 'Brand settings'
 
     click_link 'Remove Disqus'
@@ -35,7 +35,7 @@ RSpec.describe 'Brand settings', type: :system do
   end
 
   it 'allows the user to add users to brand' do
-    external_user = FactoryBot.create(:user)
+    external_user = create(:user)
     click_link 'Brand settings'
 
     select external_user.name, from: 'add-user'
@@ -45,7 +45,7 @@ RSpec.describe 'Brand settings', type: :system do
   end
 
   it 'allows the user to remove users from brand' do
-    existing_user = FactoryBot.create(:user, brand: brand)
+    existing_user = create(:user, brand:)
     click_link 'Brand settings'
 
     click_link "Remove #{existing_user.name}"

@@ -14,7 +14,7 @@ module Paddle
         URI(UPDATE_SUBSCRIPTION_URL),
         vendor_id: @vendor_id,
         vendor_auth_code: @vendor_auth_code,
-        subscription_id: subscription_id,
+        subscription_id:,
         quantity: new_quantity
       )
     end

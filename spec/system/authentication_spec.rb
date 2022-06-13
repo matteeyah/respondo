@@ -17,7 +17,7 @@ RSpec.describe 'Authentication', type: :system do
 
   context 'when user email belongs to brand domain' do
     before do
-      FactoryBot.create(:brand, domain: 'example.com')
+      create(:brand, domain: 'example.com')
     end
 
     it 'adds the user to the brand' do
@@ -30,7 +30,7 @@ RSpec.describe 'Authentication', type: :system do
   end
 
   it 'redirects after sign in' do
-    brand = FactoryBot.create(:brand)
+    brand = create(:brand)
 
     visit brand_tickets_path(brand)
 

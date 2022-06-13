@@ -29,7 +29,8 @@ RSpec.describe Clients::Twitter do
       it 'calls the underlying twitter client with since_id' do
         new_mentions
 
-        expect(twitter_client_spy).to have_received(:mentions_timeline).with(tweet_mode: 'extended', since_id: last_ticket_identifier)
+        expect(twitter_client_spy).to have_received(:mentions_timeline).with(tweet_mode: 'extended',
+                                                                             since_id: last_ticket_identifier)
       end
     end
   end

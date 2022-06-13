@@ -10,8 +10,8 @@ RSpec.describe TicketsQuery, type: :query do
       context 'when status is specified' do
         let(:params) { { status: 'solved' } }
 
-        let!(:hit) { FactoryBot.create(:internal_ticket, status: 'solved').base_ticket }
-        let!(:miss) { FactoryBot.create(:internal_ticket, status: 'open').base_ticket }
+        let!(:hit) { create(:internal_ticket, status: 'solved').base_ticket }
+        let!(:miss) { create(:internal_ticket, status: 'open').base_ticket }
 
         it 'searches by ticket status' do
           expect(call).to include(hit)
@@ -25,8 +25,8 @@ RSpec.describe TicketsQuery, type: :query do
       context 'when status is not specified' do
         let(:params) { { status: '' } }
 
-        let!(:hit) { FactoryBot.create(:internal_ticket, status: 'open').base_ticket }
-        let!(:miss) { FactoryBot.create(:internal_ticket, status: 'solved').base_ticket }
+        let!(:hit) { create(:internal_ticket, status: 'open').base_ticket }
+        let!(:miss) { create(:internal_ticket, status: 'solved').base_ticket }
 
         it 'searches by ticket status' do
           expect(call).to include(hit)
@@ -40,10 +40,10 @@ RSpec.describe TicketsQuery, type: :query do
 
     context 'when filtering by query' do
       let(:params) { { query: 'hello_world' } }
-      let(:author) { FactoryBot.create(:author, username: 'hello_world') }
-      let!(:author_hit) { FactoryBot.create(:internal_ticket, author: author).base_ticket }
-      let!(:content_hit) { FactoryBot.create(:internal_ticket, content: 'hello_world').base_ticket }
-      let!(:miss) { FactoryBot.create(:internal_ticket).base_ticket }
+      let(:author) { create(:author, username: 'hello_world') }
+      let!(:author_hit) { create(:internal_ticket, author:).base_ticket }
+      let!(:content_hit) { create(:internal_ticket, content: 'hello_world').base_ticket }
+      let!(:miss) { create(:internal_ticket).base_ticket }
 
       it 'searches by author name' do
         expect(call).to include(author_hit)

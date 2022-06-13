@@ -1,7 +1,7 @@
 %ul.list-group
   - tickets.each do |ticket, replies|
     %li.list-group-item.pr-0.border-right-0.border-top-0.border-bottom-0
-      = render partial: 'ticket', locals: { brand: brand, ticket: ticket }
+      = render partial: 'ticket', locals: { brand:, ticket: }
 
       - if replies.any?
-        = render partial: 'tickets', locals: { brand: brand, tickets: replies }
+        = render partial: 'tickets', locals: { brand:, tickets: replies }

@@ -39,16 +39,15 @@ module OmniauthHelpers
     JSON.parse(
       Pathname.new(
         File.join('spec/fixtures/files', PROVIDER_OAUTH_FIXTURE[provider])
-      ).read,
-      object_class: OpenStruct
+      ).read
     )
   end
 
   def add_oauth_mock(provider, external_uid, info, credentials)
     OmniAuth.config.add_mock(provider,
                              uid: external_uid,
-                             info: info,
-                             credentials: credentials)
+                             info:,
+                             credentials:)
   end
 
   def add_oauth_mock_for_user(user, account = user.accounts.first)
