@@ -25,7 +25,7 @@ RSpec.describe UserAccount, type: :model do
       context "when provider is #{provider}" do
         subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_user) }
 
-        let(:auth_hash) { instance_double(Net::HTTPResponse, OmniauthHelpers.fixture_for_provider(provider)) }
+        let(:auth_hash) { Hashie::Mash.new(OmniauthHelpers.fixture_for_provider(provider)) }
 
         context 'when there is no matching account' do
           context 'when creating a new user' do

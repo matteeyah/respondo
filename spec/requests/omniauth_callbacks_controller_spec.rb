@@ -12,7 +12,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
       follow_redirect!
     end
 
-    let(:auth_hash) { instance_double(Net::HTTPResponse, OmniauthHelpers.fixture_for_provider(provider)) }
+    let(:auth_hash) { Hashie::Mash.new(OmniauthHelpers.fixture_for_provider(provider)) }
 
     before do
       OmniAuth.config.add_mock(provider.to_sym, auth_hash)

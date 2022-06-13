@@ -33,7 +33,7 @@ RSpec.describe BrandAccount, type: :model do
                          end
 
           response_content = JSON.parse(file_fixture(fixture_name).read)
-          instance_double(Net::HTTPResponse, response_content)
+          Hashie::Mash.new(response_content)
         end
 
         context 'when there is no matching account' do

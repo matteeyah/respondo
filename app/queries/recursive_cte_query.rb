@@ -18,16 +18,14 @@ class RecursiveCteQuery < ApplicationQuery
     recursive_cte_column = params[:recursive_cte_column]
 
     recursive_cte = Arel::Table.new(:recursive_cte)
-    select_manager = Arel::SelectManager.new(ActiveRecord::Base).freeze
+    select_manager = Arel::SelectManager.new(arel_table).freeze
 
     non_recursive_term = select_manager.dup.tap do |m|
-      m.from(arel_table)
       m.project(arel_table[Arel.star])
       m.where(arel_table[:id].in(model_ids))
     end
 
     recursive_term = select_manager.dup.tap do |m|
-      m.from(arel_table)
       m.join(recursive_cte)
       m.on(arel_table[model_table_column].eq(recursive_cte[recursive_cte_column]))
       m.project(arel_table[Arel.star])
@@ -36,8 +34,7 @@ class RecursiveCteQuery < ApplicationQuery
     union = non_recursive_term.union(:all, recursive_term)
     as_statement = Arel::Nodes::As.new(recursive_cte, union)
 
-    query = select_manager.dup.tap do |m|
-      m.from(recursive_cte)
+    query = Arel::SelectManager.new(recursive_cte).tap do |m|
       m.with(:recursive, as_statement)
       m.project(recursive_cte[:id])
     end

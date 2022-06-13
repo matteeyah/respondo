@@ -571,7 +571,7 @@ RSpec.describe Brands::TicketsController, type: :request do
           post_refresh
 
           expect(controller.flash[:success]).to eq(
-            'Tickets will be loaded in the background. Refresh the page to see new tickets once they load.'
+            'Tickets will be loaded asynchronously. Refresh the page to see new tickets once they load.'
           )
         end
 

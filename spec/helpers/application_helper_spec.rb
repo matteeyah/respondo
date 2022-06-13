@@ -2,13 +2,19 @@
 
 RSpec.describe ApplicationHelper, type: :helper do
   describe '#auth_provider_link' do
-    subject(:auth_provider_link) { helper.auth_provider_link('text', provider, 'model') }
+    subject(:auth_provider_link) { helper.auth_provider_link('test', provider, 'model') }
 
     (UserAccount.providers.keys + BrandAccount.providers.keys).each do |account_provider|
       context "when provider is #{account_provider}" do
         let(:provider) { account_provider }
 
-        it { is_expected.to match(%r{<a rel="nofollow" data-method="post" href="/auth/.*\?state=model">text</a>}) }
+        it do
+          expect(auth_provider_link).to match(%r{
+            <form\ class="button_to"\ method="post"\ action="/auth/.*\?state=model">
+            <button\ type="submit">test</button>
+            </form>
+            }x)
+        end
       end
     end
   end
