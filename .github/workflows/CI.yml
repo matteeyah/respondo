@@ -5,167 +5,114 @@ on: push
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    container: matteeyah/ruby-yarn:3.0.2-1.22.5
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        name: Cache yarn dependencies
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
         with:
-          path: vendor/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - uses: actions/cache@v2
-        name: Cache bundler dependencies
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - uses: actions/setup-node@v3
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gem-
+          node-version-file: '.node-version'
+          cache: 'yarn'
       - name: Install node dependencies
-        run: bin/yarn install --production true --cache-folder vendor/yarn
+        run: bin/yarn install --production true --frozen-lockfile
       - name: Install bundler dependencies
-        run: bundle install --without development production --jobs 4 --retry 3 --path vendor/bundle
-      - name: Run rspec
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bundle exec rspec --tag ~type:system
   rspec-system:
     runs-on: ubuntu-latest
-    container: matteeyah/ruby-yarn-chromium:3.0.2-1.22.5-90.0.4430.212
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        name: Cache yarn dependencies
+      - uses: browser-actions/setup-chrome@latest
         with:
-          path: vendor/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - uses: actions/cache@v2
-        name: Cache bundler dependencies
+          chrome-version: 'stable'
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gem-
+          bundler-cache: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.node-version'
+          cache: 'yarn'
       - name: Install node dependencies
-        run: bin/yarn install --production true --cache-folder vendor/yarn
-      - name: Install bundler dependencies
-        run: bundle install --without development production --jobs 4 --retry 3 --path vendor/bundle
+        run: bin/yarn install --production true --frozen-lockfile
       - name: Run rspec system specs
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bundle exec rspec --tag type:system
   license_finder:
     runs-on: ubuntu-latest
-    container: matteeyah/ruby-yarn:3.0.2-1.22.5
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        name: Cache yarn dependencies
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
         with:
-          path: vendor/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - uses: actions/cache@v2
-        name: Cache bundler dependencies
+          bundler-cache: true
+      - uses: actions/setup-node@v3
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gem-
+          node-version-file: '.node-version'
+          cache: 'yarn'
       - name: Install node dependencies
-        run: bin/yarn install --cache-folder vendor/yarn
-      - name: Install bundler dependencies
-        run: bundle install --jobs 4 --retry 3 --path vendor/bundle
+        run: bin/yarn install --frozen-lockfile
       - name: Run license_finder
         run: bundle exec license_finder --decisions_file dependency_decisions.yml
   rubocop:
     runs-on: ubuntu-latest
-    container: matteeyah/ruby-yarn:3.0.2-1.22.5
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        name: Cache bundler dependencies
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gem-
-      - name: Install bundler dependencies
-        run: bundle install --without development production --jobs 4 --retry 3 --path vendor/bundle
+          bundler-cache: true
       - name: Run rubocop
         run: bundle exec rubocop
   haml-lint:
     runs-on: ubuntu-latest
-    container: matteeyah/ruby-yarn:3.0.2-1.22.5
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        name: Cache bundler dependencies
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gem-
-      - name: Install bundler dependencies
-        run: bundle install --without development production --jobs 4 --retry 3 --path vendor/bundle
+          bundler-cache: true
       - name: Run haml-lint
         run: bundle exec haml-lint
   stylelint:
     runs-on: ubuntu-latest
-    container: matteeyah/ruby-yarn:3.0.2-1.22.5
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        name: Cache yarn dependencies
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          path: vendor/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version-file: '.node-version'
+          cache: 'yarn'
       - name: Install node dependencies
-        run: bin/yarn install --cache-folder vendor/yarn
+        run: bin/yarn install --frozen-lockfile
       - name: Run stylelint
         run: bin/yarn exec stylelint '**/*.scss'
   standard:
     runs-on: ubuntu-latest
-    container: matteeyah/ruby-yarn:3.0.2-1.22.5
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        name: Cache yarn dependencies
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          path: vendor/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version-file: '.node-version'
+          cache: 'yarn'
       - name: Install node dependencies
-        run: bin/yarn install --cache-folder vendor/yarn
+        run: bin/yarn install --frozen-lockfile
       - name: Run standard
         run: bin/yarn exec standard
   markdownlint:
     runs-on: ubuntu-latest
-    container: matteeyah/ruby-yarn:3.0.2-1.22.5
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        name: Cache yarn dependencies
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          path: vendor/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version-file: '.node-version'
+          cache: 'yarn'
       - name: Install node dependencies
-        run: bin/yarn install --cache-folder vendor/yarn
+        run: bin/yarn install --frozen-lockfile
       - name: Run markdownlint
         run: bin/yarn exec markdownlint "docs/*.md"
   vale:
     runs-on: ubuntu-latest
-    container: jdkato/vale:v2.1.1
+    container: jdkato/vale:v2.18.0
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run vale
         run: vale "docs/*.md"
