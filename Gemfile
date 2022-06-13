@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.2'
+ruby '3.1.2'
 
 # Core
 gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
@@ -84,7 +84,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers' # Easy installation and use of web drivers to run system tests with browsers
   # Other
-  gem 'mini_racer', '~> 0.4.0' # JS runtime for execjs
+  gem 'mini_racer', '~> 0.6.2' # JS runtime for execjs
   gem 'shoulda-matchers', '~> 5.0.0' # One-liner matchers
   gem 'simplecov', '~> 0.21.1', require: false # Code coverage
   gem 'webmock', '~> 3.14.0' # Stubs and expectations for HTTP requests
