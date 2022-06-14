@@ -55,6 +55,15 @@ jobs:
           bundler-cache: true
       - name: Run haml-lint
         run: bundle exec haml-lint
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run mdl
+        run: bundle exec mdl **/*.mdl --config .mdlrc
   vale:
     runs-on: ubuntu-latest
     container: jdkato/vale:v2.18.0

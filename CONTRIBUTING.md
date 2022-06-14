@@ -10,14 +10,17 @@ Please open a [GitHub Issue](https://github.com/Respondo/respondo/issues/new).
 
 ## Submitting changes
 
-Please send a [GitHub Pull Request](https://github.com/Respondo/respondo/pull/new/master) (read more about [pull requests](http://help.github.com/pull-requests/)).
+Please send a [GitHub Pull Request](https://github.com/Respondo/respondo/pull/new/master)
+(read more about [pull requests](http://help.github.com/pull-requests/)).
 
 * Include a clear list of what you've done
-* Include unit, integration and functional tests for any new functionality you introduce where applicable
+* Include unit, integration and functional tests for any new functionality you
+  introduce where applicable
 * Follow our coding conventions
 * Make sure all of your commits are atomic (one feature per commit)
 
-Always write a clear log message for your commits. One-line messages are fine for small changes, but bigger changes should look like this:
+Always write a clear log message for your commits. One-line messages are fine
+for small changes, but bigger changes should look like this:
 
 ```
 $ git commit -m "A brief summary of the commit
