@@ -63,7 +63,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Run mdl
-        run: bundle exec mdl '**/*.md' --config .mdlrc
+        run: bundle exec mdl docs --config .mdlrc
   frontend-lint:
     runs-on: ubuntu-latest
     steps:
@@ -71,8 +71,8 @@ jobs:
         with:
           force-depth: 0
       - uses: github/super-linter/slim@v4
-        with:
-          FILTER_REGEX_INCLUDE: .*.(js|scss)
+        env:
+          FILTER_REGEX_INCLUDE: .*app/.*.(js|scss)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   vale:
     runs-on: ubuntu-latest
