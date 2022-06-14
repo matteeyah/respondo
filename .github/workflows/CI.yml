@@ -63,7 +63,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Run mdl
-        run: bundle exec mdl **/*.mdl --config .mdlrc
+        run: bundle exec mdl '**/*.md' --config .mdlrc
   frontend-lint:
     runs-on: ubuntu-latest
     steps:
