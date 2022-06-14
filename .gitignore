@@ -34,13 +34,17 @@
 yarn-debug.log*
 .yarn-integrity
 
-.pnp.*
+# Yarn v2
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Yarn cache
+.yarn/cache
+.pnp.*
 
 # Ignore .env file
 .env
