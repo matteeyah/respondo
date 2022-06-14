@@ -10,12 +10,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
-          cache: 'yarn'
-      - name: Install node dependencies
-        run: bin/yarn install --immutable
       - name: Run rspec specs
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
@@ -30,12 +24,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
-          cache: 'yarn'
-      - name: Install node dependencies
-        run: bin/yarn install --immutable
       - name: Run rspec system specs
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
@@ -47,12 +35,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
-          cache: 'yarn'
-      - name: Install node dependencies
-        run: bin/yarn install --immutable
       - name: Run license_finder
         run: bundle exec license_finder --decisions_file dependency_decisions.yml
   rubocop:
@@ -73,42 +55,6 @@ jobs:
           bundler-cache: true
       - name: Run haml-lint
         run: bundle exec haml-lint
-  stylelint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
-          cache: 'yarn'
-      - name: Install node dependencies
-        run: bin/yarn install --immutable
-      - name: Run stylelint
-        run: bin/yarn exec stylelint '**/*.scss'
-  standard:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
-          cache: 'yarn'
-      - name: Install node dependencies
-        run: bin/yarn install --immutable
-      - name: Run standard
-        run: bin/yarn exec standard
-  markdownlint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
-          cache: 'yarn'
-      - name: Install node dependencies
-        run: bin/yarn install --immutable
-      - name: Run markdownlint
-        run: bin/yarn exec markdownlint "docs/*.md"
   vale:
     runs-on: ubuntu-latest
     container: jdkato/vale:v2.18.0
