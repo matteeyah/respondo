@@ -9,20 +9,20 @@ RSpec.describe 'Homepage', type: :system do
     visit '/'
 
     expect(page).to have_text('Hello, world!')
-    expect(page).to have_link('Sign In')
+    expect(page).to have_button('Sign In')
 
     add_oauth_mock_for_user(create(:user, :with_account))
-    click_link('Sign In', class: 'btn')
+    click_button('Sign In', class: 'btn')
 
-    expect(page).to have_link('Authorize Brand')
+    expect(page).to have_button('Authorize Brand')
 
     add_oauth_mock_for_brand(create(:brand, :with_account))
-    click_link('Authorize Brand', class: 'btn')
+    click_button('Authorize Brand', class: 'btn')
 
     expect(page).to have_link('Brand Tickets')
 
-    click_link('(sign out)')
+    click_button('(sign out)')
 
-    expect(page).to have_link('Sign In')
+    expect(page).to have_button('Sign In')
   end
 end

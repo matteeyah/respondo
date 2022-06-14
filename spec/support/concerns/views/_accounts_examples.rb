@@ -28,7 +28,7 @@ RSpec.shared_examples '_accounts_partial' do |model_class|
 
       context 'when account for provider does not exist' do
         it "renders the authorize #{provider_name} link" do
-          expect(render).to have_link("Authorize #{provider_human_name(provider_name)}")
+          expect(render).to have_button("Authorize #{provider_human_name(provider_name)}")
         end
       end
     end

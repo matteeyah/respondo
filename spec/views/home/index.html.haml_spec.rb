@@ -13,7 +13,7 @@ RSpec.describe 'home/index', type: :view do
     let(:user_signed_in) { false }
 
     it 'renders the sign in link' do
-      expect(render).to have_link('Sign In')
+      expect(render).to have_button('Sign In')
     end
   end
 
@@ -24,7 +24,7 @@ RSpec.describe 'home/index', type: :view do
       let(:brand) { nil }
 
       it 'renders the authorize brand link' do
-        expect(render).to have_link('Authorize Brand')
+        expect(render).to have_button('Authorize Brand')
       end
     end
 

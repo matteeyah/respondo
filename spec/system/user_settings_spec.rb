@@ -19,7 +19,7 @@ RSpec.describe 'User settings', type: :system do
     click_link 'User settings'
 
     add_oauth_mock_for_user(user, create(:user_account, provider: 'twitter'))
-    click_link 'Authorize Twitter'
+    click_button 'Authorize Twitter'
 
     expect(page).to have_link('Remove Twitter')
   end
@@ -30,7 +30,7 @@ RSpec.describe 'User settings', type: :system do
 
     click_link 'Remove Twitter'
 
-    expect(page).to have_link('Authorize Twitter')
+    expect(page).to have_button('Authorize Twitter')
   end
 
   it 'allows the user to create a personal access token' do

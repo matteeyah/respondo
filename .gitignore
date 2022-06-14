@@ -39,3 +39,8 @@ yarn-debug.log*
 
 # Ignore coverage data
 coverage
+
+# Encryption keys
+/config/credentials/development.key
+/config/credentials/production.key
+/config/credentials/test.key

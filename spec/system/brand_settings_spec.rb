@@ -20,7 +20,7 @@ RSpec.describe 'Brand settings', type: :system do
     click_link 'Brand settings'
 
     add_oauth_mock_for_brand(brand, create(:brand_account, provider: 'disqus'))
-    click_link 'Authorize Disqus'
+    click_button 'Authorize Disqus'
 
     expect(page).to have_link('Remove Disqus')
   end
@@ -31,7 +31,7 @@ RSpec.describe 'Brand settings', type: :system do
 
     click_link 'Remove Disqus'
 
-    expect(page).to have_link('Authorize Disqus')
+    expect(page).to have_button('Authorize Disqus')
   end
 
   it 'allows the user to add users to brand' do

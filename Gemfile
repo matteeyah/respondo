@@ -8,16 +8,16 @@ ruby '3.1.2'
 # Core
 gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
 gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
+gem 'importmap-rails', '~> 1.1.0'
 gem 'puma', '~> 5.6.4' # Use Puma as the application server
-gem 'rails', '~> 6.1.3'
-gem 'turbolinks', '~> 5' # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'webpacker', '~> 5.4.0' # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
+gem 'rails', '~> 7.0.3'
+gem 'turbo-rails', '~> 1.1.1' # Hotwire Turbo
 
 # Not used
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
+gem 'redis', '~> 4.0'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
@@ -32,7 +32,6 @@ gem 'omniauth-rails_csrf_protection', '~> 1.0.0'
 # Other
 gem 'aasm', '~> 5.2.0' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
-gem 'attr_encrypted', '~> 3.1.0' # encrypted attributes
 gem 'disqus_api', '~> 0.0.7' # Disqus client
 gem 'flipper-active_record', '~> 0.25.0' # ActiveRecord adapter for flipper
 gem 'hamlit', '~> 2.16.0' # High-Performance HAML markup processing
@@ -54,12 +53,8 @@ group :development, :test do
   ## Haml linter
   gem 'haml_lint', '~> 0.40.0', require: false
   # Other
-  # Bullet does not support Rails 6.1 currently
-  # https://github.com/Respondo/respondo/issues/247
-  # gem 'bullet', '~> 6.1.0' # N+1 monitoring
   gem 'factory_bot_rails', '~> 6.2.0' # Use factory_bot
   gem 'faker', '~> 2.21.0' # Sample data
-  gem 'html-proofer', '~> 3.19.1' # Runtime HTML proofer
   gem 'license_finder', '~> 7.0.1' # license checking
   gem 'pry-byebug', '~> 3.9.0' # pry debugging
   gem 'rspec-rails', '~> 5.1.2' # rspec testing framework
