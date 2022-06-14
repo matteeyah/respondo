@@ -1,9 +1,0 @@
-{
-  "default": true,
-  "single-title": {
-    "front_matter_title": 0
-  },
-  "no-inline-html": {
-    "allowed_elements": ["details", "summary", "pre", "i"]
-  }
-}
