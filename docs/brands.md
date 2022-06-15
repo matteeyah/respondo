@@ -1,11 +1,6 @@
 ---
-layout: docs
 title: Brands
 description: Documentation about managing brands.
-cta_button:
-  title: See Demo
-  url: https://respondohub.com/features#quick-demo
-nav_order: 3
 ---
 
 # Managing brands

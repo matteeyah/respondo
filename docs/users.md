@@ -1,11 +1,6 @@
 ---
-layout: docs
 title: Users
 description: Documentation about managing users.
-cta_button:
-  title: See Demo
-  url: https://respondohub.com/features#quick-demo
-nav_order: 2
 ---
 
 # Managing users

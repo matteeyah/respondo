@@ -1,11 +1,6 @@
 ---
-layout: docs
 title: External Ticket Format
 description: External ticket format for manually submitting tickets via API.
-cta_button:
-  title: See Demo
-  url: https://respondohub.com/features#quick-demo
-nav_skip: true
 ---
 
 # External ticket format

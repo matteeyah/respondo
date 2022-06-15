@@ -1,11 +1,6 @@
 ---
-layout: docs
 title: Tickets
 description: Documentation about working with tickets.
-cta_button:
-  title: See Demo
-  url: https://respondohub.com/features#quick-demo
-nav_order: 4
 ---
 
 # Working with tickets

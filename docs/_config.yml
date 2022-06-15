@@ -1,4 +1,9 @@
 title: Respondo Documentation
 exclude:
   - styles/
-google_analytics: UA-165392761-2
+theme: minima
+header_pages:
+  - index.md
+  - users.md
+  - brands.md
+  - tickets.md
