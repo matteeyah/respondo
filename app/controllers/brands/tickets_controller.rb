@@ -14,6 +14,7 @@ module Brands
 
     def show
       @ticket = ticket
+      @action_form = params[:action_form]
     end
 
     def reply
@@ -22,15 +23,16 @@ module Brands
 
       respond!
       flash[:success] = 'Response was successfully submitted.'
-      redirect_to brand_tickets_path(brand)
+
+      render :show
     rescue Twitter::Error => e
       flash[:warning] = "Unable to create tweet.\n#{e.message}"
-      redirect_to brand_tickets_path(brand)
-      # The double `#redirect_to` is required, since using `ensure` breaks
+      render :show
+      # The double `#render` is required, since using `ensure` breaks
       # the `#authorize` logic.
     end
 
-    def internal_note # rubocop:disable Metrics/AbcSize
+    def internal_note
       authorize(ticket)
       authorize(brand, :subscription?)
 
@@ -42,7 +44,7 @@ module Brands
         flash[:warning] = 'Unable to create internal note.'
       end
 
-      redirect_to brand_tickets_path(brand)
+      render :show
     end
 
     def invert_status

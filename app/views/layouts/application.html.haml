@@ -17,8 +17,8 @@
       %a.navbar-brand{ href: root_path }
         = image_tag('logo_circle_white.svg', class: 'mr-2')
         %span Respondo
-      %button.navbar-toggler{ type: 'button', 'data-toggle' => 'collapse',
-        'data-target' => '#navbar-content', 'aria-controls' => 'navbar-content',
+      %button.navbar-toggler{ type: 'button', 'data-bs-toggle' => 'collapse',
+        'data-bs-target' => '#navbar-content', 'aria-controls' => 'navbar-content',
         'aria-expanded' => 'false', 'aria-label' => 'Toggle navigation' }
         %span.navbar-toggler-icon
       .collapse.navbar-collapse#navbar-content
@@ -40,7 +40,7 @@
                 active: [{ users: :edit }], class: 'nav-link'
               %li.nav-item= button_to '(sign out)', sign_out_path, method: :delete, class: 'nav-link border-0 bg-transparent'
             - else
-              %li.nav-item= auth_provider_link('Sign In', 'google_oauth2', 'user', class: 'nav-link')
+              %li.nav-item= auth_provider_link('Sign In', 'google_oauth2', 'user', class: 'nav-link border-0 bg-transparent')
     %main.container.mt-4{ role: 'main' }
       .sticky-top
         - if flash.any?

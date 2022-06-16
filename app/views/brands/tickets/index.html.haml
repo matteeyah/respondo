@@ -33,7 +33,3 @@
 .row.mt-3
   .mx-auto
     != pagy_bootstrap_nav(@pagy)
-
-= content_for :custom_javascript do
-  :javascript
-    JSON.parse("#{flatten_hash(@tickets).map(&:id)}").forEach(ticketId => setupToggleResponseFormsClickListeners(ticketId))
