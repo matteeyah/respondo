@@ -32,13 +32,13 @@
           %ul.navbar-nav
             - if user_signed_in?
               - if current_brand.nil?
-                %li.nav-item= auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'nav-link')
+                %li.nav-item= auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'nav-link border-0 bg-transparent')
               - else
                 %li.nav-item= active_link_to 'Brand settings', edit_brand_path(current_brand),
                   active: [{ brands: :edit }], class: 'nav-link'
               %li.nav-item= active_link_to 'User settings', edit_user_path(current_user),
                 active: [{ users: :edit }], class: 'nav-link'
-              %li.nav-item= button_to '(sign out)', sign_out_path, method: :delete, class: 'nav-link'
+              %li.nav-item= button_to '(sign out)', sign_out_path, method: :delete, class: 'nav-link border-0 bg-transparent'
             - else
               %li.nav-item= auth_provider_link('Sign In', 'google_oauth2', 'user', class: 'nav-link')
     %main.container.mt-4{ role: 'main' }
@@ -47,8 +47,7 @@
           - flash.each do |type, message|
             .alert.alert-dismissible.fade.show{ class: "alert-#{type}", role: 'alert' }
               %span= message
-              %button.close{ 'data-dismiss' => 'alert' }
-                %span{ 'aria-hidden' => 'true' } &times;
+              %button.btn-close{ 'data-bs-dismiss' => 'alert' }
       = yield
     %footer.container
       %hr
