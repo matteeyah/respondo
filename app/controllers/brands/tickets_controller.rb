@@ -58,7 +58,7 @@ module Brands
         ticket.reopen!
       end
 
-      redirect_to brand_tickets_path(brand),
+      redirect_to brand_tickets_path(brand, status: ticket.status_before_last_save),
                   flash: { success: 'Ticket status successfully changed.' }
     end
 
