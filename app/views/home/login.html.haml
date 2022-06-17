@@ -17,16 +17,16 @@
       .container.px-4.py-5.px-md-5.text-center.text-lg-start.my-5
         .row.gx-lg-5.align-items-center.mb-5
           .col-lg-6.mb-5.mb-lg-0{ :style => "z-index: 10" }
-            %span.h1.my-5.display-5.fw-bold.ls-tight{ :style => "color: hsl(218, 81%, 95%)" } Ticketing system
+            %span.h1.my-5.display-5.fw-bold.ls-tight#label-ticket Ticketing system
             %br
             %span.h1{ :style => "color: hsl(218, 81%, 75%)" } for social media
             %p.mb-4.opacity-70{ :style => "color: hsl(218, 81%, 85%)" }
-              Respondo is a ticketing system for social media posts. 
-              It's like Zendesk for Twitter. 
+              Respondo is a ticketing system for social media posts.
+              It's like Zendesk for Twitter.
               It simplifies and enables supporting users via social networks.
           .col-lg-6.mb-5.mb-lg-0.position-relative
-            #radius-shape-1.position-absolute.rounded-circle.shadow-5-strong
-            #radius-shape-2.position-absolute.shadow-5-strong
+            .position-absolute.rounded-circle.shadow-5-strong#radius-shape-1
+            .position-absolute.shadow-5-strong#radius-shape-2
             .card.bg-glass
               .card-body.px-4.py-5.px-md-5
                 .row
@@ -37,5 +37,7 @@
                     %hr.my-4
                       %p.fw-bolder Sign up with:
                       .d-grid.gap-3
-                        = button_to 'Sign in with Google', auth_provider_path('google_oauth2', state: 'user', origin: '/'), method: :post, class: 'btn btn-lg btn-block btn btn-danger', 'data-turbo' => false
-                        = button_to 'Sign in with Twitter', auth_provider_path('twitter', state: 'user', origin: '/'), method: :post, class: 'btn btn-lg btn-block btn btn-primary', 'data-turbo' => false
+                        = button_to 'Sign in with Google', auth_provider_path('google_oauth2', state: 'user', origin: '/'),
+                         method: :post, class: 'btn btn-lg btn-block btn btn-danger', 'data-turbo' => false
+                        = button_to 'Sign in with Twitter', auth_provider_path('twitter', state: 'user', origin: '/'),
+                         method: :post, class: 'btn btn-lg btn-block btn btn-primary', 'data-turbo' => false
