@@ -10,4 +10,14 @@ RSpec.describe HomeController, type: :request do
       expect(response.body).to include('Hello, world!')
     end
   end
+
+  describe 'GET login' do
+    subject(:get_login) { get '/login' }
+
+    it 'renders the login page' do
+      get_login
+
+      expect(response.body).to include('Hello, world!')
+    end
+  end
 end
