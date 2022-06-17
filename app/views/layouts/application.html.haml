@@ -13,8 +13,8 @@
     %script{ src: 'https://kit.fontawesome.com/55ce2d2ceb.js', crossorigin: 'anonymous' }
     = javascript_importmap_tags
   %body.d-flex.min-vh-100
-    %nav.d-flex.navbar.navbar-dark.flex-column.flex-shrink-0.bg-primary.me-5{ style: 'width: 14rem' }
-      %div.sticky-top
+    %nav.d-flex.navbar.navbar-dark.flex-column.flex-shrink-0.bg-primary.me-5
+      .sticky-top
         = link_to root_path, class: 'd-block m-2 text-decoration-none d-flex row align-items-center' do
           = image_tag('logo_circle_white.svg', class: 'col-lg-4 img-fluid')
           %span.h4.d-block.col-lg-8.mb-0.text-white Respondo
@@ -22,20 +22,23 @@
           - if current_brand
             %li.nav-item= active_link_to 'Tickets', brand_tickets_path(current_brand), active: :exclusive, class: 'nav-link'
           - else
-            %li.nav-item= auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'nav-link')
-      %div.sticky-bottom
+            %li.nav-item= auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'nav-link btn btn-link')
+      .sticky-bottom
         .dropup
-          = link_to '#', class: 'd-flex align-items-center dropdown-toggle', 'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
+          = link_to '#', class: 'd-flex align-items-center dropdown-toggle',
+            'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
             %strong.text-white Settings
           %ul.dropdown-menu.dropdown-menu-light
-            %li= active_link_to 'Brand settings', edit_brand_path(current_brand),
-              active: [{ brands: :edit }], class: 'dropdown-item', 'data-turbo' => false
-            %li= active_link_to 'User settings', edit_user_path(current_user),
-              active: [{ users: :edit }], class: 'dropdown-item', 'data-turbo' => false
-            %li
-              %hr.dropdown-divider
-            %li= button_to '(sign out)', sign_out_path, method: :delete,
-              class: 'dropdown-item btn btn-link', 'data-turbo' => false
+            - if current_brand
+              %li= active_link_to 'Brand settings', edit_brand_path(current_brand),
+                active: [{ brands: :edit }], class: 'dropdown-item', 'data-turbo' => false
+            - if current_user
+              %li= active_link_to 'User settings', edit_user_path(current_user),
+                active: [{ users: :edit }], class: 'dropdown-item', 'data-turbo' => false
+              %li
+                %hr.dropdown-divider
+              %li= button_to '(sign out)', sign_out_path, method: :delete,
+                class: 'dropdown-item btn btn-link', 'data-turbo' => false
         %hr
         %ul.navbar-nav.flex-column
           %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link'

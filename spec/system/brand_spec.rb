@@ -12,10 +12,14 @@ RSpec.describe 'Brand', type: :system do
   before do
     create(:subscription, brand:)
 
-    visit brand_tickets_path(brand)
+    visit '/'
   end
 
   it 'shows the tickets' do
+    user = create(:user, :with_account, brand:)
+    sign_in_user(user)
+    click_link('Tickets')
+
     expect(page).to have_text(tickets.first.content)
     expect(page).to have_text(tickets.first.author.username)
 
@@ -27,38 +31,10 @@ RSpec.describe 'Brand', type: :system do
     let(:target_ticket) { tickets.first }
   end
 
-  it 'allows replying to tickets from other brands' do
-    user = sign_in_user
-    user.update!(brand:)
-    account = create(:user_account, provider: 'twitter', token: 'hello', secret: 'world', user:)
-    page.driver.browser.navigate.refresh
-
-    target_ticket = tickets.first
-    response_text = 'Hello from Respondo system tests'
-    user_nickname = 'test_nickname'
-    stub_twitter_reply_response(
-      account.external_uid,
-      user_nickname,
-      target_ticket.external_uid,
-      response_text
-    )
-
-    click_link "toggle-reply-#{target_ticket.id}"
-
-    within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
-      fill_in 'response_text', with: response_text
-      click_button 'Reply'
-    end
-
-    within("#ticket_#{target_ticket.id}") do
-      expect(page).to have_text(user_nickname)
-      expect(page).to have_text(response_text)
-    end
-  end
-
   it 'allows navigating to tickets' do
     sign_in_user
     sign_in_brand(brand)
+    click_link('Tickets')
 
     target_ticket = tickets.first
 
@@ -73,6 +49,7 @@ RSpec.describe 'Brand', type: :system do
     it 'allows searching tickets by author name' do
       sign_in_user
       sign_in_brand(brand)
+      click_link('Tickets')
 
       fill_in 'query', with: tickets.first.author.username
       click_button 'Search'
@@ -84,6 +61,7 @@ RSpec.describe 'Brand', type: :system do
     it 'allows searching tickets by content' do
       sign_in_user
       sign_in_brand(brand)
+      click_link('Tickets')
 
       fill_in 'query', with: tickets.first.content
       click_button 'Search'
@@ -98,6 +76,7 @@ RSpec.describe 'Brand', type: :system do
 
       sign_in_user
       sign_in_brand(brand)
+      click_link('Tickets')
 
       click_link 'Solved Tickets'
 
@@ -119,6 +98,7 @@ RSpec.describe 'Brand', type: :system do
 
       sign_in_user
       sign_in_brand(brand)
+      click_link('Tickets')
 
       fill_in 'query', with: nested_ticket.content
       click_button 'Search'

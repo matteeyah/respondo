@@ -12,10 +12,14 @@ RSpec.describe 'Ticket', type: :system do
   before do
     create(:subscription, brand:)
 
-    visit brand_ticket_path(ticket.brand, ticket)
+    visit '/'
   end
 
   it 'shows the ticket' do
+    user = create(:user, :with_account, brand:)
+    sign_in_user(user)
+    click_link('Tickets')
+
     expect(page).to have_text(ticket.content)
     expect(page).to have_text(ticket.author.username)
   end

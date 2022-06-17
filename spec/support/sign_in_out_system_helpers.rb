@@ -9,7 +9,7 @@ module SignInOutSystemHelpers
   def sign_in_user(user = nil)
     (user || FactoryBot.create(:user, :with_account)).tap do |active_user|
       SignInOutSystemHelpers.add_oauth_mock_for_user(active_user)
-      click_button('Sign In', class: 'nav-link')
+      click_button('Sign in with Google')
     end
   end
 
