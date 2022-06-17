@@ -24,17 +24,24 @@
               Respondo is a ticketing system for social media posts.
               It's like Zendesk for Twitter.
               It simplifies and enables supporting users via social networks.
+              Respondo is a ticketing system for social media posts.
+              It's like Zendesk for Twitter.
+              It simplifies and enables supporting users via social networks.
+              Respondo is a ticketing system for social media posts.
+              It's like Zendesk for Twitter.
+              It simplifies and enables supporting users via social networks.
+              Respondo is a ticketing system for social media posts.
           .col-lg-6.mb-5.mb-lg-0.position-relative
             .position-absolute.rounded-circle.shadow-5-strong#radius-shape-1
             .position-absolute.shadow-5-strong#radius-shape-2
-            .card.bg-glass.opacity-100
+            .card.bg-glass
               .card-body.px-4.py-5.px-md-5
                 .row
                   .text-center
-                    %span.h3.my-5.display-5.fw-bold.ls-tight Sign up and try
+                    %span.display-6.ls-tight Sign up and try
                     %br
-                    %span.h3 Respondo now!
-                    %p.fw-bolder Sign up with:
+                    %span.ls-tight Respondo now!
+                    %hr
                     .d-grid.gap-3
                       = button_to 'Sign in with Google', auth_provider_path('google_oauth2', state: 'user', origin: '/'),
                       method: :post, class: 'btn btn-lg btn-block btn btn-danger', 'data-turbo' => false
