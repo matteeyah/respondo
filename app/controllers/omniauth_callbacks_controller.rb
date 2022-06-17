@@ -22,14 +22,14 @@ class OmniauthCallbacksController < ApplicationController
 
     if account.persisted?
       flash[:success] = 'User was successfully authenticated.'
-      sign_in(account.user) unless user_signed_in?
+      sign_in(account.user) if current_user.nil?
     else
-      flash[:danger] = "Could not authenticate user.\n#{account.errors.full_messages.join("\n")}"
+      flash[:danger] = "Could not authenticate user.\n#{account_errors(account)}"
     end
   end
 
   def authenticate_brand(auth_hash)
-    return flash[:warning] = 'User is not signed in.' unless user_signed_in?
+    return flash[:warning] = 'User is not signed in.' if current_user.nil?
 
     account = BrandAccount.from_omniauth(auth_hash, current_brand)
 
@@ -37,7 +37,11 @@ class OmniauthCallbacksController < ApplicationController
       flash[:success] = 'Brand was successfully authenticated.'
       current_user.update(brand: account.brand)
     else
-      flash[:danger] = "Could not authenticate brand.\n#{account.errors.full_messages.join("\n")}"
+      flash[:danger] = "Could not authenticate brand.\n#{account_errors(account)}"
     end
+  end
+
+  def account_errors(account)
+    account.errors.full_messages.join("\n")
   end
 end

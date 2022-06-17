@@ -8,6 +8,7 @@ class BrandsController < Brands::ApplicationController
     authorize(brand)
 
     @pagy, @brand_users = pagy(brand.users)
+    @brand = brand
   end
 
   def update
@@ -19,7 +20,7 @@ class BrandsController < Brands::ApplicationController
       flash[:danger] = 'Brand could not be updated.'
     end
 
-    redirect_to edit_brand_path(brand)
+    redirect_to edit_brand_path(current_brand)
   end
 
   private

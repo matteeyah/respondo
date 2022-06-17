@@ -1,10 +1,10 @@
-- subscription_status = brand.subscription&.status
+- subscription_status = @brand.subscription&.status
 - checkout_redirect_path = request.original_url
 
-%h4= brand.screen_name
+%h4= @brand.screen_name
 %hr
 
-= render partial: 'shared/accounts', locals: { providers: BrandAccount.providers.keys, model: brand }
+= render partial: 'shared/accounts', locals: { providers: BrandAccount.providers.keys, model: @brand }
 
 %hr
 
@@ -12,7 +12,7 @@
   .col-12.my-3.col-lg-6
     %h3 Users outside Brand
     %p.lead Select user and click button to add.
-    = form_with url: brand_users_path(brand), method: :post, class: 'form-inline' do |add_user_form|
+    = form_with url: brand_users_path(@brand), method: :post, class: 'form-inline' do |add_user_form|
       = add_user_form.select :user_id, options_for_select(add_users_dropdown_options_for),
         { include_blank: 'Select user' }, required: true, class: 'custom-select form-control col-8', id: 'add-user'
       = add_user_form.submit 'Add User', class: 'btn btn-primary col-3 ml-auto'
@@ -22,7 +22,7 @@
     %p.lead Click to remove.
     .list-group.list-group-horizontal-lg.flex-wrap
       - @brand_users.each do |user|
-        = button_to "Remove #{user.name}", brand_user_path(brand, user), method: :delete,
+        = button_to "Remove #{user.name}", brand_user_path(@brand, user), method: :delete,
           class: 'list-group-item list-group-item-action col-lg-6 text-center'
     .row.mt-3
       .mx-auto
@@ -34,7 +34,7 @@
   .col-12.my-3.col-lg-6
     %h3 Brand Domain
     %p.lead Fill in brand domain.
-    = form_with model: brand, method: :patch, class: 'form-inline' do |update_brand_form|
+    = form_with model: @brand, method: :patch, class: 'form-inline' do |update_brand_form|
       = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control col-8'
       = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary col-3 ml-auto'
 
@@ -48,7 +48,7 @@
       %p
         Subscription status:
         %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status || 'no subscription'
-      - if brand.subscription&.running?
+      - if @brand.subscription&.running?
         = button_tag 'Update Payment Details', class: 'btn btn-light', id: 'update-subscription'
         = button_tag 'Cancel Subscription', class: 'btn btn-light', id: 'cancel-subscription'
       - else
@@ -60,18 +60,18 @@
     Paddle.Setup({ vendor: #{Rails.application.config.x.paddle.vendor_id} })
 
   -# rubocop:disable Style/IdenticalConditionalBranches
-  - if brand.subscription&.running?
+  - if @brand.subscription&.running?
     :javascript
       function cancelSubscription() {
         Paddle.Checkout.open({
-          override: "#{brand.subscription.cancel_url}",
+          override: "#{@brand.subscription.cancel_url}",
           success: "#{checkout_redirect_path}"
         })
       }
 
       function updateSubscription() {
         Paddle.Checkout.open({
-          override: "#{brand.subscription.update_url}",
+          override: "#{@brand.subscription.update_url}",
           success: "#{checkout_redirect_path}"
         })
       }
@@ -84,8 +84,8 @@
         Paddle.Checkout.open({
           product: 592438,
           allowQuantity: false,
-          quantity: "#{brand.users.count}",
-          passthrough: "{\"brand_id\": #{brand.id}}",
+          quantity: "#{@brand.users.count}",
+          passthrough: "{\"brand_id\": #{@brand.id}}",
           success: "#{checkout_redirect_path}"
         })
       }

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
 class HomeController < ApplicationController
-  def index; end
+  def index
+    @brand = current_brand
+    @user = current_user
+  end
 end

@@ -7,6 +7,5 @@ module Users
     def user
       @user ||= User.find(params[:user_id] || params[:id])
     end
-    helper_method :user
   end
 end
