@@ -13,34 +13,35 @@
     %script{ src: 'https://kit.fontawesome.com/55ce2d2ceb.js', crossorigin: 'anonymous' }
     = javascript_importmap_tags
   %body
-    %nav.navbar.navbar-expand-lg.navbar-light.bg-light.rounded
-      %a.navbar-brand{ href: root_path }
-        = image_tag('logo_circle_white.svg', class: 'mr-2')
-        %span Respondo
-      %button.navbar-toggler{ type: 'button', 'data-bs-toggle' => 'collapse',
-        'data-bs-target' => '#navbar-content', 'aria-controls' => 'navbar-content',
-        'aria-expanded' => 'false', 'aria-label' => 'Toggle navigation' }
-        %span.navbar-toggler-icon
-      .collapse.navbar-collapse#navbar-content
-        %ul.navbar-nav.mr-auto
-          - if current_brand
-            %li.nav-item= active_link_to 'Tickets', brand_tickets_path(current_brand), active: :exclusive, class: 'nav-link'
-          %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link'
-          %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link'
-          %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link'
-        .mr-2
-          %ul.navbar-nav
-            - if user_signed_in?
-              - if current_brand.nil?
-                %li.nav-item= auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'nav-link border-0 bg-transparent')
+    %nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.sticky-top
+      .container
+        %a.navbar-brand{ href: root_path }
+          = image_tag('logo_circle_white.svg', class: 'mr-2')
+          %span Respondo
+        %button.navbar-toggler.border-0{ type: 'button', 'data-bs-toggle' => 'collapse',
+          'data-bs-target' => '#navbar-content', 'aria-controls' => 'navbar-content',
+          'aria-expanded' => 'false', 'aria-label' => 'Toggle navigation' }
+          %span.navbar-toggler-icon
+        .collapse.navbar-collapse#navbar-content
+          %ul.navbar-nav.ms-auto
+            - if current_brand
+              %li.nav-item= active_link_to 'Tickets', brand_tickets_path(current_brand), active: :exclusive, class: 'nav-link'
+            %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link'
+            %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link'
+            %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link'
+          .mr-2
+            %ul.navbar-nav
+              - if user_signed_in?
+                - if current_brand.nil?
+                  %li.nav-item= auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'nav-link')
+                - else
+                  %li.nav-item= active_link_to 'Brand settings', edit_brand_path(current_brand),
+                    active: [{ brands: :edit }], class: 'nav-link'
+                %li.nav-item= active_link_to 'User settings', edit_user_path(current_user),
+                  active: [{ users: :edit }], class: 'nav-link'
+                %li.nav-item= button_to '(sign out)', sign_out_path, method: :delete, class: 'nav-link'
               - else
-                %li.nav-item= active_link_to 'Brand settings', edit_brand_path(current_brand),
-                  active: [{ brands: :edit }], class: 'nav-link'
-              %li.nav-item= active_link_to 'User settings', edit_user_path(current_user),
-                active: [{ users: :edit }], class: 'nav-link'
-              %li.nav-item= button_to '(sign out)', sign_out_path, method: :delete, class: 'nav-link border-0 bg-transparent'
-            - else
-              %li.nav-item= auth_provider_link('Sign In', 'google_oauth2', 'user', class: 'nav-link border-0 bg-transparent')
+                %li.nav-item= auth_provider_link('Sign In', 'google_oauth2', 'user', class: 'nav-link btn btn-link active fw-bold')
     %main.container.mt-4{ role: 'main' }
       .sticky-top
         - if flash.any?
