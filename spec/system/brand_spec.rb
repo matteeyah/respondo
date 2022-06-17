@@ -29,8 +29,8 @@ RSpec.describe 'Brand', type: :system do
 
   it 'allows replying to tickets from other brands' do
     user = sign_in_user
-    account = create(:user_account, provider: 'twitter', token: 'hello', secret: 'world', user:)
     user.update!(brand:)
+    account = create(:user_account, provider: 'twitter', token: 'hello', secret: 'world', user:)
     page.driver.browser.navigate.refresh
 
     target_ticket = tickets.first
@@ -46,7 +46,7 @@ RSpec.describe 'Brand', type: :system do
     click_link "toggle-reply-#{target_ticket.id}"
 
     within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
-      fill_in :response_text, with: response_text
+      fill_in 'response_text', with: response_text
       click_button 'Reply'
     end
 
@@ -74,7 +74,7 @@ RSpec.describe 'Brand', type: :system do
       sign_in_user
       sign_in_brand(brand)
 
-      fill_in :query, with: tickets.first.author.username
+      fill_in 'query', with: tickets.first.author.username
       click_button 'Search'
 
       expect(page).to have_text(tickets.first.content)
@@ -85,7 +85,7 @@ RSpec.describe 'Brand', type: :system do
       sign_in_user
       sign_in_brand(brand)
 
-      fill_in :query, with: tickets.first.content
+      fill_in 'query', with: tickets.first.content
       click_button 'Search'
 
       expect(page).to have_text(tickets.first.content)
@@ -104,7 +104,7 @@ RSpec.describe 'Brand', type: :system do
       # This is a hack to make Capybara wait until the page is loaded after navigating
       find(:xpath, "//input[@type='hidden'][@value='solved']", visible: :hidden)
 
-      fill_in :query, with: solved_tickets.first.content
+      fill_in 'query', with: solved_tickets.first.content
       click_button 'Search'
 
       expect(page).to have_text(solved_tickets.first.author.username)
@@ -120,7 +120,7 @@ RSpec.describe 'Brand', type: :system do
       sign_in_user
       sign_in_brand(brand)
 
-      fill_in :query, with: nested_ticket.content
+      fill_in 'query', with: nested_ticket.content
       click_button 'Search'
 
       expect(page).to have_text(nested_ticket.content)
