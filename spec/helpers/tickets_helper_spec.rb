@@ -34,7 +34,7 @@ RSpec.describe TicketsHelper, type: :helper do
   end
 
   describe '#ticket_header_content' do
-    subject(:ticket_header_content) { helper.ticket_header_content(user_authorized, ticket, ticket.brand) }
+    subject(:ticket_header_content) { helper.ticket_header_content(user_authorized, ticket) }
 
     let(:parent_ticket) { create(:internal_ticket).base_ticket }
     let(:ticket) { create(:internal_ticket, parent: parent_ticket, brand: parent_ticket.brand).base_ticket }

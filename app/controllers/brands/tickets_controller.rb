@@ -10,6 +10,7 @@ module Brands
       @tickets = tickets_relation.with_descendants_hash(
         :author, :creator, :brand, ticketable: [:base_ticket], internal_notes: [:creator]
       )
+      @brand = brand
     end
 
     def show

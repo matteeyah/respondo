@@ -38,7 +38,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
               it 'logs the user in' do
                 post_authenticate
 
-                expect(controller.send(:user_signed_in?)).to be(true)
+                expect(controller.send(:current_user)).not_to be_nil
               end
 
               it 'sets the flash' do
@@ -70,7 +70,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
               it 'logs the user in' do
                 post_authenticate
 
-                expect(controller.send(:user_signed_in?)).to be(true)
+                expect(controller.send(:current_user)).not_to be_nil
               end
 
               it 'sets the flash' do
