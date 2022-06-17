@@ -12,8 +12,8 @@
     = stylesheet_link_tag 'login', media: 'all'
     %script{ src: 'https://kit.fontawesome.com/55ce2d2ceb.js', crossorigin: 'anonymous' }
     = javascript_importmap_tags
-  %body
-    %section.background-radial-gradient.overflow-hidden.min-vh-100
+  %body.d-flex.flex-column.h-100
+    %section.background-radial-gradient.overflow-hidden.min-vh-100.d-flex.flex-column
       .container.px-4.py-5.px-md-5.text-center.text-lg-start.my-5
         .row.gx-lg-5.align-items-center.mb-5
           .col-lg-6.mb-5.mb-lg-0{ style: 'z-index: 10' }
@@ -27,17 +27,27 @@
           .col-lg-6.mb-5.mb-lg-0.position-relative
             .position-absolute.rounded-circle.shadow-5-strong#radius-shape-1
             .position-absolute.shadow-5-strong#radius-shape-2
-            .card.bg-glass
+            .card.bg-glass.opacity-100
               .card-body.px-4.py-5.px-md-5
                 .row
                   .text-center
                     %span.h3.my-5.display-5.fw-bold.ls-tight Sign up and try
                     %br
                     %span.h3 Respondo now!
-                    %hr.my-4
-                      %p.fw-bolder Sign up with:
-                      .d-grid.gap-3
-                        = button_to 'Sign in with Google', auth_provider_path('google_oauth2', state: 'user', origin: '/'),
-                         method: :post, class: 'btn btn-lg btn-block btn btn-danger', 'data-turbo' => false
-                        = button_to 'Sign in with Twitter', auth_provider_path('twitter', state: 'user', origin: '/'),
-                         method: :post, class: 'btn btn-lg btn-block btn btn-primary', 'data-turbo' => false
+                    %p.fw-bolder Sign up with:
+                    .d-grid.gap-3
+                      = button_to 'Sign in with Google', auth_provider_path('google_oauth2', state: 'user', origin: '/'),
+                      method: :post, class: 'btn btn-lg btn-block btn btn-danger', 'data-turbo' => false
+                      = button_to 'Sign in with Twitter', auth_provider_path('twitter', state: 'user', origin: '/'),
+                      method: :post, class: 'btn btn-lg btn-block btn btn-primary', 'data-turbo' => false
+      .mt-auto.py-3.bg-transparent.text-white
+        .container.pb-5
+          .row.justify-content-center.pt-3.mb-3
+            .col-1
+              = image_tag('logo_circle_white.svg', class: 'img-fluid')
+          .row.justify-content-center.border-top.pt-3
+            = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
+            class: 'text-end text-white h6 col-4 text-decoration-none'
+            %span.text-center.h6.border-start.border-end.col-4.col-lg-3 © Respondo Ltd. #{Time.now.utc.year}
+            = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy',
+            class: 'text-start text-white h6 col-4 text-decoration-none'
