@@ -165,10 +165,10 @@ RSpec.describe Brands::TicketsController, type: :request do
         expect(controller.flash[:success]).to eq('Response was successfully submitted.')
       end
 
-      it 'redirects to brand tickets path' do
+      it 'renders the ticket' do
         post_reply
 
-        expect(response).to redirect_to(brand_tickets_path(brand))
+        expect(response.body).to include(ticket.content)
       end
     end
 
@@ -183,10 +183,10 @@ RSpec.describe Brands::TicketsController, type: :request do
         expect(controller.flash[:warning]).to eq("Unable to create tweet.\nerror")
       end
 
-      it 'redirects to brand tickets path' do
+      it 'renders the ticket' do
         post_reply
 
-        expect(response).to redirect_to(brand_tickets_path(brand))
+        expect(response.body).to include(ticket.content)
       end
     end
 
@@ -417,10 +417,10 @@ RSpec.describe Brands::TicketsController, type: :request do
               expect(controller.flash[:success]).to eq('Internal note was successfully submitted.')
             end
 
-            it 'redirects to brand tickets path' do
+            it 'renders the ticket' do
               post_internal_note
 
-              expect(response).to redirect_to(brand_tickets_path(brand))
+              expect(response.body).to include(ticket.content)
             end
           end
 
@@ -435,10 +435,10 @@ RSpec.describe Brands::TicketsController, type: :request do
               expect(controller.flash[:warning]).to eq('Unable to create internal note.')
             end
 
-            it 'redirects to brand tickets path' do
+            it 'renders the ticket' do
               post_internal_note
 
-              expect(response).to redirect_to(brand_tickets_path(brand))
+              expect(response.body).to include(ticket.content)
             end
           end
         end
@@ -498,7 +498,7 @@ RSpec.describe Brands::TicketsController, type: :request do
             it 'redirects to brand tickets path' do
               post_invert_status
 
-              expect(response).to redirect_to(brand_tickets_path(brand))
+              expect(response).to redirect_to(brand_tickets_path(brand, status: 'open'))
             end
           end
 
@@ -520,7 +520,7 @@ RSpec.describe Brands::TicketsController, type: :request do
             it 'redirects to brand tickets path' do
               post_invert_status
 
-              expect(response).to redirect_to(brand_tickets_path(brand))
+              expect(response).to redirect_to(brand_tickets_path(brand, status: 'solved'))
             end
           end
         end

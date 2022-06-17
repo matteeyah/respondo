@@ -15,7 +15,7 @@ RSpec.describe SessionsController, type: :request do
       end
 
       it 'logs the user out' do
-        expect { delete_destroy }.to change { controller.send(:user_signed_in?) }.from(true).to(false)
+        expect { delete_destroy }.to change { controller.send(:current_user) }.from(anything).to(nil)
       end
 
       it 'sets the flash' do

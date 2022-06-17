@@ -1,5 +1,1 @@
-= render partial: 'ticket', locals: { brand:, ticket: @ticket }
-
-= content_for :custom_javascript do
-  :javascript
-    setupToggleResponseFormsClickListeners("#{@ticket.id}")
+= render partial: 'ticket', locals: { ticket: @ticket, action_form: @action_form }

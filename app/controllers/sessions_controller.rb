@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
   private
 
   def authenticate!
-    return if user_signed_in?
+    return unless current_user.nil?
 
     redirect_back fallback_location: root_path, flash: { warning: 'You are not signed in.' }
   end

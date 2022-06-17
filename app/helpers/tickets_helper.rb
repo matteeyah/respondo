@@ -19,7 +19,7 @@ module TicketsHelper
     end
   end
 
-  def ticket_header_content(user_authorized, ticket, brand)
+  def ticket_header_content(user_authorized, ticket)
     header_content = ticket.author.username
 
     if user_authorized && ticket.creator
@@ -28,8 +28,9 @@ module TicketsHelper
       header_content = "#{header_content} - #{ticket.actual_provider}"
     end
 
-    sanitize("#{header_content} - #{link_to(ticket.created_at.to_formatted_s(:short),
-                                            brand_ticket_path(brand, ticket))}")
+    ticket_link = link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket),
+                          'data-turbo' => false)
+    "#{sanitize(header_content)} - #{ticket_link}"
   end
 
   def flatten_hash(hash)

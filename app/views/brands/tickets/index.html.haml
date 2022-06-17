@@ -1,39 +1,35 @@
 %h4
-  %span #{brand.screen_name}: Tickets
-  - if policy(:ticket).refresh? && policy(brand).user_in_brand?
-    = button_to 'Load Tickets', refresh_brand_tickets_path(brand), form_class: 'd-inline-block', class: 'btn btn-primary'
+  %span #{@brand.screen_name}: Tickets
+  - if policy(:ticket).refresh? && policy(@brand).user_in_brand?
+    = button_to 'Load Tickets', refresh_brand_tickets_path(@brand), form_class: 'd-inline-block', class: 'btn btn-primary'
 %hr
 
-- if policy(brand).user_in_brand?
+- if policy(@brand).user_in_brand?
   .alert.alert-secondary
     %p.mb-0.pb-0
       You can create tickets manually by submitting a POST request to
-      %span.text-break.font-weight-bold= brand_external_tickets_url(brand, format: :json)
+      %span.text-break.font-weight-bold= brand_external_tickets_url(@brand, format: :json)
       %br
       See the #{safe_blank_link_to 'required format', 'https://docs.respondohub.com/external_ticket_format'}.
 
 .list-group.list-group-horizontal.mb-3
-  = active_link_to 'Open Tickets', brand_tickets_path(brand, status: 'open'), active: { status: 'open' },
+  = active_link_to 'Open Tickets', brand_tickets_path(@brand, status: 'open'), active: { status: 'open' },
     class: 'list-group-item list-group-item-action text-center'
-  = active_link_to 'Solved Tickets', brand_tickets_path(brand, status: 'solved'), active: { status: 'solved' },
+  = active_link_to 'Solved Tickets', brand_tickets_path(@brand, status: 'solved'), active: { status: 'solved' },
     class: 'list-group-item list-group-item-action text-center'
 
-= form_with url: brand_tickets_path(brand), local: true, method: :get,
+= form_with url: brand_tickets_path(@brand), local: true, method: :get,
   class: 'form-inline mb-4', html: { autocomplete: 'off' } do |search_form|
   = search_form.hidden_field :status, value: request.parameters[:status]
   .input-group.col-12.col-lg-8
     = search_form.text_field :query, required: true, value: request.parameters[:query],
       placeholder: 'Search by ticket content or author name', class: 'form-control'
     .input-group-append
-      = link_to 'Clear Search', brand_tickets_path(brand, status: request.parameters[:status]), class: 'btn btn-outline-secondary'
+      = link_to 'Clear Search', brand_tickets_path(@brand, status: request.parameters[:status]), class: 'btn btn-outline-secondary'
   = search_form.submit 'Search', name: nil, class: 'btn btn-outline-success col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0'
 
-= render partial: 'brands/tickets/tickets', locals: { brand:, tickets: @tickets }
+= render partial: 'brands/tickets/tickets', locals: { brand: @brand, tickets: @tickets }
 
 .row.mt-3
   .mx-auto
     != pagy_bootstrap_nav(@pagy)
-
-= content_for :custom_javascript do
-  :javascript
-    JSON.parse("#{flatten_hash(@tickets).map(&:id)}").forEach(ticketId => setupToggleResponseFormsClickListeners(ticketId))
