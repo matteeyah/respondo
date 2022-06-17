@@ -30,6 +30,7 @@ RSpec.describe 'Brand', type: :system do
   it 'allows replying to tickets from other brands' do
     user = sign_in_user
     account = create(:user_account, provider: 'twitter', token: 'hello', secret: 'world', user:)
+    user.update!(brand:)
     page.driver.browser.navigate.refresh
 
     target_ticket = tickets.first
@@ -42,7 +43,7 @@ RSpec.describe 'Brand', type: :system do
       response_text
     )
 
-    click_button "toggle-reply-#{target_ticket.id}"
+    click_link "toggle-reply-#{target_ticket.id}"
 
     within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
       fill_in :response_text, with: response_text

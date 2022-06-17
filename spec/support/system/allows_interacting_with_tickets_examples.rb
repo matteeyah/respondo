@@ -16,7 +16,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
       response_text
     )
 
-    click_button "toggle-reply-#{target_ticket.id}"
+    click_link "toggle-reply-#{target_ticket.id}"
 
     within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
       fill_in :response_text, with: response_text
@@ -46,7 +46,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     stub_request(:post, target_ticket.external_ticket.response_url)
       .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
 
-    click_button "toggle-reply-#{target_ticket.id}"
+    click_link "toggle-reply-#{target_ticket.id}"
 
     within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
       fill_in :response_text, with: response_text
@@ -63,7 +63,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     internal_note_text = 'Internal note from Respondo system tests.'
 
-    click_button "toggle-internal-note-#{target_ticket.id}"
+    click_link "toggle-internal-note-#{target_ticket.id}"
 
     within "form[action='#{brand_ticket_internal_note_path(target_ticket.brand, target_ticket)}']" do
       fill_in :internal_note_text, with: internal_note_text
