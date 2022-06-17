@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   def destroy
     sign_out
 
-    redirect_to root_path, flash: { success: 'You have been signed out.' }
+    redirect_to login_path
   end
 
   private
@@ -14,6 +14,6 @@ class SessionsController < ApplicationController
   def authenticate!
     return unless current_user.nil?
 
-    redirect_back fallback_location: root_path, flash: { warning: 'You are not signed in.' }
+    redirect_back fallback_location: login_path, flash: { warning: 'You are not signed in.' }
   end
 end
