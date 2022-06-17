@@ -25,9 +25,8 @@
             %li.nav-item= auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'nav-link btn btn-link')
       .sticky-bottom
         .dropup
-          = link_to '#', class: 'd-flex align-items-center dropdown-toggle',
-            'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
-            %strong.text-white Settings
+          = link_to 'Settings', '#', class: 'd-flex align-items-center dropdown-toggle nav-link',
+            'data-bs-toggle' => 'dropdown', 'aria-expanded' => false
           %ul.dropdown-menu.dropdown-menu-light
             - if current_brand
               %li= active_link_to 'Brand settings', edit_brand_path(current_brand),
