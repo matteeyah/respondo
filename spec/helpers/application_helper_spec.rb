@@ -11,7 +11,7 @@ RSpec.describe ApplicationHelper, type: :helper do
         it do
           expect(auth_provider_link).to match(%r{
             <form\ class="button_to"\ method="post"\ action="/auth/.*\?state=model">
-            <button\ type="submit">test</button>
+            <button\ data-turbo="false"\ type="submit">test</button>
             </form>
             }x)
         end
