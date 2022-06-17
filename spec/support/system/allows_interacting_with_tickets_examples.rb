@@ -4,6 +4,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
   it 'allows replying to ticket' do
     user = sign_in_user
     sign_in_brand(brand)
+    click_link('Tickets')
 
     account = brand.accounts.first
     account.update!(token: 'hello', secret: 'world')
@@ -30,6 +31,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
   it 'allows replying to external tickets' do
     user = sign_in_user
     sign_in_brand(brand)
+    click_link('Tickets')
 
     response_text = 'Hello from Respondo system tests'
     target_ticket.ticketable = create(:external_ticket, response_url: 'https://example.com')
@@ -60,6 +62,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
   it 'allows leaving internal notes on tickets' do
     user = sign_in_user
     sign_in_brand(brand)
+    click_link('Tickets')
 
     internal_note_text = 'Internal note from Respondo system tests.'
 
@@ -77,6 +80,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
   it 'allows solving tickets' do
     sign_in_user
     sign_in_brand(brand)
+    click_link('Tickets')
 
     within "form[action='#{brand_ticket_invert_status_path(target_ticket.brand, target_ticket)}']" do
       find('button[type="submit"]').click

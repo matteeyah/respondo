@@ -12,39 +12,44 @@
     = stylesheet_link_tag 'application', media: 'all'
     %script{ src: 'https://kit.fontawesome.com/55ce2d2ceb.js', crossorigin: 'anonymous' }
     = javascript_importmap_tags
-  %body.d-flex.flex-column.min-vh-100
-    %nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.sticky-top
-      .container
-        %a.navbar-brand{ href: root_path }
-          = image_tag('logo_circle_white.svg', class: 'mr-2')
-          %span Respondo
-        %button.navbar-toggler.border-0{ type: 'button', 'data-bs-toggle' => 'collapse',
-          'data-bs-target' => '#navbar-content', 'aria-controls' => 'navbar-content',
-          'aria-expanded' => 'false', 'aria-label' => 'Toggle navigation' }
-          %span.navbar-toggler-icon
-        .collapse.navbar-collapse#navbar-content
-          %ul.navbar-nav.ms-auto
+  %body.d-flex.min-vh-100
+    %nav.d-flex.navbar.navbar-dark.flex-column.flex-shrink-0.bg-primary.me-5
+      .sticky-top
+        = link_to root_path, class: 'd-block m-2 text-decoration-none d-flex row align-items-center' do
+          = image_tag('logo_circle_white.svg', class: 'col-lg-4 img-fluid')
+          %span.h4.d-block.col-lg-8.mb-0.text-white Respondo
+        %ul.navbar-nav.flex-column.mx-4
+          - if current_brand
+            %li.nav-item= active_link_to 'Tickets', brand_tickets_path(current_brand), active: :exclusive, class: 'nav-link'
+          - else
+            %li.nav-item= auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'nav-link btn btn-link')
+      .sticky-bottom
+        .dropup
+          = link_to 'Settings', '#', class: 'd-flex align-items-center dropdown-toggle nav-link',
+            'data-bs-toggle' => 'dropdown', 'aria-expanded' => false
+          %ul.dropdown-menu.dropdown-menu-light
             - if current_brand
-              %li.nav-item= active_link_to 'Tickets', brand_tickets_path(current_brand), active: :exclusive, class: 'nav-link'
-            %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link'
-            %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link'
-            %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link'
-          .mr-2
-            %ul.navbar-nav
-              - if current_user.nil?
-                %li.nav-item= auth_provider_link('Sign In', 'google_oauth2', 'user', class: 'nav-link btn btn-link active fw-bold')
-              - else
-                - if current_brand.nil?
-                  %li.nav-item= auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'nav-link')
-                - else
-                  %li.nav-item= active_link_to 'Brand settings', edit_brand_path(current_brand),
-                    active: [{ brands: :edit }], class: 'nav-link'
-                %li.nav-item= active_link_to 'User settings', edit_user_path(current_user),
-                  active: [{ users: :edit }], class: 'nav-link'
-
-                %li.nav-item= button_to '(sign out)', sign_out_path, method: :delete,
-                  class: 'nav-link btn btn-link', 'data-turbo' => false
-    %main.flex-shrink-0
+              %li= active_link_to 'Brand settings', edit_brand_path(current_brand),
+                active: [{ brands: :edit }], class: 'dropdown-item', 'data-turbo' => false
+            - if current_user
+              %li= active_link_to 'User settings', edit_user_path(current_user),
+                active: [{ users: :edit }], class: 'dropdown-item', 'data-turbo' => false
+              %li
+                %hr.dropdown-divider
+              %li= button_to '(sign out)', sign_out_path, method: :delete,
+                class: 'dropdown-item btn btn-link', 'data-turbo' => false
+        %hr
+        %ul.navbar-nav.flex-column
+          %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link'
+          %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link'
+          %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link'
+        %hr
+        %ul.navbar-nav.flex-column
+          %li.nav-item
+            = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions', class: 'nav-link'
+          %li.nav-item
+            = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy', class: 'nav-link'
+    %main
       .container.mt-4{ role: 'main' }
         .sticky-top
           - if flash.any?
@@ -53,17 +58,6 @@
                 %span= message
                 %button.btn-close{ 'data-bs-dismiss' => 'alert' }
         = yield
-    %footer.footer.mt-auto.py-3.bg-primary.text-white
-      .container.pb-5
-        .row.justify-content-center.pt-3.mb-3
-          .col-1
-            = image_tag('logo_circle_white.svg', class: 'img-fluid')
-        .row.justify-content-center.border-top.pt-3
-          = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
-          class: 'text-end text-white h6 col-4 text-decoration-none'
-          %span.text-center.h6.border-start.border-end.col-4.col-lg-3 © Respondo Ltd. #{Time.now.utc.year}
-          = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy',
-          class: 'text-start text-white h6 col-4 text-decoration-none'
     %script{ src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js',
       integrity: 'sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2', crossorigin: 'anonymous',
       type: 'text/javascript' }

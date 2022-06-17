@@ -8,23 +8,26 @@ RSpec.describe 'Homepage', type: :system do
   it 'guides user through the set-up process' do
     visit '/'
 
-    within('main') do
-      expect(page).to have_text('Hello, world!')
-      expect(page).to have_button('Sign In')
+    expect(page).to have_button('Sign in with Google')
 
-      add_oauth_mock_for_user(create(:user, :with_account))
-      click_button('Sign In', class: 'btn')
+    add_oauth_mock_for_user(create(:user, :with_account))
+    click_button('Sign in with Google')
 
-      expect(page).to have_button('Authorize Brand')
+    expect(page).to have_button('Authorize Brand', class: 'btn')
 
-      add_oauth_mock_for_brand(create(:brand, :with_account))
-      click_button('Authorize Brand', class: 'btn')
-    end
+    add_oauth_mock_for_brand(create(:brand, :with_account))
+    click_button('Authorize Brand', class: 'btn btn-primary')
 
     expect(page).to have_link('Brand Tickets')
 
+    click_link('Settings')
     click_button('(sign out)')
+    expect(page).to have_button('Sign in with Google')
+  end
 
-    expect(page).to have_button('Sign In')
+  it 'shows the login page' do
+    visit '/'
+
+    expect(page).to have_text('Sign up and try')
   end
 end

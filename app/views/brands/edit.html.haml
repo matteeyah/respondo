@@ -55,40 +55,41 @@
         = button_tag 'Buy Subscription', class: 'btn btn-light', id: 'buy-subscription'
 
 = content_for :custom_javascript do
-  %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
-  :javascript
-    Paddle.Setup({ vendor: #{Rails.application.config.x.paddle.vendor_id} })
-
-  -# rubocop:disable Style/IdenticalConditionalBranches
-  - if @brand.subscription&.running?
+  - if Rails.application.config.x.paddle.vendor_id
+    %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
     :javascript
-      function cancelSubscription() {
-        Paddle.Checkout.open({
-          override: "#{@brand.subscription.cancel_url}",
-          success: "#{checkout_redirect_path}"
-        })
-      }
+      Paddle.Setup({ vendor: #{Rails.application.config.x.paddle.vendor_id} })
 
-      function updateSubscription() {
-        Paddle.Checkout.open({
-          override: "#{@brand.subscription.update_url}",
-          success: "#{checkout_redirect_path}"
-        })
-      }
+    -# rubocop:disable Style/IdenticalConditionalBranches
+    - if @brand.subscription&.running?
+      :javascript
+        function cancelSubscription() {
+          Paddle.Checkout.open({
+            override: "#{@brand.subscription.cancel_url}",
+            success: "#{checkout_redirect_path}"
+          })
+        }
 
-      document.getElementById('cancel-subscription').addEventListener('click', cancelSubscription, false)
-      document.getElementById('update-subscription').addEventListener('click', updateSubscription, false)
-  - else
-    :javascript
-      function buySubscription() {
-        Paddle.Checkout.open({
-          product: 592438,
-          allowQuantity: false,
-          quantity: "#{@brand.users.count}",
-          passthrough: "{\"brand_id\": #{@brand.id}}",
-          success: "#{checkout_redirect_path}"
-        })
-      }
+        function updateSubscription() {
+          Paddle.Checkout.open({
+            override: "#{@brand.subscription.update_url}",
+            success: "#{checkout_redirect_path}"
+          })
+        }
 
-      document.getElementById('buy-subscription').addEventListener('click', buySubscription, false)
-  -# rubocop:enable Style/IdenticalConditionalBranches
+        document.getElementById('cancel-subscription').addEventListener('click', cancelSubscription, false)
+        document.getElementById('update-subscription').addEventListener('click', updateSubscription, false)
+    - else
+      :javascript
+        function buySubscription() {
+          Paddle.Checkout.open({
+            product: 592438,
+            allowQuantity: false,
+            quantity: "#{@brand.users.count}",
+            passthrough: "{\"brand_id\": #{@brand.id}}",
+            success: "#{checkout_redirect_path}"
+          })
+        }
+
+        document.getElementById('buy-subscription').addEventListener('click', buySubscription, false)
+    -# rubocop:enable Style/IdenticalConditionalBranches

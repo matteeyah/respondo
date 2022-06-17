@@ -9,105 +9,136 @@ RSpec.describe Brands::TicketsController, type: :request do
   let(:brand) { create(:brand) }
 
   describe 'GET index' do
-    subject(:get_index) { get "/brands/#{brand.id}/tickets", params: { status:, query: } }
+    subject(:get_index) { get "/brands/#{brand.id}/tickets", params: { status: ticket_status, query: } }
 
-    context 'without search' do
-      let(:query) { nil }
+    context 'when user is signed in' do
+      let(:user) { create(:user, :with_account) }
 
-      context 'when pagination is not required' do
-        let!(:open_ticket) { create(:internal_ticket, status: :open, brand:).base_ticket }
-        let!(:solved_ticket) { create(:internal_ticket, status: :solved, brand:).base_ticket }
+      before do
+        sign_in(user)
+      end
 
-        context 'when status parameter is not specified' do
-          let(:status) { nil }
+      context 'when user is authorized' do
+        before do
+          brand.users << user
+        end
 
-          it 'renders open tickets' do
-            get_index
+        context 'without search' do
+          let(:query) { nil }
 
-            expect(response.body).to include(open_ticket.content)
+          context 'when pagination is not required' do
+            let!(:open_ticket) { create(:internal_ticket, status: :open, brand:).base_ticket }
+            let!(:solved_ticket) { create(:internal_ticket, status: :solved, brand:).base_ticket }
+
+            context 'when status parameter is not specified' do
+              let(:ticket_status) { nil }
+
+              it 'renders open tickets' do
+                get_index
+
+                expect(response.body).to include(open_ticket.content)
+              end
+            end
+
+            context 'when status parameter is empty string' do
+              let(:ticket_status) { '' }
+
+              it 'renders open tickets' do
+                get_index
+
+                expect(response.body).to include(open_ticket.content)
+              end
+            end
+
+            context 'when status parameter is open' do
+              let(:ticket_status) { 'open' }
+
+              it 'renders open tickets' do
+                get_index
+
+                expect(response.body).to include(open_ticket.content)
+              end
+            end
+
+            context 'when status parameter is solved' do
+              let(:ticket_status) { 'solved' }
+
+              it 'renders solved tickets' do
+                get_index
+
+                expect(response.body).to include(solved_ticket.content)
+              end
+            end
+          end
+
+          context 'when pagination is required' do
+            let(:ticket_status) { nil }
+            let!(:open_tickets) { create_list(:internal_ticket, 21, status: :open, brand:).map(&:base_ticket) }
+
+            it 'paginates tickets' do
+              get_index
+
+              expect(response.body).to include(*open_tickets.first(20).map(&:content))
+            end
+
+            it 'does not show page two tickets' do
+              get_index
+
+              expect(response.body).not_to include(open_tickets.last.content)
+            end
           end
         end
 
-        context 'when status parameter is empty string' do
-          let(:status) { '' }
+        context 'when searching by author name' do
+          let(:tickets) { create_list(:internal_ticket, 2, brand:).map(&:base_ticket) }
+          let(:ticket_status) { nil }
+          let(:query) { tickets.first.author.username }
 
-          it 'renders open tickets' do
+          it 'shows matching tickets' do
             get_index
 
-            expect(response.body).to include(open_ticket.content)
+            expect(response.body).to include(tickets.first.content)
+          end
+
+          it 'does not show other tickets' do
+            get_index
+
+            expect(response.body).not_to include(tickets.second.content)
           end
         end
 
-        context 'when status parameter is open' do
-          let(:status) { 'open' }
+        context 'when searching by ticket content' do
+          let(:tickets) { create_list(:internal_ticket, 2, brand:).map(&:base_ticket) }
+          let(:ticket_status) { nil }
+          let(:query) { tickets.first.content }
 
-          it 'renders open tickets' do
+          it 'shows matching tickets' do
             get_index
 
-            expect(response.body).to include(open_ticket.content)
+            expect(response.body).to include(tickets.first.content)
           end
-        end
 
-        context 'when status parameter is solved' do
-          let(:status) { 'solved' }
-
-          it 'renders solved tickets' do
+          it 'does not show other tickets' do
             get_index
 
-            expect(response.body).to include(solved_ticket.content)
+            expect(response.body).not_to include(tickets.second.content)
           end
         end
       end
 
-      context 'when pagination is required' do
-        let!(:open_tickets) { create_list(:internal_ticket, 21, status: :open, brand:).map(&:base_ticket) }
+      context 'when user is not authorized' do
+        let(:query) { '' }
+        let(:ticket_status) { nil }
 
-        it 'paginates tickets' do
-          get_index
-
-          expect(response.body).to include(*open_tickets.first(20).map(&:content))
-        end
-
-        it 'does not show page two tickets' do
-          get_index
-
-          expect(response.body).not_to include(open_tickets.last.content)
-        end
+        include_examples 'unauthorized user examples', 'You are not authorized.'
       end
     end
 
-    context 'when searching by author name' do
-      let(:tickets) { create_list(:internal_ticket, 2, brand:).map(&:base_ticket) }
-      let(:query) { tickets.first.author.username }
+    context 'when user is not signed in' do
+      let(:query) { '' }
+      let(:ticket_status) { nil }
 
-      it 'shows matching tickets' do
-        get_index
-
-        expect(response.body).to include(tickets.first.content)
-      end
-
-      it 'does not show other tickets' do
-        get_index
-
-        expect(response.body).not_to include(tickets.second.content)
-      end
-    end
-
-    context 'when searching by ticket content' do
-      let(:tickets) { create_list(:internal_ticket, 2, brand:).map(&:base_ticket) }
-      let(:query) { tickets.first.content }
-
-      it 'shows matching tickets' do
-        get_index
-
-        expect(response.body).to include(tickets.first.content)
-      end
-
-      it 'does not show other tickets' do
-        get_index
-
-        expect(response.body).not_to include(tickets.second.content)
-      end
+      include_examples 'unauthorized user examples', 'You are not signed in.'
     end
   end
 
@@ -220,39 +251,7 @@ RSpec.describe Brands::TicketsController, type: :request do
               end
             end
 
-            context 'when authorized as a user' do
-              before do
-                create(:user_account, provider:, user:)
-              end
-
-              context 'when brand has subscription' do
-                before do
-                  create(:subscription, brand:)
-                end
-
-                context 'when reply is valid' do
-                  before do
-                    allow(client).to receive(:reply).and_return(client_response)
-                  end
-
-                  it_behaves_like 'valid reply'
-                end
-
-                context 'when reply is invalid' do
-                  before do
-                    allow(client).to receive(:reply).and_raise(client_error)
-                  end
-
-                  it_behaves_like 'invalid reply'
-                end
-              end
-
-              context 'when brand does not have subscription' do
-                include_examples 'unauthorized user examples', 'You do not have an active subscription.'
-              end
-            end
-
-            context 'when authorized as a brand' do
+            context 'when user is authorized' do
               before do
                 create(:brand_account, provider:, brand:)
 
@@ -301,39 +300,7 @@ RSpec.describe Brands::TicketsController, type: :request do
           JSON.parse(file_fixture('external_post_hash.json').read).merge(parent_uid: ticket.external_uid).to_json
         end
 
-        context 'when authorized as a user' do
-          before do
-            create(:user_account, provider: 'twitter', user:)
-          end
-
-          context 'when brand has subscription' do
-            before do
-              create(:subscription, brand:)
-            end
-
-            context 'when reply is valid' do
-              before do
-                allow(client).to receive(:reply).and_return(client_response)
-              end
-
-              include_examples 'unauthorized user examples', 'You are not authorized.'
-            end
-
-            context 'when reply is invalid' do
-              before do
-                allow(client).to receive(:reply).and_raise(client_error)
-              end
-
-              include_examples 'unauthorized user examples', 'You are not authorized.'
-            end
-          end
-
-          context 'when brand does not have subscription' do
-            include_examples 'unauthorized user examples', 'You are not authorized.'
-          end
-        end
-
-        context 'when authorized as a brand' do
+        context 'when user is authorized' do
           before do
             create(:brand_account, provider: 'twitter', brand:)
 
@@ -374,7 +341,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not authorized.'
+      include_examples 'unauthorized user examples', 'You are not signed in.'
     end
   end
 
@@ -454,7 +421,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not authorized.'
+      include_examples 'unauthorized user examples', 'You are not signed in.'
     end
   end
 
@@ -536,7 +503,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not authorized.'
+      include_examples 'unauthorized user examples', 'You are not signed in.'
     end
   end
 
@@ -588,7 +555,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not authorized.'
+      include_examples 'unauthorized user examples', 'You are not signed in.'
     end
   end
 end
