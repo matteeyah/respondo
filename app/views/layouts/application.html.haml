@@ -20,7 +20,8 @@
           %span.h4.d-block.col-lg-8.mb-0.text-white Respondo
         %ul.navbar-nav.flex-column.mx-4
           - if current_brand
-            %li.nav-item= active_link_to 'Tickets', brand_tickets_path(current_brand), active: :exclusive, class: 'nav-link'
+            %li.nav-item= active_link_to 'Tickets', brand_tickets_path(current_brand), active: :exclusive, class: 'nav-link',
+              'data-turbo' => false
           - else
             %li.nav-item= auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'nav-link btn btn-link')
       .sticky-bottom
