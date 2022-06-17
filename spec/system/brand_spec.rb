@@ -50,7 +50,7 @@ RSpec.describe 'Brand', type: :system do
       click_button 'Reply'
     end
 
-    within('ul.list-group > li.list-group-item:first-child > ul') do
+    within("#ticket_#{target_ticket.id}") do
       expect(page).to have_text(user_nickname)
       expect(page).to have_text(response_text)
     end
@@ -133,6 +133,9 @@ RSpec.describe 'Brand', type: :system do
   private
 
   def stub_twitter_reply_response(user_external_uid, user_screen_name, in_reply_to_status_id, response_text)
+    stub_request(:post, 'https://api.twitter.com/oauth2/token')
+      .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
+
     response = {
       id: 123_456,
       user: { id: user_external_uid, screen_name: user_screen_name },
