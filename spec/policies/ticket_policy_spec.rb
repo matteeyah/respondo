@@ -5,6 +5,16 @@ RSpec.describe TicketPolicy, type: :policy do
 
   let(:ticket) { create(:internal_ticket).base_ticket }
 
+  permissions :index? do
+    it 'denies access to guests' do
+      expect(ticket_policy).not_to permit(nil, ticket)
+    end
+
+    it 'allows access to users in brand' do
+      expect(ticket_policy).to permit(create(:user, brand: ticket.brand), ticket.brand)
+    end
+  end
+
   permissions :reply? do
     it 'denies access to guests' do
       expect(ticket_policy).not_to permit(nil, ticket)
@@ -12,10 +22,6 @@ RSpec.describe TicketPolicy, type: :policy do
 
     it 'allows access to users in brand' do
       expect(ticket_policy).to permit(create(:user, brand: ticket.brand), ticket)
-    end
-
-    it 'allows access to users with client for ticket provider' do
-      expect(ticket_policy).to permit(create(:user_account, provider: ticket.provider).user, ticket)
     end
   end
 

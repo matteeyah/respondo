@@ -18,19 +18,22 @@ RSpec.describe SessionsController, type: :request do
         expect { delete_destroy }.to change { controller.send(:current_user) }.from(anything).to(nil)
       end
 
-      it 'sets the flash' do
-        delete_destroy
-
-        expect(controller.flash[:success]).to eq('You have been signed out.')
-      end
-
-      it 'redirects to root path' do
-        expect(delete_destroy).to redirect_to(root_path)
+      it 'redirects to login path' do
+        expect(delete_destroy).to redirect_to(login_path)
       end
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      it 'sets the alert flash' do
+        delete_destroy
+        follow_redirect!
+
+        expect(controller.flash[:warning]).to eq('You are not signed in.')
+      end
+
+      it 'redirects the user to login' do
+        expect(delete_destroy).to redirect_to(login_path)
+      end
     end
   end
 end

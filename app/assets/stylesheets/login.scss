@@ -15,8 +15,24 @@
  */
 
 .background-radial-gradient {
-  background-color: Hsl(218deg 41% 15%);
-  background-image: radial-gradient(650px circle at 0% 0%, Hsl(218deg 41% 35%) 15%, Hsl(218deg 41% 30%) 35%, Hsl(218deg 41% 20%) 75%, Hsl(218deg 41% 19%) 80%, transparent 100%), radial-gradient(1250px circle at 100% 100%, Hsl(218deg 41% 45%) 15%, Hsl(218deg 41% 30%) 35%, Hsl(218deg 41% 20%) 75%, Hsl(218deg 41% 19%) 80%, transparent 100%);
+  background-color: #172236;
+  background-image:
+    radial-gradient(
+      650px circle at 0% 0%,
+      #354f7e 15%,
+      #2d446c 35%,
+      #1e2d48 75%,
+      #1d2b44 80%,
+      transparent 100%
+    ),
+    radial-gradient(
+      1250px circle at 100% 100%,
+      #4466a2 15%,
+      #2d446c 35%,
+      #1e2d48 75%,
+      #1d2b44 80%,
+      transparent 100%
+    );
 }
 
 #radius-shape-1 {
@@ -43,18 +59,18 @@
 }
 
 .bg-glass {
-  background-color: Hsla(0 0% 100% / 90%) !important;
+  background-color: #ffffffe5 !important;
   backdrop-filter: saturate(200%) blur(25px);
 }
 
 #label-ticket {
-  color: Hsl(218deg 81% 95%);
+  color: #e8effd;
 }
 
 #label-social {
-  color: Hsl(218deg 81% 75%);
+  color: #8cb1f3;
 }
 
 #landing-text {
-  color: Hsl(218deg 81% 85%);
+  color: #bad0f8;
 }
