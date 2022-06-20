@@ -49,7 +49,7 @@ RSpec.describe 'Authentication', type: :system do
     click_link('User settings')
 
     click_link('Settings')
-    click_button('(sign out)')
+    click_button('Sign Out')
     expect(page).to have_current_path(login_path)
   end
 end

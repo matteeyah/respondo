@@ -21,7 +21,7 @@ RSpec.describe 'Homepage', type: :system do
     expect(page).to have_link('Brand Tickets')
 
     click_link('Settings')
-    click_button('(sign out)')
+    click_button('Sign Out')
     expect(page).to have_button('Sign in with Google')
   end
 
