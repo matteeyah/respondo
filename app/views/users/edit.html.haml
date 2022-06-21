@@ -1,4 +1,7 @@
-%h4= @user.name
+%h4.mt-4
+  = user_gravatar(@user)
+  = @user.name  
+
 %hr
 
 = render partial: 'shared/accounts', locals: { providers: UserAccount.providers.keys, model: @user }
