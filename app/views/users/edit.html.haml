@@ -24,11 +24,13 @@
             %p
               %em You do not have any created token.
 
-      .col-12.my-3.mb-5
+      .col-12.mt-3.mb-5
         %h5 New Personal Access Tokens
         %hr
-        .row
           = form_with url: user_personal_access_tokens_path(@user), html: { autocomplete: 'off' },
               class: 'form-inline' do |create_token_form|
-            = create_token_form.text_field :name, required: true, placeholder: 'Enter token name', class: 'form-control col-8'
-            = create_token_form.submit 'Create', name: nil, class: 'btn btn-primary col-3'
+            .row
+              .col-6
+                = create_token_form.text_field :name, required: true, placeholder: 'Enter token name', class: 'form-control'
+              .col-6
+                = create_token_form.submit 'Create', name: nil, class: 'btn btn-primary'
