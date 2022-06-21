@@ -15,13 +15,12 @@
   %body
     .container-fluid
       .row.vh-100
-        .navbar.navbar-expand-lg.col-12.col-lg-2.col-xxl-1.d-flex.flex-column.flex-grow-1.align-items-center.align-items-lg-start.p-4
-          .navbar-brand.mx-auto
+        .navbar.navbar-expand-lg.col-12.col-lg-2.d-flex.flex-column.flex-grow-1.align-items-center.align-items-lg-start.p-4
+          .navbar-brand
             %span Respondo
           %button.navbar-toggler{ type: 'button', 'data-bs-toggle' => 'collapse', 'data-bs-target' => '#main-nav' }
             %span.navbar-toggler-icon
-          %hr.w-100
-          .flex-column.collapse.navbar-collapse#main-nav
+          .flex-column.align-items-start.collapse.navbar-collapse#main-nav
             %ul.flex-column.navbar-nav
               - if current_brand
                 %li.nav-item
@@ -60,14 +59,14 @@
                       %hr.dropdown-divider
                     %li= button_to 'Sign Out', sign_out_path, method: :delete,
                       class: 'dropdown-item btn btn-link', 'data-turbo' => false
-        .d-flex.flex-column.col-12.col-lg-10.col-xxl-11.h-100.overflow-auto
-          %main{ role: 'main' }
+        .col-12.col-lg-10.h-100.overflow-auto
+          %main.container{ role: 'main' }
             - if flash.any?
               - flash.each do |type, message|
                 .alert.alert-dismissible.fade.show{ class: "alert-#{type}", role: 'alert' }
                   %span= message
                   %button.btn-close{ 'data-bs-dismiss' => 'alert' }
-          = yield
+            = yield
     %script{ src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js',
       integrity: 'sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2', crossorigin: 'anonymous',
       type: 'text/javascript' }
