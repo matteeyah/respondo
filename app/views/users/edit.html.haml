@@ -1,47 +1,34 @@
 %h4.mt-4
   = user_gravatar(@user)
-  = @user.name  
+  = @user.name
 
 %hr
 
 .modal-body.row
   .col-md-6
-    %h1 Account Settings
+    %h4.display-6 Account Settings
     = render partial: 'shared/accounts', locals: { providers: UserAccount.providers.keys, model: @user }
   .col-md-6
-    %h4 New Personal Access Tokens
-    %p.lead Fill in token name.
-    = form_with url: user_personal_access_tokens_path(@user), html: { autocomplete: 'off' },
-      class: 'form-inline' do |create_token_form|
-      = create_token_form.text_field :name, required: true, placeholder: 'Token name', class: 'form-control col-8'
-      = create_token_form.submit 'Create', name: nil, class: 'btn btn-primary col-3 ml-auto'
+    .row
+      %h4.display-6 Token Settings
+      .col-12.my-3.mb-5
+        %h5 Existing Personal Access Tokens
+        %hr
+        .list-group.list-group-horizontal-lg.flex-wrap
+          - if @user.personal_access_tokens.any?
+            - @user.personal_access_tokens.each do |personal_access_token|
+              = button_to "Remove #{personal_access_token.name}",
+                user_personal_access_token_path(@user, personal_access_token), method: :delete,
+                class: 'list-group-item list-group-item-action col-lg-6 text-center'
+          - else
+            %p
+              %em You do not have any created token.
 
-    %h4 Existing Personal Access Tokens
-    %p.lead Click to remove.
-    .list-group.list-group-horizontal-lg.flex-wrap
-      - @user.personal_access_tokens.each do |personal_access_token|
-        = button_to "Remove #{personal_access_token.name}",
-          user_personal_access_token_path(@user, personal_access_token), method: :delete,
-          class: 'list-group-item list-group-item-action col-lg-6 text-center'
-
-
-
-%hr
-
--# .row
--#   .col-12.my-3.col-lg-6
--#     %h3 New Personal Access Tokens
--#     %p.lead Fill in token name.
--#     = form_with url: user_personal_access_tokens_path(@user), html: { autocomplete: 'off' },
--#       class: 'form-inline' do |create_token_form|
--#       = create_token_form.text_field :name, required: true, placeholder: 'Token name', class: 'form-control col-8'
--#       = create_token_form.submit 'Create', name: nil, class: 'btn btn-primary col-3 ml-auto'
-
--#   .col-12.my-3.col-lg-6
--#     %h3 Existing Personal Access Tokens
--#     %p.lead Click to remove.
--#     .list-group.list-group-horizontal-lg.flex-wrap
--#       - @user.personal_access_tokens.each do |personal_access_token|
--#         = button_to "Remove #{personal_access_token.name}",
--#           user_personal_access_token_path(@user, personal_access_token), method: :delete,
--#           class: 'list-group-item list-group-item-action col-lg-6 text-center'
+      .col-12.my-3.mb-5
+        %h5 New Personal Access Tokens
+        %hr
+        .row
+          = form_with url: user_personal_access_tokens_path(@user), html: { autocomplete: 'off' },
+              class: 'form-inline' do |create_token_form|
+            = create_token_form.text_field :name, required: true, placeholder: 'Enter token name', class: 'form-control col-8'
+            = create_token_form.submit 'Create', name: nil, class: 'btn btn-primary col-3'
