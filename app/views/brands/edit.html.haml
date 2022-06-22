@@ -20,7 +20,7 @@
               = add_user_form.select :user_id, options_for_select(add_users_dropdown_options_for),
                 { include_blank: 'Select user' }, required: true, class: 'custom-select form-control', id: 'add-user'
             .col-6
-              = add_user_form.submit 'Add User', class: 'btn btn-primary col-3 ml-auto'
+              = add_user_form.submit 'Add User', class: 'btn btn-primary'
       .col-12.my-3.mb-5
         %h5 Users in Brand
         %hr
@@ -39,7 +39,7 @@
             .col-6
               = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control'
             .col-6
-              = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary col-3 ml-auto'
+              = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary'
       .col-12.my-3.mb-5
         - unless Flipper.enabled?(:disable_subscriptions)
           %h5 Subscription
