@@ -9,30 +9,33 @@
     = csp_meta_tag
     %link{ rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css',
       integrity: 'sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor', crossorigin: 'anonymous' }
-    = stylesheet_link_tag 'application', media: 'all'
+    = stylesheet_link_tag 'hyper', media: 'all'
     %script{ src: 'https://kit.fontawesome.com/55ce2d2ceb.js', crossorigin: 'anonymous' }
     = javascript_importmap_tags
   %body.authentication-bg
-    .account-pages.pt-2.pt-sm-5.pb-4.pb-sm-53
+    .account-pages.pt-sm-5.pb-sm-5.pt-2.pb-4
       .container
         .row.justify-content-center
           .col-xxl-4.col-lg-5
             .card
 
               .card-header.pt-4.pb-4.text-center.bg-primary
-                = image_tag('logo_circle_white.svg', class: 'img-fluid')
+                .row
+                  .col-12.col-lg-6.mx-auto
+                    = image_tag('logo_circle_white.svg', class: 'img-fluid')
 
               .card-body.p-4
                 .text-center.w-75.m-auto
                   %h4.text-dark-50.text-center.pb-0.fw-bold Sign In
-                  %p.text-muted.mb-4 Currently, sing-in is only available with a Google or Twitter account.
+                  %p.text-muted.mb-4 Sign in is only available with a Google or Twitter account.
                   %hr
                   .d-grid.gap-3
-                    = button_to 'Sign in with Google', auth_provider_path('google_oauth2', state: 'user', origin: '/'),
-                      method: :post, class: 'btn btn-danger rounded-pill', 'data-turbo' => false
-                    = button_to 'Sign in with Twitter', auth_provider_path('twitter', state: 'user', origin: '/'),
-                      method: :post, class: 'btn btn-info rounded-pill', 'data-turbo' => false
-                    
-
-
+                    = button_to auth_provider_path('google_oauth2', state: 'user', origin: '/'),
+                      method: :post, class: 'btn btn-danger rounded-pill', 'data-turbo' => false do
+                      %i.fa-brands.fa-google
+                      %span Sign in with Google
+                    = button_to auth_provider_path('twitter', state: 'user', origin: '/'),
+                      method: :post, class: 'btn btn-info rounded-pill', 'data-turbo' => false do
+                      %i.fa-brands.fa-twitter
+                      %span Sign in with Twitter
       %footer.footer.footer-alt 2022 © Respondo Ltd.
