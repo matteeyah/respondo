@@ -14337,7 +14337,7 @@ body[data-layout=detached] .leftside-menu .side-nav .side-nav-title {
   color: var(--ct-menu-item);
 }
 body[data-layout=detached] .leftbar-user {
-  background: url(<%= image_url("/assets/waves.png") %>) no-repeat;
+  background: image-url("waves.png") no-repeat;
   padding: 30px 20px;
   text-align: center;
 }
@@ -17665,7 +17665,7 @@ body[data-layout-color=dark] .border-dark {
 }
 
 .cta-box {
-  background-image: url(<%= image_url("/assets/bg-pattern.png") %>);
+  background-image: image-url("bg-pattern.png");
   background-size: cover;
 }
 .cta-box .cta-box-title {
@@ -18100,7 +18100,7 @@ body[data-layout-color=dark] #preloader {
 }
 
 body.authentication-bg {
-  background-image: url(<%= image_url("/assets/bg-pattern-light.svg") %>);
+  background-image: image-url("bg-pattern-light.svg");
   background-size: cover;
   background-position: center;
 }
@@ -18140,7 +18140,7 @@ body.auth-fluid-pages[data-leftbar-compact-mode=condensed] {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  background: url(<%= image_url("/assets/bg-auth.jpg") %>) center;
+  background: image-url("bg-auth.jpg") center;
   background-size: cover;
 }
 .auth-fluid .auth-fluid-form-box {
