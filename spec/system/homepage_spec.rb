@@ -28,6 +28,6 @@ RSpec.describe 'Homepage', type: :system do
   it 'shows the login page' do
     visit '/'
 
-    expect(page).to have_text('Sign up and try')
+    expect(page).to have_text('Sign in')
   end
 end
