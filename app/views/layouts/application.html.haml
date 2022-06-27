@@ -27,8 +27,7 @@
                       %i.bi.bi-speedometer.fs-1
                   %li.nav-item.dropend
                     = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
-                      'data-bs-toggle' => 'dropdown', 'data-bs-tooltip' => true, 'data-bs-placement' => 'right',
-                      'aria-expanded' => false do
+                      'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
                       %i.bi.bi-question-circle.fs-1
                     %ul.dropdown-menu.dropdown-menu-dark.bg-default.shadow{ 'aria-labelledby' => 'help' }
                       %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'dropdown-item'
@@ -46,9 +45,8 @@
                     = auth_provider_link 'Authorize Brand', 'twitter', 'brand', class: 'nav-link btn btn-link'
               %ul.flex-column.navbar-nav.mt-auto.text-center
                 %li.nav-item.dropup
-                  = link_to '#', class: 'nav-link text-decoration-none', id: 'settings', title: 'Settings',
-                    'data-bs-toggle' => 'dropdown', 'data-bs-tooltip' => true, 'data-bs-placement' => 'right',
-                    'aria-expanded' => false do
+                  = link_to '#', class: 'nav-link text-decoration-none', id: 'settings',
+                    'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
                     %i.bi.bi-person.fs-1
                   %ul.dropdown-menu.dropdown-menu-dark.bg-default.shadow{ 'aria-labelledby' => 'settings' }
                     - if current_brand
