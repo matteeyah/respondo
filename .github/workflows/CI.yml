@@ -64,16 +64,6 @@ jobs:
           bundler-cache: true
       - name: Run mdl
         run: bundle exec mdl docs --config .mdlrc
-  frontend-lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          force-depth: 0
-      - uses: github/super-linter/slim@v4
-        env:
-          FILTER_REGEX_INCLUDE: .*app/.*.(js|scss)
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   vale:
     runs-on: ubuntu-latest
     container: jdkato/vale:v2.18.0

@@ -14,6 +14,35 @@
  *= require_self
  */
 
-#main-nav {
-  flex-basis: auto;
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css");
+@import "bootstrap";
+
+:root {
+  --bs-font-sans-serif:
+    "Roboto",
+    "Segoe UI",
+    "Helvetica Neue",
+    "Noto Sans",
+    system-ui,
+    -apple-system,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
+  --background-gradient: linear-gradient(135deg, #8f75da 0%, #727cf5 60%);
+}
+
+.navbar {
+  background: var(--background-gradient);
+
+  .dropdown-menu {
+    background: var(--background-gradient);
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .navbar {
+    max-width: 10rem;
+  }
 }

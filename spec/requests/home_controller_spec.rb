@@ -43,7 +43,7 @@ RSpec.describe HomeController, type: :request do
     it 'renders the login page' do
       get_login
 
-      expect(response.body).to include('Sign up and try')
+      expect(response.body).to include('Sign in')
     end
   end
 end
