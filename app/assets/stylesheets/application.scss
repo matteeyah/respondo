@@ -37,6 +37,12 @@
   background: var(--background-gradient);
 }
 
+@include media-breakpoint-down(lg) {
+  .navbar .navbar-brand img {
+    max-width: 5rem;
+  }
+}
+
 @include media-breakpoint-up(lg) {
   .navbar {
     max-width: 10rem;
