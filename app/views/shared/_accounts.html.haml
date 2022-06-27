@@ -1,18 +1,21 @@
 .row
-  .col-12.my-3.col-lg-6
-    %h3 New accounts
-    %p.lead Click to add.
-    .list-group.list-group-horizontal-lg.flex-wrap
+  .col-12.mt-3.mb-5
+    %h5 Existing accounts
+    %hr
+    .row.list-group.list-group-horizontal-lg.flex-wrap.g-3
+      - model.accounts.each do |account|
+        .col-12.col-lg-6
+          .list-group-item.p-0.border-0
+            = button_to "Remove #{provider_human_name(account.provider)}",
+              [model, account], method: :delete, class: 'btn btn-danger w-100'
+.row
+  .col-12.mt-3.mb-5
+    %h5 New accounts
+    %hr
+    .row.list-group.list-group-horizontal-lg.flex-wrap.g-3
       - providers.each do |provider|
         - unless model.account_for_provider?(provider)
-          = auth_provider_link("Authorize #{provider_human_name(provider)}",
-            provider, model.class.to_s.downcase, class: 'list-group-item list-group-item-action col-lg-6 text-center')
-
-  .col-12.my-3.col-lg-6
-    %h3 Existing accounts
-    %p.lead Click to remove.
-    .list-group.list-group-horizontal-lg.flex-wrap
-      - model.accounts.each do |account|
-        = button_to "Remove #{provider_human_name(account.provider)}",
-          [model, account], method: :delete,
-          class: 'list-group-item list-group-item-action col-lg-6 text-center'
+          .col-12.col-lg-6
+            .list-group-item.p-0.border-0
+              = auth_provider_link("Authorize #{provider_human_name(provider)}",
+                provider, model.class.to_s.downcase, class: 'btn btn-success w-100')
