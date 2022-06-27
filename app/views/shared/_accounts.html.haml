@@ -1,5 +1,5 @@
 .row
-  .col-12.my-3.mb-5
+  .col-12.mt-3.mb-5
     %h5 Existing accounts
     %hr
     .row.list-group.list-group-horizontal-lg.flex-wrap.g-3
@@ -9,7 +9,7 @@
             = button_to "Remove #{provider_human_name(account.provider)}",
               [model, account], method: :delete, class: 'btn btn-danger w-100'
 .row
-  .col-12.my-3.mb-5
+  .col-12.mt-3.mb-5
     %h5 New accounts
     %hr
     .row.list-group.list-group-horizontal-lg.flex-wrap.g-3

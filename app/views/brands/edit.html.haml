@@ -4,11 +4,11 @@
 %h4.mt-4= @brand.screen_name
 %hr
 
-.modal-body.row
-  .col-md-6
+.row
+  .col-lg-6
     %h4.display-6 Account Settings
     = render partial: 'shared/accounts', locals: { providers: BrandAccount.providers.keys, model: @brand }
-  .col-md-6
+  .col-lg-6
     .row
       %h4.display-6 Brand Settings
       .col-12.my-3.mb-5
@@ -21,7 +21,7 @@
                 { include_blank: 'Select user' }, required: true, class: 'custom-select form-control', id: 'add-user'
             .col-6
               = add_user_form.submit 'Add User', class: 'btn btn-primary'
-      .col-12.my-3.mb-5
+      .col-12.mt-3.mb-5
         %h5 Users in Brand
         %hr
         .list-group.list-group-horizontal-lg.flex-wrap
@@ -31,7 +31,7 @@
         .row.mt-3
           .mx-auto
             != pagy_bootstrap_nav(@pagy)
-      .col-12.my-3.mb-5
+      .col-12.mt-3.mb-5
         %h5 Brand Domain
         %hr
         = form_with model: @brand, method: :patch, class: 'form-inline' do |update_brand_form|
@@ -40,7 +40,7 @@
               = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control'
             .col-6
               = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary'
-      .col-12.my-3.mb-5
+      .col-12.mt-3.mb-5
         - unless Flipper.enabled?(:disable_subscriptions)
           %h5 Subscription
           %hr

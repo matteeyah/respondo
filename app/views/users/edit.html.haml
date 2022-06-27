@@ -1,17 +1,16 @@
 %h4.mt-4
-  = user_gravatar(@user)
   = @user.name
 
 %hr
 
-.modal-body.row
-  .col-md-6
+.row
+  .col-lg-6
     %h4.display-6 Account Settings
     = render partial: 'shared/accounts', locals: { providers: UserAccount.providers.keys, model: @user }
-  .col-md-6
+  .col-lg-6
     .row
       %h4.display-6 Token Settings
-      .col-12.my-3.mb-5
+      .col-12.mt-3.mb-5
         %h5 Existing Personal Access Tokens
         %hr
         .list-group.list-group-horizontal-lg.flex-wrap
