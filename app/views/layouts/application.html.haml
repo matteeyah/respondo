@@ -27,7 +27,8 @@
                       %i.bi.bi-speedometer.fs-1
                   %li.nav-item.dropend
                     = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
-                      'data-bs-toggle' => 'dropdown', 'data-bs-tooltip' => true, 'data-bs-placement' => 'right', 'aria-expanded' => false do
+                      'data-bs-toggle' => 'dropdown', 'data-bs-tooltip' => true, 'data-bs-placement' => 'right',
+                      'aria-expanded' => false do
                       %i.bi.bi-question-circle.fs-1
                     %ul.dropdown-menu.dropdown-menu-dark.shadow{ 'aria-labelledby' => 'help' }
                       %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'dropdown-item'
