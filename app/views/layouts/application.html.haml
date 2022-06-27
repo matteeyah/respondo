@@ -8,45 +8,46 @@
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
-    %script{ src: 'https://kit.fontawesome.com/55ce2d2ceb.js', crossorigin: 'anonymous' }
-    = javascript_importmap_tags
   %body
     .container-fluid
       .row.vh-100
-        .navbar.navbar-expand-lg.col-12.col-lg-2.d-flex.flex-column.flex-grow-1.align-items-center.align-items-lg-start.p-4
-          .navbar-brand
-            %span Respondo
+        .navbar.navbar-dark.navbar-expand-lg.col-12.col-lg-2.d-flex.flex-lg-column.flex-grow-1.justify-content-center.align-items-center.align-items-lg-start.p-4
+          .navbar-brand.mx-auto
+            = image_tag('logo_circle_white.svg', class: 'img-fluid')
           %button.navbar-toggler{ type: 'button', 'data-bs-toggle' => 'collapse', 'data-bs-target' => '#main-nav' }
             %span.navbar-toggler-icon
-          .flex-column.align-items-start.collapse.navbar-collapse#main-nav
-            %ul.flex-column.navbar-nav
+          .flex-column.align-items-start.collapse.navbar-collapse.mt-5#main-nav
+            %ul.flex-column.navbar-nav.text-center
               - if current_brand
                 %li.nav-item
                   = active_link_to brand_tickets_path(current_brand),
                     { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo' => false } do
-                    %i.fa-solid.fa-calendar-check
-                    %span.d-none.d-lg-inline.ms-1 Tickets
+                    %i.bi.bi-speedometer.fs-1
+                %li.nav-item.dropend
+                  = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
+                    'data-bs-toggle' => 'dropdown', 'data-bs-tooltip' => true, 'data-bs-placement' => 'right', 'aria-expanded' => false do
+                    %i.bi.bi-question-circle.fs-1
+                  %ul.dropdown-menu.dropdown-menu-dark.shadow{ 'aria-labelledby' => 'help' }
+                    %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'dropdown-item'
+                    %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'dropdown-item'
+                    %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'dropdown-item'
+                    %li.nav-item
+                      %hr.dropdown-divider
+                    %li.nav-item
+                      = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
+                        class: 'dropdown-item'
+                    %li.nav-item
+                      = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy', class: 'dropdown-item'
               - else
                 %li.nav-item
                   = auth_provider_link 'Authorize Brand', 'twitter', 'brand', class: 'nav-link btn btn-link'
-            %ul.flex-column.navbar-nav.mt-auto
-              %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link'
-              %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link'
-              %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link'
-              %li.nav-item
-                %hr.w-100
-              %li.nav-item
-                = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions', class: 'nav-link'
-              %li.nav-item
-                = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy', class: 'nav-link'
-              %li.nav-item
-                %hr.w-100
+            %ul.flex-column.navbar-nav.mt-auto.text-center
               %li.nav-item.dropup
-                = link_to '#', class: 'text-decoration-none dropdown-toggle', id: 'settings',
-                  'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
-                  %i.fa-solid.fa-user
-                  %span.d-none.d-lg-inline.ms-1 Settings
-                %ul.dropdown-menu.text-small.shadow{ 'aria-labelledby' => 'settings' }
+                = link_to '#', class: 'nav-link text-decoration-none', id: 'settings', title: 'Settings',
+                  'data-bs-toggle' => 'dropdown', 'data-bs-tooltip' => true, 'data-bs-placement' => 'right',
+                  'aria-expanded' => false do
+                  %i.bi.bi-person.fs-1
+                %ul.dropdown-menu.dropdown-menu-dark.shadow{ 'aria-labelledby' => 'settings' }
                   - if current_brand
                     %li= active_link_to 'Brand settings', edit_brand_path(current_brand),
                       active: [{ brands: :edit }], class: 'dropdown-item', 'data-turbo' => false
@@ -57,7 +58,7 @@
                       %hr.dropdown-divider
                     %li= button_to 'Sign Out', sign_out_path, method: :delete,
                       class: 'dropdown-item btn btn-link', 'data-turbo' => false
-        .col-12.col-lg-10.h-100.overflow-auto
+        .col-12.col-lg-10.h-100.ms-auto.overflow-auto
           %main.container{ role: 'main' }
             - if flash.any?
               - flash.each do |type, message|
@@ -65,4 +66,5 @@
                   %span= message
                   %button.btn-close{ 'data-bs-dismiss' => 'alert' }
             = yield
+    = javascript_importmap_tags
     = yield :custom_javascript
