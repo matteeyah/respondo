@@ -33,12 +33,8 @@
   --background-gradient: linear-gradient(135deg, #8f75da 0%, #727cf5 60%);
 }
 
-.navbar {
+.bg-default {
   background: var(--background-gradient);
-
-  .dropdown-menu {
-    background: var(--background-gradient);
-  }
 }
 
 @include media-breakpoint-up(lg) {
