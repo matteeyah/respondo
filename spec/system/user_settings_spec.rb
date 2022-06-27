@@ -16,7 +16,7 @@ RSpec.describe 'User settings', type: :system do
   end
 
   it 'allows the user to authorize an account' do
-    click_link 'Settings'
+    find('#settings').click
     click_link 'User settings'
 
     add_oauth_mock_for_user(user, create(:user_account, provider: 'twitter'))
@@ -27,7 +27,7 @@ RSpec.describe 'User settings', type: :system do
 
   it 'allows the user to remove an account' do
     create(:user_account, provider: 'twitter', user:)
-    click_link 'Settings'
+    find('#settings').click
     click_link 'User settings'
 
     click_button 'Remove Twitter'
@@ -36,7 +36,7 @@ RSpec.describe 'User settings', type: :system do
   end
 
   it 'allows the user to create a personal access token' do
-    click_link 'Settings'
+    find('#settings').click
     click_link 'User settings'
 
     fill_in :name, with: 'something_nice'
@@ -47,7 +47,7 @@ RSpec.describe 'User settings', type: :system do
 
   it 'allows the user to remove a personal access token' do
     create(:personal_access_token, name: 'something_nice', user:)
-    click_link 'Settings'
+    find('#settings').click
     click_link 'User settings'
 
     click_button 'Remove something_nice'
