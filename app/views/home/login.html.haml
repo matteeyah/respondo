@@ -7,18 +7,14 @@
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1, shrink-to-fit=no' }
     = csrf_meta_tags
     = csp_meta_tag
-    %link{ rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css',
-      integrity: 'sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor', crossorigin: 'anonymous' }
-    = stylesheet_link_tag 'login', media: 'all'
-    %script{ src: 'https://kit.fontawesome.com/55ce2d2ceb.js', crossorigin: 'anonymous' }
-    = javascript_importmap_tags
-  %body.d-flex.flex-column.min-vh-100.background-gradient
+    = stylesheet_link_tag 'application', media: 'all'
+  %body.d-flex.flex-column.min-vh-100.bg-default
     .account-pages.pt-sm-5.pb-sm-5.pt-2.pb-4.my-auto
       .container
         .row.justify-content-center
           .col-xxl-4.col-lg-5
             .card
-              .card-header.pt-4.pb-4.text-center.background-gradient
+              .card-header.pt-4.pb-4.text-center.bg-default
                 .row
                   .col-12.col-lg-6.mx-auto
                     = image_tag('logo_circle_white.svg', class: 'img-fluid')
@@ -32,10 +28,10 @@
                   .d-grid.gap-3
                     = button_to auth_provider_path('google_oauth2', state: 'user', origin: '/'),
                       method: :post, class: 'btn btn-danger rounded-pill', 'data-turbo' => false do
-                      %i.fa-brands.fa-google
+                      %i.bi.bi-google
                       %span Sign in with Google
                     = button_to auth_provider_path('twitter', state: 'user', origin: '/'),
                       method: :post, class: 'btn btn-primary rounded-pill', 'data-turbo' => false do
-                      %i.fa-brands.fa-twitter
+                      %i.bi.bi-twitter
                       %span Sign in with Twitter
   %footer.footer.mt-auto.text-center.text-white 2022 © Respondo Ltd.
