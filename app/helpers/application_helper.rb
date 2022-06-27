@@ -25,8 +25,8 @@ module ApplicationHelper
     link_to text, url, target: '_blank', rel: 'noopener noreferrer', **html_options
   end
 
-  def fa_icon(icon)
-    sanitize("<i class='fas fa-#{icon}'></i>")
+  def bi_icon(icon)
+    sanitize("<i class='bi bi-#{icon}'></i>")
   end
 
   private
