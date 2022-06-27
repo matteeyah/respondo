@@ -12,7 +12,7 @@ RSpec.describe 'Authentication', type: :system do
 
     add_oauth_mock(:google_oauth2, '123', { name: 'Test User', email: 'test@example.com' }, {})
     click_button('Sign in with Google')
-    click_link('Settings')
+    find('#settings').click
     expect(page).to have_link('User settings')
   end
 
@@ -37,7 +37,7 @@ RSpec.describe 'Authentication', type: :system do
 
     add_oauth_mock(:twitter, '123', { nickname: 'test_brand' }, {})
     click_button('Authorize Brand', class: 'nav-link')
-    click_link('Settings')
+    find('#settings').click
     expect(page).to have_link('Brand settings')
   end
 
@@ -45,10 +45,10 @@ RSpec.describe 'Authentication', type: :system do
     visit '/'
 
     sign_in_user
-    click_link('Settings')
+    find('#settings').click
     click_link('User settings')
 
-    click_link('Settings')
+    find('#settings').click
     click_button('Sign Out')
     expect(page).to have_current_path(login_path)
   end
