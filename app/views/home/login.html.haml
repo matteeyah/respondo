@@ -12,13 +12,13 @@
     = stylesheet_link_tag 'login', media: 'all'
     %script{ src: 'https://kit.fontawesome.com/55ce2d2ceb.js', crossorigin: 'anonymous' }
     = javascript_importmap_tags
-  %body.d-flex.flex-column.min-vh-100
+  %body.d-flex.flex-column.min-vh-100.background-gradient
     .account-pages.pt-sm-5.pb-sm-5.pt-2.pb-4.my-auto
       .container
         .row.justify-content-center
           .col-xxl-4.col-lg-5
             .card
-              .card-header.pt-4.pb-4.text-center#gradientbc
+              .card-header.pt-4.pb-4.text-center.background-gradient
                 .row
                   .col-12.col-lg-6.mx-auto
                     = image_tag('logo_circle_white.svg', class: 'img-fluid')
