@@ -22,7 +22,7 @@
                 html: { autocomplete: 'off' } do |reply_form|
                 .input-group.col-12.col-lg-9
                   = reply_form.text_field :response_text, required: true, placeholder: 'Reply Text', class: 'form-control'
-                  .input-group-append
+                  .input-group-addon
                     = reply_form.submit 'Reply', class: 'btn btn-outline-secondary'
                 = reply_form.button bi_icon('x-lg'), type: :reset,
                   class: 'btn btn-outline-danger col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0'
@@ -33,7 +33,7 @@
                 html: { autocomplete: 'off' } do |reply_form|
                 .input-group.col-12.col-lg-9
                   = reply_form.text_field :internal_note_text, required: true, placeholder: 'Internal Note Text', class: 'form-control'
-                  .input-group-append
+                  .input-group-addon
                     = reply_form.submit 'Post', class: 'btn btn-outline-secondary'
                 = reply_form.button bi_icon('x-lg'), type: :reset,
                   class: 'btn btn-outline-danger col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0'
@@ -48,5 +48,5 @@
                 class: 'col-lg-1 btn btn-light mx-3', id: "toggle-internal-note-#{ticket.id}"
             - if policy(ticket).invert_status?
               = button_to brand_ticket_invert_status_path(ticket.brand, ticket), form_class: 'form-inline',
-                class: 'btn btn-outline-success form-control', 'data-turbo' => false do
+                class: 'btn btn-outline-success', 'data-turbo' => false do
                 = invert_status_action(ticket.status)

@@ -39,14 +39,10 @@
   .dropdown-menu {
     background: var(--background-gradient);
   }
-
-  .navbar-brand img {
-    height: 5rem;
-  }
 }
 
 @include media-breakpoint-up(lg) {
   .navbar {
-    max-width: 7rem;
+    max-width: 10rem;
   }
 }
