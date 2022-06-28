@@ -10,8 +10,8 @@
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
   %body
-    .container-fluid
-      .row.vh-100
+    .container-fluid.p-0
+      .d-flex.flex-column.flex-lg-row.vh-100
         .navbar.navbar-dark.navbar-expand-lg.bg-default.p-4
           .container-fluid.d-flex.flex-lg-column.flex-grow-1.justify-content-center.align-items-center.align-items-lg-start.h-100
             .navbar-brand.mx-auto
@@ -59,7 +59,7 @@
                         %hr.dropdown-divider
                       %li= button_to 'Sign Out', sign_out_path, method: :delete,
                         class: 'dropdown-item btn btn-link', 'data-turbo' => false
-        .col-12.col-lg-10.h-100.ms-auto.overflow-auto
+        .h-100.flex-grow-1.overflow-auto
           %main.container{ role: 'main' }
             - if flash.any?
               - flash.each do |type, message|
