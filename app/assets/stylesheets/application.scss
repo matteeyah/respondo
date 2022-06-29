@@ -45,24 +45,6 @@
 
 @include media-breakpoint-up(lg) {
   .navbar {
-    max-width: 10rem;
-  }
-}
-
-.page-title-box {
-  .page-title {
-      margin: 0;
-      line-height: 75px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-  }
-  .page-title-right {
-      float: right;
-      margin-top: 20px;
-  }
-
-  .breadcrumb {
-      padding-top: 8px;
+    max-width: 8rem;
   }
 }
