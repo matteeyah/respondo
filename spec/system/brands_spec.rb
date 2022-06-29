@@ -16,6 +16,6 @@ RSpec.describe 'Brands', type: :system do
 
     click_link 'Tickets'
 
-    expect(page).to have_text("#{brands.first.screen_name}: Tickets")
+    expect(page).to have_text("Tickets (#{@brand.screen_name})")
   end
 end

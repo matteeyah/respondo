@@ -41,12 +41,6 @@ RSpec.describe OmniauthCallbacksController, type: :request do
                 expect(controller.send(:current_user)).not_to be_nil
               end
 
-              it 'sets the flash' do
-                post_authenticate
-
-                expect(controller.flash[:success]).to eq('User was successfully authenticated.')
-              end
-
               it 'redirects to root' do
                 post_authenticate
 
@@ -71,12 +65,6 @@ RSpec.describe OmniauthCallbacksController, type: :request do
                 post_authenticate
 
                 expect(controller.send(:current_user)).not_to be_nil
-              end
-
-              it 'sets the flash' do
-                post_authenticate
-
-                expect(controller.flash[:success]).to eq('User was successfully authenticated.')
               end
 
               it 'redirects to root' do
@@ -287,12 +275,6 @@ RSpec.describe OmniauthCallbacksController, type: :request do
                   expect { post_authenticate }.to change { user.reload.brand }.from(nil).to(an_instance_of(Brand))
                 end
 
-                it 'sets the flash' do
-                  post_authenticate
-
-                  expect(controller.flash[:success]).to eq('Brand was successfully authenticated.')
-                end
-
                 it 'redirects to root' do
                   post_authenticate
 
@@ -315,12 +297,6 @@ RSpec.describe OmniauthCallbacksController, type: :request do
 
                 it 'associates the signed in user with the brand' do
                   expect { post_authenticate }.to change { user.reload.brand }.from(nil).to(an_instance_of(Brand))
-                end
-
-                it 'sets the flash' do
-                  post_authenticate
-
-                  expect(controller.flash[:success]).to eq('Brand was successfully authenticated.')
                 end
 
                 it 'redirects to root' do
