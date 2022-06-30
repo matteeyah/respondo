@@ -14,7 +14,7 @@
       .col-12.my-3.mb-5
         %h5 Users outside Brand
         %hr
-        = form_with url: brand_users_path(@brand), method: :post, class: 'form-inline' do |add_user_form|
+        = form_with url: brand_users_path(@brand), method: :post do |add_user_form|
           .row
             .col-6
               = add_user_form.select :user_id, options_for_select(add_users_dropdown_options_for),
@@ -34,7 +34,7 @@
       .col-12.mt-3.mb-5
         %h5 Brand Domain
         %hr
-        = form_with model: @brand, method: :patch, class: 'form-inline' do |update_brand_form|
+        = form_with model: @brand, method: :patch do |update_brand_form|
           .row
             .col-6
               = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control'
