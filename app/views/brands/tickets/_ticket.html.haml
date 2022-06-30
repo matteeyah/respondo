@@ -1,5 +1,5 @@
 .row
-  .col-lg-8
+  .col-12
     .row
       .col-12
         %span.font-weight-lighter.mr-1!= ticket_header_content(policy(ticket.brand).user_in_brand?, ticket)
@@ -21,37 +21,33 @@
           - when 'reply'
             - if policy(ticket).reply?
               .col-12
-                = form_with url: brand_ticket_reply_path(ticket.brand, ticket), class: 'form-inline',
-                  html: { autocomplete: 'off' } do |reply_form|
-                  .input-group.col-12.col-lg-9
-                    = reply_form.text_field :response_text, required: true, placeholder: 'Reply Text', class: 'form-control'
-                    .input-group-addon
-                      = reply_form.submit 'Reply', class: 'btn btn-outline-secondary'
-                  = reply_form.button bi_icon('x-lg'), type: :reset,
-                    class: 'btn btn-outline-danger col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0'
+                = form_with url: brand_ticket_reply_path(ticket.brand, ticket), html: { autocomplete: 'off' } do |reply_form|
+                  .input-group
+                    = reply_form.text_area :response_text, required: true, placeholder: 'Reply Text', class: 'form-control'
+                    = reply_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
+                  = reply_form.submit 'Reply', class: 'btn btn-outline-secondary'
                   = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket), class: 'btn btn-outline-danger'
           - when 'internal_note'
             - if policy(ticket).internal_note?
               .col-12
-                = form_with url: brand_ticket_internal_note_path(ticket.brand, ticket), class: 'form-inline',
-                  html: { autocomplete: 'off' } do |reply_form|
-                  .input-group.col-12.col-lg-9
-                    = reply_form.text_field :internal_note_text, required: true,
+                = form_with url: brand_ticket_internal_note_path(ticket.brand, ticket), html: { autocomplete: 'off' } do |reply_form|
+                  .input-group
+                    = reply_form.text_area :internal_note_text, required: true,
                       placeholder: 'Internal Note Text', class: 'form-control'
-                    .input-group-addon
-                      = reply_form.submit 'Post', class: 'btn btn-outline-secondary'
-                  = reply_form.button bi_icon('x-lg'), type: :reset,
-                    class: 'btn btn-outline-danger col-8 col-lg-3 mx-auto mr-lg-0 mt-2 mt-lg-0'
+                    = reply_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
+                  = reply_form.submit 'Post', class: 'btn btn-outline-secondary'
                   = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket), class: 'btn btn-outline-danger'
         - else
-          .col-12.ms-lg-3.justify-content-around.justify-content-lg-start
-            - if policy(ticket).reply?
-              = link_to bi_icon('reply'), brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
-                class: 'btn btn-light', id: "toggle-reply-#{ticket.id}"
-            - if policy(ticket).internal_note?
-              = link_to bi_icon('sticky'), brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
-                class: 'btn btn-light mx-3', id: "toggle-internal-note-#{ticket.id}"
-            - if policy(ticket).invert_status?
-              = button_to brand_ticket_invert_status_path(ticket.brand, ticket), form_class: 'form-inline',
-                class: 'btn btn-outline-success', 'data-turbo' => false do
-                = invert_status_action(ticket.status)
+          .col-12.col-lg-2
+            .list-group.list-group-horizontal
+              - if policy(ticket).reply?
+                = link_to bi_icon('reply', 'fs-5'), brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
+                  class: 'list-group-item list-group-item-action text-center', id: "toggle-reply-#{ticket.id}"
+              - if policy(ticket).internal_note?
+                = link_to bi_icon('sticky', 'fs-5'), brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
+                  class: 'list-group-item list-group-item-action text-center', id: "toggle-internal-note-#{ticket.id}"
+              - if policy(ticket).invert_status?
+                = button_to brand_ticket_invert_status_path(ticket.brand, ticket),
+                  form_class: 'list-group-item list-group-item-action p-0',
+                  class: 'w-100 h-100 bg-transparent border-0 py-2 px-3', 'data-turbo' => false do
+                  = invert_status_action(ticket.status)
