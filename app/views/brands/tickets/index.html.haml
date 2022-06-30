@@ -5,8 +5,8 @@
     - if policy(:ticket).refresh? && policy(@brand).user_in_brand?
       = button_to 'Load Tickets', refresh_brand_tickets_path(@brand), class: 'btn btn-outline-primary'
 .row.mt-3
+  %h6 Views
   .col-lg-2
-    %h6 Views
     %ul.list-group
       = active_link_to 'Open Tickets', brand_tickets_path(@brand, status: 'open'), active: { status: 'open' },
         class: 'list-group-item list-group-item-action'
