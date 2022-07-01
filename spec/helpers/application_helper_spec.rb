@@ -42,6 +42,6 @@ RSpec.describe ApplicationHelper, type: :helper do
   describe '#bi_icon' do
     subject(:bi_icon) { helper.bi_icon('test') }
 
-    it { is_expected.to eq('<i class="bi bi-test"></i>') }
+    it { is_expected.to eq('<i class="bi bi-test "></i>') }
   end
 end
