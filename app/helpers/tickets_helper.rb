@@ -4,9 +4,9 @@ module TicketsHelper
   def invert_status_action(status)
     case status
     when 'open'
-      bi_icon('check', 'fs-5')
+      bi_icon('check-lg', 'text-success fs-5')
     when 'solved'
-      bi_icon('folder2-open', 'fs-5')
+      bi_icon('folder2-open', 'text-warning fs-5')
     end
   end
 
@@ -19,21 +19,12 @@ module TicketsHelper
     end
   end
 
-  def ticket_header_content(user_authorized, ticket)
-    header_content = ticket.author.username
-
+  def ticket_author_header(user_authorized, ticket)
+    author_link = link_to(ticket.author.username, ticket.author.external_link)
     if user_authorized && ticket.creator
-      header_content = "#{ticket.creator.name} as #{header_content}"
-    elsif ticket.parent_id.nil?
-      header_content = "#{header_content} - #{ticket.actual_provider}"
+      "#{ticket.creator.name} as #{author_link}"
+    else
+      author_link
     end
-
-    ticket_link = link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket),
-                          'data-turbo' => false)
-    "#{sanitize(header_content)} - #{ticket_link}"
-  end
-
-  def flatten_hash(hash)
-    hash.flat_map { |k, v| [k, *flatten_hash(v)] }
   end
 end

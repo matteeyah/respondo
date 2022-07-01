@@ -24,7 +24,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
       click_button 'Reply'
     end
 
-    expect(page).to have_text("#{user.name} as #{brand.screen_name} - ")
+    expect(page).to have_text("#{user.name} as #{brand.screen_name}")
     expect(page).to have_text(response_text)
   end
 
@@ -55,7 +55,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
       click_button 'Reply'
     end
 
-    expect(page).to have_text("#{user.name} as #{brand.screen_name} - ")
+    expect(page).to have_text("#{user.name} as #{brand.screen_name}")
     expect(page).to have_text(response_text)
   end
 
@@ -82,10 +82,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     sign_in_brand(brand)
     click_link('Tickets')
 
-    within "form[action='#{brand_ticket_invert_status_path(target_ticket.brand, target_ticket)}']" do
-      find('button[type="submit"]').click
-    end
-
+    page.find(:css, "a[href='#{brand_ticket_invert_status_path(target_ticket.brand, target_ticket)}']").click
     click_link 'Solved Tickets'
 
     expect(page).to have_text(target_ticket.author.username)

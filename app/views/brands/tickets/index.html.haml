@@ -3,7 +3,8 @@
     %h4 Tickets (#{@brand.screen_name})
   .col-12.col-lg-2.d-flex.justify-content-end
     - if policy(:ticket).refresh? && policy(@brand).user_in_brand?
-      = button_to 'Load Tickets', refresh_brand_tickets_path(@brand), class: 'btn btn-outline-primary'
+      = link_to 'Load Tickets', refresh_brand_tickets_path(@brand), class: 'btn btn-outline-primary',
+        'data-turbo-method' => :post, 'data-turbo-frame' => :_top
 .row.mt-3
   .col-lg-2
     %h6 Views

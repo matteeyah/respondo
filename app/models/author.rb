@@ -34,4 +34,14 @@ class Author < ApplicationRecord
       end
     end
   end
+
+  def external_link
+    prefix = case provider
+             when 'twitter'
+               'https://twitter.com'
+             end
+    return unless prefix
+
+    "#{prefix}/#{username}"
+  end
 end

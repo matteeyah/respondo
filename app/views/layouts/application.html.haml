@@ -23,7 +23,7 @@
                 - if current_brand
                   %li.nav-item
                     = active_link_to brand_tickets_path(current_brand),
-                      { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo' => false } do
+                      { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top } do
                       = bi_icon('speedometer', 'fs-1')
                   %li.nav-item.dropend
                     = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
@@ -51,10 +51,10 @@
                   %ul.dropdown-menu.dropdown-menu-dark.bg-default.shadow{ 'aria-labelledby' => 'settings' }
                     - if current_brand
                       %li= active_link_to 'Brand settings', edit_brand_path(current_brand),
-                        active: [{ brands: :edit }], class: 'dropdown-item', 'data-turbo' => false
+                        active: [{ brands: :edit }], class: 'dropdown-item', 'data-turbo-frame' => :_top
                     - if current_user
                       %li= active_link_to 'User settings', edit_user_path(current_user),
-                        active: [{ users: :edit }], class: 'dropdown-item', 'data-turbo' => false
+                        active: [{ users: :edit }], class: 'dropdown-item', 'data-turbo-frame' => :_top
                       %li
                         %hr.dropdown-divider
                       %li= button_to 'Sign Out', sign_out_path, method: :delete,
