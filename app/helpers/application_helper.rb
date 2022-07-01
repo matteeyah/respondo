@@ -14,7 +14,7 @@ module ApplicationHelper
   }.freeze
 
   def auth_provider_link(provider, model, html_options = {}, origin: nil, &block)
-    params = { state: model, origin: origin }.compact
+    params = { state: model, origin: }.compact
     button_to auth_provider_path(provider, **params), method: :post, 'data-turbo' => false, **html_options, &block
   end
 

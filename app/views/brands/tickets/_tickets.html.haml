@@ -1,6 +1,6 @@
 %ul.list-group
   - tickets.each do |ticket, replies|
-    %li.list-group-item
+    %li.list-group-item.border-0
       = turbo_frame_tag dom_id(ticket) do
         = render partial: 'ticket', locals: { brand:, ticket: }
 
