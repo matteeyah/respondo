@@ -6,19 +6,19 @@
     %h3 Brand
   .col-12.col-lg-2.d-flex.justify-content-end
     %h5.text-muted= @brand.screen_name
-  %hr.bg-danger.border-2.border-top
+  %hr.bg-light.border-2.border-top
   .row.mt-3
     .col-lg-6
       %h5 Account Settings
-      %hr.bg-danger.border-2.border-top
+      %hr.bg-light.border-2.border-top
       = render partial: 'shared/accounts', locals: { providers: BrandAccount.providers.keys, model: @brand }
     .col-lg-6
       %h5 Brand Settings
-      %hr.bg-danger.border-2.border-top
+      %hr.bg-light.border-2.border-top
       .row.mt-3
         .col-12.mt-3.mb-5
           %h6.mb-3 Users outside brand
-          %hr.bg-danger.border-2.border-top
+          %hr.bg-light.border-2.border-top
           = form_with url: brand_users_path(@brand), method: :post, class: 'form-inline' do |add_user_form|
             .row
               .col-10
@@ -28,12 +28,12 @@
                 = add_user_form.submit 'Add user', class: 'btn btn-primary'
         .col-12.mt-3.mb-5
           %h6.mb-3 Users in Brand
-          %hr.bg-danger.border-2.border-top
+          %hr.bg-light.border-2.border-top
           .row.list-group.list-group-horizontal-lg.flex-wrap.g-2
             - @brand_users.each do |user|
               .col-12
                 %ul.list-group.list-group-light
-                  %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0
+                  %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0.border-light
                     .d-flex.align-items-center
                       .ms-1
                         %p.fw-normal.mb-1 #{user.name}
@@ -44,7 +44,7 @@
               != pagy_bootstrap_nav(@pagy)
         .col-12.mt-3.mb-5
           %h6.mb-3 Brand Domain
-          %hr.bg-danger.border-2.border-top
+          %hr.bg-light.border-2.border-top
           = form_with model: @brand, method: :patch, class: 'form-inline' do |update_brand_form|
             .row
               .col-10

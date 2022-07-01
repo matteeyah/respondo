@@ -1,12 +1,12 @@
 .row.mt-3
   .col-12.mt-3.mb-5
     %h6.mb-3 Existing accounts
-    %hr.bg-danger.border-2.border-top
+    %hr.bg-light.border-2.border-top
     .row.list-group.list-group-horizontal-lg.flex-wrap.g-2
       - model.accounts.each do |account|
         .col-12
           %ul.list-group.list-group-light
-            %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0
+            %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0.border-light
               .d-flex.align-items-center
                 .ms-1
                   %p.fw-bold.mb-1 #{provider_human_name(account.provider)}
@@ -16,13 +16,13 @@
 .row
   .col-12.mt-3.mb-5
     %h6.mb-3 Add account
-    %hr.bg-danger.border-2.border-top
+    %hr.bg-light.border-2.border-top
     .row.list-group.list-group-horizontal-lg.flex-wrap.g-2
       - providers.each do |provider|
         - unless model.account_for_provider?(provider)
           .col-12
             %ul.list-group.list-group-light
-              %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0
+              %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0.border-light
                 .d-flex.align-items-center
                   .ms-1
                   %p.fw-bold.mb-1 #{provider_human_name(provider)}

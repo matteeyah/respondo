@@ -3,28 +3,28 @@
     %h3 User
   .col-12.col-lg-2.d-flex.justify-content-end
     %h5.text-muted= @user.name
-  %hr.bg-danger.border-2.border-top
+  %hr.bg-light.border-2.border-top
   .row.mt-3
     .col-lg-6
       %h5 Account Settings
-      %hr.bg-danger.border-2.border-top
+      %hr.bg-light.border-2.border-top
       = render partial: 'shared/accounts', locals: { providers: UserAccount.providers.keys, model: @user }
     .col-lg-6
       %h5 Token Settings
-      %hr.bg-danger.border-2.border-top
+      %hr.bg-light.border-2.border-top
       .row.mt-3
         .col-12.mt-3.mb-5
           %h6.mb-3 Existing personal access tokens
-          %hr.bg-danger.border-2.border-top
+          %hr.bg-light.border-2.border-top
           .row.list-group.list-group-horizontal-lg.flex-wrap.g-2
             - if @user.personal_access_tokens.any?
               - @user.personal_access_tokens.each do |personal_access_token|
                 .col-12
                   %ul.list-group.list-group-light
-                    %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0
+                    %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0.border-light
                       .d-flex.align-items-center
                         .ms-1
-                          %p.fw-bold.mb-1 #{personal_access_token.name}
+                          %p.fw-bold.mb-1= personal_access_token.name
                       = button_to "Remove",
                         user_personal_access_token_path(@user, personal_access_token), method: :delete,
                         class: 'bi bi-trash3-fill text-danger'
@@ -34,7 +34,7 @@
 
       .col-12.mt-3.mb-5
         %h6.mb-3 Create personal access token
-        %hr.bg-danger.border-2.border-top
+        %hr.bg-light.border-2.border-top
           = form_with url: user_personal_access_tokens_path(@user), html: { autocomplete: 'off' } do |create_token_form|
             .row
               .col-10
