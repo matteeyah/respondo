@@ -19,21 +19,10 @@ module TicketsHelper
     end
   end
 
-  def ticket_header_content(user_authorized, ticket)
-    <<~TICKET_HEADER.delete("\n")
-      #{ticket_author_header(user_authorized, ticket)} - 
-      #{link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket), 'data-turbo' => false)}
-    TICKET_HEADER
-  end
-
-  private
-
   def ticket_author_header(user_authorized, ticket)
     author_link = link_to(ticket.author.username, ticket.author.external_link)
     if user_authorized && ticket.creator
       "#{ticket.creator.name} as #{author_link}"
-    elsif ticket.parent_id.nil?
-      "#{author_link} - #{ticket.actual_provider}"
     else
       author_link
     end

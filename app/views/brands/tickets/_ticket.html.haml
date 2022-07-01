@@ -1,21 +1,30 @@
 .row
   .col-12
     .row
+      .col-12.col-lg-6.d-flex.align-items-lg-end
+        != ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)
+      .col-12.col-lg-6.d-flex.justify-content-start.justify-content-lg-end
+        - if ticket.parent_id.nil?
+          %button.btn.btn-sm.btn-primary.mb-n1
+            = bi_icon(ticket.actual_provider)
+            = provider_human_name(ticket.actual_provider)
+    .row.mb-3
       .col-12
-        %span.font-weight-lighter.mr-1!= ticket_header_content(policy(ticket.brand).user_in_brand?, ticket)
-    .row
+        = link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket),
+          class: 'text-decoration-none', 'data-turbo' => false)
+    .row.mb-3
       .col-12
-        %span.font-weight-normal= ticket.content
+        %span= ticket.content
 
     - if policy(ticket).internal_note? && ticket.internal_notes.any?
-      %ul.list-group.mb-3
+      %ul.list-group
         - ticket.internal_notes.each do |internal_note|
           %li.list-group-item.list-group-item-warning
-            %span.font-weight-bold.mr-1 #{internal_note.creator.name}:
+            %span.me-1 #{internal_note.creator.name}:
             %span= internal_note.content
 
     - if policy(ticket.brand).subscription? || Flipper.enabled?(:disable_subscriptions)
-      .row.mt-2
+      .row.my-3
         - if local_assigns[:action_form]
           - case action_form
           - when 'reply'

@@ -185,7 +185,7 @@ RSpec.describe Author, type: :model do
   describe '#external_link' do
     subject(:external_link) { author.external_link }
 
-    let(:author) { create(:author, username: 'helloworld', provider: provider) }
+    let(:author) { create(:author, username: 'helloworld', provider:) }
 
     context 'when provider is twitter' do
       let(:provider) { 'twitter' }
