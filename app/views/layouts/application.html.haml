@@ -26,20 +26,20 @@
                       { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top } do
                       = bi_icon('speedometer', 'fs-1')
                 %li.nav-item.dropend
-                    = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
-                      'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
-                      = bi_icon('question-circle', 'fs-1')
-                    %ul.dropdown-menu.dropdown-menu-dark.bg-default.shadow{ 'aria-labelledby' => 'help' }
-                      %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'dropdown-item'
-                      %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'dropdown-item'
-                      %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'dropdown-item'
-                      %li.nav-item
-                        %hr.dropdown-divider
-                      %li.nav-item
-                        = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
-                          class: 'dropdown-item'
-                      %li.nav-item
-                        = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy', class: 'dropdown-item'
+                  = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
+                    'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
+                    = bi_icon('question-circle', 'fs-1')
+                  %ul.dropdown-menu.dropdown-menu-dark.bg-default.shadow{ 'aria-labelledby' => 'help' }
+                    %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'dropdown-item'
+                    %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'dropdown-item'
+                    %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'dropdown-item'
+                    %li.nav-item
+                      %hr.dropdown-divider
+                    %li.nav-item
+                      = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
+                        class: 'dropdown-item'
+                    %li.nav-item
+                      = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy', class: 'dropdown-item'
               %ul.flex-column.navbar-nav.mt-auto.text-center
                 %li.nav-item.dropup
                   = link_to '#', class: 'nav-link text-decoration-none', id: 'settings',

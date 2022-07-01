@@ -5,7 +5,7 @@
     - if policy(:ticket).refresh? && policy(@brand).user_in_brand?
       = link_to 'Load Tickets', refresh_brand_tickets_path(@brand), class: 'btn btn-outline-primary',
         'data-turbo-method' => :post, 'data-turbo-frame' => :_top
-%hr.bg-danger.border-2.border-top.row.mt-3
+  %hr.bg-danger.border-2.border-top
   %h6 Views
   .col-lg-2
     %ul.list-group
