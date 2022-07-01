@@ -1,62 +1,65 @@
 .row
   .col-12
-    .row
-      .col-12.col-lg-6.d-flex.align-items-lg-end
-        != ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)
-      .col-12.col-lg-6.d-flex.justify-content-start.justify-content-lg-end
-        - if ticket.parent_id.nil?
-          %button.btn.btn-sm.btn-primary.mb-n1
-            = bi_icon(ticket.actual_provider)
-            = provider_human_name(ticket.actual_provider)
-    .row.mb-3
-      .col-12
-        = link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket),
-          class: 'text-decoration-none', 'data-turbo' => false)
-    .row.mb-3
-      .col-12
-        %span= ticket.content
+    .card
+      .card-header
+        .row
+          .col-12.col-lg-4
+            %p.m-0!= ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)
+          .col-12.col-lg-4.d-flex.justify-content-start.justify-content-lg-center
+            = link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket),
+              class: 'text-decoration-none', 'data-turbo' => false)
+          .col-12.col-lg-4.d-flex.justify-content-start.justify-content-lg-end
+            - if ticket.parent_id.nil?
+              %button.btn.btn-sm.btn-primary
+                = bi_icon(ticket.actual_provider)
+                = provider_human_name(ticket.actual_provider)
+      .card-body
+        .card-text
+          %p= ticket.content
 
-    - if policy(ticket).internal_note? && ticket.internal_notes.any?
-      %ul.list-group
-        - ticket.internal_notes.each do |internal_note|
-          %li.list-group-item.list-group-item-warning
-            %span.me-1 #{internal_note.creator.name}:
-            %span= internal_note.content
+      - if policy(ticket).internal_note? && ticket.internal_notes.any?
+        %ul.list-group.list-group-flush
+          - ticket.internal_notes.each do |internal_note|
+            %li.list-group-item.list-group-item-warning
+              %span.me-1 #{internal_note.creator.name}:
+              %span= internal_note.content
 
-    - if policy(ticket.brand).subscription? || Flipper.enabled?(:disable_subscriptions)
-      .row.my-3
-        - if local_assigns[:action_form]
-          - case action_form
-          - when 'reply'
-            - if policy(ticket).reply?
-              .col-12
-                = form_with url: brand_ticket_reply_path(ticket.brand, ticket), html: { autocomplete: 'off' } do |reply_form|
-                  .input-group
-                    = reply_form.text_area :response_text, required: true, placeholder: 'Reply Text', class: 'form-control'
-                    = reply_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
-                  = reply_form.submit 'Reply', class: 'btn btn-outline-secondary'
-                  = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket), class: 'btn btn-outline-danger'
-          - when 'internal_note'
-            - if policy(ticket).internal_note?
-              .col-12
-                = form_with url: brand_ticket_internal_note_path(ticket.brand, ticket), html: { autocomplete: 'off' } do |reply_form|
-                  .input-group
-                    = reply_form.text_area :internal_note_text, required: true,
-                      placeholder: 'Internal Note Text', class: 'form-control'
-                    = reply_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
-                  = reply_form.submit 'Post', class: 'btn btn-outline-secondary'
-                  = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket), class: 'btn btn-outline-danger'
-        - else
-          .col-12.col-lg-2
-            .list-group.list-group-horizontal
-              - if policy(ticket).reply?
-                = link_to bi_icon('reply', 'fs-5'), brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
-                  class: 'list-group-item list-group-item-action text-center', id: "toggle-reply-#{ticket.id}"
-              - if policy(ticket).internal_note?
-                = link_to bi_icon('sticky', 'fs-5'), brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
-                  class: 'list-group-item list-group-item-action text-center', id: "toggle-internal-note-#{ticket.id}"
-              - if policy(ticket).invert_status?
-                = button_to brand_ticket_invert_status_path(ticket.brand, ticket),
-                  form_class: 'list-group-item list-group-item-action p-0',
-                  class: 'w-100 h-100 bg-transparent border-0 py-2 px-3', 'data-turbo' => false do
-                  = invert_status_action(ticket.status)
+      .card-footer
+        - if policy(ticket.brand).subscription? || Flipper.enabled?(:disable_subscriptions)
+          .row
+            - if local_assigns[:action_form]
+              - case action_form
+              - when 'reply'
+                - if policy(ticket).reply?
+                  .col-12
+                    = form_with url: brand_ticket_reply_path(ticket.brand, ticket), html: { autocomplete: 'off' } do |reply_form|
+                      .input-group.mb-3
+                        = reply_form.text_area :response_text, required: true, placeholder: 'Reply Text', class: 'form-control'
+                        = reply_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
+                      = reply_form.submit 'Reply', class: 'btn btn-outline-secondary'
+                      = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket), class: 'btn btn-outline-danger'
+              - when 'internal_note'
+                - if policy(ticket).internal_note?
+                  .col-12
+                    = form_with url: brand_ticket_internal_note_path(ticket.brand, ticket),
+                      html: { autocomplete: 'off' } do |reply_form|
+                      .input-group.mb-3
+                        = reply_form.text_area :internal_note_text, required: true,
+                          placeholder: 'Internal Note Text', class: 'form-control'
+                        = reply_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
+                      = reply_form.submit 'Post', class: 'btn btn-outline-secondary'
+                      = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket), class: 'btn btn-outline-danger'
+            - else
+              .col-10.col-lg-2
+                - if policy(ticket).reply?
+                  = link_to bi_icon('reply', 'fs-5'), brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
+                    class: 'card-link text-center', id: "toggle-reply-#{ticket.id}"
+                - if policy(ticket).internal_note?
+                  = link_to bi_icon('sticky', 'fs-5'), brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
+                    class: 'card-link text-center', id: "toggle-internal-note-#{ticket.id}"
+              .col-2.col-lg-1.ms-auto
+                - if policy(ticket).invert_status?
+                  = button_to brand_ticket_invert_status_path(ticket.brand, ticket),
+                    form_class: 'd-inline',
+                    class: 'bg-transparent border-0', 'data-turbo' => false do
+                    = invert_status_action(ticket.status)

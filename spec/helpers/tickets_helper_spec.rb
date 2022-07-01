@@ -7,13 +7,13 @@ RSpec.describe TicketsHelper, type: :helper do
     context 'when status is open' do
       let(:status) { 'open' }
 
-      it { is_expected.to eq(helper.bi_icon('check', 'fs-5')) }
+      it { is_expected.to eq(helper.bi_icon('check-lg', 'text-success fs-5')) }
     end
 
     context 'when status is solved' do
       let(:status) { 'solved' }
 
-      it { is_expected.to eq(helper.bi_icon('folder2-open', 'fs-5')) }
+      it { is_expected.to eq(helper.bi_icon('folder2-open', 'text-warning fs-5')) }
     end
   end
 
