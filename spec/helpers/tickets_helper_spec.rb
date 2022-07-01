@@ -48,7 +48,8 @@ RSpec.describe TicketsHelper, type: :helper do
       it 'shows provider' do
         ticket_link = link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket),
                               'data-turbo' => false)
-        expect(ticket_header_content).to eq("#{ticket.author.username} - #{ticket.provider} - #{ticket_link}")
+        author_link = link_to(ticket.author.username, ticket.author.external_link)
+        expect(ticket_header_content).to eq("#{author_link} - #{ticket.provider} - #{ticket_link}")
       end
     end
 
@@ -62,7 +63,8 @@ RSpec.describe TicketsHelper, type: :helper do
       it 'shows local ticket author' do
         ticket_link = link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket),
                               'data-turbo' => false)
-        expect(ticket_header_content).to eq("#{ticket.creator.name} as #{ticket.author.username} - #{ticket_link}")
+        author_link = link_to(ticket.author.username, ticket.author.external_link)
+        expect(ticket_header_content).to eq("#{ticket.creator.name} as #{author_link} - #{ticket_link}")
       end
     end
   end

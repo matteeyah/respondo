@@ -20,20 +20,22 @@ module TicketsHelper
   end
 
   def ticket_header_content(user_authorized, ticket)
-    header_content = ticket.author.username
-
-    if user_authorized && ticket.creator
-      header_content = "#{ticket.creator.name} as #{header_content}"
-    elsif ticket.parent_id.nil?
-      header_content = "#{header_content} - #{ticket.actual_provider}"
-    end
-
-    ticket_link = link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket),
-                          'data-turbo' => false)
-    "#{sanitize(header_content)} - #{ticket_link}"
+    <<~TICKET_HEADER.delete("\n")
+      #{ticket_author_header(user_authorized, ticket)} - 
+      #{link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket), 'data-turbo' => false)}
+    TICKET_HEADER
   end
 
-  def flatten_hash(hash)
-    hash.flat_map { |k, v| [k, *flatten_hash(v)] }
+  private
+
+  def ticket_author_header(user_authorized, ticket)
+    author_link = link_to(ticket.author.username, ticket.author.external_link)
+    if user_authorized && ticket.creator
+      "#{ticket.creator.name} as #{author_link}"
+    elsif ticket.parent_id.nil?
+      "#{author_link} - #{ticket.actual_provider}"
+    else
+      author_link
+    end
   end
 end

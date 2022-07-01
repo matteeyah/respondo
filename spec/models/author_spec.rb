@@ -181,4 +181,22 @@ RSpec.describe Author, type: :model do
       end
     end
   end
+
+  describe '#external_link' do
+    subject(:external_link) { author.external_link }
+
+    let(:author) { create(:author, username: 'helloworld', provider: provider) }
+
+    context 'when provider is twitter' do
+      let(:provider) { 'twitter' }
+
+      it { is_expected.to eq('https://twitter.com/helloworld') }
+    end
+
+    context 'when provider is not supported' do
+      let(:provider) { 'disqus' }
+
+      it { is_expected.to be_nil }
+    end
+  end
 end
