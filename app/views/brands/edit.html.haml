@@ -36,8 +36,8 @@
                     .d-flex.align-items-center
                       .ms-1
                         %p.fw-normal.mb-1= user.name
-                    = button_to 'Remove', brand_user_path(@brand, user), method: :delete,
-                      class: 'btn btn-rounded btn-danger btn-sm'
+                    = link_to 'Remove', brand_user_path(@brand, user), class: 'btn btn-rounded btn-danger btn-sm',
+                      'data-turbo-method' => :delete
           .row.mt-3
             .d-flex.justify-content-center
               != pagy_bootstrap_nav(@pagy)

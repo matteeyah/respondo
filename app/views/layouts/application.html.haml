@@ -15,7 +15,8 @@
         .navbar.navbar-dark.navbar-expand-lg.bg-default
           .container-fluid.d-flex.flex-lg-column.flex-grow-1.justify-content-center.align-items-center.h-100
             .navbar-brand.mx-auto
-              = image_tag('logo_circle_white.svg', class: 'img-fluid')
+              = link_to root_path do
+                = image_tag('logo_circle_white.svg', class: 'img-fluid')
             %button.navbar-toggler{ type: 'button', 'data-bs-toggle' => 'collapse', 'data-bs-target' => '#main-nav' }
               %span.navbar-toggler-icon
             .flex-column.align-items-start.collapse.navbar-collapse.mt-5#main-nav

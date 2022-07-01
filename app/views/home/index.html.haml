@@ -5,5 +5,6 @@
     = link_to 'Brand Tickets', brand_tickets_path(current_brand), class: 'btn btn-primary btn-lg'
   - else
     %p.lead Woohoo, you're signed in. The next step is to authorize a brand account.
-    = auth_provider_link('Authorize Brand', 'twitter', 'brand', class: 'btn btn-primary btn-lg')
+    = auth_provider_link('twitter', 'brand', { class: 'btn btn-primary btn-lg' }) do
+      %span Authorize Brand
 

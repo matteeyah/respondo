@@ -2,7 +2,7 @@
 
 RSpec.describe ApplicationHelper, type: :helper do
   describe '#auth_provider_link' do
-    subject(:auth_provider_link) { helper.auth_provider_link('test', provider, 'model') }
+    subject(:auth_provider_link) { helper.auth_provider_link(provider, 'model') { 'test' } }
 
     (UserAccount.providers.keys + BrandAccount.providers.keys).each do |account_provider|
       context "when provider is #{account_provider}" do

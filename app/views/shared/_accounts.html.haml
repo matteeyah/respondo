@@ -11,8 +11,8 @@
                 .ms-1
                   %p.fw-bold.mb-1= provider_human_name(account.provider)
                   %p.text-muted.mb-0= account.email
-              = button_to 'Remove',
-                [model, account], method: :delete, class: 'btn btn-rounded btn-danger btn-sm'
+              = link_to 'Remove', [model, account], class: 'btn btn-rounded btn-danger btn-sm',
+                'data-turbo-method' => :delete
 .row
   .col-12.mt-3.mb-5
     %h6.mb-3 Add account
@@ -26,5 +26,5 @@
                 .d-flex.align-items-center
                   .ms-1
                   %p.fw-bold.mb-1= provider_human_name(provider)
-                = auth_provider_link('Add',
-                  provider, model.class.to_s.downcase, class: 'bi bi-plus-lg text-success')
+                = auth_provider_link(provider, model.class.to_s.downcase, { class: 'bg-transparent border-0' }) do
+                  %i.bi.bi-plus-lg.fs-4.text-primary

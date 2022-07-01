@@ -25,9 +25,8 @@
                       .d-flex.align-items-center
                         .ms-1
                           %p.fw-bold.mb-1= personal_access_token.name
-                      = button_to 'Remove',
-                        user_personal_access_token_path(@user, personal_access_token), method: :delete,
-                        class: 'bi bi-trash3-fill text-danger'
+                      = link_to user_personal_access_token_path(@user, personal_access_token), 'data-turbo-method' => :delete do
+                        = bi_icon('trash3-fill')
             - else
               %p
                 %em You do not have any created token.
