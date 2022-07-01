@@ -25,24 +25,21 @@
                     = active_link_to brand_tickets_path(current_brand),
                       { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo' => false } do
                       %i.bi.bi-speedometer.fs-1
-                  %li.nav-item.dropend
-                    = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
-                      'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
-                      %i.bi.bi-question-circle.fs-1
-                    %ul.dropdown-menu.dropdown-menu-dark.bg-default.shadow{ 'aria-labelledby' => 'help' }
-                      %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'dropdown-item'
-                      %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'dropdown-item'
-                      %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'dropdown-item'
-                      %li.nav-item
-                        %hr.dropdown-divider
-                      %li.nav-item
-                        = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
-                          class: 'dropdown-item'
-                      %li.nav-item
-                        = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy', class: 'dropdown-item'
-                - else
-                  %li.nav-item
-                    = auth_provider_link 'Authorize Brand', 'twitter', 'brand', class: 'nav-link btn btn-link'
+                %li.nav-item.dropend
+                  = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
+                    'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
+                    %i.bi.bi-question-circle.fs-1
+                  %ul.dropdown-menu.dropdown-menu-dark.bg-default.shadow{ 'aria-labelledby' => 'help' }
+                    %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'dropdown-item'
+                    %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'dropdown-item'
+                    %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'dropdown-item'
+                    %li.nav-item
+                      %hr.dropdown-divider
+                    %li.nav-item
+                      = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
+                        class: 'dropdown-item'
+                    %li.nav-item
+                      = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy', class: 'dropdown-item'
               %ul.flex-column.navbar-nav.mt-auto.text-center
                 %li.nav-item.dropup
                   = link_to '#', class: 'nav-link text-decoration-none', id: 'settings',

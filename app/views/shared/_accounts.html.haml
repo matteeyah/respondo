@@ -1,21 +1,30 @@
-.row
+.row.mt-3
   .col-12.mt-3.mb-5
-    %h5 Existing accounts
-    %hr
-    .row.list-group.list-group-horizontal-lg.flex-wrap.g-3
+    %h6.mb-3 Existing accounts
+    %hr.bg-danger.border-2.border-top
+    .row.list-group.list-group-horizontal-lg.flex-wrap.g-2
       - model.accounts.each do |account|
-        .col-12.col-lg-6
-          .list-group-item.p-0.border-0
-            = button_to "Remove #{provider_human_name(account.provider)}",
-              [model, account], method: :delete, class: 'btn btn-danger w-100'
+        .col-12
+          %ul.list-group.list-group-light
+            %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0
+              .d-flex.align-items-center
+                .ms-1
+                  %p.fw-bold.mb-1 #{provider_human_name(account.provider)}
+                  %p.text-muted.mb-0 #{account.email}
+              = button_to "Remove",
+                [model, account], method: :delete, class: 'btn btn-rounded btn-danger btn-sm'
 .row
   .col-12.mt-3.mb-5
-    %h5 New accounts
-    %hr
-    .row.list-group.list-group-horizontal-lg.flex-wrap.g-3
+    %h6.mb-3 Add account
+    %hr.bg-danger.border-2.border-top
+    .row.list-group.list-group-horizontal-lg.flex-wrap.g-2
       - providers.each do |provider|
         - unless model.account_for_provider?(provider)
-          .col-12.col-lg-6
-            .list-group-item.p-0.border-0
-              = auth_provider_link("Authorize #{provider_human_name(provider)}",
-                provider, model.class.to_s.downcase, class: 'btn btn-success w-100')
+          .col-12
+            %ul.list-group.list-group-light
+              %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0
+                .d-flex.align-items-center
+                  .ms-1
+                  %p.fw-bold.mb-1 #{provider_human_name(provider)}
+                = auth_provider_link("Add",
+                  provider, model.class.to_s.downcase, class: 'bi bi-plus-lg text-success')

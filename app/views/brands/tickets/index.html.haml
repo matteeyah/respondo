@@ -4,6 +4,8 @@
   .col-12.col-lg-2.d-flex.justify-content-end
     - if policy(:ticket).refresh? && policy(@brand).user_in_brand?
       = button_to 'Load Tickets', refresh_brand_tickets_path(@brand), class: 'btn btn-outline-primary'
+
+%hr.bg-danger.border-2.border-top
 .row.mt-3
   %h6 Views
   .col-lg-2
