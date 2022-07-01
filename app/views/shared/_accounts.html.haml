@@ -6,7 +6,7 @@
       - model.accounts.each do |account|
         .col-12
           %ul.list-group.list-group-light
-            %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0.border-light
+            %li.list-group-item.d-flex.justify-content-between.align-items-center
               .d-flex.align-items-center
                 .ms-1
                   %p.fw-bold.mb-1= provider_human_name(account.provider)
@@ -22,7 +22,7 @@
         - unless model.account_for_provider?(provider)
           .col-12
             %ul.list-group.list-group-light
-              %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0.border-light
+              %li.list-group-item.d-flex.justify-content-between.align-items-center
                 .d-flex.align-items-center
                   .ms-1
                   %p.fw-bold.mb-1= provider_human_name(provider)

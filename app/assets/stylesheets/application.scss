@@ -35,6 +35,12 @@ $primary: #7858A6;
   --background-gradient: linear-gradient(135deg, #8f75da 0%, #727cf5 60%);
 }
 
+body {
+  background: #{image_url('bg-pattern-light.svg')};
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .bg-default {
   background: var(--background-gradient);
 }
