@@ -1,23 +1,23 @@
 - subscription_status = @brand.subscription&.status
 - checkout_redirect_path = request.original_url
-.row
+.row.my-3
   .col-12.col-lg-10
     %h3 Brand
   .col-12.col-lg-2.d-flex.justify-content-end
     %h5.text-muted= @brand.screen_name
-  %hr.bg-light.border-2.border-top
-  .row.mt-3
+  %hr.border-2.border-top
+  .row.mb-3
     .col-lg-6
       %h5 Account Settings
-      %hr.bg-light.border-2.border-top
+      %hr.border-2.border-top
       = render partial: 'shared/accounts', locals: { providers: BrandAccount.providers.keys, model: @brand }
     .col-lg-6
       %h5 Brand Settings
-      %hr.bg-light.border-2.border-top
-      .row.mt-3
-        .col-12.mt-3.mb-5
+      %hr.border-2.border-top
+      .row.mb-3
+        .col-12
           %h6.mb-3 Users outside brand
-          %hr.bg-light.border-2.border-top
+          %hr.border-2.border-top
           = form_with url: brand_users_path(@brand), method: :post, class: 'form-inline' do |add_user_form|
             .row
               .col-10
@@ -25,35 +25,37 @@
                   { include_blank: 'Select user' }, required: true, class: 'custom-select form-control', id: 'add-user'
               .col-2
                 = add_user_form.submit 'Add User', class: 'btn btn-primary'
-        .col-12.mt-3.mb-5
+      .row
+        .col-12
           %h6.mb-3 Users in Brand
-          %hr.bg-light.border-2.border-top
-          .row.list-group.list-group-horizontal-lg.flex-wrap.g-2
+          %hr.border-2.border-top
+          .list-group
             - @brand_users.each do |user|
-              .col-12
-                %ul.list-group
-                  %li.list-group-item.d-flex.justify-content-between.align-items-center
-                    .d-flex.align-items-center
-                      .ms-1
-                        %p.fw-normal.mb-1= user.name
+              .list-group-item
+                .row
+                  .col-8
+                    %p.mb-0.fw-bold= user.name
+                  .col-4.d-flex.justify-content-end
                     = link_to 'Remove', brand_user_path(@brand, user), class: 'btn btn-rounded btn-danger btn-sm',
                       'data-turbo-method' => :delete, 'data-turbo-frame' => :_top
           .row.mt-3
             .d-flex.justify-content-center
               != pagy_bootstrap_nav(@pagy)
-        .col-12.mt-3.mb-5
+      .row
+        .col-12
           %h6.mb-3 Brand Domain
-          %hr.bg-light.border-2.border-top
+          %hr.border-2.border-top
           = form_with model: @brand, method: :patch, class: 'form-inline' do |update_brand_form|
             .row
               .col-10
                 = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control'
               .col-2
                 = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary w-100'
-        .col-12.mt-3.mb-5
+      .row
+        .col-12
           - unless Flipper.enabled?(:disable_subscriptions)
-            %h5 Subscription
-            %hr
+            %h6.mb-3 Subscription
+            %hr.border-2.border-top
             %p
               Subscription status:
               %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status || 'no subscription'
@@ -72,14 +74,12 @@
       :javascript
         function cancelSubscription() {
           Paddle.Checkout.open({
-            override: "#{@brand.subscription.cancel_url}",
-            success: "#{checkout_redirect_path}"
+            override: "#{@brand.subscription.cancel_url}", success: "#{checkout_redirect_path}"
           })
         }
         function updateSubscription() {
           Paddle.Checkout.open({
-            override: "#{@brand.subscription.update_url}",
-            success: "#{checkout_redirect_path}"
+            override: "#{@brand.subscription.update_url}", success: "#{checkout_redirect_path}"
           })
         }
         document.getElementById('cancel-subscription').addEventListener('click', cancelSubscription, false)
@@ -88,11 +88,8 @@
       :javascript
         function buySubscription() {
           Paddle.Checkout.open({
-            product: 592438,
-            allowQuantity: false,
-            quantity: "#{@brand.users.count}",
-            passthrough: "{\"brand_id\": #{@brand.id}}",
-            success: "#{checkout_redirect_path}"
+            product: 592438, allowQuantity: false, quantity: "#{@brand.users.count}",
+            passthrough: "{\"brand_id\": #{@brand.id}}", success: "#{checkout_redirect_path}"
           })
         }
         document.getElementById('buy-subscription').addEventListener('click', buySubscription, false)

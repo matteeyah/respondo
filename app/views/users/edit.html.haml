@@ -1,40 +1,40 @@
-.row
+.row.my-3
   .col-12.col-lg-10
     %h3 User
   .col-12.col-lg-2.d-flex.justify-content-end
     %h5.text-muted= @user.name
-  %hr.bg-light.border-2.border-top
-  .row.mt-3
-    .col-lg-6
-      %h5 Account Settings
-      %hr.bg-light.border-2.border-top
-      = render partial: 'shared/accounts', locals: { providers: UserAccount.providers.keys, model: @user }
-    .col-lg-6
-      %h5 Token Settings
-      %hr.bg-light.border-2.border-top
-      .row.mt-3
-        .col-12.mt-3.mb-5
-          %h6.mb-3 Existing personal access tokens
-          %hr.bg-light.border-2.border-top
-          .row.list-group.list-group-horizontal-lg.flex-wrap.g-2
-            - if @user.personal_access_tokens.any?
-              - @user.personal_access_tokens.each do |personal_access_token|
-                .col-12
-                  %ul.list-group
-                    %li.list-group-item.d-flex.justify-content-between.align-items-center
-                      .d-flex.align-items-center
-                        .ms-1
-                          %p.fw-bold.mb-1= personal_access_token.name
-                      = link_to user_personal_access_token_path(@user, personal_access_token),
-                        'data-turbo-method' => :delete, 'data-turbo-frame' => :_top do
-                        = bi_icon('trash3-fill')
-            - else
-              %p
-                %em You do not have any created token.
-
-      .col-12.mt-3.mb-5
-        %h6.mb-3 Create personal access token
+  %hr.border-2.border-top
+.row.mb-3
+  .col-lg-6
+    %h5 Account Settings
+    %hr.border-2.border-top
+    = render partial: 'shared/accounts', locals: { providers: UserAccount.providers.keys, model: @user }
+  .col-lg-6
+    %h5 Token Settings
+    %hr.border-2.border-top
+    .row.mb-5
+      .col-12
+        %h6.mb-3 Existing personal access tokens
         %hr.bg-light.border-2.border-top
+        .list-group
+          - if @user.personal_access_tokens.any?
+            - @user.personal_access_tokens.each do |personal_access_token|
+              .list-group-item
+                .row
+                  .col-8
+                    %p.fw-bold.mb-1= personal_access_token.name
+                  .col-4.d-flex.justify-content-end
+                    = link_to user_personal_access_token_path(@user, personal_access_token),
+                      'data-turbo-method' => :delete, 'data-turbo-frame' => :_top do
+                      = bi_icon('trash3-fill')
+          - else
+            %p.fst-italic
+              You do not have any created token.
+
+    .row
+      .col-12
+        %h6.mb-3 Create personal access token
+        %hr.border-2.border-top
           = form_with url: user_personal_access_tokens_path(@user), html: { autocomplete: 'off' } do |create_token_form|
             .row
               .col-10
