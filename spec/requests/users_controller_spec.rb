@@ -28,13 +28,13 @@ RSpec.describe UsersController, type: :request do
         it 'renders the user account removal link' do
           get_edit
 
-          expect(response.body).to include('Remove Google')
+          expect(response.body).to include('Remove')
         end
 
         it 'renders the twitter authorization link' do
           get_edit
 
-          expect(response.body).to include('Authorize Twitter')
+          expect(response.body).to include('Twitter')
         end
       end
 

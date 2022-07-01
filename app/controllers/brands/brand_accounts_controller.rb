@@ -14,7 +14,7 @@ module Brands
         flash[:success] = 'Brand account was successfully deleted.'
       end
 
-      redirect_to edit_brand_path(brand)
+      redirect_to edit_brand_path(brand), status: :see_other
     end
 
     private

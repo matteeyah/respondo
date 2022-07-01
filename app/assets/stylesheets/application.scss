@@ -16,6 +16,8 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css");
+
+$primary: #7858A6;
 @import "bootstrap";
 
 :root {
@@ -31,6 +33,12 @@
     "Segoe UI Symbol",
     "Noto Color Emoji";
   --background-gradient: linear-gradient(135deg, #8f75da 0%, #727cf5 60%);
+}
+
+body {
+  background: #{image_url('bg-pattern-light.svg')};
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .bg-default {

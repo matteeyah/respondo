@@ -1,34 +1,43 @@
-%h4.mt-4
-  = @user.name
-
-%hr
-
-.row
+.row.my-3
+  .col-12.col-lg-10
+    %h3 User
+  .col-12.col-lg-2.d-flex.justify-content-end
+    %h5.text-muted= @user.name
+  %hr.border-2.border-top
+.row.mb-3
   .col-lg-6
-    %h4.display-6 Account Settings
+    %h5 Account Settings
+    %hr.border-2.border-top
     = render partial: 'shared/accounts', locals: { providers: UserAccount.providers.keys, model: @user }
   .col-lg-6
-    .row
-      %h4.display-6 Token Settings
-      .col-12.mt-3.mb-5
-        %h5 Existing Personal Access Tokens
-        %hr
-        .list-group.list-group-horizontal-lg.flex-wrap
+    %h5 Token Settings
+    %hr.border-2.border-top
+    .row.mb-5
+      .col-12
+        %h6.mb-3 Existing personal access tokens
+        %hr.bg-light.border-2.border-top
+        .list-group
           - if @user.personal_access_tokens.any?
             - @user.personal_access_tokens.each do |personal_access_token|
-              = button_to "Remove #{personal_access_token.name}",
-                user_personal_access_token_path(@user, personal_access_token), method: :delete,
-                class: 'list-group-item list-group-item-action col-lg-6 text-center'
+              .list-group-item
+                .row
+                  .col-8
+                    %p.fw-bold.mb-1= personal_access_token.name
+                  .col-4.d-flex.justify-content-end
+                    = link_to user_personal_access_token_path(@user, personal_access_token),
+                      'data-turbo-method' => :delete, 'data-turbo-frame' => :_top do
+                      = bi_icon('trash3-fill')
           - else
-            %p
-              %em You do not have any created token.
+            %p.fst-italic
+              You do not have any created token.
 
-      .col-12.mt-3.mb-5
-        %h5 New Personal Access Tokens
-        %hr
+    .row
+      .col-12
+        %h6.mb-3 Create personal access token
+        %hr.border-2.border-top
           = form_with url: user_personal_access_tokens_path(@user), html: { autocomplete: 'off' } do |create_token_form|
             .row
-              .col-6
+              .col-10
                 = create_token_form.text_field :name, required: true, placeholder: 'Enter token name', class: 'form-control'
-              .col-6
+              .col-2
                 = create_token_form.submit 'Create', name: nil, class: 'btn btn-primary'

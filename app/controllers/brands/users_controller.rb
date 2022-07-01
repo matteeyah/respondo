@@ -22,6 +22,7 @@ module Brands
       # If user is removing self from brand, redirecting back results in a
       # redirect loop.
       redirect_to (brand_user == current_user ? root_path : edit_brand_path(brand)),
+                  status: :see_other,
                   flash: { success: 'User was successfully removed from the brand.' }
     end
 

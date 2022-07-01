@@ -13,8 +13,9 @@ module ApplicationHelper
     'disqus' => '/auth/disqus'
   }.freeze
 
-  def auth_provider_link(text, provider, model, html_options = {})
-    button_to text, auth_provider_path(provider, state: model), method: :post, 'data-turbo' => false, **html_options
+  def auth_provider_link(provider, model, html_options = {}, origin: nil, &block)
+    params = { state: model, origin: }.compact
+    button_to auth_provider_path(provider, **params), method: :post, 'data-turbo' => false, **html_options, &block
   end
 
   def provider_human_name(provider)

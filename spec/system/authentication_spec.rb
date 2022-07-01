@@ -36,7 +36,7 @@ RSpec.describe 'Authentication', type: :system do
     sign_in_user
 
     add_oauth_mock(:twitter, '123', { nickname: 'test_brand' }, {})
-    click_button('Authorize Brand', class: 'nav-link')
+    click_button('Authorize Brand')
     find('#settings').click
     expect(page).to have_link('Brand settings')
   end
@@ -46,10 +46,8 @@ RSpec.describe 'Authentication', type: :system do
 
     sign_in_user
     find('#settings').click
-    click_link('User settings')
+    click_button 'Sign Out'
 
-    find('#settings').click
-    click_button('Sign Out')
     expect(page).to have_current_path(login_path)
   end
 end

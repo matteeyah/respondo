@@ -20,19 +20,19 @@ RSpec.describe 'User settings', type: :system do
     click_link 'User settings'
 
     add_oauth_mock_for_user(user, create(:user_account, provider: 'twitter'))
-    click_button 'Authorize Twitter'
+    page.find(:css, "form[action='/auth/twitter?state=user']").click
 
-    expect(page).to have_button('Remove Twitter')
+    expect(page).to have_link('Remove')
   end
 
   it 'allows the user to remove an account' do
-    create(:user_account, provider: 'twitter', user:)
+    target_account = create(:user_account, provider: 'twitter', user:)
     find('#settings').click
     click_link 'User settings'
 
-    click_button 'Remove Twitter'
+    page.find(:css, "a[href='/users/1/user_accounts/#{target_account.id}']").click
 
-    expect(page).to have_button('Authorize Twitter')
+    expect(page).to have_selector("form[action='/auth/twitter?state=user']")
   end
 
   it 'allows the user to create a personal access token' do
@@ -42,16 +42,16 @@ RSpec.describe 'User settings', type: :system do
     fill_in :name, with: 'something_nice'
     click_button 'Create'
 
-    expect(page).to have_button('Remove something_nice')
+    expect(page).to have_selector(:css, "a[href='#{user_personal_access_token_path(user, '1')}']")
   end
 
   it 'allows the user to remove a personal access token' do
-    create(:personal_access_token, name: 'something_nice', user:)
+    pat = create(:personal_access_token, name: 'something_nice', user:)
     find('#settings').click
     click_link 'User settings'
 
-    click_button 'Remove something_nice'
+    page.find(:css, "a[href='#{user_personal_access_token_path(user, pat)}']").click
 
-    expect(page).not_to have_button('Remove something_nice')
+    expect(page).not_to have_text('something_nice')
   end
 end

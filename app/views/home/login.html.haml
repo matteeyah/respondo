@@ -26,12 +26,10 @@
                   %p.text-muted.mb-4 Sign in is only available with a Google or Twitter account.
                   %hr
                   .d-grid.gap-3
-                    = button_to auth_provider_path('google_oauth2', state: 'user', origin: '/'),
-                      method: :post, class: 'btn btn-danger rounded-pill', 'data-turbo' => false do
+                    = auth_provider_link('google_oauth2', 'user', { class: 'btn btn-primary rounded-pill' }, origin: '/') do
                       %i.bi.bi-google
                       %span Sign in with Google
-                    = button_to auth_provider_path('twitter', state: 'user', origin: '/'),
-                      method: :post, class: 'btn btn-primary rounded-pill', 'data-turbo' => false do
+                    = auth_provider_link('twitter', 'user', { class: 'btn btn-primary rounded-pill' }, origin: '/') do
                       %i.bi.bi-twitter
                       %span Sign in with Twitter
   %footer.footer.mt-auto.text-center.text-white 2022 © Respondo Ltd.
