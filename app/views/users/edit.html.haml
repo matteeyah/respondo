@@ -20,12 +20,13 @@
             - if @user.personal_access_tokens.any?
               - @user.personal_access_tokens.each do |personal_access_token|
                 .col-12
-                  %ul.list-group.list-group-light
+                  %ul.list-group
                     %li.list-group-item.d-flex.justify-content-between.align-items-center
                       .d-flex.align-items-center
                         .ms-1
                           %p.fw-bold.mb-1= personal_access_token.name
-                      = link_to user_personal_access_token_path(@user, personal_access_token), 'data-turbo-method' => :delete do
+                      = link_to user_personal_access_token_path(@user, personal_access_token),
+                        'data-turbo-method' => :delete, 'data-turbo-frame' => :_top do
                         = bi_icon('trash3-fill')
             - else
               %p

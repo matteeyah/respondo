@@ -24,7 +24,7 @@ module Users
 
       flash[:success] = 'User personal access token was successfully deleted.'
 
-      redirect_to edit_user_path(user)
+      redirect_to edit_user_path(user), status: :see_other
     end
 
     private

@@ -31,13 +31,13 @@
           .row.list-group.list-group-horizontal-lg.flex-wrap.g-2
             - @brand_users.each do |user|
               .col-12
-                %ul.list-group.list-group-light
+                %ul.list-group
                   %li.list-group-item.d-flex.justify-content-between.align-items-center
                     .d-flex.align-items-center
                       .ms-1
                         %p.fw-normal.mb-1= user.name
                     = link_to 'Remove', brand_user_path(@brand, user), class: 'btn btn-rounded btn-danger btn-sm',
-                      'data-turbo-method' => :delete
+                      'data-turbo-method' => :delete, 'data-turbo-frame' => :_top
           .row.mt-3
             .d-flex.justify-content-center
               != pagy_bootstrap_nav(@pagy)

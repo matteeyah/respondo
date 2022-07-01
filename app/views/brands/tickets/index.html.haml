@@ -5,8 +5,7 @@
     - if policy(:ticket).refresh? && policy(@brand).user_in_brand?
       = link_to 'Load Tickets', refresh_brand_tickets_path(@brand), class: 'btn btn-outline-primary',
         'data-turbo-method' => :post, 'data-turbo-frame' => :_top
-  %hr.bg-danger.border-2.border-top
-  %h6 Views
+.row.mt-3
   .col-lg-2
     %ul.list-group
       = active_link_to 'Open Tickets', brand_tickets_path(@brand, status: 'open'), active: { status: 'open' },

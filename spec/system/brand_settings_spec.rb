@@ -22,19 +22,19 @@ RSpec.describe 'Brand settings', type: :system do
     click_link 'Brand settings'
 
     add_oauth_mock_for_brand(brand, create(:brand_account, provider: 'disqus'))
-    click_button 'Authorize Disqus'
+    page.find(:css, "form[action='/auth/disqus?state=brand']").click
 
-    expect(page).to have_button('Remove Disqus')
+    expect(page).to have_link('Remove')
   end
 
   it 'allows the user to remove an account' do
-    create(:brand_account, provider: 'disqus', brand:)
+    brand_account = create(:brand_account, provider: 'disqus', brand:)
     find('#settings').click
     click_link 'Brand settings'
 
-    click_button 'Remove Disqus'
+    page.find(:css, "a[href='/brands/1/brand_accounts/#{brand_account.id}']").click
 
-    expect(page).to have_button('Authorize Disqus')
+    expect(page).to have_selector(:css, "form[action='/auth/disqus?state=brand']")
   end
 
   it 'allows the user to add users to brand' do
@@ -45,7 +45,7 @@ RSpec.describe 'Brand settings', type: :system do
     select external_user.name, from: 'add-user'
     click_button 'Add User'
 
-    expect(page).to have_button("Remove #{external_user.name}")
+    expect(page).to have_link('Remove')
   end
 
   it 'allows the user to remove users from brand' do
@@ -53,7 +53,7 @@ RSpec.describe 'Brand settings', type: :system do
     find('#settings').click
     click_link 'Brand settings'
 
-    click_button "Remove #{existing_user.name}"
+    page.find(:css, "a[href='/brands/1/users/#{existing_user.id}']").click
 
     expect(page).to have_select('add-user', with_options: [existing_user.name])
   end

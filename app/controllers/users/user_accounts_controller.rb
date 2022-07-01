@@ -14,7 +14,7 @@ module Users
         flash[:success] = 'User account was successfully deleted.'
       end
 
-      redirect_to edit_user_path(user)
+      redirect_to edit_user_path(user), status: :see_other
     end
 
     private
