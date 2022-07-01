@@ -9,9 +9,9 @@
             %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0.border-light
               .d-flex.align-items-center
                 .ms-1
-                  %p.fw-bold.mb-1 #{provider_human_name(account.provider)}
-                  %p.text-muted.mb-0 #{account.email}
-              = button_to "Remove",
+                  %p.fw-bold.mb-1= provider_human_name(account.provider)
+                  %p.text-muted.mb-0= account.email
+              = button_to 'Remove',
                 [model, account], method: :delete, class: 'btn btn-rounded btn-danger btn-sm'
 .row
   .col-12.mt-3.mb-5
@@ -25,6 +25,6 @@
               %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0.border-light
                 .d-flex.align-items-center
                   .ms-1
-                  %p.fw-bold.mb-1 #{provider_human_name(provider)}
-                = auth_provider_link("Add",
+                  %p.fw-bold.mb-1= provider_human_name(provider)
+                = auth_provider_link('Add',
                   provider, model.class.to_s.downcase, class: 'bi bi-plus-lg text-success')

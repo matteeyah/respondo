@@ -1,6 +1,5 @@
 - subscription_status = @brand.subscription&.status
 - checkout_redirect_path = request.original_url
-
 .row
   .col-12.col-lg-10
     %h3 Brand
@@ -36,8 +35,8 @@
                   %li.list-group-item.d-flex.justify-content-between.align-items-center.border-top-0.border-bottom-0.border-light
                     .d-flex.align-items-center
                       .ms-1
-                        %p.fw-normal.mb-1 #{user.name}
-                    = button_to "Remove", brand_user_path(@brand, user), method: :delete,
+                        %p.fw-normal.mb-1= user.name
+                    = button_to 'Remove', brand_user_path(@brand, user), method: :delete,
                       class: 'btn btn-rounded btn-danger btn-sm'
           .row.mt-3
             .d-flex.justify-content-center
@@ -50,7 +49,7 @@
               .col-10
                 = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control'
               .col-2
-                = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary w-100' 
+                = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary w-100'
         .col-12.mt-3.mb-5
           - unless Flipper.enabled?(:disable_subscriptions)
             %h5 Subscription
@@ -63,13 +62,11 @@
               = button_tag 'Cancel Subscription', class: 'btn btn-light', id: 'cancel-subscription'
             - else
               = button_tag 'Buy Subscription', class: 'btn btn-light', id: 'buy-subscription'
-
 = content_for :custom_javascript do
   - if Rails.application.config.x.paddle.vendor_id
     %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
     :javascript
       Paddle.Setup({ vendor: #{Rails.application.config.x.paddle.vendor_id} })
-
     -# rubocop:disable Style/IdenticalConditionalBranches
     - if @brand.subscription&.running?
       :javascript
@@ -79,14 +76,12 @@
             success: "#{checkout_redirect_path}"
           })
         }
-
         function updateSubscription() {
           Paddle.Checkout.open({
             override: "#{@brand.subscription.update_url}",
             success: "#{checkout_redirect_path}"
           })
         }
-
         document.getElementById('cancel-subscription').addEventListener('click', cancelSubscription, false)
         document.getElementById('update-subscription').addEventListener('click', updateSubscription, false)
     - else
@@ -100,6 +95,5 @@
             success: "#{checkout_redirect_path}"
           })
         }
-
         document.getElementById('buy-subscription').addEventListener('click', buySubscription, false)
     -# rubocop:enable Style/IdenticalConditionalBranches
