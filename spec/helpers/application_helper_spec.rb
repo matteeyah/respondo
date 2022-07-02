@@ -22,7 +22,7 @@ RSpec.describe ApplicationHelper, type: :helper do
   describe '#provider_human_name' do
     subject(:provider_human_name) { helper.provider_human_name(provider) }
 
-    (UserAccount.providers.keys + BrandAccount.providers.keys).each do |account_provider|
+    (UserAccount.providers.except(:developer).keys + BrandAccount.providers.keys).each do |account_provider|
       context "when provider is #{account_provider}" do
         let(:provider) { account_provider }
 
