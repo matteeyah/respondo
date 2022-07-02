@@ -4,6 +4,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :google_oauth2, ENV.fetch('GOOGLE_CLIENT_ID', nil), ENV.fetch('GOOGLE_CLIENT_SECRET', nil)
   provider :twitter, ENV.fetch('TWITTER_API_KEY', nil), ENV.fetch('TWITTER_API_SECRET', nil)
   provider :disqus, ENV.fetch('DISQUS_PUBLIC_KEY', nil), ENV.fetch('DISQUS_SECRET_KEY', nil)
+  provider :developer, fields: [:email], uid_field: :email
 end
 
 # omniauth-disqus currently has a problem with #callback_url because it passes
