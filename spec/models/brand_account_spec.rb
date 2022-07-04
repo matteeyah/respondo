@@ -253,7 +253,7 @@ RSpec.describe BrandAccount, type: :model do
   describe '#client' do
     subject(:client) { account.client }
 
-    let(:account) { build(:user_account) }
+    let(:account) { build(:brand_account) }
 
     %w[twitter disqus].each do |provider|
       context "when provider is #{provider}" do

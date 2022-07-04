@@ -6,7 +6,7 @@ class UserAccount < ApplicationRecord
   validates :external_uid, uniqueness: { scope: :provider }
   validates :provider, presence: true, uniqueness: { scope: :user_id }
 
-  enum provider: { google_oauth2: 0, twitter: 1, disqus: 2, developer: 3 }
+  enum provider: { google_oauth2: 0, developer: 1 }
 
   belongs_to :user
 
@@ -32,15 +32,6 @@ class UserAccount < ApplicationRecord
 
       user_domain = user_email.split('@').last
       Brand.find_by(domain: user_domain)
-    end
-  end
-
-  def client
-    case provider
-    when 'twitter'
-      twitter_client
-    when 'disqus'
-      disqus_client
     end
   end
 end
