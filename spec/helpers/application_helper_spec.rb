@@ -22,15 +22,16 @@ RSpec.describe ApplicationHelper, type: :helper do
   describe '#provider_human_name' do
     subject(:provider_human_name) { helper.provider_human_name(provider) }
 
-    (UserAccount.providers.except(:developer).keys + BrandAccount.providers.keys).each do |account_provider|
-      context "when provider is #{account_provider}" do
-        let(:provider) { account_provider }
+    (UserAccount.providers.except(:developer).keys + BrandAccount.providers.except(:developer).keys)
+      .uniq.each do |account_provider|
+        context "when provider is #{account_provider}" do
+          let(:provider) { account_provider }
 
-        it 'returns human mame' do
-          expect(provider_human_name).to be_an_instance_of(String)
+          it 'returns human mame' do
+            expect(provider_human_name).to be_an_instance_of(String)
+          end
         end
       end
-    end
   end
 
   describe '#safe_blank_link_to' do

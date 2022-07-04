@@ -163,7 +163,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
     context 'when model is brand' do
       let(:model) { 'brand' }
 
-      BrandAccount.providers.each_key do |provider_param|
+      BrandAccount.providers.except(:developer).each_key do |provider_param|
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 
