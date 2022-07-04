@@ -24,7 +24,7 @@ RSpec.describe 'Brand settings', type: :system do
     add_oauth_mock_for_brand(brand, create(:brand_account, provider: 'disqus'))
     page.find(:css, "form[action='/auth/disqus?state=brand']").click
 
-    expect(page).to have_link('Remove')
+    expect(page).to have_selector(:css, "a[href='#{brand_brand_account_path(brand, brand.accounts.last)}']")
   end
 
   it 'allows the user to remove an account' do
@@ -45,7 +45,7 @@ RSpec.describe 'Brand settings', type: :system do
     select external_user.name, from: 'add-user'
     click_button 'Add User'
 
-    expect(page).to have_link('Remove')
+    expect(page).to have_selector(:css, "a[href='#{brand_user_path(brand, brand.users.last)}']")
   end
 
   it 'allows the user to remove users from brand' do

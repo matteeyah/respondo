@@ -25,16 +25,10 @@ RSpec.describe UsersController, type: :request do
           sign_in(user)
         end
 
-        it 'renders the user account removal link' do
+        it 'renders the edit page' do
           get_edit
 
-          expect(response.body).to include('Remove')
-        end
-
-        it 'renders the twitter authorization link' do
-          get_edit
-
-          expect(response.body).to include('Twitter')
+          expect(response.body).to include(user.name)
         end
       end
 

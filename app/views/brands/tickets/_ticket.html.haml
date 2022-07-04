@@ -5,14 +5,16 @@
         .row
           .col-12.col-lg-4
             %p.m-0!= ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)
-          .col-12.col-lg-4.d-flex.justify-content-start.justify-content-lg-center
-            = link_to(ticket.created_at.to_formatted_s(:short), brand_ticket_path(ticket.brand, ticket),
-              class: 'text-decoration-none text-muted', 'data-turbo-frame' => :_top)
-          .col-12.col-lg-4.d-flex.justify-content-start.justify-content-lg-end
+          .col-12.col-lg-2.d-flex.justify-content-start.justify-content-lg-center
+            %span= ticket.created_at.to_formatted_s(:short)
+          .col-12.col-lg-2
             - if ticket.parent_id.nil?
-              %button.btn.btn-sm.btn-primary
+              %button.btn.btn-sm.btn-info.text-light
                 = bi_icon(ticket.actual_provider)
                 = provider_human_name(ticket.actual_provider)
+          .col-12.col-lg-4.d-flex.justify-content-start.justify-content-lg-end
+            = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-frame' => :_top do
+              = bi_icon('box-arrow-up-right')
       .card-body
         .card-text
           %p= ticket.content
