@@ -12,7 +12,7 @@ RSpec.describe UserAccount, type: :model do
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider).ignoring_case_sensitivity }
   end
 
-  it { is_expected.to define_enum_for(:provider).with_values(%i[google_oauth2 twitter disqus]) }
+  it { is_expected.to define_enum_for(:provider).with_values(%i[google_oauth2 developer]) }
 
   describe 'Relations' do
     it { is_expected.to belong_to(:user) }
@@ -21,7 +21,7 @@ RSpec.describe UserAccount, type: :model do
   it_behaves_like 'accountable'
 
   describe '.from_omniauth' do
-    described_class.providers.each_key do |provider|
+    described_class.providers.except(:developer).each_key do |provider|
       context "when provider is #{provider}" do
         subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_user) }
 
@@ -261,22 +261,6 @@ RSpec.describe UserAccount, type: :model do
             end
           end
         end
-      end
-    end
-  end
-
-  describe '#client' do
-    subject(:client) { account.client }
-
-    let(:account) { build(:user_account) }
-
-    %w[twitter disqus].each do |provider|
-      context "when provider is #{provider}" do
-        before do
-          account.provider = provider
-        end
-
-        it { is_expected.to be_kind_of(Clients::Client) }
       end
     end
   end

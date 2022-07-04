@@ -21,7 +21,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
     context 'when model is user' do
       let(:model) { 'user' }
 
-      UserAccount.providers.each_key do |provider_param|
+      UserAccount.providers.except(:developer).each_key do |provider_param|
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 
@@ -75,7 +75,9 @@ RSpec.describe OmniauthCallbacksController, type: :request do
             end
           end
 
-          context 'when user is signed in' do
+          # Temporarily disabled until we add more account providers for users
+          # https://github.com/respondo/respondo/issues/274
+          xcontext 'when user is signed in' do
             let(:user) do
               account_provider = (UserAccount.providers.keys - [provider]).first
 
@@ -163,7 +165,7 @@ RSpec.describe OmniauthCallbacksController, type: :request do
     context 'when model is brand' do
       let(:model) { 'brand' }
 
-      BrandAccount.providers.each_key do |provider_param|
+      BrandAccount.providers.except(:developer).each_key do |provider_param|
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 

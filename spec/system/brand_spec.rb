@@ -39,7 +39,7 @@ RSpec.describe 'Brand', type: :system do
     target_ticket = tickets.first
 
     within('ul.list-group > li.list-group-item:first-child') do
-      click_link target_ticket.created_at.to_formatted_s(:short)
+      find(:css, "a[href='#{brand_ticket_path(brand, target_ticket)}']").click
     end
 
     expect(page).to have_current_path(brand_ticket_path(brand, target_ticket))

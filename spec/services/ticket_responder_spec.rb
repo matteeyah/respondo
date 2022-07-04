@@ -21,34 +21,18 @@ RSpec.describe TicketResponder, type: :service do
         JSON.parse(file_fixture('disqus_post_hash.json').read).merge(raw_message: response).deep_symbolize_keys
       end
 
-      context 'when authorized as user' do
-        before do
-          allow(user).to receive(:client_for_provider).with(ticket.provider).and_return(client_spy)
-        end
+      before do
+        user.update(brand: ticket.brand)
 
-        it 'calls TicketCreator service' do
-          call
-
-          expect(ticket_creator_class).to have_received(:new).with(
-            ticket.provider, hash_including(raw_message: response), ticket.brand, user
-          )
-        end
+        allow(user.brand).to receive(:client_for_provider).with(ticket.provider).and_return(client_spy)
       end
 
-      context 'when authorized as brand' do
-        before do
-          user.update(brand: ticket.brand)
+      it 'calls TicketCreator service' do
+        call
 
-          allow(user.brand).to receive(:client_for_provider).with(ticket.provider).and_return(client_spy)
-        end
-
-        it 'calls TicketCreator service' do
-          call
-
-          expect(ticket_creator_class).to have_received(:new).with(
-            ticket.provider, hash_including(raw_message: response), ticket.brand, user
-          )
-        end
+        expect(ticket_creator_class).to have_received(:new).with(
+          ticket.provider, hash_including(raw_message: response), ticket.brand, user
+        )
       end
     end
 
