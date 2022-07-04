@@ -24,17 +24,13 @@ class TicketResponder < ApplicationService
 
   def client
     if ticket.external?
-      Clients::External.new(ticket.external_ticket.response_url, ticket.author.external_uid, ticket.author.username)
+      external_client
     else
-      internal_client
+      user.brand.client_for_provider(ticket.provider)
     end
   end
 
-  def internal_client
-    if user.brand == ticket.brand
-      user.brand.client_for_provider(ticket.provider)
-    else
-      user.client_for_provider(ticket.provider)
-    end
+  def external_client
+    Clients::External.new(ticket.external_ticket.response_url, ticket.author.external_uid, ticket.author.username)
   end
 end
