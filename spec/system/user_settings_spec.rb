@@ -22,7 +22,7 @@ RSpec.describe 'User settings', type: :system do
     add_oauth_mock_for_user(user, create(:user_account, provider: 'twitter'))
     page.find(:css, "form[action='/auth/twitter?state=user']").click
 
-    expect(page).to have_link('Remove')
+    expect(page).to have_selector(:css, "a[href='#{user_user_account_path(user, user.accounts.last)}'")
   end
 
   it 'allows the user to remove an account' do

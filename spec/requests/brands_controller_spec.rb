@@ -23,18 +23,6 @@ RSpec.describe BrandsController, type: :request do
           brand.users << user
         end
 
-        it 'renders the add user button' do
-          get_edit
-
-          expect(response.body).to include('Add User')
-        end
-
-        it 'renders the remove user link' do
-          get_edit
-
-          expect(response.body).to include('Remove')
-        end
-
         context 'when pagination is not required' do
           it 'renders the users list' do
             get_edit
