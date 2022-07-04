@@ -6,7 +6,7 @@ class BrandAccount < ApplicationRecord
   validates :external_uid, uniqueness: { scope: :provider }
   validates :provider, presence: true, uniqueness: { scope: :brand_id }
 
-  enum provider: { twitter: 0, disqus: 1 }
+  enum provider: { twitter: 0, disqus: 1, developer: 2 }
 
   belongs_to :brand
 

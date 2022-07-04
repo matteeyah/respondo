@@ -11,7 +11,7 @@ RSpec.describe BrandAccount, type: :model do
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider).ignoring_case_sensitivity }
   end
 
-  it { is_expected.to define_enum_for(:provider).with_values(%i[twitter disqus]) }
+  it { is_expected.to define_enum_for(:provider).with_values(%i[twitter disqus developer]) }
 
   describe 'Relations' do
     it { is_expected.to belong_to(:brand) }
@@ -20,7 +20,7 @@ RSpec.describe BrandAccount, type: :model do
   it_behaves_like 'accountable'
 
   describe '.from_omniauth' do
-    described_class.providers.each_key do |provider|
+    described_class.providers.except(:developer).each_key do |provider|
       context "when provider is #{provider}" do
         subject(:from_omniauth) { described_class.from_omniauth(auth_hash, current_brand) }
 
@@ -220,7 +220,7 @@ RSpec.describe BrandAccount, type: :model do
     let(:account) { build(:brand_account) }
     let(:client_spy) { instance_spy(Clients::Client) }
 
-    described_class.providers.each_key do |provider|
+    described_class.providers.except(:developer).each_key do |provider|
       context "when provider is #{provider}" do
         before do
           allow(account).to receive(:"#{provider}_client").and_return(client_spy)

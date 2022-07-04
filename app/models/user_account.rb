@@ -6,7 +6,7 @@ class UserAccount < ApplicationRecord
   validates :external_uid, uniqueness: { scope: :provider }
   validates :provider, presence: true, uniqueness: { scope: :user_id }
 
-  enum provider: { google_oauth2: 0, twitter: 1, disqus: 2 }
+  enum provider: { google_oauth2: 0, twitter: 1, disqus: 2, developer: 3 }
 
   belongs_to :user
 

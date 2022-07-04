@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class OmniauthCallbacksController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def authenticate
     omniauth_hash = request.env['omniauth.auth']
     redirect_uri = request.env['omniauth.origin'] || root_path
