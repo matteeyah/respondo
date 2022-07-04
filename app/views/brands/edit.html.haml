@@ -39,16 +39,10 @@
                     = link_to brand_user_path(@brand, user),
                       'data-turbo-method' => :delete, 'data-turbo-frame' => :_top do
                       = bi_icon('trash3-fill')
-<<<<<<< HEAD
           - if @brand_users.length >= 3
             .row.mt-3
               .d-flex.justify-content-center
                 != pagy_bootstrap_nav(@pagy)
-=======
-          .row.mt-3
-            .d-flex.justify-content-center
-              != pagy_bootstrap_nav(@pagy)
->>>>>>> master
       .row.mt-5
         .col-12
           %h6.mb-3 Brand Domain
@@ -58,11 +52,7 @@
               .col-10
                 = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control'
               .col-2
-<<<<<<< HEAD
                 = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary w-100'
-=======
-                = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary'
->>>>>>> master
       .row.mt-5
         .col-12
           - unless Flipper.enabled?(:disable_subscriptions)
@@ -72,17 +62,10 @@
               Subscription status:
               %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status || 'no subscription'
             - if @brand.subscription&.running?
-<<<<<<< HEAD
               = button_tag 'Update Payment Details', class: 'btn btn-primary w-100', id: 'update-subscription'
               = button_tag 'Cancel Subscription', class: 'btn btn-primary w-100', id: 'cancel-subscription'
             - else
               = button_tag 'Buy Subscription', class: 'btn btn-primary w-100', id: 'buy-subscription'
-=======
-              = button_tag 'Update Payment Details', class: 'btn btn-primary', id: 'update-subscription'
-              = button_tag 'Cancel Subscription', class: 'btn btn-primary', id: 'cancel-subscription'
-            - else
-              = button_tag 'Buy Subscription', class: 'btn btn-primary', id: 'buy-subscription'
->>>>>>> master
 = content_for :custom_javascript do
   - if Rails.application.config.x.paddle.vendor_id
     %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
