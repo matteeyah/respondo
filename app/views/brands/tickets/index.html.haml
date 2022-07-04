@@ -23,8 +23,8 @@
               placeholder: 'Search by ticket content or author name', class: 'form-control'
             = link_to brand_tickets_path(@brand, status: request.parameters[:status]), class: 'btn btn-outline-secondary' do
               = bi_icon('x-lg')
-        .col-12.col-lg-2
-          = search_form.submit 'Search', name: nil, class: 'btn btn-outline-primary w-100'
+        .col-12.col-lg-2.d-flex
+          = search_form.submit 'Search', name: nil, class: 'btn btn-outline-primary flex-fill'
     .row.mb-2
       = render partial: 'brands/tickets/tickets', locals: { brand: @brand, tickets: @tickets }
     .row

@@ -5,8 +5,9 @@
         .row
           .col-12.col-lg-4
             %p.m-0!= ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)
-          .col-12.col-lg-4.d-flex.justify-content-start.justify-content-lg-center
-            %button.btn.btn-sm= ticket.created_at.to_formatted_s(:short)
+          .col-12.col-lg-2.d-flex.justify-content-start.justify-content-lg-center
+            %span= ticket.created_at.to_formatted_s(:short)
+          .col-12.col-lg-2
             - if ticket.parent_id.nil?
               %button.btn.btn-sm.btn-info.text-light
                 = bi_icon(ticket.actual_provider)
