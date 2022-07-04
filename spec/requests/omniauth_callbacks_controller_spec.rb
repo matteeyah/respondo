@@ -75,7 +75,9 @@ RSpec.describe OmniauthCallbacksController, type: :request do
             end
           end
 
-          context 'when user is signed in' do
+          # Temporarily disabled until we add more account providers for users
+          # https://github.com/respondo/respondo/issues/274
+          xcontext 'when user is signed in' do
             let(:user) do
               account_provider = (UserAccount.providers.keys - [provider]).first
 

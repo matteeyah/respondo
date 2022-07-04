@@ -4,7 +4,9 @@ module ApplicationHelper
   PROVIDER_HUMAN_NAMES = {
     'twitter' => 'Twitter',
     'google_oauth2' => 'Google',
-    'disqus' => 'Disqus'
+    'disqus' => 'Disqus',
+    'developer' => 'Developer',
+    nil => 'Developer'
   }.freeze
 
   def auth_provider_link(provider, model, html_options = {}, origin: nil, &block)

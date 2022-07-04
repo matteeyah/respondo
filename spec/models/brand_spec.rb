@@ -55,5 +55,27 @@ RSpec.describe Brand, type: :model do
     end
   end
 
+  describe '#client_for_provider' do
+    subject(:client_for_provider) { brand.client_for_provider(provider) }
+
+    let(:brand) { create(:brand) }
+
+    BrandAccount.providers.each_key do |provider_name|
+      context "when provider is #{provider_name}" do
+        let(:provider) { provider_name }
+
+        context 'when account for provider exists' do
+          let!(:account) { create(:brand_account, brand:, provider: provider_name) }
+
+          it { is_expected.to be_an_instance_of(account.client.class) }
+        end
+
+        context 'when account for provider does not exist' do
+          it { is_expected.to be_nil }
+        end
+      end
+    end
+  end
+
   it_behaves_like 'has_accounts'
 end
