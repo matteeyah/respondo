@@ -76,9 +76,7 @@ RSpec.describe SessionsController, type: :request do
             end
           end
 
-          # Temporarily disabled until we add more account providers for users
-          # https://github.com/respondo/respondo/issues/274
-          xcontext 'when user is signed in' do
+          context 'when user is signed in' do
             let(:user) do
               account_provider = (UserAccount.providers.keys - [provider]).first
 

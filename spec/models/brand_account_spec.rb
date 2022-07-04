@@ -11,7 +11,7 @@ RSpec.describe BrandAccount, type: :model do
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider).ignoring_case_sensitivity }
   end
 
-  it { is_expected.to define_enum_for(:provider).with_values(%i[twitter disqus developer]) }
+  it { is_expected.to define_enum_for(:provider).with_values(twitter: 0, disqus: 1, developer: 99) }
 
   describe 'Relations' do
     it { is_expected.to belong_to(:brand) }

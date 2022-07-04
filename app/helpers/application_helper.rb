@@ -2,8 +2,9 @@
 
 module ApplicationHelper
   PROVIDER_HUMAN_NAMES = {
-    'twitter' => 'Twitter',
     'google_oauth2' => 'Google',
+    'activedirectory' => 'Azure Active Directory',
+    'twitter' => 'Twitter',
     'disqus' => 'Disqus',
     'developer' => 'Developer',
     nil => 'Developer'

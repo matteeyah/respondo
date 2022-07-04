@@ -22,6 +22,7 @@ gem 'redis', '~> 4.0'
 # gem 'image_processing', '~> 1.2'
 
 # Omniauth
+gem 'omniauth-activedirectory', '~> 1.0.1'
 gem 'omniauth-disqus', '~> 1.0.1'
 gem 'omniauth-google-oauth2', '~> 1.0.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.0'

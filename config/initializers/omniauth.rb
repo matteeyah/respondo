@@ -2,6 +2,7 @@
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :google_oauth2, ENV.fetch('GOOGLE_CLIENT_ID', nil), ENV.fetch('GOOGLE_CLIENT_SECRET', nil)
+  provider :activedirectory, ENV.fetch('AAD_CLIENT_ID', nil), ENV.fetch('AAD_TENANT', nil)
   provider :twitter, ENV.fetch('TWITTER_API_KEY', nil), ENV.fetch('TWITTER_API_SECRET', nil)
   provider :disqus, ENV.fetch('DISQUS_PUBLIC_KEY', nil), ENV.fetch('DISQUS_SECRET_KEY', nil)
   provider :developer, fields: %i[email name nickname], uid_field: :email if Rails.env.development?

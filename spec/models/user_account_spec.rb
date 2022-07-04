@@ -12,7 +12,7 @@ RSpec.describe UserAccount, type: :model do
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider).ignoring_case_sensitivity }
   end
 
-  it { is_expected.to define_enum_for(:provider).with_values(%i[google_oauth2 developer]) }
+  it { is_expected.to define_enum_for(:provider).with_values(google_oauth2: 0, activedirectory: 1, developer: 99) }
 
   describe 'Relations' do
     it { is_expected.to belong_to(:user) }
@@ -38,7 +38,6 @@ RSpec.describe UserAccount, type: :model do
             it 'builds an account entity with correct information' do
               expect(from_omniauth).to have_attributes(
                 external_uid: auth_hash.uid, provider:,
-                token: auth_hash.credentials.token, secret: auth_hash.credentials.secret,
                 email: auth_hash.info.email
               )
             end
@@ -75,7 +74,6 @@ RSpec.describe UserAccount, type: :model do
               it 'builds an account entity with correct information' do
                 expect(from_omniauth).to have_attributes(
                   external_uid: auth_hash.uid, provider:,
-                  token: auth_hash.credentials.token, secret: auth_hash.credentials.secret,
                   email: auth_hash.info.email
                 )
               end
@@ -222,42 +220,6 @@ RSpec.describe UserAccount, type: :model do
 
             it 'updates email' do
               expect { from_omniauth }.to change { account.reload.email }.to(auth_hash.info.email)
-            end
-          end
-
-          context 'when token does not change' do
-            before do
-              account.update!(token: auth_hash.credentials.token)
-            end
-
-            it 'does not update token' do
-              expect { from_omniauth }.not_to change { account.reload.token }.from(auth_hash.credentials.token)
-            end
-          end
-
-          context 'when token changes' do
-            it 'updates token' do
-              expect { from_omniauth }.to change { account.reload.token }.to(auth_hash.credentials.token)
-            end
-          end
-
-          context 'when secret does not change' do
-            before do
-              account.update!(secret: auth_hash.credentials.secret)
-            end
-
-            it 'does not update secret' do
-              expect { from_omniauth }.not_to change { account.reload.secret }.from(auth_hash.credentials.secret)
-            end
-          end
-
-          context 'when secret changes' do
-            before do
-              auth_hash.credentials.secret = 'top_secret'
-            end
-
-            it 'updates secret' do
-              expect { from_omniauth }.to change { account.reload.secret }.to(auth_hash.credentials.secret)
             end
           end
         end

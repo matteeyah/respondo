@@ -23,12 +23,15 @@
 
               .card-body.p-4
                 .text-center.w-75.m-auto
-                  %p.text-muted.mb-4 Sign in is only available with a Google account.
+                  %p.text-muted.mb-4 Sign in is only available with a Google account or Microsoft AD.
                   %hr
                   .d-grid.gap-3
                     = auth_provider_link('google_oauth2', 'user', { class: 'btn btn-primary rounded-pill' }, origin: '/') do
                       %i.bi.bi-google
                       %span Sign in with Google
+                    = auth_provider_link('activedirectory', 'user', { class: 'btn btn-primary rounded-pill' }, origin: '/') do
+                      %i.bi.bi-microsoft
+                      %span Sign in with Microsoft AD
                     - if Rails.env.development?
                       = auth_provider_link('developer', 'user', { class: 'btn btn-primary rounded-pill' }, origin: '/') do
                         %i.bi.bi-code-slash
