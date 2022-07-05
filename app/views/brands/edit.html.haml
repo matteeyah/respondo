@@ -1,13 +1,13 @@
 - subscription_status = @brand.subscription&.status
 - checkout_redirect_path = request.original_url
 .row.my-3
-  .col-12.col-lg-10
+  .col-6.col-lg-10
     %h3 Brand
-  .col-12.col-lg-2.d-flex.justify-content-end
+  .col-6.col-lg-2.d-flex.justify-content-end
     %h5.text-muted= @brand.screen_name
   %hr.border-2.border-top
   .row.mb-3
-    .col-lg-6
+    .col-lg-6.mb-5
       %h5 Account Settings
       %hr.border-2.border-top
       = render partial: 'shared/accounts', locals: { providers: BrandAccount.providers.keys, model: @brand }
@@ -20,11 +20,11 @@
           %hr.border-2.border-top
           = form_with url: brand_users_path(@brand), method: :post, class: 'form-inline' do |add_user_form|
             .row
-              .col-10
+              .col-8.col-lg-10
                 = add_user_form.select :user_id, options_for_select(add_users_dropdown_options_for),
                   { include_blank: 'Select user' }, required: true, class: 'custom-select form-control', id: 'add-user'
-              .col-2
-                = add_user_form.submit 'Add User', class: 'btn btn-primary'
+              .col-4.col-lg-2
+                = add_user_form.submit 'Add', class: 'btn form-control btn-primary'
       .row.mt-5
         .col-12
           %h6.mb-3 Users in Brand
@@ -48,10 +48,10 @@
           %hr.border-2.border-top
           = form_with model: @brand, method: :patch, class: 'form-inline' do |update_brand_form|
             .row
-              .col-10
+              .col-8.col-lg-10
                 = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control'
-              .col-2
-                = update_brand_form.submit 'Update', name: nil, class: 'btn btn-primary'
+              .col-4.col-lg-2
+                = update_brand_form.submit 'Update', name: nil, class: 'btn form-control btn-primary'
       .row.mt-5
         .col-12
           - unless Flipper.enabled?(:disable_subscriptions)
@@ -61,10 +61,10 @@
               Subscription status:
               %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status || 'no subscription'
             - if @brand.subscription&.running?
-              = button_tag 'Update Payment Details', class: 'btn btn-primary', id: 'update-subscription'
-              = button_tag 'Cancel Subscription', class: 'btn btn-primary', id: 'cancel-subscription'
+              = button_tag 'Update Payment Details', class: 'btn form-control btn-primary', id: 'update-subscription'
+              = button_tag 'Cancel Subscription', class: 'btn form-control btn-primary', id: 'cancel-subscription'
             - else
-              = button_tag 'Buy Subscription', class: 'btn btn-primary', id: 'buy-subscription'
+              = button_tag 'Buy Subscription', class: 'btn form-control btn-primary', id: 'buy-subscription'
 = content_for :custom_javascript do
   - if Rails.application.config.x.paddle.vendor_id
     %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
