@@ -7,9 +7,9 @@ Rails.application.routes.draw do
   get 'login', controller: :home, action: :login
 
   # OmniAuth routing
-  get 'auth/:provider/callback', to: 'omniauth_callbacks#authenticate',
-                                 constraints: { provider: /twitter|google_oauth2|disqus/ }
-  post 'auth/developer/callback', to: 'omniauth_callbacks#authenticate'
+  get 'auth/:provider/callback', to: 'sessions#create',
+                                 constraints: { provider: /google_oauth2|activedirectory|twitter|disqus/ }
+  post 'auth/developer/callback', to: 'sessions#create'
   get 'auth/failure', to: redirect('/')
   delete :sign_out, to: 'sessions#destroy'
 

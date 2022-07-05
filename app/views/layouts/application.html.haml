@@ -9,6 +9,7 @@
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
+    = javascript_importmap_tags
   %body
     .container-fluid.p-0
       .d-flex.flex-column.flex-lg-row.vh-100
@@ -65,5 +66,4 @@
                   %span= message
                   %button.btn-close{ 'data-bs-dismiss' => 'alert' }
             = yield
-    = javascript_importmap_tags
     = yield :custom_javascript

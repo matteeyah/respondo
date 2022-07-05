@@ -6,9 +6,7 @@ require './spec/support/unauthorized_user_examples'
 RSpec.describe Users::UserAccountsController, type: :request do
   include SignInOutRequestHelpers
 
-  # Temporarily disabled until we add more account providers for users
-  # https://github.com/respondo/respondo/issues/274
-  xdescribe 'DELETE destroy' do
+  describe 'DELETE destroy' do
     subject(:delete_destroy) { delete "/users/#{user.id}/user_accounts/#{account.id}" }
 
     let(:user) { create(:user) }
@@ -48,7 +46,7 @@ RSpec.describe Users::UserAccountsController, type: :request do
 
         context 'when user has multiple accounts' do
           before do
-            create(:user_account, provider: 'twitter', user:)
+            create(:user_account, provider: 'activedirectory', user:)
           end
 
           it 'destroys the account' do

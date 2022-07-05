@@ -9,7 +9,8 @@ module OmniauthHelpers
   PROVIDER_OAUTH_FIXTURE = {
     'twitter' => 'twitter_oauth_hash.json',
     'google_oauth2' => 'google_oauth_hash.json',
-    'disqus' => 'disqus_oauth_hash.json'
+    'disqus' => 'disqus_oauth_hash.json',
+    'activedirectory' => 'activedirectory_oauth_hash.json'
   }.freeze
 
   # Clear OmniAuth mocks in all specs that include this module.

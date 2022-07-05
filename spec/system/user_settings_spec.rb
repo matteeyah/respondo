@@ -15,28 +15,24 @@ RSpec.describe 'User settings', type: :system do
     sign_in_user(user)
   end
 
-  # Temporarily disabled until we add more account providers for users
-  # https://github.com/respondo/respondo/issues/274
-  xit 'allows the user to authorize an account' do
+  it 'allows the user to authorize an account' do
     find('#settings').click
     click_link 'User settings'
 
-    add_oauth_mock_for_user(user, create(:user_account, provider: 'developer'))
-    page.find(:css, "form[action='/auth/developer?state=user']").click
+    add_oauth_mock_for_user(user, create(:user_account, provider: 'activedirectory'))
+    page.find(:css, "form[action='/auth/activedirectory?state=user']").click
 
     expect(page).to have_selector(:css, "a[href='#{user_user_account_path(user, user.accounts.last)}'")
   end
 
-  # Temporarily disabled until we add more account providers for users
-  # https://github.com/respondo/respondo/issues/274
-  xit 'allows the user to remove an account' do
-    target_account = create(:user_account, provider: 'developer', user:)
+  it 'allows the user to remove an account' do
+    target_account = create(:user_account, provider: 'activedirectory', user:)
     find('#settings').click
     click_link 'User settings'
 
     page.find(:css, "a[href='/users/1/user_accounts/#{target_account.id}']").click
 
-    expect(page).to have_selector("form[action='/auth/developer?state=user']")
+    expect(page).to have_selector("form[action='/auth/activedirectory?state=user']")
   end
 
   it 'allows the user to create a personal access token' do

@@ -7,9 +7,6 @@ class CreateUserAccounts < ActiveRecord::Migration[6.0]
       t.string :email
       t.integer :provider, null: false
 
-      t.string :token
-      t.string :secret
-
       t.references :user, index: true, null: false
 
       t.timestamps
