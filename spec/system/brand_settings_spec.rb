@@ -43,7 +43,7 @@ RSpec.describe 'Brand settings', type: :system do
     click_link 'Brand settings'
 
     select external_user.name, from: 'add-user'
-    click_button 'Add User'
+    click_button 'Add'
 
     expect(page).to have_selector(:css, "a[href='#{brand_user_path(brand, brand.users.last)}']")
   end

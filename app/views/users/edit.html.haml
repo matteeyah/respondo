@@ -1,15 +1,15 @@
 .row.my-3
-  .col-12.col-lg-10
+  .col-6.col-lg-10
     %h3 User
-  .col-12.col-lg-2.d-flex.justify-content-end
+  .col-6.col-lg-2.d-flex.justify-content-end
     %h5.text-muted= @user.name
   %hr.border-2.border-top
-.row.mb-3
+.row
   .col-lg-6
     %h5 Account Settings
     %hr.border-2.border-top
     = render partial: 'shared/accounts', locals: { providers: UserAccount.providers.keys, model: @user }
-  .col-lg-6
+  .col-lg-6.mt-5
     %h5 Token Settings
     %hr.border-2.border-top
     .row.mb-5
@@ -37,7 +37,7 @@
         %hr.border-2.border-top
           = form_with url: user_personal_access_tokens_path(@user), html: { autocomplete: 'off' } do |create_token_form|
             .row
-              .col-10
+              .col-8.col-lg-10
                 = create_token_form.text_field :name, required: true, placeholder: 'Enter token name', class: 'form-control'
-              .col-2
-                = create_token_form.submit 'Create', name: nil, class: 'btn btn-primary'
+              .col-4.col-lg-2
+                = create_token_form.submit 'Create', name: nil, class: 'btn form-control btn-primary'
