@@ -9,30 +9,38 @@
     .col-12.col-lg-6
       .row.mb-3
         .col-6
-          .card.shadow-none.m-0
-            .card-body.text-center
-              = bi_icon('app-indicator','fs-4 text-muted')
-              %h3.text-primary 5
-              %p.text-muted.font-15.mb-0 New Tickets
+          = link_to brand_tickets_path(current_brand),
+            {class: 'text-decoration-none'} do
+            .card.shadow-none.m-0
+              .card-body.text-center
+                = bi_icon('app-indicator','fs-4 text-muted')
+                %h3.text-primary 5
+                %p.text-muted.font-15.mb-0 New Tickets
         .col-6
-          .card.shadow-none.m-0
-            .card-body.text-center
-              = bi_icon('envelope-open', 'fs-4 text-muted')
-              %h3.text-primary 29
-              %p.text-muted.font-15.mb-0 Total Open
+          = link_to brand_tickets_path(current_brand),
+            {class: 'text-decoration-none'} do
+            .card.shadow-none.m-0
+              .card-body.text-center
+                = bi_icon('envelope-open', 'fs-4 text-muted')
+                %h3.text-primary 29
+                %p.text-muted.font-15.mb-0 Total Open
       .row
         .col-6
-          .card.shadow-none.m-0
-            .card-body.text-center
-              = bi_icon('check2-circle', 'fs-4 text-muted')
-              %h3.text-primary 320
-              %p.text-muted.font-15.mb-0 Total Resolved
+          = link_to brand_tickets_path(current_brand),
+            {class: 'text-decoration-none'} do
+            .card.shadow-none.m-0
+              .card-body.text-center
+                = bi_icon('check2-circle', 'fs-4 text-muted')
+                %h3.text-primary 320
+                %p.text-muted.font-15.mb-0 Total Resolved
         .col-6
-          .card.shadow-none.m-0
-            .card-body.text-center
-              = bi_icon('stopwatch', 'fs-4 text-muted')
-              %h3.text-primary 1
-              %p.text-muted.font-15.mb-0 On-hold
+          = link_to brand_tickets_path(current_brand),
+            {class: 'text-decoration-none'} do
+            .card.shadow-none.m-0
+              .card-body.text-center
+                = bi_icon('stopwatch', 'fs-4 text-muted')
+                %h3.text-primary 1
+                %p.text-muted.font-15.mb-0 On-hold
     .col-12.col-lg-6
       .card
         .card-body
