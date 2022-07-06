@@ -23,13 +23,14 @@
             .flex-column.align-items-start.collapse.navbar-collapse.mt-5#main-nav
               %ul.flex-column.navbar-nav.text-center
                 %li.nav-item
-                  = link_to root_path, {class: 'nav-link text-decoration-none'} do
+                  = active_link_to root_path,
+                    { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top } do
                     = bi_icon('speedometer', 'fs-1')
                 - if current_brand
                   %li.nav-item
                     = active_link_to brand_tickets_path(current_brand),
                       { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top } do
-                      = bi_icon('filter-circle', 'fs-1')
+                      = bi_icon('filter-circle-fill', 'fs-1')
                 %li.nav-item.dropend
                   = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
                     'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
