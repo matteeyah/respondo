@@ -22,11 +22,14 @@
               %span.navbar-toggler-icon
             .flex-column.align-items-start.collapse.navbar-collapse.mt-5#main-nav
               %ul.flex-column.navbar-nav.text-center
+                %li.nav-item
+                  = link_to root_path, {class: 'nav-link text-decoration-none'} do
+                    = bi_icon('speedometer', 'fs-1')
                 - if current_brand
                   %li.nav-item
                     = active_link_to brand_tickets_path(current_brand),
                       { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top } do
-                      = bi_icon('speedometer', 'fs-1')
+                      = bi_icon('filter-circle', 'fs-1')
                 %li.nav-item.dropend
                   = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
                     'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
@@ -46,7 +49,7 @@
                 %li.nav-item.dropup
                   = link_to '#', class: 'nav-link text-decoration-none', id: 'settings',
                     'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
-                    = bi_icon('person', 'fs-1')
+                    = bi_icon('person-circle', 'fs-1')
                   %ul.dropdown-menu.dropdown-menu-dark.bg-default.shadow{ 'aria-labelledby' => 'settings' }
                     - if current_brand
                       %li= active_link_to 'Brand settings', edit_brand_path(current_brand),

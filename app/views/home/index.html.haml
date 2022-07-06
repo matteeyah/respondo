@@ -1,49 +1,89 @@
 .row
   .col-12
     %h3 Welcome to dashboard, #{@user.name}!
-.row
-  - if @brand
+- if @brand
+  .row
     .col-12
       %p.text-muted You're all set! Feel free to hop into the brand tickets!
-  - else
-    .col-12
-      %p.text-muted Woohoo, you're signed in. The next step is to authorize a brand account.
-      = auth_provider_link('twitter', 'brand', { class: 'btn btn-primary' }) do
-        %span Authorize Brand
-      - if Rails.env.development?
-        .row
-          .col-12.mt-3
-            = auth_provider_link('developer', 'brand', { class: 'btn btn-primary' }) do
-              %i.bi.bi-code-slash
-              %span Developer Sign In
-.row
+  .row
+    .col-12.col-lg-6
+      .row.mb-3
+        .col-6
+          .card.shadow-none.m-0
+            .card-body.text-center
+              = bi_icon('app-indicator','fs-4 text-muted')
+              %h3.text-primary 5
+              %p.text-muted.font-15.mb-0 New Tickets
+        .col-6
+          .card.shadow-none.m-0
+            .card-body.text-center
+              = bi_icon('envelope-open', 'fs-4 text-muted')
+              %h3.text-primary 29
+              %p.text-muted.font-15.mb-0 Total Open
+      .row
+        .col-6
+          .card.shadow-none.m-0
+            .card-body.text-center
+              = bi_icon('check-all', 'fs-4 text-muted')
+              %h3.text-primary 320
+              %p.text-muted.font-15.mb-0 Total Resolved
+        .col-6
+          .card.shadow-none.m-0
+            .card-body.text-center
+              = bi_icon('hourglass-split', 'fs-4 text-muted')
+              %h3.text-primary 1
+              %p.text-muted.font-15.mb-0 On-hold
+    .col-12.col-lg-6
+      .card
+        .card-body
+          .d-flex.justify-content-between.align-items-center.mb-2
+            %span.lead.text-muted Newest
+            = active_link_to brand_tickets_path(current_brand),
+             { active: :exclusive, class: 'text-decoration-none', 'data-turbo-frame' => :_top } do
+              = bi_icon('box-arrow-up-right')
+          .table-responsive
+            %table.table.table-centered.table-nowrap.table-hover.mb-0
+              %tbody
+                %tr
+                  %td
+                    %p.font-14.my-1.fw-normal Short content description...
+                    %span.text-muted.font-13 07 April 2022 13:29
+                  %td
+                    %p.font-14.my-1.fw-normal @cupicmatija
+                    %span.text-muted.font-13 Customer
+                  %td
+                    %p.font-14.my-1.fw-normal.text-primary= bi_icon('linkedin')
+                    %span.text-muted.font-13 Social
+                %tr
+                  %td
+                    %p.font-14.my-1.fw-normal Short content description...
+                    %span.text-muted.font-13 07 April 2022 13:29
+                  %td
+                    %p.font-14.my-1.fw-normal @dsumenkovic
+                    %span.text-muted.font-13 Customer
+                  %td
+                    %p.font-14.my-1.fw-normal.text-primary= bi_icon('twitter')
+                    %span.text-muted.font-13 Social
+                %tr
+                  %td
+                    %p.font-14.my-1.fw-normal Short content description...
+                    %span.text-muted.font-13 07 April 2022 13:29
+                  %td
+                    %p.font-14.my-1.fw-normal @cupicmatija
+                    %span.text-muted.font-13 Customer
+                  %td
+                    %p.font-14.my-1.fw-normal.text-primary= bi_icon('linkedin')
+                    %span.text-muted.font-13 Social
+- else
   .col-12
-    .card.widget-inline
-      .card-body.p-0
-        .row.g-0
-          .col-sm-6.col-lg-3
-            .card.shadow-none.m-0
-              .card-body.text-center
-                = bi_icon('app-indicator')
-                %h3 5
-                %p.text-muted.font-15.mb-0 New Tickets
-          .col-sm-6.col-lg-3
-            .card.shadow-none.m-0
-              .card-body.text-center
-                = bi_icon('envelope-open')
-                %h3 29
-                %p.text-muted.font-15.mb-0 Total Open
-          .col-sm-6.col-lg-3
-            .card.shadow-none.m-0
-              .card-body.text-center
-                = bi_icon('check-all')
-                %h3 320
-                %p.text-muted.font-15.mb-0 Total Resolved
-          .col-sm-6.col-lg-3
-            .card.shadow-none.m-0
-              .card-body.text-center
-                = bi_icon('hourglass-split')
-                %h3 1
-                %p.text-muted.font-15.mb-0 On-hold
+    %p.text-muted Woohoo, you're signed in. The next step is to authorize a brand account.
+    = auth_provider_link('twitter', 'brand', { class: 'btn btn-primary' }) do
+      %span Authorize Brand
+    - if Rails.env.development?
+      .row
+        .col-12.mt-3
+          = auth_provider_link('developer', 'brand', { class: 'btn btn-primary' }) do
+            %i.bi.bi-code-slash
+            %span Developer Sign In
 
 
