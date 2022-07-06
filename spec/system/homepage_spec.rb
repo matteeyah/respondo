@@ -18,8 +18,6 @@ RSpec.describe 'Homepage', type: :system do
     add_oauth_mock_for_brand(create(:brand, :with_account))
     click_button('Authorize Brand', class: 'btn btn-primary')
 
-    expect(page).to have_link('Brand Tickets')
-
     find('#settings').click
     click_button('Sign Out')
     expect(page).to have_button('Sign in with Google')
