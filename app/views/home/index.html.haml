@@ -1,14 +1,49 @@
-%section.jumbotron
-  %h1.display-4 Welcome to Respondo!
+.row
+  .col-12
+    %h3 Welcome to dashboard, #{@user.name}!
+.row
   - if @brand
-    %p.lead You're all set! Feel free to hop into the brand tickets!
-    = link_to 'Brand Tickets', brand_tickets_path(current_brand), class: 'btn btn-primary btn-lg'
+    .col-12
+      %p.text-muted You're all set! Feel free to hop into the brand tickets!
   - else
-    %p.lead Woohoo, you're signed in. The next step is to authorize a brand account.
-    = auth_provider_link('twitter', 'brand', { class: 'btn btn-primary btn-lg' }) do
-      %span Authorize Brand
-    - if Rails.env.development?
-      = auth_provider_link('developer', 'brand', { class: 'btn btn-primary rounded-pill' }) do
-        %i.bi.bi-code-slash
-        %span Developer Sign In
+    .col-12
+      %p.text-muted Woohoo, you're signed in. The next step is to authorize a brand account.
+      = auth_provider_link('twitter', 'brand', { class: 'btn btn-primary' }) do
+        %span Authorize Brand
+      - if Rails.env.development?
+        .row
+          .col-12.mt-3
+            = auth_provider_link('developer', 'brand', { class: 'btn btn-primary' }) do
+              %i.bi.bi-code-slash
+              %span Developer Sign In
+.row
+  .col-12
+    .card.widget-inline
+      .card-body.p-0
+        .row.g-0
+          .col-sm-6.col-lg-3
+            .card.shadow-none.m-0
+              .card-body.text-center
+                = bi_icon('app-indicator')
+                %h3 5
+                %p.text-muted.font-15.mb-0 New Tickets
+          .col-sm-6.col-lg-3
+            .card.shadow-none.m-0
+              .card-body.text-center
+                = bi_icon('envelope-open')
+                %h3 29
+                %p.text-muted.font-15.mb-0 Total Open
+          .col-sm-6.col-lg-3
+            .card.shadow-none.m-0
+              .card-body.text-center
+                = bi_icon('check-all')
+                %h3 320
+                %p.text-muted.font-15.mb-0 Total Resolved
+          .col-sm-6.col-lg-3
+            .card.shadow-none.m-0
+              .card-body.text-center
+                = bi_icon('hourglass-split')
+                %h3 1
+                %p.text-muted.font-15.mb-0 On-hold
+
 

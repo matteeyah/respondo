@@ -8,13 +8,13 @@
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
-  %body.d-flex.flex-column.min-vh-100.bg-default
+  %body.d-flex.flex-column.min-vh-100
     .account-pages.pt-sm-5.pb-sm-5.pt-2.pb-4.my-auto
       .container
         .row.justify-content-center
           .col-xxl-4.col-lg-5
             .card
-              .card-header.pt-4.pb-4.text-center.bg-default
+              .card-header.pt-4.pb-4.text-center.bg-logo
                 .row
                   .col-12.col-lg-6.mx-auto
                     = image_tag('logo_circle_white.svg', class: 'img-fluid')
@@ -36,4 +36,4 @@
                       = auth_provider_link('developer', 'user', { class: 'btn form-control btn-danger text-light' }, origin: '/') do
                         %i.bi.bi-code-slash
                         %span Developer Sign In
-    %footer.footer.mt-auto.text-center.text-light 2022 © Respondo Ltd. All Rights Reserved.
+    %footer.footer.mt-auto.text-center 2022 © Respondo Ltd. All Rights Reserved.
