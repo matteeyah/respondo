@@ -61,10 +61,10 @@
               Subscription status:
               %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status || 'no subscription'
             - if @brand.subscription&.running?
-              = button_tag 'Update Payment Details', class: 'btn form-control btn-primary', id: 'update-subscription'
-              = button_tag 'Cancel Subscription', class: 'btn form-control btn-primary', id: 'cancel-subscription'
+              = button_tag 'Update Payment Details', class: 'btn btn-primary', id: 'update-subscription'
+              = button_tag 'Cancel Subscription', class: 'btn btn-primary', id: 'cancel-subscription'
             - else
-              = button_tag 'Buy Subscription', class: 'btn form-control btn-primary', id: 'buy-subscription'
+              = button_tag 'Buy Subscription', class: 'btn btn-primary', id: 'buy-subscription'
 = content_for :custom_javascript do
   - if Rails.application.config.x.paddle.vendor_id
     %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }

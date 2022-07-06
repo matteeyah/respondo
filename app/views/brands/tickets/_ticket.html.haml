@@ -13,7 +13,7 @@
           .col-2.col-lg-1.d-flex.justify-content-start.justify-content-lg-end
             = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-frame' => :_top do
               = bi_icon('box-arrow-up-right')
-      .card-body.w-75.m-auto
+      .card-body.mx-5
         .card-text
           %p= ticket.content
 
