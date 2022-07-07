@@ -505,6 +505,7 @@ DEPENDENCIES
   dotenv-rails (~> 2.7.5)
   factory_bot_rails (~> 6.2.0)
   faker (~> 2.21.0)
+  flipper (~> 0.25.0)
   flipper-active_record (~> 0.25.0)
   haml_lint (~> 0.40.0)
   hamlit (~> 2.16.0)
