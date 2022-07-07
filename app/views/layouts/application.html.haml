@@ -24,12 +24,14 @@
               %ul.flex-column.navbar-nav.text-center
                 %li.nav-item
                   = active_link_to root_path,
-                    { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top } do
+                    { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top,
+                    :title => 'Dashboard' } do
                     = bi_icon('speedometer', 'fs-1')
                 - if current_brand
                   %li.nav-item
                     = active_link_to brand_tickets_path(current_brand),
-                      { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top } do
+                      { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top,
+                      :title => 'Brand Tickets' } do
                       = bi_icon('filter-circle-fill', 'fs-1')
                 %li.nav-item.dropend
                   = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
@@ -48,7 +50,7 @@
                       = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy', class: 'dropdown-item'
               %ul.flex-column.navbar-nav.mt-auto.text-center
                 %li.nav-item.dropup
-                  = link_to '#', class: 'nav-link text-decoration-none', id: 'settings',
+                  = link_to '#', class: 'nav-link text-decoration-none', id: 'settings', title: 'Settings',
                     'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
                     = bi_icon('person-circle', 'fs-1')
                   %ul.dropdown-menu.dropdown-menu-dark.bg-default.shadow{ 'aria-labelledby' => 'settings' }
