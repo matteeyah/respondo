@@ -32,6 +32,7 @@ gem 'aasm', '~> 5.2.0' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
 gem 'bootstrap', '~> 5.1.3'
 gem 'disqus_api', '~> 0.0.7' # Disqus client
+gem 'flipper', '~> 0.25.0' # Feature flags
 gem 'flipper-active_record', '~> 0.25.0' # ActiveRecord adapter for flipper
 gem 'hamlit', '~> 2.16.0' # High-Performance HAML markup processing
 gem 'hashie', '~> 5.0.0' # Hash utilities
