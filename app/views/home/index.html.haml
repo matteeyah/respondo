@@ -53,9 +53,9 @@
           .table-responsive
             %table.table.table-centered.table-nowrap.table-hover.mb-0
               %tbody
-                - @tickets.each do |ticket|
+                - @newest.each do |ticket|
                   %tr
-                    = render partial: 'tickets', locals: { ticket: ticket}
+                    = render partial: 'tickets', locals: { ticket: ticket }
 
 - else
   .col-12

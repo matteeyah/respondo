@@ -10,7 +10,7 @@ class HomeController < ApplicationController
   def index
     @brand = current_brand
     @user = current_user
-    @tickets = current_brand&.tickets.order(created_at: :desc).first(3)
+    @newest = current_brand&.tickets&.order(created_at: :desc)&.first(3)
   end
 
   private
