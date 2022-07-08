@@ -1,0 +1,10 @@
+%tr
+  %td
+    %p.small.font-14.my-1.fw-normal= ticket.content[0, 50]
+    %span.text-muted.font-13.text-primary= ticket.created_at.strftime('%d %b %y	%M:%S')
+  %td
+    %p.font-14.my-1.fw-normal= ticket.author.username
+    %span.text-muted.font-13 Customer
+  %td
+    %p.font-14.my-1.fw-normal.text-primary.text-center= bi_icon(ticket.actual_provider)
+    %span.text-muted.font-13 Social

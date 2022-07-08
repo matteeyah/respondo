@@ -6,7 +6,7 @@
           .col-6.col-lg-5
             %p.m-0!= ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-center
-            %span.small.text-muted= ticket.created_at.to_formatted_s(:short)
+            %span.small.text-muted= ticket.created_at.strftime('%d %b %y %H:%M')
           .col-2.col-lg-4.d-flex.justify-content-start.justify-content-lg-end
             - if ticket.parent_id.nil?
               .text-primary= bi_icon(ticket.actual_provider)

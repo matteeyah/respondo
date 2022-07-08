@@ -1,6 +1,7 @@
 .row
   .col-12
-    %h3 Welcome to dashboard, #{@user.name}!
+    %h3 Welcome to dashboard,
+      %span.text-primary #{@user.name}!
 - if @brand
   .row
     .col-12
@@ -52,36 +53,10 @@
           .table-responsive
             %table.table.table-centered.table-nowrap.table-hover.mb-0
               %tbody
-                %tr
-                  %td
-                    %p.font-14.my-1.fw-normal Short content description...
-                    %span.text-muted.font-13 07 April 2022 13:29
-                  %td
-                    %p.font-14.my-1.fw-normal @cupicmatija
-                    %span.text-muted.font-13 Customer
-                  %td
-                    %p.font-14.my-1.fw-normal.text-primary= bi_icon('linkedin')
-                    %span.text-muted.font-13 Social
-                %tr
-                  %td
-                    %p.font-14.my-1.fw-normal Short content description...
-                    %span.text-muted.font-13 07 April 2022 13:29
-                  %td
-                    %p.font-14.my-1.fw-normal @dsumenkovic
-                    %span.text-muted.font-13 Customer
-                  %td
-                    %p.font-14.my-1.fw-normal.text-primary= bi_icon('twitter')
-                    %span.text-muted.font-13 Social
-                %tr
-                  %td
-                    %p.font-14.my-1.fw-normal Short content description...
-                    %span.text-muted.font-13 07 April 2022 13:29
-                  %td
-                    %p.font-14.my-1.fw-normal @cupicmatija
-                    %span.text-muted.font-13 Customer
-                  %td
-                    %p.font-14.my-1.fw-normal.text-primary= bi_icon('linkedin')
-                    %span.text-muted.font-13 Social
+                - @tickets.each do |ticket|
+                  %tr
+                    = render partial: 'tickets', locals: { ticket: ticket}
+
 - else
   .col-12
     %p.text-muted Woohoo, you're signed in. The next step is to authorize a brand account.
