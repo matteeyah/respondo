@@ -64,6 +64,18 @@ jobs:
           bundler-cache: true
       - name: Run mdl
         run: bundle exec mdl docs --config .mdlrc
+  stylelint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.node-version'
+          cache: 'yarn'
+      - name: Install yarn dependencies
+        run: bin/yarn install --immutable
+      - name: Run stylelint
+        run: bin/yarn run stylelint '**/*.scss' 
   vale:
     runs-on: ubuntu-latest
     container: jdkato/vale:v2.18.0
