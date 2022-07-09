@@ -30,6 +30,19 @@
 /public/packs
 /public/packs-test
 /node_modules
+
+# Yarn ignores
+# Optional: Ignoring this disables caching
+.pnp.*
+.yarn/*
+# Optional: Ignoring this enables caching
+# !.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
