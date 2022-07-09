@@ -1,0 +1,6 @@
+{
+  "packageManager": "yarn@3.2.1",
+  "devDependencies": {
+    "stylelint": "^14.9.1"
+  }
+}
