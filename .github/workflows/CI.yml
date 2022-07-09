@@ -35,6 +35,12 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.node-version'
+          cache: 'yarn'
+      - name: Install yarn dependencies
+        run: bin/yarn install --immutable
       - name: Run license_finder
         run: bundle exec license_finder --decisions_file dependency_decisions.yml
   rubocop:
@@ -86,7 +92,7 @@ jobs:
           cache: 'yarn'
       - name: Install yarn dependencies
         run: bin/yarn install --immutable
-      - name: Run stylelint
+      - name: Run standard
         run: bin/yarn run standard
   vale:
     runs-on: ubuntu-latest
