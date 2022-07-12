@@ -18,7 +18,7 @@ RSpec.describe 'Ticket', type: :system do
   it 'shows the ticket' do
     user = create(:user, :with_account, brand:)
     sign_in_user(user)
-    click_link('Tickets')
+    click_link('Brand Tickets')
 
     expect(page).to have_text(ticket.content)
     expect(page).to have_text(ticket.author.username)
