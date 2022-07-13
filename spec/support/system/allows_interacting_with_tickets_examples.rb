@@ -19,10 +19,8 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     click_link "toggle-reply-#{target_ticket.id}"
 
-    within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
-      fill_in 'response_text', with: response_text
-      click_button 'Reply'
-    end
+    fill_in 'ticket[content]', with: response_text
+    click_button 'Reply'
 
     expect(page).to have_text("#{user.name} as #{brand.screen_name}")
     expect(page).to have_text(response_text)
@@ -50,10 +48,8 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     click_link "toggle-reply-#{target_ticket.id}"
 
-    within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
-      fill_in 'response_text', with: response_text
-      click_button 'Reply'
-    end
+    fill_in 'ticket[content]', with: response_text
+    click_button 'Reply'
 
     expect(page).to have_text("#{user.name} as #{brand.screen_name}")
     expect(page).to have_text(response_text)
@@ -68,10 +64,8 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     click_link "toggle-internal-note-#{target_ticket.id}"
 
-    within "form[action='#{brand_ticket_internal_note_path(target_ticket.brand, target_ticket)}']" do
-      fill_in 'internal_note_text', with: internal_note_text
-      click_button 'Post'
-    end
+    fill_in 'internal_note[content]', with: internal_note_text
+    click_button 'Post'
 
     expect(page).to have_text(user.name)
     expect(page).to have_text(internal_note_text)
@@ -82,11 +76,47 @@ RSpec.shared_examples 'allows interacting with tickets' do
     sign_in_brand(brand)
     click_link('Brand Tickets')
 
-    page.find(:css, "a[href='#{brand_ticket_invert_status_path(target_ticket.brand, target_ticket)}']").click
+    within("#ticket_#{target_ticket.id}") do
+      page.find(:css, 'i.bi-check-lg').click
+    end
+
     click_link 'Solved Tickets'
 
     expect(page).to have_text(target_ticket.author.username)
     expect(page).to have_text(target_ticket.content)
+  end
+
+  it 'allows adding ticket tags' do
+    sign_in_user
+    sign_in_brand(brand)
+    click_link('Tickets')
+
+    within("#ticket_#{target_ticket.id}") do
+      fill_in :'acts_as_taggable_on_tag[name]', with: 'hello'
+      click_button 'Add Tags'
+    end
+
+    within("#ticket_#{target_ticket.id}") do
+      expect(page).to have_selector(:css, 'span', text: 'hello')
+    end
+  end
+
+  it 'allows removing ticket tags' do
+    sign_in_user
+    sign_in_brand(brand)
+    target_ticket.update(tag_list: 'hello, world')
+    click_link('Tickets')
+
+    within("#ticket_#{target_ticket.id}") do
+      within('span', text: 'hello') do
+        page.find(:css, 'i.bi-trash3-fill').click
+      end
+    end
+
+    within("#ticket_#{target_ticket.id}") do
+      expect(page).not_to have_selector(:css, 'span', text: 'hello')
+      expect(page).to have_selector(:css, 'span', text: 'world')
+    end
   end
 
   private

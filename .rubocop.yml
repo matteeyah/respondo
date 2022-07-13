@@ -13,6 +13,7 @@ AllCops:
     - 'db/schema.rb'
     - 'tmp/**/*'
     - 'bin/**/*'
+    - '**/*.acts_as_taggable_on_engine.rb'
   NewCops: enable
 
 Layout/LineLength:
@@ -46,12 +47,6 @@ RSpec/MultipleExpectations:
   Exclude:
     - 'spec/system/**/*'
     - 'spec/support/system/**/*'
-
-RSpec/MultipleMemoizedHelpers:
-  Max: 10
-
-RSpec/NestedGroups:
-  Max: 5
 
 RSpec/RepeatedExample:
   Exclude:

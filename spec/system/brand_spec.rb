@@ -38,11 +38,11 @@ RSpec.describe 'Brand', type: :system do
 
     target_ticket = tickets.first
 
-    within('ul.list-group > li.list-group-item:first-child') do
-      find(:css, "a[href='#{brand_ticket_path(brand, target_ticket)}']").click
+    within("#ticket_#{target_ticket.id}") do
+      page.find(:css, 'i.bi-box-arrow-up-right').click
     end
 
-    expect(page).to have_current_path(brand_ticket_path(brand, target_ticket))
+    expect(page).to have_text(target_ticket.content)
   end
 
   describe 'Search' do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreatePersonalAccessTokens < ActiveRecord::Migration[6.0]
+class CreatePersonalAccessTokens < ActiveRecord::Migration[7.0]
   def change
     create_table :personal_access_tokens do |t|
       t.string :name, index: { unique: true }, null: false

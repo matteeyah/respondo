@@ -22,19 +22,29 @@ RSpec.describe 'Brand settings', type: :system do
     click_link 'Brand settings'
 
     add_oauth_mock_for_brand(brand, create(:brand_account, provider: 'disqus'))
-    page.find(:css, "form[action='/auth/disqus?state=brand']").click
+    within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
+      page.find(:css, 'i.bi-plus-lg').click
+    end
 
-    expect(page).to have_selector(:css, "a[href='#{brand_brand_account_path(brand, brand.accounts.last)}']")
+    within(page.find('h6', text: 'Existing accounts').find(:xpath, '..')) do
+      expect(page).to have_selector(:css, 'i.bi-trash3-fill')
+    end
   end
 
   it 'allows the user to remove an account' do
-    brand_account = create(:brand_account, provider: 'disqus', brand:)
+    create(:brand_account, provider: 'disqus', brand:)
     find('#settings').click
     click_link 'Brand settings'
 
-    page.find(:css, "a[href='/brands/1/brand_accounts/#{brand_account.id}']").click
+    within(page.find('h6', text: 'Existing accounts').find(:xpath, '..')) do
+      within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
+        page.find(:css, 'i.bi-trash3-fill').click
+      end
+    end
 
-    expect(page).to have_selector(:css, "form[action='/auth/disqus?state=brand']")
+    within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
+      expect(page).to have_selector(:css, 'i.bi-plus-lg')
+    end
   end
 
   it 'allows the user to add users to brand' do
@@ -45,7 +55,9 @@ RSpec.describe 'Brand settings', type: :system do
     select external_user.name, from: 'add-user'
     click_button 'Add'
 
-    expect(page).to have_selector(:css, "a[href='#{brand_user_path(brand, brand.users.last)}']")
+    within(page.find('h6', text: 'Users in Brand').find(:xpath, '..')) do
+      expect(page).to have_selector(:css, 'i.bi-trash3-fill')
+    end
   end
 
   it 'allows the user to remove users from brand' do
@@ -53,7 +65,11 @@ RSpec.describe 'Brand settings', type: :system do
     find('#settings').click
     click_link 'Brand settings'
 
-    page.find(:css, "a[href='/brands/1/users/#{existing_user.id}']").click
+    within(page.find('h6', text: 'Users in Brand').find(:xpath, '..')) do
+      within(page.find(:css, 'div.list-group-item', text: existing_user.name)) do
+        page.find(:css, 'i.bi-trash3-fill').click
+      end
+    end
 
     expect(page).to have_select('add-user', with_options: [existing_user.name])
   end

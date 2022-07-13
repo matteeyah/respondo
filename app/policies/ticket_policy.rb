@@ -6,6 +6,11 @@ class TicketPolicy < ApplicationPolicy
       user.brand == record
   end
 
+  def show?
+    user &&
+      user.brand == record.brand
+  end
+
   def reply?
     user &&
       user.brand == record.brand
