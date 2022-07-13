@@ -19,8 +19,8 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     click_link "toggle-reply-#{target_ticket.id}"
 
-    within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
-      fill_in 'response_text', with: response_text
+    within "form[action='#{brand_ticket_replies_path(target_ticket.brand, target_ticket)}']" do
+      fill_in 'ticket[content]', with: response_text
       click_button 'Reply'
     end
 
@@ -50,8 +50,8 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     click_link "toggle-reply-#{target_ticket.id}"
 
-    within "form[action='#{brand_ticket_reply_path(target_ticket.brand, target_ticket)}']" do
-      fill_in 'response_text', with: response_text
+    within "form[action='#{brand_ticket_replies_path(target_ticket.brand, target_ticket)}']" do
+      fill_in 'ticket[content]', with: response_text
       click_button 'Reply'
     end
 
@@ -68,8 +68,8 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     click_link "toggle-internal-note-#{target_ticket.id}"
 
-    within "form[action='#{brand_ticket_internal_note_path(target_ticket.brand, target_ticket)}']" do
-      fill_in 'internal_note_text', with: internal_note_text
+    within "form[action='#{brand_ticket_internal_notes_path(target_ticket.brand, target_ticket)}']" do
+      fill_in 'internal_note[content]', with: internal_note_text
       click_button 'Post'
     end
 
