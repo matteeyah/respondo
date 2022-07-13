@@ -22,12 +22,12 @@
               %span.navbar-toggler-icon
             .flex-column.align-items-start.collapse.navbar-collapse.mt-5#main-nav
               %ul.flex-column.navbar-nav.text-center
-                %li.nav-item
-                  = active_link_to root_path,
-                    { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top,
-                    :title => 'Dashboard' } do
-                    = bi_icon('speedometer', 'fs-1')
                 - if current_brand
+                  %li.nav-item
+                    = active_link_to root_path,
+                      { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top,
+                      :title => 'Dashboard' } do
+                      = bi_icon('speedometer', 'fs-1')
                   %li.nav-item
                     = active_link_to brand_tickets_path(current_brand),
                       { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top,
