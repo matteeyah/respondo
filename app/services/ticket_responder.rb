@@ -13,6 +13,8 @@ class TicketResponder < ApplicationService
 
   def call
     TicketCreator.new(ticket.provider, client_response, ticket.brand, user).call
+  rescue Twitter::Error
+    false
   end
 
   private

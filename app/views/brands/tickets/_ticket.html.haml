@@ -38,22 +38,25 @@
               - when 'reply'
                 - if policy(ticket).reply?
                   .col-12
-                    = form_with url: brand_ticket_reply_path(ticket.brand, ticket), html: { autocomplete: 'off' } do |reply_form|
+                    = form_with url: brand_ticket_replies_path(ticket.brand, ticket),
+                      model: ticket.replies.new, method: :post,
+                      html: { autocomplete: 'off' } do |reply_form|
                       .input-group.mb-3
-                        = reply_form.text_area :response_text, required: true, placeholder: 'Reply Text', class: 'form-control'
+                        = reply_form.text_area :content, required: true, placeholder: 'Reply Text', class: 'form-control'
                         = reply_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
                       = reply_form.submit 'Reply', class: 'btn btn-outline-secondary'
                       = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket), class: 'btn btn-outline-danger'
               - when 'internal_note'
                 - if policy(ticket).internal_note?
                   .col-12
-                    = form_with url: brand_ticket_internal_note_path(ticket.brand, ticket),
-                      html: { autocomplete: 'off' } do |reply_form|
+                    = form_with url: brand_ticket_internal_notes_path(ticket.brand, ticket),
+                      model: ticket.internal_notes.new, method: :post,
+                      html: { autocomplete: 'off' } do |internal_note_form|
                       .input-group.mb-3
-                        = reply_form.text_area :internal_note_text, required: true,
+                        = internal_note_form.text_area :content, required: true,
                           placeholder: 'Internal Note Text', class: 'form-control'
-                        = reply_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
-                      = reply_form.submit 'Post', class: 'btn btn-outline-secondary'
+                        = internal_note_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
+                      = internal_note_form.submit 'Post', class: 'btn btn-outline-secondary'
                       = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket), class: 'btn btn-outline-danger'
             - else
               .col-12.col-lg-2

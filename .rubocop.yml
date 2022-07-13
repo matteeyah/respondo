@@ -48,12 +48,6 @@ RSpec/MultipleExpectations:
     - 'spec/system/**/*'
     - 'spec/support/system/**/*'
 
-RSpec/MultipleMemoizedHelpers:
-  Max: 10
-
-RSpec/NestedGroups:
-  Max: 5
-
 RSpec/RepeatedExample:
   Exclude:
     - 'spec/policies/**/*'

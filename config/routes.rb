@@ -23,8 +23,6 @@ Rails.application.routes.draw do
   resources :brands, only: %i[edit update] do
     scope module: :brands do
       resources :tickets, only: %i[index show] do
-        post :reply
-        post :internal_note
         post :invert_status
 
         collection do
@@ -33,13 +31,13 @@ Rails.application.routes.draw do
 
         scope module: :tickets do
           resources :tags, only: %i[create destroy]
+          resources :internal_notes, only: :create
+          resources :replies, only: :create
         end
       end
 
       resources :brand_accounts, only: [:destroy]
-
       resources :external_tickets, constraints: { format: 'json' }, only: [:create]
-
       resources :users, only: %i[create destroy]
     end
   end
