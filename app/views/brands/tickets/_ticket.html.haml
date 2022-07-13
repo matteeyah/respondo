@@ -12,7 +12,7 @@
               %span.badge.rounded-pill.bg-primary
                 = tag.name
                 = link_to brand_ticket_tag_path(ticket.brand, ticket, tag), 'data-turbo-method': :delete do
-                  = bi_icon('trash3-fill', 'text-white')
+                  = bi_icon('x', 'text-white')
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
             - if ticket.parent_id.nil?
               .text-primary= bi_icon(ticket.actual_provider)

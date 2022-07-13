@@ -109,7 +109,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     within("#ticket_#{target_ticket.id}") do
       within('span', text: 'hello') do
-        page.find(:css, 'i.bi-trash3-fill').click
+        page.find(:css, 'i.bi-x').click
       end
     end
 

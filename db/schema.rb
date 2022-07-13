@@ -156,6 +156,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_13_110717) do
     t.string "external_uid", null: false
     t.string "email"
     t.integer "provider", null: false
+    t.string "token"
+    t.string "secret"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

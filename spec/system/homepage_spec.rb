@@ -16,53 +16,20 @@ RSpec.describe 'Homepage', type: :system do
     visit '/'
   end
 
-  # it 'guides user through the set-up process' do
-  #   expect(page).to have_button('Sign in with Google')
-  #
-  #   add_oauth_mock_for_user(create(:user, :with_account))
-  #   click_button('Sign in with Google')
-  #
-  #   expect(page).to have_button('Authorize Brand', class: 'btn')
-  #
-  #   add_oauth_mock_for_brand(create(:brand, :with_account))
-  #   click_button('Authorize Brand', class: 'btn btn-primary')
-  #
-  #   find('#settings').click
-  #   click_button('Sign Out')
-  #   expect(page).to have_button('Sign in with Google')
-  # end
+  it 'guides user through the set-up process' do
+    expect(page).to have_button('Sign in with Google')
 
-  it 'shows the newest tickets' do
-    user = create(:user, :with_account, brand:)
-    sign_in_user(user)
+    add_oauth_mock_for_user(create(:user, :with_account))
+    click_button('Sign in with Google')
 
-    expect(page).to have_text(tickets.first&.content)
-    expect(page).to have_text(tickets.first&.author&.username)
+    expect(page).to have_button('Authorize Brand', class: 'btn')
 
-    expect(page).to have_text(tickets.second&.content)
-    expect(page).to have_text(tickets.second&.author&.username)
-  end
+    add_oauth_mock_for_brand(create(:brand, :with_account))
+    click_button('Authorize Brand', class: 'btn btn-primary')
 
-  it 'shows the tickets info widgets' do
-    user = create(:user, :with_account, brand:)
-    sign_in_user(user)
-
-    expect(page).to have_text('Feel free to hop into the brand tickets!')
-
-    expect(page).to have_text('New Tickets')
-    expect(page).to have_text(tickets&.count)
-
-    expect(page).to have_text('Total Open')
-    expect(page).to have_text(tickets&.select { |e| e.status == 'open' }&.count)
-  end
-
-  it 'allows show all tickets with home widget' do
-    sign_in_user
-    sign_in_brand(brand)
-    click_link('New Tickets')
-
-    expect(page).to have_text(tickets.first.content)
-    expect(page).to have_text(tickets.second.content)
+    find('#settings').click
+    click_button('Sign Out')
+    expect(page).to have_button('Sign in with Google')
   end
 
   it 'shows the login page' do
