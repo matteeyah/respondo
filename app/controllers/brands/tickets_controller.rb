@@ -38,20 +38,6 @@ module Brands
       # the `#authorize` logic.
     end
 
-    def internal_note
-      authorize(ticket)
-      authorize(brand, :subscription?)
-
-      if create_note!.persisted?
-        flash[:success] = 'Internal note was successfully submitted.'
-      else
-        flash[:warning] = 'Unable to create internal note.'
-      end
-
-      @ticket_hash = ticket_hash
-      render :show
-    end
-
     def invert_status
       authorize(ticket)
       authorize(brand, :subscription?)
@@ -93,10 +79,6 @@ module Brands
 
     def respond!
       TicketResponder.new(ticket, params[:response_text], current_user).call
-    end
-
-    def create_note!
-      ticket.internal_notes.create(content: params[:internal_note_text], creator: current_user)
     end
   end
 end
