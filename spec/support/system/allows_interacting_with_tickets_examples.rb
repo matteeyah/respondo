@@ -89,6 +89,40 @@ RSpec.shared_examples 'allows interacting with tickets' do
     expect(page).to have_text(target_ticket.content)
   end
 
+  it 'allows adding ticket tags' do
+    sign_in_user
+    sign_in_brand(brand)
+    click_link('Tickets')
+
+    within("#ticket_#{target_ticket.id}") do
+      fill_in :'acts_as_taggable_on_tag[name]', with: 'hello'
+      click_button 'Add Tags'
+    end
+
+    within("#ticket_#{target_ticket.id}") do
+      expect(page).to have_selector(:css, 'span', text: 'hello')
+    end
+  end
+
+  it 'allows removing ticket tags' do
+    sign_in_user
+    sign_in_brand(brand)
+    target_ticket.update(tag_list: 'hello, world')
+    click_link('Tickets')
+
+    within("#ticket_#{target_ticket.id}") do
+      page.find(
+        :css,
+        "a[href='#{brand_ticket_tag_path(target_ticket.brand, target_ticket, '1')}']"
+      ).click
+    end
+
+    within("#ticket_#{target_ticket.id}") do
+      expect(page).not_to have_selector(:css, 'span', text: 'hello')
+      expect(page).to have_selector(:css, 'span', text: 'world')
+    end
+  end
+
   private
 
   def stub_twitter_reply_response(user_external_uid, user_screen_name, in_reply_to_status_id, response_text)

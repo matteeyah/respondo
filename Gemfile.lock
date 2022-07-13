@@ -71,6 +71,8 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    acts-as-taggable-on (9.0.1)
+      activerecord (>= 6.0, < 7.1)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
@@ -497,6 +499,7 @@ PLATFORMS
 DEPENDENCIES
   aasm (~> 5.2.0)
   active_link_to (~> 1.0.5)
+  acts-as-taggable-on
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.2)
   bootstrap (~> 5.1.3)

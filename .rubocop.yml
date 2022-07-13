@@ -13,6 +13,7 @@ AllCops:
     - 'db/schema.rb'
     - 'tmp/**/*'
     - 'bin/**/*'
+    - '**/*.acts_as_taggable_on_engine.rb'
   NewCops: enable
 
 Layout/LineLength:

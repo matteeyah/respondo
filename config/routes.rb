@@ -30,6 +30,10 @@ Rails.application.routes.draw do
         collection do
           post :refresh
         end
+
+        scope module: :tickets do
+          resources :tags, only: %i[create destroy]
+        end
       end
 
       resources :brand_accounts, only: [:destroy]

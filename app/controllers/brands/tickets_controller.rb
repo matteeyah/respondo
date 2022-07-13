@@ -9,7 +9,7 @@ module Brands
       authorize(brand, policy_class: TicketPolicy)
       @pagy, tickets_relation = pagy(tickets)
       @tickets = tickets_relation.with_descendants_hash(
-        :author, :creator, :brand, ticketable: [:base_ticket], internal_notes: [:creator]
+        :author, :creator, :brand, :tags, ticketable: [:base_ticket], internal_notes: [:creator]
       )
       @brand = brand
     end
