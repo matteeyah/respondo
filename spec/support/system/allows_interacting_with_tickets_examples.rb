@@ -19,10 +19,8 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     click_link "toggle-reply-#{target_ticket.id}"
 
-    within "form[action='#{brand_ticket_replies_path(target_ticket.brand, target_ticket)}']" do
-      fill_in 'ticket[content]', with: response_text
-      click_button 'Reply'
-    end
+    fill_in 'ticket[content]', with: response_text
+    click_button 'Reply'
 
     expect(page).to have_text("#{user.name} as #{brand.screen_name}")
     expect(page).to have_text(response_text)
@@ -50,10 +48,8 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     click_link "toggle-reply-#{target_ticket.id}"
 
-    within "form[action='#{brand_ticket_replies_path(target_ticket.brand, target_ticket)}']" do
-      fill_in 'ticket[content]', with: response_text
-      click_button 'Reply'
-    end
+    fill_in 'ticket[content]', with: response_text
+    click_button 'Reply'
 
     expect(page).to have_text("#{user.name} as #{brand.screen_name}")
     expect(page).to have_text(response_text)
@@ -68,10 +64,8 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     click_link "toggle-internal-note-#{target_ticket.id}"
 
-    within "form[action='#{brand_ticket_internal_notes_path(target_ticket.brand, target_ticket)}']" do
-      fill_in 'internal_note[content]', with: internal_note_text
-      click_button 'Post'
-    end
+    fill_in 'internal_note[content]', with: internal_note_text
+    click_button 'Post'
 
     expect(page).to have_text(user.name)
     expect(page).to have_text(internal_note_text)
@@ -82,7 +76,10 @@ RSpec.shared_examples 'allows interacting with tickets' do
     sign_in_brand(brand)
     click_link('Tickets')
 
-    page.find(:css, "a[href='#{brand_ticket_invert_status_path(target_ticket.brand, target_ticket)}']").click
+    within("#ticket_#{target_ticket.id}") do
+      page.find(:css, 'i.bi-check-lg').click
+    end
+
     click_link 'Solved Tickets'
 
     expect(page).to have_text(target_ticket.author.username)
@@ -111,10 +108,9 @@ RSpec.shared_examples 'allows interacting with tickets' do
     click_link('Tickets')
 
     within("#ticket_#{target_ticket.id}") do
-      page.find(
-        :css,
-        "a[href='#{brand_ticket_tag_path(target_ticket.brand, target_ticket, '1')}']"
-      ).click
+      within('span', text: 'hello') do
+        page.find(:css, 'i.bi-trash3-fill').click
+      end
     end
 
     within("#ticket_#{target_ticket.id}") do
