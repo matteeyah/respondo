@@ -6,9 +6,6 @@ module Brands
 
     def index
       authorize(brand, policy_class: TicketPolicy)
-
-      @brand = current_brand
-      @user = current_user
       @newest = newest_tickets.take(3)
       @open_count = current_brand.tickets.open.count
       @solved_count = current_brand.tickets.solved.count

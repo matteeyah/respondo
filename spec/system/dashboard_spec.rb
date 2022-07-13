@@ -52,5 +52,4 @@ RSpec.describe 'Dashboard', type: :system do
     expect(page).to have_text(tickets.first.content)
     expect(page).to have_text(tickets.second.content)
   end
-
 end

@@ -8,7 +8,6 @@ RSpec.describe 'Homepage', type: :system do
   include OmniauthHelpers
 
   let(:brand) { create(:brand, :with_account) }
-  let!(:tickets) { create_list(:internal_ticket, 2, brand:).map(&:base_ticket) }
 
   before do
     create(:subscription, brand:)
