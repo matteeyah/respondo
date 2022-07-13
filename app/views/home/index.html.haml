@@ -54,7 +54,7 @@
               %tbody
                 - @newest.each do |ticket|
                   %tr
-                    = render partial: 'tickets', locals: { ticket: ticket }
+                    = render partial: 'tickets', locals: { ticket: }
 
 - else
   .col-12
