@@ -176,49 +176,6 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
   end
 
-  describe 'PATCH update' do
-    subject(:patch_update) { patch "/brands/#{brand.id}/tickets/#{ticket.id}", params: { ticket: { add_tags: } } }
-
-    let!(:ticket) { create(:internal_ticket, provider: 'twitter', brand:).base_ticket }
-    let(:add_tags) { nil }
-
-    context 'when user is signed in' do
-      let(:user) { create(:user, :with_account) }
-
-      before do
-        sign_in(user)
-      end
-
-      context 'when user is authorized' do
-        before do
-          brand.users << user
-        end
-
-        context 'when parameters are valid' do
-          let(:add_tags) { 'hello, world' }
-
-          it 'updates the ticket' do
-            expect { patch_update }.to change { ticket.reload.tag_list }.from([]).to(%w[hello world])
-          end
-
-          it 'renders the ticket' do
-            patch_update
-
-            expect(response.body).to include(ticket.content)
-          end
-        end
-      end
-
-      context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not authorized.'
-      end
-    end
-
-    context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not signed in.'
-    end
-  end
-
   describe 'POST reply' do
     subject(:post_reply) do
       post "/brands/#{brand.id}/tickets/#{ticket.id}/reply", params: { response_text: 'does not matter' }

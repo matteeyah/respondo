@@ -8,10 +8,10 @@
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-center
             %span.small.text-muted= ticket.created_at.to_formatted_s(:short)
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
-            - ticket.tag_list.each do |tag|
+            - ticket.tags.each do |tag|
               %span.badge.rounded-pill.bg-primary
-                = tag
-                = link_to brand_ticket_path(ticket.brand, ticket, ticket: { remove_tags: tag }), 'data-turbo-method': :patch do
+                = tag.name
+                = link_to brand_ticket_tag_path(ticket.brand, ticket, tag), 'data-turbo-method': :delete do
                   = bi_icon('trash3-fill', 'text-white')
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
             - if ticket.parent_id.nil?
@@ -68,10 +68,10 @@
                     'data-turbo-method' => :post, 'data-turbo-frame' => :_top do
                     = invert_status_action(ticket.status)
               .col-12.col-lg-10
-                = form_with url: brand_ticket_path(ticket.brand, ticket), model: Ticket, method: :patch do |update_ticket_form|
+                = form_with url: brand_ticket_tags_path(ticket.brand, ticket), model: ticket.tags.new, method: :post do |tag_form|
                   .row
                     .col-lg-10
-                      = update_ticket_form.text_field :add_tags, placeholder: 'Add tags to ticket',
+                      = tag_form.text_field :name, placeholder: 'Add tags to ticket',
                         required: true, class: 'form-control'
                     .col-lg-2
-                      = update_ticket_form.submit 'Add Tags', class: 'form-control btn-primary'
+                      = tag_form.submit 'Add Tags', class: 'form-control btn-primary'

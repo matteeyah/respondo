@@ -9,7 +9,7 @@ module Brands
       authorize(brand, policy_class: TicketPolicy)
       @pagy, tickets_relation = pagy(tickets)
       @tickets = tickets_relation.with_descendants_hash(
-        :author, :creator, :brand, ticketable: [:base_ticket], internal_notes: [:creator]
+        :author, :creator, :brand, :tags, ticketable: [:base_ticket], internal_notes: [:creator]
       )
       @brand = brand
     end
@@ -19,17 +19,6 @@ module Brands
 
       @ticket_hash = Ticket.where(id: ticket.id).with_descendants_hash
       @action_form = params[:action_form]
-    end
-
-    def update
-      authorize(ticket)
-
-      add_tags if update_params[:add_tags]
-      remove_tags if update_params[:remove_tags]
-      ticket.save!
-      @ticket_hash = Ticket.where(id: ticket.id).with_descendants_hash
-
-      render :show
     end
 
     def reply
@@ -108,18 +97,6 @@ module Brands
 
     def create_note!
       ticket.internal_notes.create(content: params[:internal_note_text], creator: current_user)
-    end
-
-    def add_tags
-      ticket.tag_list.add(update_params[:add_tags], parse: true)
-    end
-
-    def remove_tags
-      ticket.tag_list.remove(update_params[:remove_tags])
-    end
-
-    def update_params
-      params.require(:ticket).permit(:add_tags, :remove_tags)
     end
   end
 end

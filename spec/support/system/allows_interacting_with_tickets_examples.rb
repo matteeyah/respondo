@@ -95,13 +95,12 @@ RSpec.shared_examples 'allows interacting with tickets' do
     click_link('Tickets')
 
     within("#ticket_#{target_ticket.id}") do
-      fill_in :'ticket[add_tags]', with: 'hello, world'
+      fill_in :'acts_as_taggable_on_tag[name]', with: 'hello'
       click_button 'Add Tags'
     end
 
     within("#ticket_#{target_ticket.id}") do
       expect(page).to have_selector(:css, 'span', text: 'hello')
-      expect(page).to have_selector(:css, 'span', text: 'world')
     end
   end
 
@@ -114,7 +113,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     within("#ticket_#{target_ticket.id}") do
       page.find(
         :css,
-        "a[href='#{brand_ticket_path(target_ticket.brand, target_ticket, ticket: { remove_tags: 'hello' })}']"
+        "a[href='#{brand_ticket_tag_path(target_ticket.brand, target_ticket, '1')}']"
       ).click
     end
 
