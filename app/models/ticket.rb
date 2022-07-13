@@ -14,6 +14,8 @@ class Ticket < ApplicationRecord
   delegated_type :ticketable, types: %w[InternalTicket ExternalTicket]
   delegate :actual_provider, to: :ticketable
 
+  acts_as_taggable_on :tags
+
   aasm column: :status, enum: true do
     state :open, initial: true, before_enter: proc { parent&.solved? && parent&.reopen! }
     state :solved

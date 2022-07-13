@@ -30,6 +30,7 @@ gem 'omniauth-twitter', '~> 1.4.0'
 # Other
 gem 'aasm', '~> 5.2.0' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
+gem 'acts-as-taggable-on' # Tags mechanism
 gem 'bootstrap', '~> 5.1.3'
 gem 'disqus_api', '~> 0.0.7' # Disqus client
 gem 'flipper', '~> 0.25.0' # Feature flags
