@@ -15,6 +15,8 @@ module Brands
     end
 
     def show
+      authorize(ticket)
+
       @ticket_hash = Ticket.where(id: ticket.id).with_descendants_hash
       @action_form = params[:action_form]
     end
