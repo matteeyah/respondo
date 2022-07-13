@@ -89,18 +89,38 @@ RSpec.shared_examples 'allows interacting with tickets' do
     expect(page).to have_text(target_ticket.content)
   end
 
-  it 'allows updating ticket tags' do
+  it 'allows adding ticket tags' do
     sign_in_user
     sign_in_brand(brand)
     click_link('Tickets')
 
     within("#ticket_#{target_ticket.id}") do
-      fill_in :'ticket[tag_list]', with: "hello, world"
-      click_button "Update"
+      fill_in :'ticket[add_tags]', with: 'hello, world'
+      click_button 'Add Tags'
     end
 
     within("#ticket_#{target_ticket.id}") do
-      expect(page).to have_field(:'ticket[tag_list]', with: 'hello, world')
+      expect(page).to have_selector(:css, 'span', text: 'hello')
+      expect(page).to have_selector(:css, 'span', text: 'world')
+    end
+  end
+
+  it 'allows removing ticket tags' do
+    sign_in_user
+    sign_in_brand(brand)
+    target_ticket.update(tag_list: 'hello, world')
+    click_link('Tickets')
+
+    within("#ticket_#{target_ticket.id}") do
+      page.find(
+        :css,
+        "a[href='#{brand_ticket_path(target_ticket.brand, target_ticket, ticket: { remove_tags: 'hello' })}']"
+      ).click
+    end
+
+    within("#ticket_#{target_ticket.id}") do
+      expect(page).not_to have_selector(:css, 'span', text: 'hello')
+      expect(page).to have_selector(:css, 'span', text: 'world')
     end
   end
 

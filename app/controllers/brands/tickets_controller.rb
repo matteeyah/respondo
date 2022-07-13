@@ -24,7 +24,9 @@ module Brands
     def update
       authorize(ticket)
 
-      ticket.update(update_params)
+      add_tags if update_params[:add_tags]
+      remove_tags if update_params[:remove_tags]
+      ticket.save!
       @ticket_hash = Ticket.where(id: ticket.id).with_descendants_hash
 
       render :show
@@ -108,8 +110,16 @@ module Brands
       ticket.internal_notes.create(content: params[:internal_note_text], creator: current_user)
     end
 
+    def add_tags
+      ticket.tag_list.add(update_params[:add_tags], parse: true)
+    end
+
+    def remove_tags
+      ticket.tag_list.remove(update_params[:remove_tags])
+    end
+
     def update_params
-      params.require(:ticket).permit(:tag_list)
+      params.require(:ticket).permit(:add_tags, :remove_tags)
     end
   end
 end

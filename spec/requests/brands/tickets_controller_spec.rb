@@ -177,10 +177,10 @@ RSpec.describe Brands::TicketsController, type: :request do
   end
 
   describe 'PATCH update' do
-    subject(:patch_update) { patch "/brands/#{brand.id}/tickets/#{ticket.id}", params: { ticket: { tag_list: tag_list } } }
+    subject(:patch_update) { patch "/brands/#{brand.id}/tickets/#{ticket.id}", params: { ticket: { add_tags: } } }
 
     let!(:ticket) { create(:internal_ticket, provider: 'twitter', brand:).base_ticket }
-    let(:tag_list) { nil }
+    let(:add_tags) { nil }
 
     context 'when user is signed in' do
       let(:user) { create(:user, :with_account) }
@@ -195,10 +195,10 @@ RSpec.describe Brands::TicketsController, type: :request do
         end
 
         context 'when parameters are valid' do
-          let(:tag_list) { "hello, world" }
+          let(:add_tags) { 'hello, world' }
 
           it 'updates the ticket' do
-            expect { patch_update }.to change { ticket.reload.tag_list }.from([]).to(["hello", "world"])
+            expect { patch_update }.to change { ticket.reload.tag_list }.from([]).to(%w[hello world])
           end
 
           it 'renders the ticket' do
