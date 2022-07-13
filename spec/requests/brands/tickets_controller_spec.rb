@@ -147,12 +147,32 @@ RSpec.describe Brands::TicketsController, type: :request do
 
     let!(:ticket) { create(:internal_ticket, provider: 'twitter', brand:).base_ticket }
 
-    context 'when user is not signed in' do
-      it 'shows the ticket' do
-        get_show
+    context 'when user is signed in' do
+      let(:user) { create(:user, :with_account) }
 
-        expect(response.body).to include(ticket.content)
+      before do
+        sign_in(user)
       end
+
+      context 'when user is authorized' do
+        before do
+          brand.users << user
+        end
+
+        it 'shows the ticket' do
+          get_show
+
+          expect(response.body).to include(ticket.content)
+        end
+      end
+
+      context 'when user is not authorized' do
+        include_examples 'unauthorized user examples', 'You are not authorized.'
+      end
+    end
+
+    context 'when user is not signed in' do
+      include_examples 'unauthorized user examples', 'You are not signed in.'
     end
   end
 
