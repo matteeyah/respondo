@@ -9,10 +9,7 @@ module Brands
         authorize(ticket.brand, :user_in_brand?)
         authorize(ticket.brand, :subscription?)
 
-        respond!
-        redirect_to brand_ticket_path(ticket.brand, ticket)
-      rescue Twitter::Error
-        # no-op
+        TicketResponder.new(ticket, reply_params[:content], current_user).call
         redirect_to brand_ticket_path(ticket.brand, ticket)
       end
 
@@ -20,10 +17,6 @@ module Brands
 
       def reply_params
         params.require(:ticket).permit(:content)
-      end
-
-      def respond!
-        TicketResponder.new(ticket, reply_params[:content], current_user).call
       end
     end
   end
