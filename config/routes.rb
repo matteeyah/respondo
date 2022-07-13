@@ -37,6 +37,8 @@ Rails.application.routes.draw do
       resources :external_tickets, constraints: { format: 'json' }, only: [:create]
 
       resources :users, only: %i[create destroy]
+
+      get :dashboard, to: 'dashboard#index'
     end
   end
 

@@ -24,7 +24,7 @@
               %ul.flex-column.navbar-nav.text-center
                 - if current_brand
                   %li.nav-item
-                    = active_link_to root_path,
+                    = active_link_to brand_dashboard_path(current_brand),
                       { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top,
                       :title => 'Dashboard' } do
                       = bi_icon('speedometer', 'fs-1')
