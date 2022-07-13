@@ -11,10 +11,9 @@ RSpec.describe Brands::Tickets::InternalNotesController, type: :request do
 
   describe 'POST create' do
     subject(:post_create) do
-      post "/brands/#{brand.id}/tickets/#{ticket.id}/internal_notes", params: { internal_note: { content: } }
+      post "/brands/#{brand.id}/tickets/#{ticket.id}/internal_notes",
+           params: { internal_note: { content: 'does not matter' } }
     end
-
-    let(:content) { nil }
 
     context 'when user is signed in' do
       let(:user) { create(:user, :with_account) }
@@ -32,8 +31,6 @@ RSpec.describe Brands::Tickets::InternalNotesController, type: :request do
           before do
             create(:subscription, brand:)
           end
-
-          let(:content) { 'does not matter' }
 
           it 'creates an internal note' do
             expect { post_create }.to change { ticket.internal_notes.count }.from(0).to(1)

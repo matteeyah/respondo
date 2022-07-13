@@ -21,23 +21,6 @@ module Brands
       @action_form = params[:action_form]
     end
 
-    def reply
-      authorize(ticket)
-      authorize(brand, :subscription?)
-
-      respond!
-      flash[:success] = 'Response was successfully submitted.'
-
-      @ticket_hash = ticket_hash
-      render :show
-    rescue Twitter::Error => e
-      flash[:warning] = "Unable to create tweet.\n#{e.message}"
-      @ticket_hash = ticket_hash
-      render :show
-      # The double `#redirect_to` is required, since using `ensure` breaks
-      # the `#authorize` logic.
-    end
-
     def invert_status
       authorize(ticket)
       authorize(brand, :subscription?)
@@ -69,16 +52,8 @@ module Brands
       @ticket ||= brand.tickets.find(params[:ticket_id] || params[:id])
     end
 
-    def ticket_hash
-      @ticket_hash ||= Ticket.where(id: ticket.id).with_descendants_hash
-    end
-
     def tickets
       TicketsQuery.new(brand.tickets, params.slice(:status, :query)).call
-    end
-
-    def respond!
-      TicketResponder.new(ticket, params[:response_text], current_user).call
     end
   end
 end

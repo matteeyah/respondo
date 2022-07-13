@@ -15,6 +15,12 @@ class TicketPolicy < ApplicationPolicy
     user &&
       user.brand == record.brand
   end
+
+  def internal_note?
+    user &&
+      user.brand == record.brand
+  end
+
   def invert_status?
     user &&
       user.brand == record.brand

@@ -23,7 +23,6 @@ Rails.application.routes.draw do
   resources :brands, only: %i[edit update] do
     scope module: :brands do
       resources :tickets, only: %i[index show] do
-        post :reply
         post :invert_status
 
         collection do
@@ -33,6 +32,7 @@ Rails.application.routes.draw do
         scope module: :tickets do
           resources :tags, only: %i[create destroy]
           resources :internal_notes, only: :create
+          resources :replies, only: :create
         end
       end
 
