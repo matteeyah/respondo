@@ -21,6 +21,15 @@ module Brands
       @action_form = params[:action_form]
     end
 
+    def update
+      authorize(ticket)
+
+      ticket.update(update_params)
+      @ticket_hash = Ticket.where(id: ticket.id).with_descendants_hash
+
+      render :show
+    end
+
     def reply
       authorize(ticket)
       authorize(brand, :subscription?)
@@ -97,6 +106,10 @@ module Brands
 
     def create_note!
       ticket.internal_notes.create(content: params[:internal_note_text], creator: current_user)
+    end
+
+    def update_params
+      params.require(:ticket).permit(:tag_list)
     end
   end
 end

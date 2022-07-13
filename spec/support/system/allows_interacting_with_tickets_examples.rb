@@ -89,6 +89,21 @@ RSpec.shared_examples 'allows interacting with tickets' do
     expect(page).to have_text(target_ticket.content)
   end
 
+  it 'allows updating ticket tags' do
+    sign_in_user
+    sign_in_brand(brand)
+    click_link('Tickets')
+
+    within("#ticket_#{target_ticket.id}") do
+      fill_in :'ticket[tag_list]', with: "hello, world"
+      click_button "Update"
+    end
+
+    within("#ticket_#{target_ticket.id}") do
+      expect(page).to have_field(:'ticket[tag_list]', with: 'hello, world')
+    end
+  end
+
   private
 
   def stub_twitter_reply_response(user_external_uid, user_screen_name, in_reply_to_status_id, response_text)

@@ -61,3 +61,10 @@
                   = link_to brand_ticket_invert_status_path(ticket.brand, ticket), class: 'card-link',
                     'data-turbo-method' => :post, 'data-turbo-frame' => :_top do
                     = invert_status_action(ticket.status)
+              .col-lg-10
+                = form_with url: brand_ticket_path(ticket.brand, ticket), model: ticket, method: :patch do |update_ticket_form|
+                  .row
+                    .col-lg-10
+                      = update_ticket_form.text_field :tag_list, required: true, class: 'form-control'
+                    .col-lg-2
+                      = update_ticket_form.submit 'Update', class: 'form-control btn-primary'
