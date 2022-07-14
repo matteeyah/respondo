@@ -14,34 +14,30 @@
     .col-lg-6
       %h5 Brand Settings
       %hr.border-2.border-top
-      .row.mb-3
-        .col-12
-          %h6.mb-3 Users outside brand
-          %hr.border-2.border-top
-          = form_with url: brand_users_path(@brand), method: :post, class: 'form-inline' do |add_user_form|
-            .row
-              .col-8.col-lg-10
-                = add_user_form.select :user_id, options_for_select(add_users_dropdown_options_for),
-                  { include_blank: 'Select user' }, required: true, class: 'custom-select form-control', id: 'add-user'
-              .col-4.col-lg-2
-                = add_user_form.submit 'Add', class: 'btn form-control btn-primary'
-      .row.mt-5
+      .row.mt-3
         .col-12
           %h6.mb-3 Users in Brand
           %hr.border-2.border-top
-          .list-group
-            - @brand_users.each do |user|
-              .list-group-item
-                .row
-                  .col-8
-                    %p.mb-0.fw-bold= user.name
-                  .col-4.d-flex.justify-content-end
-                    = link_to brand_user_path(@brand, user),
-                      'data-turbo-method' => :delete, 'data-turbo-frame' => :_top do
-                      = bi_icon('trash3-fill')
+          .list-group#users-in-brand
+            = render partial: 'brands/user', collection: @brand_users
           .row.mt-3
             .d-flex.justify-content-center
               != pagy_bootstrap_nav(@pagy)
+      .row.mb-5
+        .col-12
+          %h6.mb-3 Users outside brand
+          %hr.border-2.border-top
+          = form_with url: brand_users_path(@brand), method: :post, class: 'form-inline',
+            html: { 'data-controller' => 'reset-form', 'data-action' => 'turbo:submit-end->reset-form#reset' } do |add_user_form|
+            .row
+              .col-8.col-lg-10
+                = add_user_form.select :user_id, nil, { include_blank: 'Select user' },
+                  { required: true, class: 'custom-select form-control', id: 'add-user' } do
+                  - unless add_users_dropdown_options_for.empty?
+                    - add_users_dropdown_options_for.each do |id, name|
+                      %option{ value: id }= name
+              .col-4.col-lg-2
+                = add_user_form.submit 'Add', class: 'btn form-control btn-primary'
       .row.mt-5
         .col-12
           %h6.mb-3 Brand Domain

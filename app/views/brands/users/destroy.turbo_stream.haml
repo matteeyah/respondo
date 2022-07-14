@@ -1,0 +1,3 @@
+= turbo_stream.append(:toasts, partial: 'shared/toast',
+  locals: { title: 'User successfully removed', message: 'User was successfully removed from the brand.' })
+= turbo_stream.remove(@user)

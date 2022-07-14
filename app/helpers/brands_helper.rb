@@ -4,7 +4,7 @@ module BrandsHelper
   include Pagy::Frontend
 
   def add_users_dropdown_options_for
-    users_not_in_brand.pluck(:name, :id)
+    User.where(brand_id: nil).pluck(:id, :name)
   end
 
   def subscription_badge_class(subscription_status)
@@ -16,11 +16,5 @@ module BrandsHelper
     when 'trialing', 'active'
       'success'
     end
-  end
-
-  private
-
-  def users_not_in_brand
-    User.where(brand_id: nil)
   end
 end
