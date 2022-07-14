@@ -1,7 +1,8 @@
 import { Controller } from '@hotwired/stimulus'
+import { Toast } from 'bootstrap'
 
 export default class extends Controller {
-  connect() {
-    new bootstrap.Toast(this.element).show()
+  connect () {
+    new Toast(this.element).show()
   }
 }

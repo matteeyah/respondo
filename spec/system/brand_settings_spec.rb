@@ -52,7 +52,7 @@ RSpec.describe 'Brand settings', type: :system do
     find('#settings').click
     click_link 'Brand settings'
 
-    select external_user.name, from: 'add-user'
+    select external_user.name, from: 'user_id'
     click_button 'Add'
 
     within(page.find('h6', text: 'Users in Brand').find(:xpath, '..')) do
@@ -91,6 +91,6 @@ RSpec.describe 'Brand settings', type: :system do
     fill_in 'brand[domain]', with: 'invalid!domain.com'
     click_button 'Update'
 
-    expect(page).to have_field('brand[domain]', with: '')
+    expect(page).to have_field('brand[domain]', with: 'invalid!domain.com')
   end
 end
