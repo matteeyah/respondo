@@ -29,12 +29,6 @@ RSpec.describe Brands::BrandAccountsController, type: :request do
             expect { delete_destroy }.not_to change(BrandAccount, :count).from(1)
           end
 
-          it 'sets the flash' do
-            delete_destroy
-
-            expect(controller.flash[:danger]).to eq('You can not remove your last account.')
-          end
-
           it 'redirects to edit brand path' do
             delete_destroy
 
@@ -49,12 +43,6 @@ RSpec.describe Brands::BrandAccountsController, type: :request do
 
           it 'destroys the account' do
             expect { delete_destroy }.to change(BrandAccount, :count).from(2).to(1)
-          end
-
-          it 'sets the flash' do
-            delete_destroy
-
-            expect(controller.flash[:success]).to eq('Brand account was successfully deleted.')
           end
 
           it 'redirects to edit brand path' do
