@@ -52,7 +52,7 @@ RSpec.describe 'Brand settings', type: :system do
     find('#settings').click
     click_link 'Brand settings'
 
-    select external_user.name, from: 'user_id'
+    select external_user.name, from: 'add-user'
     click_button 'Add'
 
     within(page.find('h6', text: 'Users in Brand').find(:xpath, '..')) do
@@ -71,7 +71,9 @@ RSpec.describe 'Brand settings', type: :system do
       end
     end
 
-    expect(page).to have_select('add-user', with_options: [existing_user.name])
+    within(page.find('h6', text: 'Users in Brand').find(:xpath, '..')) do
+      expect(page).not_to have_text(existing_user.name)
+    end
   end
 
   it 'allows the user to edit the brand domain' do
