@@ -1,10 +1,10 @@
 %tr
   %td
-    %p.small.font-14.my-1.fw-normal= ticket.content.first(100)
-    %span.text-muted.font-13.text-primary= ticket.created_at.strftime('%d %b %y	%M:%S')
+    %p.small.my-1.fw-normal= ticket.content.first(100)
+    %span.small.text-muted.text-primary= ticket.created_at.to_formatted_s(:short)
   %td
-    %p.font-14.my-1.fw-normal= ticket.author.username
-    %span.text-muted.font-13 Customer
+    %p.small.my-1.fw-normal.text-center @#{ticket.author.username}
+    %span.small.text-muted.d-flex.justify-content-center Customer
   %td
-    %p.font-14.my-1.fw-normal.text-primary.text-center= bi_icon(ticket.actual_provider)
-    %span.text-muted.font-13 Social
+    %p.small.my-1.fw-normal.text-primary.text-center= bi_icon(ticket.actual_provider)
+    %span.small.text-muted.d-flex.justify-content-center Social

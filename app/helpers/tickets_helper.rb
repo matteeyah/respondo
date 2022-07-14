@@ -4,9 +4,9 @@ module TicketsHelper
   def invert_status_action(status)
     case status
     when 'open'
-      bi_icon('check-lg', 'text-success fs-5')
+      bi_icon('check-circle-fill', 'text-primary fs-4')
     when 'solved'
-      bi_icon('folder2-open', 'text-warning fs-5')
+      bi_icon('backspace-fill', 'text-primary fs-4')
     end
   end
 

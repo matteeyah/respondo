@@ -9,7 +9,7 @@
             %span.small.text-muted= ticket.created_at.to_formatted_s(:short)
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
             - ticket.tags.each do |tag|
-              %span.badge.rounded-pill.bg-primary
+              %span.badge.rounded-pill.bg-primary.me-1
                 = tag.name
                 = link_to brand_ticket_tag_path(ticket.brand, ticket, tag), 'data-turbo-method': :delete do
                   = bi_icon('x', 'text-white')
@@ -26,9 +26,10 @@
       - if policy(ticket).internal_note? && ticket.internal_notes.any?
         %ul.list-group.list-group-flush
           - ticket.internal_notes.each do |internal_note|
-            %li.list-group-item.list-group-item-warning
-              %span.me-1 #{internal_note.creator.name}:
-              %span= internal_note.content
+            %li.list-group-item.list-group-item-primary
+              %span.small= bi_icon('sticky')
+              %span.small.me-1 #{internal_note.creator.name}:
+              %span.small= internal_note.content
 
       .card-footer
         - if policy(ticket.brand).subscription? || Flipper.enabled?(:disable_subscriptions)
@@ -61,10 +62,10 @@
             - else
               .col-12.col-lg-2
                 - if policy(ticket).reply?
-                  = link_to bi_icon('reply', 'fs-5'), brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
+                  = link_to bi_icon('reply-fill', 'text-muted fs-4'), brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
                     class: 'card-link', id: "toggle-reply-#{ticket.id}"
                 - if policy(ticket).internal_note?
-                  = link_to bi_icon('sticky', 'fs-5'), brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
+                  = link_to bi_icon('stickies', 'text-muted fs-4'), brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
                     class: 'card-link', id: "toggle-internal-note-#{ticket.id}"
                 - if policy(ticket).invert_status?
                   = link_to brand_ticket_invert_status_path(ticket.brand, ticket), class: 'card-link',
