@@ -27,7 +27,7 @@
         .col-12
           %h6.mb-3 Users outside brand
           %hr.border-2.border-top
-          = form_with url: brand_users_path(@brand), method: :post, class: 'form-inline',
+          = form_with url: brand_users_path(@brand), method: :post,
             html: { 'data-controller' => 'reset-form', 'data-action' => 'turbo:submit-end->reset-form#reset' } do |add_user_form|
             .row
               .col-8.col-lg-10
@@ -42,7 +42,7 @@
         .col-12
           %h6.mb-3 Brand Domain
           %hr.border-2.border-top
-          = form_with model: @brand, method: :patch, class: 'form-inline' do |update_brand_form|
+          = form_with model: @brand, method: :patch do |update_brand_form|
             .row
               .col-8.col-lg-10
                 = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control'
