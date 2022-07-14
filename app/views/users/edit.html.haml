@@ -8,7 +8,7 @@
   .col-lg-6
     %h5 Account Settings
     %hr.border-2.border-top
-    = render partial: 'shared/accounts', locals: { providers: UserAccount.providers.keys, model: @user }
+    = render partial: 'shared/accounts', locals: { model: @user }
   .col-lg-6.mt-5
     %h5 Token Settings
     %hr.border-2.border-top
@@ -16,26 +16,21 @@
       .col-12
         %h6.mb-3 Existing personal access tokens
         %hr.bg-light.border-2.border-top
-        .list-group
+        .list-group#personal-access-tokens
           - if @user.personal_access_tokens.any?
-            - @user.personal_access_tokens.each do |personal_access_token|
-              .list-group-item
-                .row
-                  .col-8
-                    %p.fw-bold.mb-1= personal_access_token.name
-                  .col-4.d-flex.justify-content-end
-                    = link_to user_personal_access_token_path(@user, personal_access_token),
-                      'data-turbo-method' => :delete, 'data-turbo-frame' => :_top do
-                      = bi_icon('trash3-fill')
+            = render partial: 'users/personal_access_token', collection: @user.personal_access_tokens
           - else
-            %p.fst-italic
-              You do not have any created token.
+            .list-group-item
+              %p.fst-italic
+                You do not have any created token.
 
     .row
       .col-12
         %h6.mb-3 Create personal access token
         %hr.border-2.border-top
-          = form_with url: user_personal_access_tokens_path(@user), html: { autocomplete: 'off' } do |create_token_form|
+          = form_with url: user_personal_access_tokens_path(@user),
+            html: { autocomplete: 'off', 'data-controller' => 'reset-form',
+            'data-action' => 'turbo:submit-end->reset-form#reset' } do |create_token_form|
             .row
               .col-8.col-lg-10
                 = create_token_form.text_field :name, required: true, placeholder: 'Enter token name', class: 'form-control'

@@ -14,13 +14,16 @@ class BrandsController < Brands::ApplicationController
   def update
     authorize(brand)
 
-    if brand.update(update_params)
-      flash[:success] = 'Brand was successfully updated.'
-    else
-      flash[:danger] = 'Brand could not be updated.'
-    end
+    @toast_message = if brand.update(update_params)
+                       'Brand was successfully updated.'
+                     else
+                       'Brand could not be updated.'
+                     end
 
-    redirect_to edit_brand_path(current_brand)
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to edit_brand_path(current_brand) }
+    end
   end
 
   private

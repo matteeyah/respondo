@@ -8,22 +8,30 @@ module Brands
       authorize([:brands, external_user])
       authorize(brand, :user_in_brand?)
 
-      brand.users << external_user
+      @user = external_user
+      brand.users << @user
 
-      redirect_to edit_brand_path(brand),
-                  flash: { success: 'User was successfully added to the brand.' }
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to edit_brand_path(brand) }
+      end
     end
 
     def destroy
       authorize([:brands, brand_user])
 
-      brand.users.delete(brand_user)
+      @user = brand_user
+      brand.users.delete(@user)
 
-      # If user is removing self from brand, redirecting back results in a
-      # redirect loop.
-      redirect_to (brand_user == current_user ? root_path : edit_brand_path(brand)),
-                  status: :see_other,
-                  flash: { success: 'User was successfully removed from the brand.' }
+      respond_to do |format|
+        format.turbo_stream
+        format.html do
+          # If user is removing self from brand, redirecting back results in a
+          # redirect loop.
+          redirect_to (brand_user == current_user ? root_path : edit_brand_path(brand)),
+                      status: :see_other
+        end
+      end
     end
 
     private

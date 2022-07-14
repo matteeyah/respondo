@@ -5,26 +5,27 @@ module Users
     include Pundit::Authorization
 
     def create
-      pat = build_personal_access_token!
-      authorize(pat)
+      @token = build_personal_access_token
+      authorize(@token)
 
-      if pat.save
-        flash[:success] = "User personal access token was successfully created. Please write it down: #{pat.token}"
-      else
-        flash[:warning] = "Unable to create personal access token.\n#{pat.errors.full_messages.join(', ')}."
+      @toast_message = @token.save ? success_message : failure_message
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to edit_user_path(user) }
       end
-
-      redirect_to edit_user_path(user)
     end
 
     def destroy
       authorize(personal_access_token)
+      @token = personal_access_token
 
-      personal_access_token.destroy
+      @token.destroy
 
-      flash[:success] = 'User personal access token was successfully deleted.'
-
-      redirect_to edit_user_path(user), status: :see_other
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to edit_user_path(user), status: :see_other }
+      end
     end
 
     private
@@ -33,8 +34,16 @@ module Users
       @personal_access_token ||= user.personal_access_tokens.find(params[:personal_access_token] || params[:id])
     end
 
-    def build_personal_access_token!
+    def build_personal_access_token
       user.personal_access_tokens.build(name: params[:name], token: SecureRandom.base64(10))
+    end
+
+    def success_message
+      "User personal access token was successfully created. Please write it down: #{@token.token}"
+    end
+
+    def failure_message
+      "Unable to create personal access token.\n#{@token.errors.full_messages.join(', ')}."
     end
   end
 end

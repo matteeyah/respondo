@@ -83,12 +83,6 @@ RSpec.describe BrandsController, type: :request do
             expect { patch_update }.to change { brand.reload.domain }.from(nil).to(new_domain)
           end
 
-          it 'sets the flash' do
-            patch_update
-
-            expect(controller.flash[:success]).to eq('Brand was successfully updated.')
-          end
-
           it 'redirects to edit brand path' do
             patch_update
 
@@ -101,12 +95,6 @@ RSpec.describe BrandsController, type: :request do
 
           it 'does not update the brand' do
             expect { patch_update }.not_to change { brand.reload.domain }.from(nil)
-          end
-
-          it 'sets the flash' do
-            patch_update
-
-            expect(controller.flash[:danger]).to eq('Brand could not be updated.')
           end
 
           it 'redirects to edit brand path' do

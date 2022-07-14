@@ -11,6 +11,7 @@ gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching;
 gem 'importmap-rails', '~> 1.1.0'
 gem 'puma', '~> 5.6.4' # Use Puma as the application server
 gem 'rails', '~> 7.0.3'
+gem 'stimulus-rails', '~> 1.0.4' # Hotwire Stimulus
 gem 'turbo-rails', '~> 1.1.1' # Hotwire Turbo
 
 # Not used

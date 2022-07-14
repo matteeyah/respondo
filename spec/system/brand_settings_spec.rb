@@ -71,7 +71,9 @@ RSpec.describe 'Brand settings', type: :system do
       end
     end
 
-    expect(page).to have_select('add-user', with_options: [existing_user.name])
+    within(page.find('h6', text: 'Users in Brand').find(:xpath, '..')) do
+      expect(page).not_to have_text(existing_user.name)
+    end
   end
 
   it 'allows the user to edit the brand domain' do
@@ -91,6 +93,6 @@ RSpec.describe 'Brand settings', type: :system do
     fill_in 'brand[domain]', with: 'invalid!domain.com'
     click_button 'Update'
 
-    expect(page).to have_field('brand[domain]', with: '')
+    expect(page).to have_field('brand[domain]', with: 'invalid!domain.com')
   end
 end

@@ -1,0 +1,6 @@
+.toast{ role: 'alert', 'aria-live': 'assertive', 'aria-atomic' => 'true', 'data-controller' => 'toast' }
+  .toast-header
+    %strong.me-auto= title
+    = button_tag '', class: 'btn-close', 'data-bs-dismiss' => 'toast', 'aria-label' => 'Close'
+  .toast-body
+    = message
