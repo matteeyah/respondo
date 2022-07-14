@@ -31,12 +31,6 @@ RSpec.describe Users::UserAccountsController, type: :request do
             expect { delete_destroy }.not_to change(UserAccount, :count).from(2)
           end
 
-          it 'sets the flash' do
-            delete_destroy
-
-            expect(controller.flash[:danger]).to eq('You can not remove your last account.')
-          end
-
           it 'redirects to edit user path' do
             delete_destroy
 
@@ -51,12 +45,6 @@ RSpec.describe Users::UserAccountsController, type: :request do
 
           it 'destroys the account' do
             expect { delete_destroy }.to change(UserAccount, :count).from(3).to(2)
-          end
-
-          it 'sets the flash' do
-            delete_destroy
-
-            expect(controller.flash[:success]).to eq('User account was successfully deleted.')
           end
 
           it 'redirects to edit user path' do

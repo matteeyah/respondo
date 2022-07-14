@@ -5,19 +5,27 @@ module Brands
     include Pundit::Authorization
 
     def destroy
-      authorize(account)
+      @account = account
+      authorize(@account)
 
-      if brand.accounts.count == 1
-        flash[:danger] = 'You can not remove your last account.'
-      else
-        account.destroy
-        flash[:success] = 'Brand account was successfully deleted.'
+      @toast_message = remove_account!
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to edit_brand_path(brand), status: :see_other }
       end
-
-      redirect_to edit_brand_path(brand), status: :see_other
     end
 
     private
+
+    def remove_account!
+      if brand.accounts.count == 1
+        'You can not remove your last account.'
+      else
+        @account.destroy
+        'User account was successfully deleted.'
+      end
+    end
 
     def account
       @account ||= brand.accounts.find(params[:brand_account_id] || params[:id])

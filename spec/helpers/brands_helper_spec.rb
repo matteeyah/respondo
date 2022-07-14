@@ -15,7 +15,7 @@ RSpec.describe BrandsHelper, type: :helper do
     end
 
     it 'returns just users outside brand' do
-      expect(add_users_dropdown_options_for).to contain_exactly([user_without_brand.name, user_without_brand.id])
+      expect(add_users_dropdown_options_for).to contain_exactly([user_without_brand.id, user_without_brand.name])
     end
   end
 

@@ -66,10 +66,6 @@
                         class: 'dropdown-item btn btn-link', 'data-turbo' => false
         .h-100.flex-grow-1.overflow-auto
           %main.container.p-5{ role: 'main' }
-            - if flash.any?
-              - flash.each do |type, message|
-                .alert.alert-dismissible.fade.show{ class: "alert-#{type}", role: 'alert' }
-                  %span= message
-                  %button.btn-close{ 'data-bs-dismiss' => 'alert' }
             = yield
+            .toast-container.position-fixed.bottom-0.end-0.p-3#toasts
     = yield :custom_javascript

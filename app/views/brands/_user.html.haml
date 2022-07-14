@@ -1,0 +1,8 @@
+.list-group-item{ id: dom_id(user) }
+  .row
+    .col-8
+      %p.mb-0.fw-bold= user.name
+    .col-4.d-flex.justify-content-end
+      = link_to brand_user_path(user.brand, user),
+        'data-turbo-method' => :delete do
+        = bi_icon('trash3-fill')

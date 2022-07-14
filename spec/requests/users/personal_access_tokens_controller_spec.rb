@@ -33,14 +33,6 @@ RSpec.describe Users::PersonalAccessTokensController, type: :request do
             expect { post_create }.to change(PersonalAccessToken, :count).from(0).to(1)
           end
 
-          it 'sets the flash' do
-            post_create
-
-            expect(controller.flash[:success]).to match(
-              /User personal access token was successfully created\. Please write it down: .*$/
-            )
-          end
-
           it 'redirects to edit user path' do
             post_create
 
@@ -59,14 +51,6 @@ RSpec.describe Users::PersonalAccessTokensController, type: :request do
             expect { post_create }.not_to change(PersonalAccessToken, :count).from(1)
           end
 
-          it 'sets the flash' do
-            post_create
-
-            expect(controller.flash[:warning]).to(
-              eq("Unable to create personal access token.\nName has already been taken.")
-            )
-          end
-
           it 'redirects to edit user path' do
             post_create
 
@@ -79,12 +63,6 @@ RSpec.describe Users::PersonalAccessTokensController, type: :request do
 
           it 'does not create a new personal access token' do
             expect { post_create }.not_to change(PersonalAccessToken, :count).from(0)
-          end
-
-          it 'sets the flash' do
-            post_create
-
-            expect(controller.flash[:warning]).to eq("Unable to create personal access token.\nName can't be blank.")
           end
 
           it 'redirects to edit user path' do
@@ -127,12 +105,6 @@ RSpec.describe Users::PersonalAccessTokensController, type: :request do
 
         it 'destroys the personal access token' do
           expect { delete_destroy }.to change(PersonalAccessToken, :count).from(1).to(0)
-        end
-
-        it 'sets the flash' do
-          delete_destroy
-
-          expect(controller.flash[:success]).to eq('User personal access token was successfully deleted.')
         end
 
         it 'redirects to edit user path' do
