@@ -5,19 +5,27 @@ module Users
     include Pundit::Authorization
 
     def destroy
-      authorize(account)
+      @account = account
+      authorize(@account)
 
-      if user.accounts.count == 1
-        flash[:danger] = 'You can not remove your last account.'
-      else
-        account.destroy
-        flash[:success] = 'User account was successfully deleted.'
+      @toast_message = remove_account!
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to edit_user_path(user), status: :see_other }
       end
-
-      redirect_to edit_user_path(user), status: :see_other
     end
 
     private
+
+    def remove_account!
+      if user.accounts.count == 1
+        'You can not remove your last account.'
+      else
+        @account.destroy
+        'User account was successfully deleted.'
+      end
+    end
 
     def account
       @account ||= user.accounts.find(params[:user_account_id] || params[:id])
