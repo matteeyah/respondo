@@ -28,7 +28,8 @@
           %h6.mb-3 Users outside brand
           %hr.border-2.border-top
           = form_with url: brand_users_path(@brand), method: :post,
-            html: { 'data-controller' => 'reset-form', 'data-action' => 'turbo:submit-end->reset-form#reset' } do |add_user_form|
+            html: { 'data-controller' => 'reset-form',
+            'data-action' => 'turbo:submit-end->reset-form#reset' } do |add_user_form|
             .row
               .col-8.col-lg-10
                 = add_user_form.select :user_id, nil, { include_blank: 'Select user' },
@@ -55,7 +56,8 @@
             %hr.border-2.border-top
             %p
               Subscription status:
-              %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }= subscription_status || 'no subscription'
+              %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }
+                subscription_status || 'no subscription'
             - if @brand.subscription&.running?
               = button_tag 'Update Payment Details', class: 'btn btn-primary', id: 'update-subscription'
               = button_tag 'Cancel Subscription', class: 'btn btn-primary', id: 'cancel-subscription'

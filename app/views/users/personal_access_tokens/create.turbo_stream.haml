@@ -1,2 +1,4 @@
-= turbo_stream.append(:toasts, partial: 'shared/toast', locals: { title: 'Personal access token', message: @toast_message })
-= turbo_stream.append('personal-access-tokens', partial: 'users/personal_access_token', locals: { personal_access_token: @token })
+= turbo_stream.append(:toasts, partial: 'shared/toast',
+  locals: { title: 'Personal access token', message: @toast_message })
+= turbo_stream.append('personal-access-tokens', partial: 'users/personal_access_token',
+  locals: { personal_access_token: @token })

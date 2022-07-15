@@ -177,7 +177,7 @@ RSpec.describe Brands::TicketsController, type: :request do
   end
 
   describe 'PATCH update' do
-    subject(:patch_update) { patch "/brands/#{brand.id}/tickets/#{ticket.id}", params: { ticket: { status: status } } }
+    subject(:patch_update) { patch "/brands/#{brand.id}/tickets/#{ticket.id}", params: { ticket: { status: } } }
 
     let(:ticket) { create(:internal_ticket, brand:).base_ticket }
     let(:status) { 'solved' }
