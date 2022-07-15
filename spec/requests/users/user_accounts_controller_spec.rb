@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_request_helpers'
-require './spec/support/unauthorized_user_examples'
 
 RSpec.describe Users::UserAccountsController, type: :request do
   include SignInOutRequestHelpers
@@ -56,12 +55,16 @@ RSpec.describe Users::UserAccountsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not authorized.'
+        it 'redirects the user back (to root)' do
+          expect(delete_destroy).to redirect_to(root_path)
+        end
       end
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not authorized.'
+      it 'redirects the user back (to root)' do
+        expect(delete_destroy).to redirect_to(root_path)
+      end
     end
   end
 end

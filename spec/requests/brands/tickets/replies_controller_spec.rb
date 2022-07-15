@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_request_helpers'
-require './spec/support/unauthorized_user_examples'
 
 RSpec.describe Brands::Tickets::RepliesController, type: :request do
   include SignInOutRequestHelpers
@@ -116,12 +115,16 @@ RSpec.describe Brands::Tickets::RepliesController, type: :request do
               end
 
               context 'when brand does not have subscription' do
-                include_examples 'unauthorized user examples', 'You do not have an active subscription.'
+                it 'redirects the user back (to root)' do
+                  expect(post_create).to redirect_to(root_path)
+                end
               end
             end
 
             context 'when user is not authorized' do
-              include_examples 'unauthorized user examples', 'You are not authorized.'
+              it 'redirects the user back (to root)' do
+                expect(post_create).to redirect_to(root_path)
+              end
             end
           end
         end
@@ -163,18 +166,24 @@ RSpec.describe Brands::Tickets::RepliesController, type: :request do
           end
 
           context 'when brand does not have subscription' do
-            include_examples 'unauthorized user examples', 'You do not have an active subscription.'
+            it 'redirects the user back (to root)' do
+              expect(post_create).to redirect_to(root_path)
+            end
           end
         end
 
         context 'when user is not authorized' do
-          include_examples 'unauthorized user examples', 'You are not authorized.'
+          it 'redirects the user back (to root)' do
+            expect(post_create).to redirect_to(root_path)
+          end
         end
       end
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not authorized.'
+      it 'redirects the user back (to root)' do
+        expect(post_create).to redirect_to(root_path)
+      end
     end
   end
 end

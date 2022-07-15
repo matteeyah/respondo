@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_request_helpers'
-require './spec/support/unauthorized_user_examples'
 require './spec/support/omniauth_helpers'
 
 RSpec.describe SessionsController, type: :request do

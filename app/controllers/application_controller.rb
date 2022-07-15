@@ -9,9 +9,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def user_not_authorized(exception)
-    flash[:warning] = ApplicationPolicy::NOT_AUTHORIZED_ERROR_MESSAGES[exception.query] || 'You are not authorized.'
-
+  def user_not_authorized(_exception)
     redirect_back fallback_location: root_path
   end
 
