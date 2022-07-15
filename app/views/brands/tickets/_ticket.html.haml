@@ -43,10 +43,12 @@
                       model: ticket.replies.new, method: :post,
                       html: { autocomplete: 'off' } do |reply_form|
                       .input-group.mb-3
-                        = reply_form.text_area :content, required: true, placeholder: 'Reply Text', class: 'form-control'
+                        = reply_form.text_area :content, required: true,
+                          placeholder: 'Reply Text', class: 'form-control'
                         = reply_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
                       = reply_form.submit 'Reply', class: 'btn btn-outline-secondary'
-                      = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket), class: 'btn btn-outline-danger'
+                      = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket),
+                        class: 'btn btn-outline-danger'
               - when 'internal_note'
                 - if policy(ticket).internal_note?
                   .col-12
@@ -56,27 +58,41 @@
                       .input-group.mb-3
                         = internal_note_form.text_area :content, required: true,
                           placeholder: 'Internal Note Text', class: 'form-control'
-                        = internal_note_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
+                        = internal_note_form.button bi_icon('x-lg'),
+                          type: :reset, class: 'btn btn-outline-danger'
                       = internal_note_form.submit 'Post', class: 'btn btn-outline-secondary'
-                      = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket), class: 'btn btn-outline-danger'
+                      = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket),
+                        class: 'btn btn-outline-danger'
             - else
-              .col-12.col-lg-2
-                - if policy(ticket).reply?
-                  = link_to bi_icon('reply-fill', 'text-muted fs-4'), brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
-                    class: 'card-link', id: "toggle-reply-#{ticket.id}"
-                - if policy(ticket).internal_note?
-                  = link_to bi_icon('stickies', 'text-muted fs-4'),
-                    brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
-                    class: 'card-link', id: "toggle-internal-note-#{ticket.id}"
-                - if policy(ticket).invert_status?
-                  = link_to brand_ticket_invert_status_path(ticket.brand, ticket), class: 'card-link',
-                    'data-turbo-method' => :post, 'data-turbo-frame' => :_top do
-                    = invert_status_action(ticket.status)
-              .col-12.col-lg-10
-                = form_with url: brand_ticket_tags_path(ticket.brand, ticket), model: ticket.tags.new, method: :post do |tag_form|
-                  .row
+              .col-12.col-lg-6
+                .row
+                  - if policy(ticket).reply?
+                    .col-lg-1
+                      = link_to bi_icon('reply-fill', 'text-muted fs-4'),
+                        brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
+                        class: 'card-link', id: "toggle-reply-#{ticket.id}"
+                  - if policy(ticket).internal_note?
+                    .col-lg-1
+                      = link_to bi_icon('stickies', 'text-muted fs-4'),
+                        brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
+                        class: 'card-link', id: "toggle-internal-note-#{ticket.id}"
+                  - if policy(ticket).update?
                     .col-lg-10
+                      = form_with url: brand_ticket_path(ticket.brand, ticket),
+                        model: ticket, method: :patch do |invert_status_form|
+                        .row
+                          .col-6
+                            = invert_status_form.select :status,
+                              options_for_select(Ticket.statuses.keys, ticket.status),
+                              {}, required: true, class: 'custom-select form-control', id: 'ticket-status'
+                          .col-6
+                            = invert_status_form.submit 'Update Status', class: 'btn btn-primary'
+              .col-12.col-lg-6
+                = form_with url: brand_ticket_tags_path(ticket.brand, ticket),
+                  model: ticket.tags.new, method: :post do |tag_form|
+                  .row
+                    .col-lg-9
                       = tag_form.text_field :name, placeholder: 'Add tags to ticket',
                         required: true, class: 'form-control'
-                    .col-lg-2
+                    .col-lg-3
                       = tag_form.submit 'Add Tags', class: 'form-control btn-primary'

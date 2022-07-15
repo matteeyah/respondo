@@ -25,7 +25,7 @@ RSpec.describe TicketPolicy, type: :policy do
     end
   end
 
-  permissions :internal_note?, :invert_status? do
+  permissions :internal_note?, :update? do
     it 'denies access to guests' do
       expect(ticket_policy).not_to permit(nil, ticket)
     end

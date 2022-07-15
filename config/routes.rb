@@ -22,9 +22,7 @@ Rails.application.routes.draw do
 
   resources :brands, only: %i[edit update] do
     scope module: :brands do
-      resources :tickets, only: %i[index show] do
-        post :invert_status
-
+      resources :tickets, only: %i[index show update] do
         collection do
           post :refresh
         end

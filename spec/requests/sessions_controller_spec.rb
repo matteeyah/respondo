@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_request_helpers'
-require './spec/support/unauthorized_user_examples'
 require './spec/support/omniauth_helpers'
 
 RSpec.describe SessionsController, type: :request do
@@ -116,12 +115,6 @@ RSpec.describe SessionsController, type: :request do
                 it 'does not create a new account' do
                   expect { post_create }.not_to change(UserAccount, :count).from(2)
                 end
-
-                it 'sets the flash' do
-                  post_create
-
-                  expect(controller.flash[:danger]).to start_with('Could not authenticate user.')
-                end
               end
             end
 
@@ -174,12 +167,6 @@ RSpec.describe SessionsController, type: :request do
 
               expect(controller).to redirect_to(root_path)
             end
-
-            it 'sets the flash' do
-              post_create
-
-              expect(controller.flash[:warning]).to eq('User is not signed in.')
-            end
           end
 
           context 'when user is signed in' do
@@ -219,12 +206,6 @@ RSpec.describe SessionsController, type: :request do
 
                   it 'does not create a new account' do
                     expect { post_create }.not_to change(BrandAccount, :count).from(1)
-                  end
-
-                  it 'sets the flash' do
-                    post_create
-
-                    expect(controller.flash[:danger]).to start_with('Could not authenticate brand.')
                   end
                 end
               end
@@ -331,13 +312,6 @@ RSpec.describe SessionsController, type: :request do
     end
 
     context 'when user is not signed in' do
-      it 'sets the alert flash' do
-        delete_destroy
-        follow_redirect!
-
-        expect(controller.flash[:warning]).to eq('You are not signed in.')
-      end
-
       it 'redirects the user to login' do
         expect(delete_destroy).to redirect_to(login_path)
       end

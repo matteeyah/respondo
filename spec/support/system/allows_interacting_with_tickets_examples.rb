@@ -78,6 +78,8 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     within("#ticket_#{target_ticket.id}") do
       page.find(:css, 'i.bi-check-circle-fill').click
+      select 'solved', from: 'ticket-status'
+      click_button 'Update Status'
     end
 
     click_link 'Solved Tickets'

@@ -26,14 +26,17 @@
                   %p.text-muted.mb-4 Sign in is only available with a Google or Microsoft AD account.
                   %hr
                   .d-grid.gap-3
-                    = auth_provider_link('google_oauth2', 'user', { class: 'btn form-control btn-primary' }, origin: '/') do
+                    = auth_provider_link('google_oauth2', 'user',
+                      { class: 'btn form-control btn-primary' }, origin: '/') do
                       %i.bi.bi-google
                       %span Sign in with Google
-                    = auth_provider_link('activedirectory', 'user', { class: 'btn form-control btn-info text-light' }, origin: '/') do
+                    = auth_provider_link('activedirectory', 'user',
+                      { class: 'btn form-control btn-info text-light' }, origin: '/') do
                       %i.bi.bi-microsoft
                       %span Sign in with Microsoft AD
                     - if Rails.env.development?
-                      = auth_provider_link('developer', 'user', { class: 'btn form-control btn-danger text-light' }, origin: '/') do
+                      = auth_provider_link('developer', 'user',
+                        { class: 'btn form-control btn-danger text-light' }, origin: '/') do
                         %i.bi.bi-code-slash
                         %span Developer Sign In
     %footer.footer.mt-auto.text-center.text-muted 2022 © Respondo Ltd. All Rights Reserved.

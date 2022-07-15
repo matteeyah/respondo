@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_request_helpers'
-require './spec/support/unauthorized_user_examples'
 
 RSpec.describe Brands::TicketsController, type: :request do
   include SignInOutRequestHelpers
@@ -130,7 +129,9 @@ RSpec.describe Brands::TicketsController, type: :request do
         let(:query) { '' }
         let(:ticket_status) { nil }
 
-        include_examples 'unauthorized user examples', 'You are not authorized.'
+        it 'redirects the user back (to root)' do
+          expect(get_index).to redirect_to(root_path)
+        end
       end
     end
 
@@ -138,7 +139,9 @@ RSpec.describe Brands::TicketsController, type: :request do
       let(:query) { '' }
       let(:ticket_status) { nil }
 
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      it 'redirects the user back (to root)' do
+        expect(get_index).to redirect_to(root_path)
+      end
     end
   end
 
@@ -167,19 +170,24 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not authorized.'
+        it 'redirects the user back (to root)' do
+          expect(get_show).to redirect_to(root_path)
+        end
       end
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      it 'redirects the user back (to root)' do
+        expect(get_show).to redirect_to(root_path)
+      end
     end
   end
 
-  describe 'POST invert_status' do
-    subject(:post_invert_status) { post "/brands/#{brand.id}/tickets/#{ticket.id}/invert_status" }
+  describe 'PATCH update' do
+    subject(:patch_update) { patch "/brands/#{brand.id}/tickets/#{ticket.id}", params: { ticket: { status: } } }
 
     let(:ticket) { create(:internal_ticket, brand:).base_ticket }
+    let(:status) { 'solved' }
 
     context 'when user is signed in' do
       let(:user) { create(:user, :with_account) }
@@ -193,68 +201,28 @@ RSpec.describe Brands::TicketsController, type: :request do
           user.update!(brand:)
         end
 
-        context 'when brand has subscription' do
-          before do
-            create(:subscription, brand:)
-          end
-
-          context 'when the ticket is open' do
-            before do
-              ticket.update!(status: 'open')
-            end
-
-            it 'solves the ticket' do
-              expect { post_invert_status }.to change { ticket.reload.status }.from('open').to('solved')
-            end
-
-            it 'sets the flash' do
-              post_invert_status
-
-              expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
-            end
-
-            it 'redirects to brand tickets path' do
-              post_invert_status
-
-              expect(response).to redirect_to(brand_tickets_path(brand, status: 'open'))
-            end
-          end
-
-          context 'when the ticket is solved' do
-            before do
-              ticket.update!(status: 'solved')
-            end
-
-            it 'opens the ticket' do
-              expect { post_invert_status }.to change { ticket.reload.status }.from('solved').to('open')
-            end
-
-            it 'sets the flash' do
-              post_invert_status
-
-              expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
-            end
-
-            it 'redirects to brand tickets path' do
-              post_invert_status
-
-              expect(response).to redirect_to(brand_tickets_path(brand, status: 'solved'))
-            end
-          end
+        it 'solves the ticket' do
+          expect { patch_update }.to change { ticket.reload.status }.from('open').to('solved')
         end
 
-        context 'when brand does not have subscription' do
-          include_examples 'unauthorized user examples', 'You do not have an active subscription.'
+        it 'redirects to brand tickets path' do
+          patch_update
+
+          expect(response).to redirect_to(brand_tickets_path(brand, status: 'open'))
         end
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not authorized.'
+        it 'redirects the user back (to root)' do
+          expect(patch_update).to redirect_to(root_path)
+        end
       end
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      it 'redirects the user back (to root)' do
+        expect(patch_update).to redirect_to(root_path)
+      end
     end
   end
 
@@ -285,14 +253,6 @@ RSpec.describe Brands::TicketsController, type: :request do
           expect(load_new_tickets_job_class).to have_received(:perform_later)
         end
 
-        it 'sets the flash' do
-          post_refresh
-
-          expect(controller.flash[:success]).to eq(
-            'Tickets will be loaded asynchronously. Refresh the page to see new tickets once they load.'
-          )
-        end
-
         it 'redirects to brand tickets path' do
           post_refresh
 
@@ -301,12 +261,16 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not authorized.'
+        it 'redirects the user back (to root)' do
+          expect(post_refresh).to redirect_to(root_path)
+        end
       end
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      it 'redirects the user back (to root)' do
+        expect(post_refresh).to redirect_to(root_path)
+      end
     end
   end
 end

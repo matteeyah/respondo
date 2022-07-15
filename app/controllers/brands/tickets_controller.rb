@@ -21,19 +21,15 @@ module Brands
       @action_form = params[:action_form]
     end
 
-    def invert_status
+    def update
       authorize(ticket)
-      authorize(brand, :subscription?)
 
-      case ticket.status
-      when 'open'
-        ticket.solve!
-      when 'solved'
-        ticket.reopen!
+      ticket.update(update_params)
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to brand_tickets_path(brand, status: ticket.status_before_last_save) }
       end
-
-      redirect_to brand_tickets_path(brand, status: ticket.status_before_last_save),
-                  flash: { success: 'Ticket status successfully changed.' }
     end
 
     def refresh
@@ -42,8 +38,10 @@ module Brands
 
       LoadNewTicketsJob.perform_later(brand.id)
 
-      flash = { success: 'Tickets will be loaded asynchronously. Refresh the page to see new tickets once they load.' }
-      redirect_to brand_tickets_path(brand), flash:
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to brand_tickets_path(brand) }
+      end
     end
 
     private
@@ -54,6 +52,10 @@ module Brands
 
     def tickets
       TicketsQuery.new(brand.tickets, params.slice(:status, :query)).call
+    end
+
+    def update_params
+      params.require(:ticket).permit(:status)
     end
   end
 end
