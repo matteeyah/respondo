@@ -176,10 +176,11 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
   end
 
-  describe 'POST invert_status' do
-    subject(:post_invert_status) { post "/brands/#{brand.id}/tickets/#{ticket.id}/invert_status" }
+  describe 'PATCH update' do
+    subject(:patch_update) { patch "/brands/#{brand.id}/tickets/#{ticket.id}", params: { ticket: { status: } } }
 
     let(:ticket) { create(:internal_ticket, brand:).base_ticket }
+    let(:status) { 'solved' }
 
     context 'when user is signed in' do
       let(:user) { create(:user, :with_account) }
@@ -193,58 +194,14 @@ RSpec.describe Brands::TicketsController, type: :request do
           user.update!(brand:)
         end
 
-        context 'when brand has subscription' do
-          before do
-            create(:subscription, brand:)
-          end
-
-          context 'when the ticket is open' do
-            before do
-              ticket.update!(status: 'open')
-            end
-
-            it 'solves the ticket' do
-              expect { post_invert_status }.to change { ticket.reload.status }.from('open').to('solved')
-            end
-
-            it 'sets the flash' do
-              post_invert_status
-
-              expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
-            end
-
-            it 'redirects to brand tickets path' do
-              post_invert_status
-
-              expect(response).to redirect_to(brand_tickets_path(brand, status: 'open'))
-            end
-          end
-
-          context 'when the ticket is solved' do
-            before do
-              ticket.update!(status: 'solved')
-            end
-
-            it 'opens the ticket' do
-              expect { post_invert_status }.to change { ticket.reload.status }.from('solved').to('open')
-            end
-
-            it 'sets the flash' do
-              post_invert_status
-
-              expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
-            end
-
-            it 'redirects to brand tickets path' do
-              post_invert_status
-
-              expect(response).to redirect_to(brand_tickets_path(brand, status: 'solved'))
-            end
-          end
+        it 'solves the ticket' do
+          expect { patch_update }.to change { ticket.reload.status }.from('open').to('solved')
         end
 
-        context 'when brand does not have subscription' do
-          include_examples 'unauthorized user examples', 'You do not have an active subscription.'
+        it 'redirects to brand tickets path' do
+          patch_update
+
+          expect(response).to redirect_to(brand_tickets_path(brand, status: 'open'))
         end
       end
 
@@ -283,14 +240,6 @@ RSpec.describe Brands::TicketsController, type: :request do
           post_refresh
 
           expect(load_new_tickets_job_class).to have_received(:perform_later)
-        end
-
-        it 'sets the flash' do
-          post_refresh
-
-          expect(controller.flash[:success]).to eq(
-            'Tickets will be loaded asynchronously. Refresh the page to see new tickets once they load.'
-          )
         end
 
         it 'redirects to brand tickets path' do

@@ -32,9 +32,5 @@ RSpec.describe LoadNewTicketsJob, type: :job do
     it 'creates ticket' do
       expect { perform_now }.to change(Ticket, :count).from(1).to(3)
     end
-
-    it 'opens parent ticket' do
-      expect { perform_now }.to change { parent.reload.status }.from('solved').to('open')
-    end
   end
 end

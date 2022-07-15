@@ -9,4 +9,5 @@
     %h6 Add account
     %hr.border-2.border-top
     .list-group#account-providers
-      = render partial: 'shared/account_provider', collection: model.accounts.klass.providers.keys, locals: { model: }, as: :provider
+      = render partial: 'shared/account_provider', collection: model.accounts.klass.providers.keys,
+        locals: { model: }, as: :provider
