@@ -65,7 +65,8 @@
                   = link_to bi_icon('reply-fill', 'text-muted fs-4'), brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
                     class: 'card-link', id: "toggle-reply-#{ticket.id}"
                 - if policy(ticket).internal_note?
-                  = link_to bi_icon('stickies', 'text-muted fs-4'), brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
+                  = link_to bi_icon('stickies', 'text-muted fs-4'),
+                    brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
                     class: 'card-link', id: "toggle-internal-note-#{ticket.id}"
                 - if policy(ticket).invert_status?
                   = link_to brand_ticket_invert_status_path(ticket.brand, ticket), class: 'card-link',

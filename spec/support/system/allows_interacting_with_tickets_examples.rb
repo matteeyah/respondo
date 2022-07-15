@@ -77,7 +77,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     click_link('Brand Tickets')
 
     within("#ticket_#{target_ticket.id}") do
-      page.find(:css, 'i.bi-check-lg').click
+      page.find(:css, 'i.bi-check-circle-fill').click
     end
 
     click_link 'Solved Tickets'
