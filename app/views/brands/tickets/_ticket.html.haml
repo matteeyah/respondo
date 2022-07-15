@@ -83,7 +83,7 @@
                           .col-6
                             = invert_status_form.select :status,
                               options_for_select(Ticket.statuses.keys, ticket.status),
-                              {}, required: true, class: 'custom-select form-control'
+                              {}, required: true, class: 'custom-select form-control', id: 'ticket-status'
                           .col-6
                             = invert_status_form.submit 'Update Status', class: 'btn btn-primary'
               .col-12.col-lg-6
