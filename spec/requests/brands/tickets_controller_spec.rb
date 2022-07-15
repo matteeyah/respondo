@@ -138,7 +138,7 @@ RSpec.describe Brands::TicketsController, type: :request do
       let(:query) { '' }
       let(:ticket_status) { nil }
 
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      include_examples 'unauthorized user examples', 'You are not authorized.'
     end
   end
 
@@ -172,7 +172,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      include_examples 'unauthorized user examples', 'You are not authorized.'
     end
   end
 
@@ -211,7 +211,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      include_examples 'unauthorized user examples', 'You are not authorized.'
     end
   end
 
@@ -255,7 +255,7 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      include_examples 'unauthorized user examples', 'You are not authorized.'
     end
   end
 end
