@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require './spec/support/sign_in_out_request_helpers'
-require './spec/support/unauthorized_user_examples'
 
 RSpec.describe Brands::TicketsController, type: :request do
   include SignInOutRequestHelpers
@@ -130,7 +129,9 @@ RSpec.describe Brands::TicketsController, type: :request do
         let(:query) { '' }
         let(:ticket_status) { nil }
 
-        include_examples 'unauthorized user examples', 'You are not authorized.'
+        it 'redirects the user back (to root)' do
+          expect(get_index).to redirect_to(root_path)
+        end
       end
     end
 
@@ -138,7 +139,9 @@ RSpec.describe Brands::TicketsController, type: :request do
       let(:query) { '' }
       let(:ticket_status) { nil }
 
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      it 'redirects the user back (to root)' do
+        expect(get_index).to redirect_to(root_path)
+      end
     end
   end
 
@@ -167,12 +170,16 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not authorized.'
+        it 'redirects the user back (to root)' do
+          expect(get_show).to redirect_to(root_path)
+        end
       end
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      it 'redirects the user back (to root)' do
+        expect(get_show).to redirect_to(root_path)
+      end
     end
   end
 
@@ -206,12 +213,16 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not authorized.'
+        it 'redirects the user back (to root)' do
+          expect(patch_update).to redirect_to(root_path)
+        end
       end
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      it 'redirects the user back (to root)' do
+        expect(patch_update).to redirect_to(root_path)
+      end
     end
   end
 
@@ -250,12 +261,16 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
 
       context 'when user is not authorized' do
-        include_examples 'unauthorized user examples', 'You are not authorized.'
+        it 'redirects the user back (to root)' do
+          expect(post_refresh).to redirect_to(root_path)
+        end
       end
     end
 
     context 'when user is not signed in' do
-      include_examples 'unauthorized user examples', 'You are not signed in.'
+      it 'redirects the user back (to root)' do
+        expect(post_refresh).to redirect_to(root_path)
+      end
     end
   end
 end

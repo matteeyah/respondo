@@ -3,10 +3,6 @@
 class ApplicationPolicy
   attr_reader :user, :record
 
-  NOT_AUTHORIZED_ERROR_MESSAGES = {
-    subscription?: 'You do not have an active subscription.'
-  }.freeze
-
   def initialize(user, record)
     @user = user
     @record = record
