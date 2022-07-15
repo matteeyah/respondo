@@ -207,12 +207,6 @@ RSpec.describe Brands::TicketsController, type: :request do
               expect { post_invert_status }.to change { ticket.reload.status }.from('open').to('solved')
             end
 
-            it 'sets the flash' do
-              post_invert_status
-
-              expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
-            end
-
             it 'redirects to brand tickets path' do
               post_invert_status
 
@@ -227,12 +221,6 @@ RSpec.describe Brands::TicketsController, type: :request do
 
             it 'opens the ticket' do
               expect { post_invert_status }.to change { ticket.reload.status }.from('solved').to('open')
-            end
-
-            it 'sets the flash' do
-              post_invert_status
-
-              expect(controller.flash[:success]).to eq('Ticket status successfully changed.')
             end
 
             it 'redirects to brand tickets path' do
@@ -283,14 +271,6 @@ RSpec.describe Brands::TicketsController, type: :request do
           post_refresh
 
           expect(load_new_tickets_job_class).to have_received(:perform_later)
-        end
-
-        it 'sets the flash' do
-          post_refresh
-
-          expect(controller.flash[:success]).to eq(
-            'Tickets will be loaded asynchronously. Refresh the page to see new tickets once they load.'
-          )
         end
 
         it 'redirects to brand tickets path' do

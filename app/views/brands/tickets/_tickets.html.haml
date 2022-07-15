@@ -1,4 +1,4 @@
-%ul.list-group
+%ul.list-group#tickets
   - tickets.each do |ticket, replies|
     %li.list-group-item.bg-transparent.border-0
       = turbo_frame_tag dom_id(ticket) do

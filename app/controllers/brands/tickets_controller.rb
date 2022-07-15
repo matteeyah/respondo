@@ -32,8 +32,10 @@ module Brands
         ticket.reopen!
       end
 
-      redirect_to brand_tickets_path(brand, status: ticket.status_before_last_save),
-                  flash: { success: 'Ticket status successfully changed.' }
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to brand_tickets_path(brand, status: ticket.status_before_last_save) }
+      end
     end
 
     def refresh
@@ -42,8 +44,10 @@ module Brands
 
       LoadNewTicketsJob.perform_later(brand.id)
 
-      flash = { success: 'Tickets will be loaded asynchronously. Refresh the page to see new tickets once they load.' }
-      redirect_to brand_tickets_path(brand), flash:
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to edit_brand_path(brand) }
+      end
     end
 
     private
