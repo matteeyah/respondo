@@ -17,24 +17,8 @@ class Ticket < ApplicationRecord
   acts_as_taggable_on :tags
 
   aasm column: :status, enum: true do
-    state :open, initial: true, before_enter: proc { parent&.solved? && parent&.reopen! }
+    state :open, initial: true
     state :solved
-
-    event :reopen do
-      before do
-        ancestors.update_all(status: 'open') # rubocop:disable Rails/SkipsModelValidations
-      end
-
-      transitions from: :solved, to: :open
-    end
-
-    event :solve do
-      before do
-        descendants.update_all(status: 'solved') # rubocop:disable Rails/SkipsModelValidations
-      end
-
-      transitions from: :open, to: :solved
-    end
   end
 
   scope :root, -> { where(parent: nil) }
@@ -85,10 +69,6 @@ class Ticket < ApplicationRecord
       RecursiveCteQuery.new(all, model_column: :parent_id, recursive_cte_column: :id).call
     end
 
-    def with_ancestors
-      RecursiveCteQuery.new(all, model_column: :id, recursive_cte_column: :parent_id).call
-    end
-
     private
 
     def convert_ticket_array_to_hash(tickets)
@@ -110,13 +90,5 @@ class Ticket < ApplicationRecord
     return unless parent.brand != brand
 
     errors.add(:parent, 'must be in same brand as ticket')
-  end
-
-  def descendants
-    Ticket.where(id:).with_descendants.where.not(id:)
-  end
-
-  def ancestors
-    Ticket.where(id:).with_ancestors.where.not(id:)
   end
 end

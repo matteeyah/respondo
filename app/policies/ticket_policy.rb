@@ -11,17 +11,17 @@ class TicketPolicy < ApplicationPolicy
       user.brand == record.brand
   end
 
+  def update?
+    user &&
+      user.brand == record.brand
+  end
+
   def reply?
     user &&
       user.brand == record.brand
   end
 
   def internal_note?
-    user &&
-      user.brand == record.brand
-  end
-
-  def invert_status?
     user &&
       user.brand == record.brand
   end

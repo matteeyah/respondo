@@ -21,16 +21,10 @@ module Brands
       @action_form = params[:action_form]
     end
 
-    def invert_status
+    def update
       authorize(ticket)
-      authorize(brand, :subscription?)
 
-      case ticket.status
-      when 'open'
-        ticket.solve!
-      when 'solved'
-        ticket.reopen!
-      end
+      ticket.update(update_params)
 
       respond_to do |format|
         format.turbo_stream
@@ -46,7 +40,7 @@ module Brands
 
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to edit_brand_path(brand) }
+        format.html { redirect_to brand_tickets_path(brand) }
       end
     end
 
@@ -58,6 +52,10 @@ module Brands
 
     def tickets
       TicketsQuery.new(brand.tickets, params.slice(:status, :query)).call
+    end
+
+    def update_params
+      params.require(:ticket).permit(:status)
     end
   end
 end
