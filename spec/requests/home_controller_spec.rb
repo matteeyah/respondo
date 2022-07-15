@@ -24,13 +24,6 @@ RSpec.describe HomeController, type: :request do
     end
 
     context 'when user is not signed in' do
-      it 'sets the alert flash' do
-        get_index
-        follow_redirect!
-
-        expect(controller.flash[:warning]).to eq('You are not signed in.')
-      end
-
       it 'redirects the user to login' do
         expect(get_index).to redirect_to(login_path)
       end

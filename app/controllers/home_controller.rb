@@ -17,6 +17,6 @@ class HomeController < ApplicationController
   def authenticate!
     return unless current_user.nil?
 
-    redirect_back fallback_location: login_path, flash: { warning: 'You are not signed in.' }
+    redirect_back fallback_location: login_path
   end
 end

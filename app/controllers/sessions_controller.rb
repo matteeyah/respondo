@@ -29,29 +29,21 @@ class SessionsController < ApplicationController
   def authenticate!
     return unless current_user.nil?
 
-    redirect_back fallback_location: login_path, flash: { warning: 'You are not signed in.' }
+    redirect_back fallback_location: login_path
   end
 
   def authenticate_user(auth_hash)
     account = UserAccount.from_omniauth(auth_hash, current_user)
 
-    if account.persisted?
-      sign_in(account.user) if current_user.nil?
-    else
-      flash[:danger] = "Could not authenticate user.\n#{account_errors(account)}"
-    end
+    sign_in(account.user) if account.persisted? && current_user.nil?
   end
 
   def authenticate_brand(auth_hash)
-    return flash[:warning] = 'User is not signed in.' if current_user.nil?
+    return if current_user.nil?
 
     account = BrandAccount.from_omniauth(auth_hash, current_brand)
 
-    if account.persisted?
-      current_user.update(brand: account.brand)
-    else
-      flash[:danger] = "Could not authenticate brand.\n#{account_errors(account)}"
-    end
+    current_user.update(brand: account.brand) if account.persisted?
   end
 
   def account_errors(account)
