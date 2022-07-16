@@ -79,14 +79,14 @@
                   - if policy(ticket).update?
                     .col-lg-10
                       = form_with url: brand_ticket_path(ticket.brand, ticket),
-                        model: ticket, method: :patch do |invert_status_form|
+                        model: ticket, method: :patch do |status_form|
                         .row
                           .col-6
-                            = invert_status_form.select :status,
+                            = status_form.select :status,
                               options_for_select(Ticket.statuses.keys, ticket.status),
                               {}, required: true, class: 'custom-select form-control', id: 'ticket-status'
                           .col-6
-                            = invert_status_form.submit 'Update Status', class: 'btn btn-primary'
+                            = status_form.submit 'Update Status', class: 'btn btn-primary'
               .col-12.col-lg-6
                 = form_with url: brand_ticket_tags_path(ticket.brand, ticket),
                   model: ticket.tags.new, method: :post do |tag_form|
