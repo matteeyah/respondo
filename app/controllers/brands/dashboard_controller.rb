@@ -5,11 +5,12 @@ module Brands
     include Pundit::Authorization
 
     def index
-      authorize(brand, policy_class: TicketPolicy)
-      @newest = newest_tickets.take(3)
+      authorize(brand, :user_in_brand?)
+
+      @newest_tickets = newest_tickets
+      @new_count = new_tickets.count
       @open_count = current_brand.tickets.open.count
       @solved_count = current_brand.tickets.solved.count
-      @new_count = new_tickets.count
     end
 
     private
@@ -19,7 +20,7 @@ module Brands
     end
 
     def newest_tickets
-      current_brand.tickets.order(created_at: :desc)
+      current_brand.tickets.order(created_at: :desc).take(3)
     end
   end
 end
