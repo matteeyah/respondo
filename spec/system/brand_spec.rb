@@ -18,7 +18,7 @@ RSpec.describe 'Brand', type: :system do
   it 'shows the tickets' do
     user = create(:user, :with_account, brand:)
     sign_in_user(user)
-    click_link('Tickets')
+    click_link('Brand Tickets')
 
     expect(page).to have_text(tickets.first.content)
     expect(page).to have_text(tickets.first.author.username)
@@ -34,7 +34,7 @@ RSpec.describe 'Brand', type: :system do
   it 'allows navigating to tickets' do
     sign_in_user
     sign_in_brand(brand)
-    click_link('Tickets')
+    click_link('Brand Tickets')
 
     target_ticket = tickets.first
 
@@ -49,7 +49,7 @@ RSpec.describe 'Brand', type: :system do
     it 'allows searching tickets by author name' do
       sign_in_user
       sign_in_brand(brand)
-      click_link('Tickets')
+      click_link('Brand Tickets')
 
       fill_in 'query', with: tickets.first.author.username
       click_button 'Search'
@@ -61,7 +61,7 @@ RSpec.describe 'Brand', type: :system do
     it 'allows searching tickets by content' do
       sign_in_user
       sign_in_brand(brand)
-      click_link('Tickets')
+      click_link('Brand Tickets')
 
       fill_in 'query', with: tickets.first.content
       click_button 'Search'
@@ -76,7 +76,7 @@ RSpec.describe 'Brand', type: :system do
 
       sign_in_user
       sign_in_brand(brand)
-      click_link('Tickets')
+      click_link('Brand Tickets')
 
       click_link 'Solved Tickets'
 
@@ -98,7 +98,7 @@ RSpec.describe 'Brand', type: :system do
 
       sign_in_user
       sign_in_brand(brand)
-      click_link('Tickets')
+      click_link('Brand Tickets')
 
       fill_in 'query', with: nested_ticket.content
       click_button 'Search'

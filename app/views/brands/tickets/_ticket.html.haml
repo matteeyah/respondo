@@ -1,6 +1,6 @@
 .row
   .col-12
-    .card.mt-5
+    .card.mb-5
       .card-header
         .row
           .col-4.col-lg-5
@@ -9,10 +9,10 @@
             %span.small.text-muted= ticket.created_at.to_formatted_s(:short)
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
             - ticket.tags.each do |tag|
-              %span.badge.rounded-pill.bg-primary
+              %span.badge.rounded-pill.bg-primary.me-1
                 = tag.name
                 = link_to brand_ticket_tag_path(ticket.brand, ticket, tag), 'data-turbo-method': :delete do
-                  = bi_icon('trash3-fill', 'text-white')
+                  = bi_icon('x', 'text-white')
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
             - if ticket.parent_id.nil?
               .text-primary= bi_icon(ticket.actual_provider)
@@ -26,9 +26,10 @@
       - if policy(ticket).internal_note? && ticket.internal_notes.any?
         %ul.list-group.list-group-flush
           - ticket.internal_notes.each do |internal_note|
-            %li.list-group-item.list-group-item-warning
-              %span.me-1 #{internal_note.creator.name}:
-              %span= internal_note.content
+            %li.list-group-item.list-group-item-primary
+              %span.small= bi_icon('sticky')
+              %span.small.me-1 #{internal_note.creator.name}:
+              %span.small= internal_note.content
 
       .card-footer
         - if policy(ticket.brand).subscription? || Flipper.enabled?(:disable_subscriptions)
@@ -67,25 +68,25 @@
                 .row
                   - if policy(ticket).reply?
                     .col-lg-1
-                      = link_to bi_icon('reply', 'fs-5'),
+                      = link_to bi_icon('reply-fill', 'text-muted fs-4'),
                         brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
                         class: 'card-link', id: "toggle-reply-#{ticket.id}"
                   - if policy(ticket).internal_note?
                     .col-lg-1
-                      = link_to bi_icon('sticky', 'fs-5'),
+                      = link_to bi_icon('stickies', 'text-muted fs-4'),
                         brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
                         class: 'card-link', id: "toggle-internal-note-#{ticket.id}"
                   - if policy(ticket).update?
                     .col-lg-10
                       = form_with url: brand_ticket_path(ticket.brand, ticket),
-                        model: ticket, method: :patch do |invert_status_form|
+                        model: ticket, method: :patch do |status_form|
                         .row
                           .col-6
-                            = invert_status_form.select :status,
+                            = status_form.select :status,
                               options_for_select(Ticket.statuses.keys, ticket.status),
                               {}, required: true, class: 'custom-select form-control', id: 'ticket-status'
                           .col-6
-                            = invert_status_form.submit 'Update Status', class: 'btn btn-primary'
+                            = status_form.submit 'Update Status', class: 'btn btn-primary'
               .col-12.col-lg-6
                 = form_with url: brand_ticket_tags_path(ticket.brand, ticket),
                   model: ticket.tags.new, method: :post do |tag_form|

@@ -14,7 +14,7 @@ RSpec.describe 'Brands', type: :system do
     sign_in_user
     sign_in_brand(brands.first)
 
-    click_link 'Tickets'
+    click_link('Brand Tickets')
 
     expect(page).to have_text("Tickets (#{brands.first.screen_name})")
   end

@@ -8,18 +8,18 @@
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
-  %body.d-flex.flex-column.min-vh-100.bg-default
+  %body.d-flex.flex-column.min-vh-100
     .account-pages.pt-sm-5.pb-sm-5.pt-2.pb-4.my-auto
       .container
         .row.justify-content-center
           .col-xxl-4.col-lg-5
             .card
-              .card-header.pt-4.pb-4.text-center.bg-default
-                .row
-                  .col-12.col-lg-6.mx-auto
+              .card-header.pt-4.pb-4.text-center.bg-default.opacity-75
+                .row.mb-3
+                  .col-6.mx-auto
                     = image_tag('logo_circle_white.svg', class: 'img-fluid')
                 .row
-                  .col-12.col-lg-6.mx-auto.fs-3.text-light Respondo
+                  .col-6.mx-auto.fs-3.text-light Respondo
 
               .card-body.p-4
                 .text-center.w-75.m-auto
@@ -39,4 +39,4 @@
                         { class: 'btn form-control btn-danger text-light' }, origin: '/') do
                         %i.bi.bi-code-slash
                         %span Developer Sign In
-    %footer.footer.mt-auto.text-center.text-light 2022 © Respondo Ltd. All Rights Reserved.
+    %footer.footer.mt-auto.text-center.text-muted 2022 © Respondo Ltd. All Rights Reserved.

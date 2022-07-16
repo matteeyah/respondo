@@ -45,6 +45,10 @@ body {
   background: var(--background-gradient);
 }
 
+.card-header.bg-default {
+  opacity: 0.85;
+}
+
 @include media-breakpoint-down(lg) {
   .navbar .navbar-brand img {
     max-width: 5rem;

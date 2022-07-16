@@ -1,38 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe TicketsHelper, type: :helper do
-  describe '#invert_status_action' do
-    subject(:invert_status_action) { helper.invert_status_action(status) }
-
-    context 'when status is open' do
-      let(:status) { 'open' }
-
-      it { is_expected.to eq(helper.bi_icon('check-lg', 'text-success fs-5')) }
-    end
-
-    context 'when status is solved' do
-      let(:status) { 'solved' }
-
-      it { is_expected.to eq(helper.bi_icon('folder2-open', 'text-warning fs-5')) }
-    end
-  end
-
-  describe '#invert_status_action_text' do
-    subject(:invert_status_action_text) { helper.invert_status_action_text(status) }
-
-    context 'when status is open' do
-      let(:status) { 'open' }
-
-      it { is_expected.to eq('Solve') }
-    end
-
-    context 'when status is solved' do
-      let(:status) { 'solved' }
-
-      it { is_expected.to eq('Open') }
-    end
-  end
-
   describe '#ticket_author_header' do
     subject(:ticket_author_header) { helper.ticket_author_header(user_authorized, ticket) }
 

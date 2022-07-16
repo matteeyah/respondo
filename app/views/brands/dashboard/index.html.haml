@@ -1,0 +1,54 @@
+.row
+  .col-12
+    %h3 Welcome to your dashboard, #{current_user.name}!
+.row
+.col-12
+  %p.text-muted You're all set! Feel free to hop into the brand tickets!
+.row
+  .col-12.col-lg-4
+    .row.mb-3
+      .col-6
+        .card
+          .card-body.text-center
+            = link_to brand_tickets_path(current_brand),
+              { class: 'text-decoration-none' } do
+              = bi_icon('app-indicator', 'fs-4 text-muted')
+              %h3.text-primary= @new_count
+              %p.text-muted.font-15.mb-0 New Tickets
+      .col-6
+        .card
+          .card-body.text-center
+            = link_to brand_tickets_path(current_brand),
+              { class: 'text-decoration-none' } do
+              = bi_icon('envelope-open', 'fs-4 text-muted')
+              %h3.text-primary= @open_count
+              %p.text-muted.font-15.mb-0 Total Open
+    .row.mb-3
+      .col-6
+        .card
+          .card-body.text-center
+            = link_to brand_tickets_path(current_brand),
+              { class: 'text-decoration-none' } do
+              = bi_icon('check2-circle', 'fs-4 text-muted')
+              %h3.text-primary= @solved_count
+              %p.text-muted.font-15.mb-0 Total Resolved
+      .col-6
+        .card
+          .card-body.text-center
+            = link_to brand_tickets_path(current_brand),
+              { class: 'text-decoration-none' } do
+              = bi_icon('stopwatch', 'fs-4 text-muted')
+              %h3.text-primary 1
+              %p.text-muted.font-15.mb-0 On-hold
+  .col-12.col-lg-8
+    .card
+      .card-body
+        .d-flex.justify-content-between.align-items-center.mb-2
+          %span.lead.text-muted Newest
+          = active_link_to brand_tickets_path(current_brand),
+           { active: :exclusive, class: 'text-decoration-none', 'data-turbo-frame' => :_top } do
+            = bi_icon('box-arrow-up-right')
+        .table-responsive
+          %table.table.table-centered.table-nowrap.table-hover.mb-0
+            %tbody
+              = render partial: 'ticket', collection: @newest_tickets

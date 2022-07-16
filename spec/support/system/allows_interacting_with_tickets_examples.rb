@@ -4,7 +4,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
   it 'allows replying to ticket' do
     user = sign_in_user
     sign_in_brand(brand)
-    click_link('Tickets')
+    click_link('Brand Tickets')
 
     account = brand.accounts.first
     account.update!(token: 'hello', secret: 'world')
@@ -29,7 +29,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
   it 'allows replying to external tickets' do
     user = sign_in_user
     sign_in_brand(brand)
-    click_link('Tickets')
+    click_link('Brand Tickets')
 
     response_text = 'Hello from Respondo system tests'
     target_ticket.ticketable = create(:external_ticket, response_url: 'https://example.com')
@@ -58,7 +58,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
   it 'allows leaving internal notes on tickets' do
     user = sign_in_user
     sign_in_brand(brand)
-    click_link('Tickets')
+    click_link('Brand Tickets')
 
     internal_note_text = 'Internal note from Respondo system tests.'
 
@@ -74,7 +74,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
   it 'allows solving tickets' do
     sign_in_user
     sign_in_brand(brand)
-    click_link('Tickets')
+    click_link('Brand Tickets')
 
     within("#ticket_#{target_ticket.id}") do
       select 'solved', from: 'ticket-status'
@@ -110,7 +110,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     within("#ticket_#{target_ticket.id}") do
       within('span', text: 'hello') do
-        page.find(:css, 'i.bi-trash3-fill').click
+        page.find(:css, 'i.bi-x').click
       end
     end
 
