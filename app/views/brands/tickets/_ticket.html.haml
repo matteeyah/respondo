@@ -4,21 +4,25 @@
       .card-header
         .row
           .col-4.col-lg-5
-            %p.m-0!= ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)
+            =bi_icon('person-circle', 'text-primary')
+            %span.m-0!= ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)
+            - if ticket.parent_id.nil?
+              %span.m-0 via
+              %span.badge.rounded-pill.list-group-item-primary.me-1
+                = bi_icon(ticket.actual_provider)
+                #{ticket.actual_provider}
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-center
             %span.small.text-muted= ticket.created_at.to_formatted_s(:short)
-          .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
+          .col-4.col-lg-4.d-flex.justify-content-start.justify-content-lg-center
             - ticket.tags.each do |tag|
               %span.badge.rounded-pill.bg-primary.me-1
                 = tag.name
                 = link_to brand_ticket_tag_path(ticket.brand, ticket, tag), 'data-turbo-method': :delete do
                   = bi_icon('x', 'text-white')
-          .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
-            - if ticket.parent_id.nil?
-              .text-primary= bi_icon(ticket.actual_provider)
           .col-2.col-lg-1.d-flex.justify-content-start.justify-content-lg-end
-            = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-frame' => :_top do
-              = bi_icon('box-arrow-up-right')
+            - if ticket.parent_id.nil?
+              = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-frame' => :_top do
+                = bi_icon('sliders2')
       .card-body.mx-5
         .card-text
           %p= ticket.content
@@ -55,29 +59,32 @@
                     = form_with url: brand_ticket_internal_notes_path(ticket.brand, ticket),
                       model: ticket.internal_notes.new, method: :post,
                       html: { autocomplete: 'off' } do |internal_note_form|
-                      .input-group.mb-3
-                        = internal_note_form.text_area :content, required: true,
-                          placeholder: 'Internal Note Text', class: 'form-control'
-                        = internal_note_form.button bi_icon('x-lg'),
-                          type: :reset, class: 'btn btn-outline-danger'
-                      = internal_note_form.submit 'Post', class: 'btn btn-outline-secondary'
-                      = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket),
-                        class: 'btn btn-outline-danger'
+                      .input-group.input-group-sm.mb-3
+                        = internal_note_form.text_field :content, required: true,
+                          placeholder: 'Internal note text..', class: 'form-control'
+                        = link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
+                          class: 'btn btn-outline-secondary'
+                        = internal_note_form.submit 'Create note', class: 'btn btn-primary'
+              - when 'tag'
+                = form_with url: brand_ticket_tags_path(ticket.brand, ticket),
+                  model: ticket.tags.new, method: :post,
+                  html: { autocomplete: 'off' } do |tag_form|
+                  .input-group.input-group-sm.mb-3
+                    = tag_form.text_field :content, required: true,
+                          placeholder: 'Add tags to ticket..', class: 'form-control'
+                    = link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
+                        class: 'btn btn-outline-secondary'
+                    = tag_form.submit 'Tag ticket', class: 'btn btn-primary'
             - else
-              .col-12.col-lg-6
+              .col-12
                 .row
                   - if policy(ticket).reply?
                     .col-lg-1
                       = link_to bi_icon('reply-fill', 'text-muted fs-4'),
                         brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
-                        class: 'card-link', id: "toggle-reply-#{ticket.id}"
-                  - if policy(ticket).internal_note?
-                    .col-lg-1
-                      = link_to bi_icon('stickies', 'text-muted fs-4'),
-                        brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
-                        class: 'card-link', id: "toggle-internal-note-#{ticket.id}"
+                        class: 'card-link', id: "toggle-reply-#{ticket.id}", title: 'Reply'
                   - if policy(ticket).update?
-                    .col-lg-10
+                    .col-lg-9.d-flex.justify-content-start.justify-content-lg-center
                       = form_with url: brand_ticket_path(ticket.brand, ticket),
                         model: ticket, method: :patch do |status_form|
                         .row
@@ -87,12 +94,12 @@
                               {}, required: true, class: 'custom-select form-control', id: 'ticket-status'
                           .col-6
                             = status_form.submit 'Update Status', class: 'btn btn-primary'
-              .col-12.col-lg-6
-                = form_with url: brand_ticket_tags_path(ticket.brand, ticket),
-                  model: ticket.tags.new, method: :post do |tag_form|
-                  .row
-                    .col-lg-9
-                      = tag_form.text_field :name, placeholder: 'Add tags to ticket',
-                        required: true, class: 'form-control'
-                    .col-lg-3
-                      = tag_form.submit 'Add Tags', class: 'form-control btn-primary'
+                  .col-lg-2.d-flex.justify-content-end
+                    = link_to bi_icon('bookmark-fill', 'text-primary fs-4'),
+                        brand_ticket_path(ticket.brand, ticket, action_form: 'tag'),
+                        class: 'card-link', id: "toggle-tag-#{ticket.id}", title: 'Tag Ticket'
+                    - if policy(ticket).internal_note?
+                      = link_to bi_icon('stickies', 'text-primary fs-4'),
+                        brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
+                        class: 'card-link', id: "toggle-internal-note-#{ticket.id}", title: 'Create Internal Note'
+
