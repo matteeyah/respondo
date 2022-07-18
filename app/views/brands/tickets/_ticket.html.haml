@@ -21,12 +21,11 @@
                   = bi_icon('x', 'text-white')
           .col-2.col-lg-1.d-flex.justify-content-start.justify-content-lg-end
             - if ticket.parent_id.nil?
-              = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-frame' => :_top do
-                = bi_icon('sliders2')
+              = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-frame' => :_top, title: 'Focus mode' do
+                = bi_icon('bullseye')
       .card-body.mx-5
         .card-text
           %p= ticket.content
-
       - if policy(ticket).internal_note? && ticket.internal_notes.any?
         %ul.list-group.list-group-flush
           - ticket.internal_notes.each do |internal_note|
@@ -34,7 +33,6 @@
               %span.small= bi_icon('sticky')
               %span.small.me-1 #{internal_note.creator.name}:
               %span.small= internal_note.content
-
       .card-footer
         - if policy(ticket.brand).subscription? || Flipper.enabled?(:disable_subscriptions)
           .row
@@ -46,13 +44,12 @@
                     = form_with url: brand_ticket_replies_path(ticket.brand, ticket),
                       model: ticket.replies.new, method: :post,
                       html: { autocomplete: 'off' } do |reply_form|
-                      .input-group.mb-3
+                      .input-group.input-group-sm.mb-3
                         = reply_form.text_area :content, required: true,
                           placeholder: 'Reply Text', class: 'form-control'
-                        = reply_form.button bi_icon('x-lg'), type: :reset, class: 'btn btn-outline-danger'
-                      = reply_form.submit 'Reply', class: 'btn btn-outline-secondary'
-                      = link_to bi_icon('skip-backward'), brand_ticket_path(ticket.brand, ticket),
-                        class: 'btn btn-outline-danger'
+                        = link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
+                          class: 'btn btn-outline-secondary'
+                        = reply_form.submit 'Reply', class: 'btn btn-primary'
               - when 'internal_note'
                 - if policy(ticket).internal_note?
                   .col-12
@@ -70,36 +67,42 @@
                   model: ticket.tags.new, method: :post,
                   html: { autocomplete: 'off' } do |tag_form|
                   .input-group.input-group-sm.mb-3
-                    = tag_form.text_field :content, required: true,
+                    = tag_form.text_field :name, required: true,
                           placeholder: 'Add tags to ticket..', class: 'form-control'
                     = link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
                         class: 'btn btn-outline-secondary'
                     = tag_form.submit 'Tag ticket', class: 'btn btn-primary'
+              - when 'status'
+                = form_with url: brand_ticket_path(ticket.brand, ticket),
+                  model: ticket, method: :patch do |status_form|
+                  .input-group.input-group-sm.mb-3
+                    = status_form.select :status,
+                      options_for_select(Ticket.statuses.keys, ticket.status),
+                      {}, required: true, class: 'custom-select form-control', id: 'ticket-status'
+                    = link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
+                        class: 'btn btn-outline-secondary'
+                    = status_form.submit 'Update status', class: 'btn btn-primary'
             - else
               .col-12
                 .row
                   - if policy(ticket).reply?
-                    .col-lg-1
-                      = link_to bi_icon('reply-fill', 'text-muted fs-4'),
+                    .col-lg-4.d-flex.justify-content-start
+                      = link_to bi_icon('reply-fill', 'text-primary fs-4'),
                         brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
                         class: 'card-link', id: "toggle-reply-#{ticket.id}", title: 'Reply'
-                  - if policy(ticket).update?
-                    .col-lg-9.d-flex.justify-content-start.justify-content-lg-center
-                      = form_with url: brand_ticket_path(ticket.brand, ticket),
-                        model: ticket, method: :patch do |status_form|
-                        .row
-                          .col-6
-                            = status_form.select :status,
-                              options_for_select(Ticket.statuses.keys, ticket.status),
-                              {}, required: true, class: 'custom-select form-control', id: 'ticket-status'
-                          .col-6
-                            = status_form.submit 'Update Status', class: 'btn btn-primary'
-                  .col-lg-2.d-flex.justify-content-end
-                    = link_to bi_icon('bookmark-fill', 'text-primary fs-4'),
+                  .col-lg-4.d-flex.justify-content-center
+                    - if ticket.parent_id.nil?
+                      %span.small.text-muted Load replies
+                  .col-lg-4.d-flex.justify-content-end
+                    = link_to bi_icon('bookmark', 'text-primary fs-5'),
                         brand_ticket_path(ticket.brand, ticket, action_form: 'tag'),
                         class: 'card-link', id: "toggle-tag-#{ticket.id}", title: 'Tag Ticket'
                     - if policy(ticket).internal_note?
-                      = link_to bi_icon('stickies', 'text-primary fs-4'),
+                      = link_to bi_icon('journal-text', 'text-primary fs-5'),
                         brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
                         class: 'card-link', id: "toggle-internal-note-#{ticket.id}", title: 'Create Internal Note'
+                    - if policy(ticket).update?
+                      = link_to bi_icon('check-square-fill', 'text-primary fs-5'),
+                        brand_ticket_path(ticket.brand, ticket, action_form: 'status'),
+                        class: 'card-link', id: "toggle-status-#{ticket.id}", title: 'Resolve Ticket'
 
