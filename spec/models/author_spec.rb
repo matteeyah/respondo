@@ -193,8 +193,14 @@ RSpec.describe Author, type: :model do
       it { is_expected.to eq('https://twitter.com/helloworld') }
     end
 
-    context 'when provider is not supported' do
+    context 'when provider is disqus' do
       let(:provider) { 'disqus' }
+
+      it { is_expected.to eq('https://disqus.com/by/helloworld') }
+    end
+
+    context 'when provider is not supported' do
+      let(:provider) { 'external' }
 
       it { is_expected.to be_nil }
     end

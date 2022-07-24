@@ -7,7 +7,7 @@ RSpec.describe 'Ticket', type: :system do
   include SignInOutSystemHelpers
 
   let(:brand) { create(:brand, :with_account) }
-  let!(:ticket) { create(:internal_ticket, brand:).base_ticket }
+  let!(:ticket) { create(:internal_ticket, source: brand.accounts.first, brand:).base_ticket }
 
   before do
     create(:subscription, brand:)

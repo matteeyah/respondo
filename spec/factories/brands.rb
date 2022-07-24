@@ -7,7 +7,7 @@ FactoryBot.define do
 
   trait :with_account do
     after(:create) do |brand|
-      create(:brand_account, brand:)
+      create(:brand_account, brand:, provider: 'twitter')
     end
   end
 end

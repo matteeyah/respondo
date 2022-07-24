@@ -77,7 +77,7 @@ RSpec.describe SessionsController, type: :request do
 
           context 'when user is signed in' do
             let(:user) do
-              account_provider = (UserAccount.providers.keys - [provider]).first
+              account_provider = UserAccount.providers.except(provider, :developer).keys.sample
 
               create(:user).tap do |user|
                 create(:user_account, provider: account_provider, user:)

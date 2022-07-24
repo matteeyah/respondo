@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :user_account do
     external_uid { generate(:external_uid) }
-    provider { 'google_oauth2' }
+    provider { UserAccount.providers.except(:developer).keys.sample }
 
     user
   end

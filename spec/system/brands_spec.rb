@@ -10,7 +10,7 @@ RSpec.describe 'Brands', type: :system do
   it 'allows the user to navigate to logged in brand tickets' do
     visit '/'
 
-    create(:brand_account, brand: brands.first)
+    create(:brand_account, brand: brands.first, provider: 'twitter')
     sign_in_user
     sign_in_brand(brands.first)
 

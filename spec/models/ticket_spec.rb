@@ -151,8 +151,7 @@ RSpec.describe Ticket, type: :model do
       it_behaves_like 'from method' do
         let(:parent) do
           create(
-            :internal_ticket, external_uid: tweet.in_reply_to_tweet_id,
-                              provider: 'twitter', brand: account.brand, source: account
+            :internal_ticket, external_uid: tweet.in_reply_to_tweet_id, brand: account.brand, source: account
           ).base_ticket
         end
         let(:expected_attributes) do
@@ -179,8 +178,7 @@ RSpec.describe Ticket, type: :model do
       it_behaves_like 'from method' do
         let(:parent) do
           create(
-            :internal_ticket, external_uid: disqus_post[:parent],
-                              provider: 'disqus', brand: account.brand, source: account
+            :internal_ticket, external_uid: disqus_post[:parent], brand: account.brand, source: account
           ).base_ticket
         end
         let(:expected_attributes) do

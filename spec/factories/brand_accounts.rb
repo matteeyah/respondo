@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :brand_account do
     external_uid { generate(:external_uid) }
-    provider { 'twitter' }
+    provider { BrandAccount.providers.except(:developer).keys.sample }
     screen_name { Faker::Internet.username }
 
     brand

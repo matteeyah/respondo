@@ -148,7 +148,7 @@ RSpec.describe Brands::TicketsController, type: :request do
   describe 'GET show' do
     subject(:get_show) { get "/brands/#{brand.id}/tickets/#{ticket.id}" }
 
-    let!(:ticket) { create(:internal_ticket, provider: 'twitter', brand:).base_ticket }
+    let!(:ticket) { create(:internal_ticket, brand:).base_ticket }
 
     context 'when user is signed in' do
       let(:user) { create(:user, :with_account) }
