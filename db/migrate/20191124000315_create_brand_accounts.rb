@@ -15,7 +15,6 @@ class CreateBrandAccounts < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_index :brand_accounts, %i[brand_id provider], unique: true
     add_index :brand_accounts, %i[external_uid provider], unique: true
   end
 end

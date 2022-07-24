@@ -29,7 +29,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_13_110717) do
     t.integer "brand_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["brand_id", "provider"], name: "index_brand_accounts_on_brand_id_and_provider", unique: true
     t.index ["brand_id"], name: "index_brand_accounts_on_brand_id"
     t.index ["external_uid", "provider"], name: "index_brand_accounts_on_external_uid_and_provider", unique: true
   end
