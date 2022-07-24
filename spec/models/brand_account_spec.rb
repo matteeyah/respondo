@@ -14,6 +14,7 @@ RSpec.describe BrandAccount, type: :model do
 
   describe 'Relations' do
     it { is_expected.to belong_to(:brand) }
+    it { is_expected.to have_many(:tickets) }
   end
 
   describe '.from_omniauth' do

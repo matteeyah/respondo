@@ -9,6 +9,8 @@ class BrandAccount < ApplicationRecord
 
   belongs_to :brand
 
+  has_many :tickets, class_name: 'InternalTicket', inverse_of: :source, foreign_key: :source_id, dependent: :destroy
+
   encrypts :token
   encrypts :secret
 

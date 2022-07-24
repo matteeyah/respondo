@@ -7,7 +7,7 @@ class LoadNewTicketsJob < ApplicationJob
     Brand.find_by(id: brand_id).try do |brand|
       brand.accounts.each do |account|
         account.new_mentions.each do |mention|
-          create_ticket!(account.provider, mention, brand)
+          create_ticket!(account.provider, mention, account)
         end
       end
     end
@@ -15,7 +15,7 @@ class LoadNewTicketsJob < ApplicationJob
 
   private
 
-  def create_ticket!(provider, mention, brand)
-    TicketCreator.new(provider, mention, brand, nil).call
+  def create_ticket!(provider, mention, account)
+    TicketCreator.new(provider, mention, account, nil).call
   end
 end

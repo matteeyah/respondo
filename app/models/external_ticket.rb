@@ -5,6 +5,10 @@ class ExternalTicket < ApplicationRecord
 
   validates :response_url, presence: true
 
+  def source
+    base_ticket.brand
+  end
+
   def actual_provider
     self[:custom_provider] || base_ticket.provider
   end

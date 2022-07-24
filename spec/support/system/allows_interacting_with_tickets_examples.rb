@@ -6,7 +6,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     sign_in_brand(brand)
     click_link('Brand Tickets')
 
-    account = brand.accounts.first
+    account = target_ticket.source
     account.update!(token: 'hello', secret: 'world')
 
     response_text = 'Hello from Respondo system tests'

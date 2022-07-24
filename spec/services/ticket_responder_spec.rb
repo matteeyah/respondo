@@ -24,14 +24,14 @@ RSpec.describe TicketResponder, type: :service do
       before do
         user.update(brand: ticket.brand)
 
-        allow(user.brand).to receive(:client_for_provider).with(ticket.provider).and_return(client_spy)
+        allow(ticket.source).to receive(:client).and_return(client_spy)
       end
 
       it 'calls TicketCreator service' do
         call
 
         expect(ticket_creator_class).to have_received(:new).with(
-          ticket.provider, hash_including(raw_message: response), ticket.brand, user
+          ticket.provider, hash_including(raw_message: response), ticket.source, user
         )
       end
     end

@@ -74,8 +74,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_13_110717) do
   end
 
   create_table "internal_tickets", force: :cascade do |t|
+    t.integer "source_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["source_id"], name: "index_internal_tickets_on_source_id"
   end
 
   create_table "personal_access_tokens", force: :cascade do |t|
@@ -172,6 +174,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_13_110717) do
   end
 
   add_foreign_key "internal_notes", "users", column: "creator_id"
+  add_foreign_key "internal_tickets", "brand_accounts", column: "source_id"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tickets", "users", column: "creator_id"
 end

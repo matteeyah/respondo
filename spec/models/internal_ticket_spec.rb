@@ -3,6 +3,7 @@
 RSpec.describe InternalTicket, type: :model do
   describe 'Relations' do
     it { is_expected.to have_one(:base_ticket).dependent(:destroy) }
+    it { is_expected.to belong_to(:source) }
   end
 
   describe '#actual_provider' do

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe TicketCreator, type: :service do
-  let(:service) { described_class.new(provider, ticket_body, brand, user) }
+  let(:service) { described_class.new(provider, ticket_body, source, user) }
 
   describe '#call' do
     subject(:call) { service.call }
@@ -11,7 +11,7 @@ RSpec.describe TicketCreator, type: :service do
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
           let!(:parent) { create(:internal_ticket, provider:).base_ticket }
-          let(:brand) { parent.brand }
+          let(:source) { parent.source }
           let(:user) { parent.creator }
 
           let(:ticket_body) do
@@ -40,7 +40,7 @@ RSpec.describe TicketCreator, type: :service do
     context 'when ticket is external' do
       let!(:parent) { create(:external_ticket).base_ticket }
       let(:provider) { 'external' }
-      let(:brand) { parent.brand }
+      let(:source) { parent.brand }
       let(:user) { parent.creator }
 
       let(:ticket_body) do
