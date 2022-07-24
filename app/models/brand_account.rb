@@ -4,6 +4,7 @@ class BrandAccount < ApplicationRecord
   include Accountable
 
   validates :external_uid, uniqueness: { scope: :provider }
+  validates :provider, presence: true, uniqueness: { scope: :brand_id }
 
   enum provider: { twitter: 0, disqus: 1, developer: 99 }
 
@@ -16,7 +17,7 @@ class BrandAccount < ApplicationRecord
       account.token = auth.credentials.token
       account.secret = auth.credentials.secret
 
-      account.brand = current_brand || Brand.new(screen_name: auth.info.nickname)
+      account.brand ||= current_brand || Brand.new(screen_name: auth.info.nickname)
 
       account.save
     end

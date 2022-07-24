@@ -20,7 +20,7 @@ class UserAccount < ApplicationRecord
         account.token = auth.credentials.token
         account.secret = auth.credentials.secret
 
-        account.user = current_user || User.new(name: auth.info.name)
+        account.user ||= current_user || User.new(name: auth.info.name)
         account.user.brand = find_brand(account.email)
 
         account.save
