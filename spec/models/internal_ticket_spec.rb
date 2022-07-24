@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require './spec/support/concerns/models/ticketable_examples'
-
 RSpec.describe InternalTicket, type: :model do
-  it_behaves_like 'ticketable'
+  describe 'Relations' do
+    it { is_expected.to have_one(:base_ticket).dependent(:destroy) }
+  end
 
   describe '#actual_provider' do
     subject(:actual_provider) { internal_ticket.actual_provider }

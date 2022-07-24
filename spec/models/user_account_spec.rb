@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require './spec/support/omniauth_helpers'
-require './spec/support/concerns/models/accountable_examples'
 
 RSpec.describe UserAccount, type: :model do
   describe 'Validations' do
@@ -10,6 +9,8 @@ RSpec.describe UserAccount, type: :model do
     it { is_expected.to validate_presence_of(:provider) }
     it { is_expected.to validate_uniqueness_of(:provider).scoped_to(:user_id).ignoring_case_sensitivity }
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider).ignoring_case_sensitivity }
+    it { is_expected.to validate_presence_of(:external_uid) }
+    it { is_expected.to validate_presence_of(:email).allow_nil }
   end
 
   it { is_expected.to define_enum_for(:provider).with_values(google_oauth2: 0, activedirectory: 1, developer: 99) }
@@ -17,8 +18,6 @@ RSpec.describe UserAccount, type: :model do
   describe 'Relations' do
     it { is_expected.to belong_to(:user) }
   end
-
-  it_behaves_like 'accountable'
 
   describe '.from_omniauth' do
     described_class.providers.except(:developer).each_key do |provider|
