@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 class BrandAccount < ApplicationRecord
-  include Accountable
-
-  validates :external_uid, uniqueness: { scope: :provider }
+  validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: :provider }
   validates :provider, presence: true
+  validates :email, presence: { allow_blank: false, allow_nil: true }
 
   enum provider: { twitter: 0, disqus: 1, developer: 99 }
 
   belongs_to :brand
+
+  encrypts :token
+  encrypts :secret
 
   def self.from_omniauth(auth, current_brand) # rubocop:disable Metrics/AbcSize
     find_or_initialize_by(external_uid: auth.uid, provider: auth.provider).tap do |account|
@@ -51,5 +53,29 @@ class BrandAccount < ApplicationRecord
 
   def last_disqus_ticket_identifier
     brand.tickets.disqus.last&.created_at&.utc&.iso8601
+  end
+
+  def twitter_client
+    @twitter_client ||= Clients::Twitter.new(twitter_api_key, twitter_api_secret, token, secret)
+  end
+
+  def disqus_client
+    @disqus_client ||= Clients::Disqus.new(disqus_public_key, disqus_secret_key, token)
+  end
+
+  def twitter_api_key
+    @twitter_api_key ||= Rails.application.config.x.twitter.api_key
+  end
+
+  def twitter_api_secret
+    @twitter_api_secret ||= Rails.application.config.x.twitter.api_secret
+  end
+
+  def disqus_public_key
+    @disqus_public_key ||= Rails.application.config.x.disqus.public_key
+  end
+
+  def disqus_secret_key
+    @disqus_secret_key ||= Rails.application.config.x.disqus.secret_key
   end
 end

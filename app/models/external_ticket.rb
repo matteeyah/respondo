@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ExternalTicket < ApplicationRecord
-  include Ticketable
+  has_one :base_ticket, class_name: 'Ticket', as: :ticketable, touch: true, dependent: :destroy
 
   validates :response_url, presence: true
 
