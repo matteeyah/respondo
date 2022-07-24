@@ -8,7 +8,8 @@ class HomeController < ApplicationController
   end
 
   def index
-    @brand = current_brand
+    redirect_to brand_dashboard_path(current_brand) if current_brand
+
     @user = current_user
   end
 
