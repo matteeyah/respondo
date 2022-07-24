@@ -1,3 +1,5 @@
+- toast_message = @success ? 'User was successfully removed from brand' : 'You can not remove the last user in the brand.'
 = turbo_stream.append(:toasts, partial: 'shared/toast',
-  locals: { title: 'Brand user', message: 'User was successfully removed from the brand.' })
-= turbo_stream.remove(@user)
+  locals: { title: 'Brand user', message: toast_message })
+- if @success
+  = turbo_stream.remove(@user)
