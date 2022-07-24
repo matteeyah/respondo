@@ -53,8 +53,7 @@ module OmniauthHelpers
 
   def add_oauth_mock_for_user(user, account = user.accounts.first)
     add_oauth_mock(
-      account.provider.to_sym, account.external_uid, { name: user.name, email: account.email },
-      token: account.token, secret: account.secret
+      account.provider.to_sym, account.external_uid, { name: user.name, email: account.email }, nil
     )
   end
 

@@ -12,7 +12,7 @@ class Ticket < ApplicationRecord
   enum provider: { external: 0, twitter: 1, disqus: 2 }
 
   delegated_type :ticketable, types: %w[InternalTicket ExternalTicket]
-  delegate :actual_provider, to: :ticketable
+  delegate :actual_provider, :source, to: :ticketable
 
   acts_as_taggable_on :tags
 
@@ -33,19 +33,19 @@ class Ticket < ApplicationRecord
   has_many :internal_notes, dependent: :destroy
 
   class << self
-    def from_tweet!(tweet, brand, user)
-      brand.tickets.twitter.create!(
+    def from_tweet!(tweet, source, user)
+      source.brand.tickets.twitter.create!(
         external_uid: tweet.id, content: tweet.attrs[:full_text], created_at: tweet.created_at,
-        parent: brand.tickets.twitter.find_by(external_uid: tweet.in_reply_to_tweet_id.presence),
-        creator: user, author: Author.from_twitter_user!(tweet.user), ticketable: InternalTicket.new
+        parent: source.brand.tickets.twitter.find_by(external_uid: tweet.in_reply_to_tweet_id.presence),
+        creator: user, author: Author.from_twitter_user!(tweet.user), ticketable: InternalTicket.new(source:)
       )
     end
 
-    def from_disqus_post!(post, brand, user)
-      brand.tickets.disqus.create!(
+    def from_disqus_post!(post, source, user)
+      source.brand.tickets.disqus.create!(
         external_uid: post[:id], content: post[:raw_message], created_at: post[:createdAt],
-        parent: brand.tickets.disqus.find_by(external_uid: post[:parent]),
-        creator: user, author: Author.from_disqus_user!(post[:author]), ticketable: InternalTicket.new
+        parent: source.brand.tickets.disqus.find_by(external_uid: post[:parent]),
+        creator: user, author: Author.from_disqus_user!(post[:author]), ticketable: InternalTicket.new(source:)
       )
     end
 

@@ -57,7 +57,7 @@
             %p
               Subscription status:
               %span.badge{ class: "badge-#{subscription_badge_class(subscription_status)}" }
-                subscription_status || 'no subscription'
+                = subscription_status || 'no subscription'
             - if @brand.subscription&.running?
               = button_tag 'Update Payment Details', class: 'btn btn-primary', id: 'update-subscription'
               = button_tag 'Cancel Subscription', class: 'btn btn-primary', id: 'cancel-subscription'

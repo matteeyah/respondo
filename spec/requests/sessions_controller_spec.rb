@@ -184,29 +184,21 @@ RSpec.describe SessionsController, type: :request do
               end
 
               context 'when account does not exist' do
-                context 'when brand does not have account for provider' do
-                  it 'creates a new account' do
-                    expect { post_create }.to change(BrandAccount, :count).from(0).to(1)
-                  end
-
-                  it 'does not create a new brand' do
-                    expect { post_create }.not_to change(Brand, :count).from(1)
-                  end
-
-                  it 'associates the account with the current brand' do
-                    expect { post_create }.to change { brand.reload.accounts.find_by(provider:) }
-                      .from(nil).to(an_instance_of(BrandAccount))
-                  end
+                before do
+                  create(:brand_account, provider:, brand:)
                 end
 
-                context 'when brand already has account for same provider' do
-                  before do
-                    create(:brand_account, provider:, brand:)
-                  end
+                it 'creates a new account' do
+                  expect { post_create }.to change(BrandAccount, :count).from(1).to(2)
+                end
 
-                  it 'does not create a new account' do
-                    expect { post_create }.not_to change(BrandAccount, :count).from(1)
-                  end
+                it 'does not create a new brand' do
+                  expect { post_create }.not_to change(Brand, :count).from(1)
+                end
+
+                it 'associates the account with the current brand' do
+                  expect { post_create }.to change { brand.reload.accounts.count }
+                    .from(1).to(2)
                 end
               end
 

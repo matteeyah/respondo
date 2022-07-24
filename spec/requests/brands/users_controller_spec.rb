@@ -103,12 +103,6 @@ RSpec.describe Brands::UsersController, type: :request do
   describe 'DELETE destroy' do
     subject(:delete_destroy) { delete "/brands/#{brand.id}/users/#{user.id}" }
 
-    let(:user) { create(:user) }
-
-    before do
-      brand.users << user
-    end
-
     context 'when user is signed in' do
       let(:browsing_user) { create(:user, :with_account) }
 
@@ -150,22 +144,42 @@ RSpec.describe Brands::UsersController, type: :request do
           end
         end
 
-        context 'when removing other user from brand' do
-          include_examples 'removes user from brand' do
-            let(:redirect_path) { edit_brand_path(brand) }
+        context 'when brand has only one user' do
+          let(:user) { browsing_user }
+
+          it 'does not remove the user from brand' do
+            expect { delete_destroy }.not_to change { brand.users.count }.from(1)
           end
         end
 
-        context 'when user is removing self from brand' do
-          let(:user) { browsing_user }
+        context 'when brand has more than one user' do
+          let(:target_user) { create(:user) }
 
-          include_examples 'removes user from brand' do
-            let(:redirect_path) { root_path }
+          before do
+            brand.users << target_user
+          end
+
+          context 'when removing other user from brand' do
+            let(:user) { target_user }
+
+            include_examples 'removes user from brand' do
+              let(:redirect_path) { edit_brand_path(brand) }
+            end
+          end
+
+          context 'when user is removing self from brand' do
+            let(:user) { browsing_user }
+
+            include_examples 'removes user from brand' do
+              let(:redirect_path) { root_path }
+            end
           end
         end
       end
 
       context 'when user is not authorized' do
+        let(:user) { create(:user, brand:) }
+
         it 'redirects the user back (to root)' do
           expect(delete_destroy).to redirect_to(root_path)
         end
@@ -173,6 +187,8 @@ RSpec.describe Brands::UsersController, type: :request do
     end
 
     context 'when user is not signed in' do
+      let(:user) { create(:user, brand:) }
+
       it 'redirects the user back (to root)' do
         expect(delete_destroy).to redirect_to(root_path)
       end

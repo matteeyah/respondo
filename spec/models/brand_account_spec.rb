@@ -1,23 +1,21 @@
 # frozen_string_literal: true
 
-require './spec/support/concerns/models/accountable_examples'
-
 RSpec.describe BrandAccount, type: :model do
   describe 'Validations' do
     subject(:account) { create(:brand_account) }
 
     it { is_expected.to validate_presence_of(:provider) }
-    it { is_expected.to validate_uniqueness_of(:provider).scoped_to(:brand_id).ignoring_case_sensitivity }
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider).ignoring_case_sensitivity }
+    it { is_expected.to validate_presence_of(:external_uid) }
+    it { is_expected.to validate_presence_of(:email).allow_nil }
   end
 
   it { is_expected.to define_enum_for(:provider).with_values(twitter: 0, disqus: 1, developer: 99) }
 
   describe 'Relations' do
     it { is_expected.to belong_to(:brand) }
+    it { is_expected.to have_many(:tickets) }
   end
-
-  it_behaves_like 'accountable'
 
   describe '.from_omniauth' do
     described_class.providers.except(:developer).each_key do |provider|
@@ -64,50 +62,32 @@ RSpec.describe BrandAccount, type: :model do
           context 'when adding the account to existing brand' do
             let!(:current_brand) { create(:brand) }
 
-            context 'when existing brand does not have account for provider' do
-              it 'returns a new account' do
-                expect(from_omniauth).to be_an_instance_of(described_class)
-              end
-
-              it 'builds an account entity with correct information' do
-                expect(from_omniauth).to have_attributes(
-                  external_uid: auth_hash.uid, provider:,
-                  token: auth_hash.credentials.token, secret: auth_hash.credentials.secret,
-                  email: auth_hash.info.email
-                )
-              end
-
-              it 'persists the new account' do
-                expect(from_omniauth).to be_persisted
-              end
-
-              it 'does not create new brands' do
-                expect { from_omniauth }.not_to change(Brand, :count).from(1)
-              end
-
-              it 'adds the account to the specified brand' do
-                expect(current_brand.accounts).to include(from_omniauth)
-              end
+            before do
+              create(:brand_account, provider:, brand: current_brand)
             end
 
-            context 'when existing brand has account for provider' do
-              before do
-                create(:brand_account, provider:, brand: current_brand)
-              end
+            it 'returns a new account' do
+              expect(from_omniauth).to be_an_instance_of(described_class)
+            end
 
-              it 'does not create new brands' do
-                expect { from_omniauth }.not_to change(Brand, :count).from(1)
-              end
+            it 'builds an account entity with correct information' do
+              expect(from_omniauth).to have_attributes(
+                external_uid: auth_hash.uid, provider:,
+                token: auth_hash.credentials.token, secret: auth_hash.credentials.secret,
+                email: auth_hash.info.email
+              )
+            end
 
-              it 'does not add the account to the specified brand' do
-                expect(current_brand.accounts).not_to include(from_omniauth)
-              end
+            it 'persists the new account' do
+              expect(from_omniauth).to be_persisted
+            end
 
-              it 'has an error about provider being taken' do
-                expect(from_omniauth.errors.details.to_hash).to(
-                  include(provider: array_including(a_hash_including(error: :taken)))
-                )
-              end
+            it 'does not create new brands' do
+              expect { from_omniauth }.not_to change(Brand, :count).from(1)
+            end
+
+            it 'adds the account to the specified brand' do
+              expect(current_brand.accounts).to include(from_omniauth)
             end
           end
         end

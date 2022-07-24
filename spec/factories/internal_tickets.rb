@@ -2,6 +2,8 @@
 
 FactoryBot.define do
   factory :internal_ticket do
+    source { FactoryBot.build(:brand_account, provider:, brand:) }
+
     transient do
       external_uid { generate(:external_uid) }
       status { :open }

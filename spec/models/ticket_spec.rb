@@ -92,10 +92,9 @@ RSpec.describe Ticket, type: :model do
         end
 
         context 'when parent exists' do
-          let!(:parent) do
-            create(
-              :internal_ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand:
-            ).base_ticket
+          before do
+            # The parent is lazily evaluated, this forced the record to get created.
+            parent
           end
 
           it 'assigns the parent to the ticket' do
@@ -124,10 +123,9 @@ RSpec.describe Ticket, type: :model do
         end
 
         context 'when parent exists' do
-          let!(:parent) do
-            create(
-              :internal_ticket, external_uid: parent_id, provider: expected_attributes[:provider], brand:
-            ).base_ticket
+          before do
+            # The parent is lazily evaluated, this forced the record to get created.
+            parent
           end
 
           it 'assigns the parent to the ticket' do
@@ -138,9 +136,9 @@ RSpec.describe Ticket, type: :model do
     end
 
     describe '.from_tweet!' do
-      subject(:from_tweet!) { described_class.from_tweet!(tweet, brand, user) }
+      subject(:from_tweet!) { described_class.from_tweet!(tweet, account, user) }
 
-      let(:brand) { create(:brand) }
+      let(:account) { create(:brand_account) }
       let(:author) { create(:author) }
 
       let(:tweet) do
@@ -153,21 +151,24 @@ RSpec.describe Ticket, type: :model do
       end
 
       it_behaves_like 'from method' do
-        let(:parent_id) { tweet.in_reply_to_tweet_id }
-
+        let(:parent) do
+          create(
+            :internal_ticket, external_uid: tweet.in_reply_to_tweet_id, provider: 'twitter', brand: account.brand
+          ).base_ticket
+        end
         let(:expected_attributes) do
           {
             external_uid: tweet.id, provider: 'twitter', content: tweet.attrs[:full_text],
-            brand:, author:, creator: user
+            brand: account.brand, author:, creator: user
           }
         end
       end
     end
 
     describe '.from_disqus_post!' do
-      subject(:from_disqus_post!) { described_class.from_disqus_post!(disqus_post, brand, user) }
+      subject(:from_disqus_post!) { described_class.from_disqus_post!(disqus_post, account, user) }
 
-      let(:brand) { create(:brand) }
+      let(:account) { create(:brand_account) }
       let(:author) { create(:author) }
 
       let(:disqus_post) { JSON.parse(file_fixture('disqus_post_hash.json').read).deep_symbolize_keys }
@@ -177,12 +178,15 @@ RSpec.describe Ticket, type: :model do
       end
 
       it_behaves_like 'from method' do
-        let(:parent_id) { disqus_post[:parent] }
-
+        let(:parent) do
+          create(
+            :internal_ticket, external_uid: disqus_post[:parent], provider: 'disqus', brand: account.brand
+          ).base_ticket
+        end
         let(:expected_attributes) do
           {
             external_uid: disqus_post[:id], provider: 'disqus', content: disqus_post[:raw_message],
-            brand:, author:, creator: user
+            brand: account.brand, author:, creator: user
           }
         end
       end
@@ -202,8 +206,11 @@ RSpec.describe Ticket, type: :model do
       end
 
       it_behaves_like 'from method' do
-        let(:parent_id) { external_ticket_json[:parent_uid] }
-
+        let(:parent) do
+          create(
+            :external_ticket, external_uid: external_ticket_json[:parent_uid], brand:
+          ).base_ticket
+        end
         let(:expected_attributes) do
           {
             external_uid: external_ticket_json[:external_uid], provider: 'external',

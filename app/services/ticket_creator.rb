@@ -1,25 +1,23 @@
 # frozen_string_literal: true
 
 class TicketCreator < ApplicationService
-  attr_reader :provider, :body, :brand, :user
-
-  def initialize(provider, body, brand, user)
+  def initialize(provider, body, source, user)
     super()
 
     @provider = provider
     @body = body
-    @brand = brand
+    @source = source
     @user = user
   end
 
   def call
-    case provider
+    case @provider
     when 'twitter'
-      Ticket.from_tweet!(body, brand, user)
+      Ticket.from_tweet!(@body, @source, @user)
     when 'disqus'
-      Ticket.from_disqus_post!(body, brand, user)
+      Ticket.from_disqus_post!(@body, @source, @user)
     when 'external'
-      Ticket.from_external_ticket!(body, brand, user)
+      Ticket.from_external_ticket!(@body, @source, @user)
     end
   end
 end

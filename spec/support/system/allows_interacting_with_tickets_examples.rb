@@ -6,7 +6,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     sign_in_brand(brand)
     click_link('Brand Tickets')
 
-    account = brand.accounts.first
+    account = target_ticket.source
     account.update!(token: 'hello', secret: 'world')
 
     response_text = 'Hello from Respondo system tests'
@@ -90,7 +90,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
   it 'allows adding ticket tags' do
     sign_in_user
     sign_in_brand(brand)
-    click_link('Tickets')
+    click_link('Brand Tickets')
 
     within("#ticket_#{target_ticket.id}") do
       fill_in :'acts_as_taggable_on_tag[name]', with: 'hello'
@@ -106,7 +106,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     sign_in_user
     sign_in_brand(brand)
     target_ticket.update(tag_list: 'hello, world')
-    click_link('Tickets')
+    click_link('Brand Tickets')
 
     within("#ticket_#{target_ticket.id}") do
       within('span', text: 'hello') do
