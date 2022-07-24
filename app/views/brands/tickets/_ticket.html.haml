@@ -32,7 +32,7 @@
               %span.small= internal_note.content
 
       .card-footer
-        - if policy(ticket.brand).subscription? || Flipper.enabled?(:disable_subscriptions)
+        - if !Flipper.enabled?(:subscriptions) || policy(ticket.brand).subscription?
           .row
             - if local_assigns[:action_form]
               - case action_form

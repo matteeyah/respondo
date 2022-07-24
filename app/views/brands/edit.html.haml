@@ -51,7 +51,7 @@
                 = update_brand_form.submit 'Update', name: nil, class: 'btn form-control btn-primary'
       .row.mt-5
         .col-12
-          - unless Flipper.enabled?(:disable_subscriptions)
+          - if Flipper.enabled?(:subscriptions)
             %h6.mb-3 Subscription
             %hr.border-2.border-top
             %p
