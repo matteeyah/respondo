@@ -8,7 +8,7 @@ module Users
       @account = account
       authorize(@account)
 
-      @toast_message = remove_account!
+      @success = @account.destroy
 
       respond_to do |format|
         format.turbo_stream
@@ -17,15 +17,6 @@ module Users
     end
 
     private
-
-    def remove_account!
-      if user.accounts.count == 1
-        'You can not remove your last account.'
-      else
-        @account.destroy
-        'User account was successfully deleted.'
-      end
-    end
 
     def account
       @account ||= user.accounts.find(params[:user_account_id] || params[:id])

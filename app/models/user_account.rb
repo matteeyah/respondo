@@ -10,6 +10,8 @@ class UserAccount < ApplicationRecord
 
   belongs_to :user
 
+  before_destroy :validate_not_last_account
+
   class << self
     def from_omniauth(auth, current_user) # rubocop:disable Metrics/AbcSize
       find_or_initialize_by(external_uid: auth.uid, provider: auth.provider).tap do |account|
@@ -18,7 +20,7 @@ class UserAccount < ApplicationRecord
         account.token = auth.credentials.token
         account.secret = auth.credentials.secret
 
-        account.user = current_user || account.user || User.new(name: auth.info.name)
+        account.user = current_user || User.new(name: auth.info.name)
         account.user.brand = find_brand(account.email)
 
         account.save
@@ -33,5 +35,12 @@ class UserAccount < ApplicationRecord
       user_domain = user_email.split('@').last
       Brand.find_by(domain: user_domain)
     end
+  end
+
+  def validate_not_last_account
+    return if user.accounts.count > 1
+
+    errors.add(:base, 'You can not delete the last user account.')
+    throw(:abort)
   end
 end
