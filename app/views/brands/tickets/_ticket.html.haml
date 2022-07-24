@@ -15,7 +15,7 @@
                   = bi_icon('x', 'text-white')
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
             - if ticket.parent_id.nil?
-              .text-primary= bi_icon(ticket.actual_provider)
+              .text-primary= bi_icon(ticket.provider)
           .col-2.col-lg-1.d-flex.justify-content-start.justify-content-lg-end
             = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-frame' => :_top do
               = bi_icon('box-arrow-up-right')
@@ -32,7 +32,7 @@
               %span.small= internal_note.content
 
       .card-footer
-        - if policy(ticket.brand).subscription? || Flipper.enabled?(:disable_subscriptions)
+        - if !Flipper.enabled?(:subscriptions) || policy(ticket.brand).subscription?
           .row
             - if local_assigns[:action_form]
               - case action_form

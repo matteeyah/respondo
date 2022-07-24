@@ -6,7 +6,6 @@ RSpec.describe Ticket, type: :model do
 
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:content) }
-    it { is_expected.to validate_presence_of(:provider) }
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:ticketable_type, :brand_id) }
 
     describe '#parent_in_brand' do
@@ -45,7 +44,6 @@ RSpec.describe Ticket, type: :model do
   end
 
   it { is_expected.to define_enum_for(:status).with_values(%i[open solved]) }
-  it { is_expected.to define_enum_for(:provider).with_values(%i[external twitter disqus]) }
 
   describe 'Relations' do
     it { is_expected.to belong_to(:author) }
@@ -138,7 +136,7 @@ RSpec.describe Ticket, type: :model do
     describe '.from_tweet!' do
       subject(:from_tweet!) { described_class.from_tweet!(tweet, account, user) }
 
-      let(:account) { create(:brand_account) }
+      let(:account) { create(:brand_account, provider: 'twitter') }
       let(:author) { create(:author) }
 
       let(:tweet) do
@@ -153,7 +151,7 @@ RSpec.describe Ticket, type: :model do
       it_behaves_like 'from method' do
         let(:parent) do
           create(
-            :internal_ticket, external_uid: tweet.in_reply_to_tweet_id, provider: 'twitter', brand: account.brand
+            :internal_ticket, external_uid: tweet.in_reply_to_tweet_id, brand: account.brand, source: account
           ).base_ticket
         end
         let(:expected_attributes) do
@@ -168,7 +166,7 @@ RSpec.describe Ticket, type: :model do
     describe '.from_disqus_post!' do
       subject(:from_disqus_post!) { described_class.from_disqus_post!(disqus_post, account, user) }
 
-      let(:account) { create(:brand_account) }
+      let(:account) { create(:brand_account, provider: 'disqus') }
       let(:author) { create(:author) }
 
       let(:disqus_post) { JSON.parse(file_fixture('disqus_post_hash.json').read).deep_symbolize_keys }
@@ -180,7 +178,7 @@ RSpec.describe Ticket, type: :model do
       it_behaves_like 'from method' do
         let(:parent) do
           create(
-            :internal_ticket, external_uid: disqus_post[:parent], provider: 'disqus', brand: account.brand
+            :internal_ticket, external_uid: disqus_post[:parent], brand: account.brand, source: account
           ).base_ticket
         end
         let(:expected_attributes) do

@@ -8,6 +8,7 @@ RSpec.describe BrandAccount, type: :model do
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider).ignoring_case_sensitivity }
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:email).allow_nil }
+    it { is_expected.to validate_presence_of(:screen_name).allow_nil }
   end
 
   it { is_expected.to define_enum_for(:provider).with_values(twitter: 0, disqus: 1, developer: 99) }
@@ -197,19 +198,19 @@ RSpec.describe BrandAccount, type: :model do
   describe '#new_mentions' do
     subject(:new_mentions) { account.new_mentions }
 
-    let(:account) { build(:brand_account) }
     let(:client_spy) { instance_spy(Clients::Client) }
 
     described_class.providers.except(:developer).each_key do |provider|
       context "when provider is #{provider}" do
+        let(:account) { build(:brand_account, provider:) }
+
         before do
           allow(account).to receive(:"#{provider}_client").and_return(client_spy)
-          account.provider = provider
         end
 
         context 'when brand has tickets' do
           before do
-            create(:internal_ticket, provider:, brand: account.brand)
+            create(:internal_ticket, source: account, brand: account.brand)
           end
 
           it 'calls client new mentions with last ticket identifier' do

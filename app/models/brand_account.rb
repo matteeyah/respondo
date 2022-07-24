@@ -4,12 +4,15 @@ class BrandAccount < ApplicationRecord
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: :provider }
   validates :provider, presence: true
   validates :email, presence: { allow_blank: false, allow_nil: true }
+  validates :screen_name, presence: { allow_blank: false, allow_nil: true }
 
   enum provider: { twitter: 0, disqus: 1, developer: 99 }
 
   belongs_to :brand
 
-  has_many :tickets, class_name: 'InternalTicket', inverse_of: :source, foreign_key: :source_id, dependent: :destroy
+  has_many :internal_tickets, class_name: 'InternalTicket', inverse_of: :source, foreign_key: :source_id,
+                              dependent: :destroy
+  has_many :tickets, through: :internal_tickets, source: :base_ticket
 
   encrypts :token
   encrypts :secret
@@ -17,6 +20,7 @@ class BrandAccount < ApplicationRecord
   def self.from_omniauth(auth, current_brand) # rubocop:disable Metrics/AbcSize
     find_or_initialize_by(external_uid: auth.uid, provider: auth.provider).tap do |account|
       account.email = auth.info.email
+      account.screen_name = auth.info.nickname
 
       account.token = auth.credentials.token
       account.secret = auth.credentials.secret
@@ -50,11 +54,11 @@ class BrandAccount < ApplicationRecord
   private
 
   def last_twitter_ticket_identifier
-    brand.tickets.twitter.last&.external_uid
+    tickets.last&.external_uid
   end
 
   def last_disqus_ticket_identifier
-    brand.tickets.disqus.last&.created_at&.utc&.iso8601
+    tickets.last&.created_at&.utc&.iso8601
   end
 
   def twitter_client

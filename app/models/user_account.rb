@@ -33,6 +33,12 @@ class UserAccount < ApplicationRecord
     end
   end
 
+  def screen_name
+    email
+  end
+
+  private
+
   def validate_not_last_account
     return if user.accounts.count > 1
 
