@@ -5,7 +5,5 @@ class InternalTicket < ApplicationRecord
 
   belongs_to :source, class_name: 'BrandAccount'
 
-  def actual_provider
-    base_ticket.provider
-  end
+  delegate :provider, to: :source
 end

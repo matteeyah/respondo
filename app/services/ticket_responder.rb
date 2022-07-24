@@ -19,11 +19,11 @@ class TicketResponder < ApplicationService
 
   def client_response
     raw_response = client.reply(@response, @ticket.external_uid)
-    @ticket.external? ? JSON.parse(raw_response).deep_symbolize_keys : raw_response
+    @ticket.external_ticket? ? JSON.parse(raw_response).deep_symbolize_keys : raw_response
   end
 
   def client
-    if @ticket.external?
+    if @ticket.external_ticket?
       external_client
     else
       @ticket.source.client

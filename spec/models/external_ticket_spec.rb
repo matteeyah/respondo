@@ -11,8 +11,8 @@ RSpec.describe ExternalTicket, type: :model do
     it { is_expected.to have_one(:base_ticket).dependent(:destroy) }
   end
 
-  describe '#actual_provider' do
-    subject(:actual_provider) { external_ticket.actual_provider }
+  describe '#provider' do
+    subject(:provider) { external_ticket.provider }
 
     let(:external_ticket) { create(:external_ticket) }
 

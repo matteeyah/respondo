@@ -7,7 +7,7 @@ RSpec.describe TicketCreator, type: :service do
     subject(:call) { service.call }
 
     context 'when ticket is internal' do
-      (Ticket.providers.keys - ['external']).each do |provider_param|
+      (BrandAccount.providers.keys - ['developer']).each do |provider_param|
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
           let!(:parent) { create(:internal_ticket, provider:).base_ticket }

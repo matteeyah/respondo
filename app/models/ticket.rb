@@ -5,14 +5,12 @@ class Ticket < ApplicationRecord
 
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[ticketable_type brand_id] }
   validates :content, presence: { allow_blank: false }
-  validates :provider, presence: true
   validate :parent_in_brand
 
   enum status: { open: 0, solved: 1 }
-  enum provider: { external: 0, twitter: 1, disqus: 2 }
 
   delegated_type :ticketable, types: %w[InternalTicket ExternalTicket]
-  delegate :actual_provider, :source, to: :ticketable
+  delegate :provider, :source, to: :ticketable
 
   acts_as_taggable_on :tags
 
@@ -34,27 +32,27 @@ class Ticket < ApplicationRecord
 
   class << self
     def from_tweet!(tweet, source, user)
-      source.brand.tickets.twitter.create!(
+      Ticket.create!(
         external_uid: tweet.id, content: tweet.attrs[:full_text], created_at: tweet.created_at,
-        parent: source.brand.tickets.twitter.find_by(external_uid: tweet.in_reply_to_tweet_id.presence),
+        parent: source.tickets.find_by(external_uid: tweet.in_reply_to_tweet_id.presence), brand: source.brand,
         creator: user, author: Author.from_twitter_user!(tweet.user), ticketable: InternalTicket.new(source:)
       )
     end
 
     def from_disqus_post!(post, source, user)
-      source.brand.tickets.disqus.create!(
+      Ticket.create!(
         external_uid: post[:id], content: post[:raw_message], created_at: post[:createdAt],
-        parent: source.brand.tickets.disqus.find_by(external_uid: post[:parent]),
-        creator: user, author: Author.from_disqus_user!(post[:author]), ticketable: InternalTicket.new(source:)
+        parent: source.tickets.find_by(external_uid: post[:parent]), creator: user, brand: source.brand,
+        author: Author.from_disqus_user!(post[:author]), ticketable: InternalTicket.new(source:)
       )
     end
 
     def from_external_ticket!(external_ticket_json, brand, user)
-      brand.tickets.external.create!(
+      parent = brand.tickets.find_by(ticketable_type: 'ExternalTicket', external_uid: external_ticket_json[:parent_uid])
+      brand.tickets.create!(
         external_uid: external_ticket_json[:external_uid], content: external_ticket_json[:content],
-        created_at: external_ticket_json[:created_at],
-        parent: brand.tickets.external.find_by(external_uid: external_ticket_json[:parent_uid]),
-        creator: user, author: Author.from_external_author!(external_ticket_json[:author]),
+        created_at: external_ticket_json[:created_at], parent:, creator: user,
+        author: Author.from_external_author!(external_ticket_json[:author]),
         ticketable: ExternalTicket.new(response_url: external_ticket_json[:response_url],
                                        custom_provider: external_ticket_json[:custom_provider])
       )

@@ -9,7 +9,9 @@ class BrandAccount < ApplicationRecord
 
   belongs_to :brand
 
-  has_many :tickets, class_name: 'InternalTicket', inverse_of: :source, foreign_key: :source_id, dependent: :destroy
+  has_many :internal_tickets, class_name: 'InternalTicket', inverse_of: :source, foreign_key: :source_id,
+                              dependent: :destroy
+  has_many :tickets, through: :internal_tickets, source: :base_ticket
 
   encrypts :token
   encrypts :secret
@@ -50,11 +52,11 @@ class BrandAccount < ApplicationRecord
   private
 
   def last_twitter_ticket_identifier
-    brand.tickets.twitter.last&.external_uid
+    tickets.last&.external_uid
   end
 
   def last_disqus_ticket_identifier
-    brand.tickets.disqus.last&.created_at&.utc&.iso8601
+    tickets.last&.created_at&.utc&.iso8601
   end
 
   def twitter_client

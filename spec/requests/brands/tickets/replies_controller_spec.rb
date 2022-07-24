@@ -64,7 +64,7 @@ RSpec.describe Brands::Tickets::RepliesController, type: :request do
       end
 
       context 'when ticket is internal' do
-        (Ticket.providers.keys - ['external']).each do |provider|
+        (BrandAccount.providers.keys - ['developer']).each do |provider|
           context "when ticket provider is #{provider}" do
             let(:ticket) { create(:internal_ticket, provider:, brand:).base_ticket }
 

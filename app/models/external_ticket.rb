@@ -9,7 +9,7 @@ class ExternalTicket < ApplicationRecord
     base_ticket.brand
   end
 
-  def actual_provider
-    self[:custom_provider] || base_ticket.provider
+  def provider
+    self[:custom_provider] || 'external'
   end
 end

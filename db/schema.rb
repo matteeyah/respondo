@@ -137,7 +137,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_13_110717) do
     t.string "external_uid", null: false
     t.text "content", null: false
     t.integer "status", null: false
-    t.integer "provider", null: false
     t.string "ticketable_type", null: false
     t.integer "ticketable_id", null: false
     t.integer "brand_id", null: false
