@@ -23,6 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_13_110717) do
   create_table "brand_accounts", force: :cascade do |t|
     t.string "external_uid", null: false
     t.string "email"
+    t.string "screen_name", null: false
     t.integer "provider", null: false
     t.string "token"
     t.string "secret"

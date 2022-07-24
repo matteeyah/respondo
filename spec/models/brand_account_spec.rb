@@ -8,6 +8,7 @@ RSpec.describe BrandAccount, type: :model do
     it { is_expected.to validate_uniqueness_of(:external_uid).scoped_to(:provider).ignoring_case_sensitivity }
     it { is_expected.to validate_presence_of(:external_uid) }
     it { is_expected.to validate_presence_of(:email).allow_nil }
+    it { is_expected.to validate_presence_of(:screen_name).allow_nil }
   end
 
   it { is_expected.to define_enum_for(:provider).with_values(twitter: 0, disqus: 1, developer: 99) }
