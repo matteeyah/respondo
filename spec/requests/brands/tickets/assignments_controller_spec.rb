@@ -8,10 +8,10 @@ RSpec.describe Brands::Tickets::AssignmentsController, type: :request do
   let(:brand) { create(:brand) }
   let(:ticket) { create(:internal_ticket, brand:).base_ticket }
 
-  describe 'PATCH update' do
-    subject(:post_update) do
+  describe 'POST create' do
+    subject(:post_create) do
       post "/brands/#{brand.id}/tickets/#{ticket.id}/assignments",
-           params: { ticket: { assignment_attributes: { user_id: } } }
+           params: { ticket: { assignment: { user_id: } } }
     end
 
     context 'when user is signed in' do
@@ -29,15 +29,15 @@ RSpec.describe Brands::Tickets::AssignmentsController, type: :request do
         end
 
         it 'assigns the ticket' do
-          expect { post_update }.to change { ticket.reload.assignment }.from(nil).to(an_instance_of(Assignment))
+          expect { post_create }.to change { ticket.reload.assignment }.from(nil).to(an_instance_of(Assignment))
         end
 
         it 'creates an assignment' do
-          expect { post_update }.to change(Assignment, :count).from(0).to(1)
+          expect { post_create }.to change(Assignment, :count).from(0).to(1)
         end
 
         it 'redirects to the ticket' do
-          post_update
+          post_create
 
           expect(response.body).to redirect_to(brand_ticket_path(ticket.brand, ticket))
         end
@@ -48,11 +48,11 @@ RSpec.describe Brands::Tickets::AssignmentsController, type: :request do
           end
 
           it 'updates the assignment to the specified user' do
-            expect { post_update }.to change { ticket.assignment.reload.user.id }.to(user_id)
+            expect { post_create }.to change { ticket.assignment.reload.user.id }.to(user_id)
           end
 
           it 'does not create additional assignments' do
-            expect { post_update }.not_to change(Assignment, :count).from(1)
+            expect { post_create }.not_to change(Assignment, :count).from(1)
           end
         end
       end
@@ -61,7 +61,7 @@ RSpec.describe Brands::Tickets::AssignmentsController, type: :request do
         let(:user_id) { nil }
 
         it 'redirects the user back (to root)' do
-          expect(post_update).to redirect_to(root_path)
+          expect(post_create).to redirect_to(root_path)
         end
       end
     end
@@ -70,7 +70,7 @@ RSpec.describe Brands::Tickets::AssignmentsController, type: :request do
       let(:user_id) { nil }
 
       it 'redirects the user back (to root)' do
-        expect(post_update).to redirect_to(root_path)
+        expect(post_create).to redirect_to(root_path)
       end
     end
   end

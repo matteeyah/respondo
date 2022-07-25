@@ -13,8 +13,4 @@ class User < ApplicationRecord
   def account_for_provider?(provider)
     accounts.exists?(provider:)
   end
-
-  def client_for_provider(provider)
-    accounts.find_by(provider:)&.client
-  end
 end

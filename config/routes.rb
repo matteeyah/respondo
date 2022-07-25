@@ -32,11 +32,7 @@ Rails.application.routes.draw do
           resources :internal_notes, only: :create
           resources :replies, only: :create
 
-          resources :assignments, only: [] do
-            collection do
-              post :update
-            end
-          end
+          resource :assignments, only: :create
         end
       end
 
