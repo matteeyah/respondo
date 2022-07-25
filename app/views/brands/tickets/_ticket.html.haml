@@ -22,7 +22,7 @@
         .card-text
           %p= ticket.content
 
-      - if policy(ticket).internal_note? && ticket.internal_notes.any?
+      - if policy(ticket).internal_note?
         %ul.list-group.list-group-flush{ id: "#{dom_id(ticket)}_internal_notes" }
           = render partial: 'brands/tickets/internal_note', collection: ticket.internal_notes
       .card-footer

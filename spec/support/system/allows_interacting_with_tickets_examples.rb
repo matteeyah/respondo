@@ -66,8 +66,10 @@ RSpec.shared_examples 'allows interacting with tickets' do
     fill_in 'internal_note[content]', with: internal_note_text
     click_button 'Post'
 
-    expect(page).to have_text(user.name)
-    expect(page).to have_text(internal_note_text)
+    within("#ticket_#{target_ticket.id}_internal_notes") do
+      expect(page).to have_text(user.name)
+      expect(page).to have_text(internal_note_text)
+    end
   end
 
   it 'allows solving tickets' do
