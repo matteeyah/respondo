@@ -8,12 +8,8 @@
             %p.m-0!= ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-center
             %span.small.text-muted= ticket.created_at.to_formatted_s(:short)
-          .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
-            - ticket.tags.each do |tag|
-              %span.badge.rounded-pill.bg-primary.me-1
-                = tag.name
-                = link_to brand_ticket_tag_path(ticket.brand, ticket, tag), 'data-turbo-method': :delete do
-                  = bi_icon('x', 'text-white')
+          .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end{ id: "#{dom_id(ticket)}_tags" }
+            = render partial: 'tag', collection: ticket.tags, as: :tag, locals: { ticket: }
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
             - if ticket.parent_id.nil?
               .text-primary= bi_icon(ticket.provider)
@@ -100,7 +96,9 @@
                             = status_form.submit 'Assign', class: 'btn btn-primary'
               .col-12.col-lg-4
                 = form_with url: brand_ticket_tags_path(ticket.brand, ticket),
-                  model: ticket.tags.new, method: :post do |tag_form|
+                  model: ticket.tags.new, method: :post,
+                  html: { 'data-controller' => 'reset-form',
+                          'data-action' => 'turbo:submit-end->reset-form#reset' } do |tag_form|
                   .row
                     .col-lg-7
                       = tag_form.text_field :name, placeholder: 'Add tags to ticket',
