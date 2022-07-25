@@ -21,13 +21,8 @@
           %p= ticket.content
 
       - if policy(ticket).internal_note? && ticket.internal_notes.any?
-        %ul.list-group.list-group-flush
-          - ticket.internal_notes.each do |internal_note|
-            %li.list-group-item.list-group-item-primary
-              %span.small= bi_icon('sticky')
-              %span.small.me-1 #{internal_note.creator.name}:
-              %span.small= internal_note.content
-
+        %ul.list-group.list-group-flush{ id: "#{dom_id(ticket)}_internal_notes" }
+          = render partial: 'internal_note', collection: ticket.internal_notes
       .card-footer
         - if !Flipper.enabled?(:subscriptions) || policy(ticket.brand).subscription?
           .row
@@ -51,7 +46,9 @@
                   .col-12
                     = form_with url: brand_ticket_internal_notes_path(ticket.brand, ticket),
                       model: ticket.internal_notes.new, method: :post,
-                      html: { autocomplete: 'off' } do |internal_note_form|
+                      html: { autocomplete: 'off',
+                              'data-controller' => 'reset-form',
+                              'data-action' => 'turbo:submit-end->reset-form#reset' } do |internal_note_form|
                       .input-group.mb-3
                         = internal_note_form.text_area :content, required: true,
                           placeholder: 'Internal Note Text', class: 'form-control'
