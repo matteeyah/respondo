@@ -64,7 +64,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     click_link "toggle-internal-note-#{target_ticket.id}"
 
     fill_in 'internal_note[content]', with: internal_note_text
-    click_button 'Post'
+    click_button 'Create note'
 
     expect(page).to have_text(user.name)
     expect(page).to have_text(internal_note_text)
@@ -127,10 +127,6 @@ RSpec.shared_examples 'allows interacting with tickets' do
     within("#ticket_#{target_ticket.id}") do
       select user.name, from: 'ticket-assignment'
       click_button 'Assign'
-    end
-
-    within("#ticket_#{target_ticket.id}") do
-      expect(page).to have_select('ticket-assignment', selected: user.name)
     end
   end
 
