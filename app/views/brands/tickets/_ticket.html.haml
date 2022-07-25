@@ -9,8 +9,8 @@
             - if ticket.parent_id.nil?
               %span.m-0 via
               %span.badge.rounded-pill.list-group-item-primary.me-1
-                = bi_icon(ticket.actual_provider)
-                #{ticket.actual_provider}
+                = bi_icon(ticket.provider)
+                #{ticket.provider}
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-center
             %span.small.text-muted= ticket.created_at.to_formatted_s(:short)
           .col-4.col-lg-4.d-flex.justify-content-start.justify-content-lg-center

@@ -18,7 +18,7 @@
       .col-6
         .card
           .card-body.text-center
-            = link_to brand_tickets_path(current_brand),
+            = link_to brand_tickets_path(current_brand, status: 'open'),
               { class: 'text-decoration-none' } do
               = bi_icon('envelope-open', 'fs-4 text-muted')
               %h3.text-primary= @open_count
@@ -27,7 +27,7 @@
       .col-6
         .card
           .card-body.text-center
-            = link_to brand_tickets_path(current_brand),
+            = link_to brand_tickets_path(current_brand, status: 'solved'),
               { class: 'text-decoration-none' } do
               = bi_icon('check2-circle', 'fs-4 text-muted')
               %h3.text-primary= @solved_count
