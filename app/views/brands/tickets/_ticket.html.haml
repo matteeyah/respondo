@@ -24,7 +24,7 @@
             - if policy(ticket).update?
               = link_to bi_icon('person-lines-fill'),
                 brand_ticket_path(ticket.brand, ticket, action_form: 'assign'),
-                class: 'card-link me-2', id: "toggle-assign-#{ticket.id}", title: 'Assign Ticket'
+                class: 'me-2', id: "toggle-assign-#{ticket.id}", title: 'Assign Ticket'
             - if ticket.parent_id.nil?
               = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-frame' => :_top, title: 'Focus mode' do
                 = bi_icon('bullseye')
