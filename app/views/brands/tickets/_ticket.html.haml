@@ -12,7 +12,9 @@
             = render partial: 'tag', collection: ticket.tags, as: :tag, locals: { ticket: }
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
             - if ticket.parent_id.nil?
-              .text-primary= bi_icon(ticket.provider)
+              .text-primary
+                = bi_icon(ticket.provider)
+                = ticket.source.screen_name
           .col-2.col-lg-1.d-flex.justify-content-start.justify-content-lg-end
             = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-frame' => :_top do
               = bi_icon('box-arrow-up-right')
