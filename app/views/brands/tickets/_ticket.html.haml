@@ -9,7 +9,7 @@
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-center
             %span.small.text-muted= ticket.created_at.to_formatted_s(:short)
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end{ id: "#{dom_id(ticket)}_tags" }
-            = render partial: 'tag', collection: ticket.tags, as: :tag, locals: { ticket: }
+            = render partial: 'brands/tickets/tag', collection: ticket.tags, as: :tag, locals: { ticket: }
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-end
             - if ticket.parent_id.nil?
               .text-primary
@@ -24,7 +24,7 @@
 
       - if policy(ticket).internal_note? && ticket.internal_notes.any?
         %ul.list-group.list-group-flush{ id: "#{dom_id(ticket)}_internal_notes" }
-          = render partial: 'internal_note', collection: ticket.internal_notes
+          = render partial: 'brands/tickets/internal_note', collection: ticket.internal_notes
       .card-footer
         - if !Flipper.enabled?(:subscriptions) || policy(ticket.brand).subscription?
           .row

@@ -9,8 +9,8 @@ module Brands
       authorize(brand, policy_class: TicketPolicy)
       @pagy, tickets_relation = pagy(tickets)
       @tickets = tickets_relation.with_descendants_hash(
-        :author, :creator, :tags, :assignment, brand: [:users],
-                                               ticketable: %i[base_ticket source], internal_notes: [:creator]
+        :author, :creator, :tags, :assignment,
+        brand: [:users], ticketable: %i[base_ticket source], internal_notes: [:creator]
       )
       @brand = brand
     end
@@ -18,7 +18,10 @@ module Brands
     def show
       authorize(ticket)
 
-      @ticket_hash = Ticket.where(id: ticket.id).with_descendants_hash
+      @ticket_hash = Ticket.where(id: ticket.id).with_descendants_hash(
+        :author, :creator, :tags, :assignment,
+        brand: [:users], ticketable: %i[base_ticket source], internal_notes: [:creator]
+      )
       @action_form = params[:action_form]
 
       respond_to do |format|

@@ -1,4 +1,4 @@
 - ticket = @ticket_hash.first.first
 = turbo_stream.replace(dom_id(ticket)) do
-  = render partial: 'ticket', locals: { brand: ticket.brand, ticket:, action_form: @action_form }
-  = render partial: 'tickets', locals: { brand: ticket.brand, tickets: @ticket_hash.first.second }
+  = render partial: 'brands/tickets/ticket', locals: { brand: ticket.brand, ticket:, action_form: @action_form }
+  = render partial: 'brands/tickets/tickets', locals: { brand: ticket.brand, tickets: @ticket_hash.first.second }

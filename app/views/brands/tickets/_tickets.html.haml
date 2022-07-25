@@ -1,8 +1,8 @@
-%ul.list-group#tickets
+%ul.list-group
   - tickets.each do |ticket, replies|
     %li.list-group-item.bg-transparent.border-0
       = turbo_frame_tag dom_id(ticket) do
-        = render partial: 'ticket', locals: { brand:, ticket: }
+        = render partial: 'brands/tickets/ticket', locals: { brand:, ticket: }
 
         - if replies.any?
-          = render partial: 'tickets', locals: { brand:, tickets: replies }
+          = render partial: 'brands/tickets/tickets', locals: { brand:, tickets: replies }
