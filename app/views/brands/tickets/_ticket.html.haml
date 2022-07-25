@@ -5,13 +5,13 @@
       .card-header
         .row
           .col-4.col-lg-5
-            =bi_icon('person-circle', 'text-primary')
+            = bi_icon('person-circle', 'text-primary')
             %span.m-0!= ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)
             - if ticket.parent_id.nil?
               %span.m-0 via
               %span.badge.rounded-pill.list-group-item-primary.me-1
                 = bi_icon(ticket.provider)
-                #{ticket.provider}
+                = ticket.provider.to_s
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-center
             %span.small.text-muted= ticket.created_at.to_formatted_s(:short)
           .col-4.col-lg-4.d-flex.justify-content-start.justify-content-lg-center
