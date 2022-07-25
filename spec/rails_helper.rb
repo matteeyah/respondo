@@ -86,6 +86,11 @@ RSpec.configure do |config|
       driver_options.add_argument('no-sandbox')
     end
   end
+
+  # Enable subscriptions in testing
+  config.before(:all) do
+    Flipper.enable(:subscriptions)
+  end
 end
 
 Shoulda::Matchers.configure do |config|

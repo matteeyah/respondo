@@ -7,7 +7,7 @@ RSpec.describe 'Brand', type: :system do
   include SignInOutSystemHelpers
 
   let(:brand) { create(:brand, :with_account) }
-  let!(:tickets) { create_list(:internal_ticket, 2, brand:).map(&:base_ticket) }
+  let!(:tickets) { create_list(:internal_ticket, 2, brand:, source: brand.accounts.first).map(&:base_ticket) }
 
   before do
     create(:subscription, brand:)
@@ -108,21 +108,5 @@ RSpec.describe 'Brand', type: :system do
       expect(page).not_to have_text(tickets.first.content)
       expect(page).not_to have_text(tickets.second.content)
     end
-  end
-
-  private
-
-  def stub_twitter_reply_response(user_external_uid, user_screen_name, in_reply_to_status_id, response_text)
-    stub_request(:post, 'https://api.twitter.com/oauth2/token')
-      .to_return(status: 200, body: '{}', headers: { 'Content-Type' => 'application/json' })
-
-    response = {
-      id: 123_456,
-      user: { id: user_external_uid, screen_name: user_screen_name },
-      in_reply_to_status_id:,
-      full_text: response_text
-    }
-    stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')
-      .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 end

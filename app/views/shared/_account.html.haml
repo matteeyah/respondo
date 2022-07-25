@@ -1,9 +1,8 @@
 .list-group-item{ id: dom_id(account) }
   .row
-    .col-8.d-flex.align-items-center
-      %p.fw-bold.my-0= provider_human_name(account.provider)
+    .col-8.d-flex.align-items-center.my-0
+      %span.fw-bold= provider_human_name(account.provider)
+      %span.text-muted.mx-2= account.screen_name
     .col-4.d-flex.justify-content-end
       = link_to [model, account], 'data-turbo-method' => :delete do
         = bi_icon('trash3-fill')
-  .row
-    %p.mb-0.text-muted= account.email

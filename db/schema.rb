@@ -23,13 +23,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_13_110717) do
   create_table "brand_accounts", force: :cascade do |t|
     t.string "external_uid", null: false
     t.string "email"
+    t.string "screen_name", null: false
     t.integer "provider", null: false
     t.string "token"
     t.string "secret"
     t.integer "brand_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["brand_id", "provider"], name: "index_brand_accounts_on_brand_id_and_provider", unique: true
     t.index ["brand_id"], name: "index_brand_accounts_on_brand_id"
     t.index ["external_uid", "provider"], name: "index_brand_accounts_on_external_uid_and_provider", unique: true
   end
@@ -75,8 +75,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_13_110717) do
   end
 
   create_table "internal_tickets", force: :cascade do |t|
+    t.integer "source_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["source_id"], name: "index_internal_tickets_on_source_id"
   end
 
   create_table "personal_access_tokens", force: :cascade do |t|
@@ -136,7 +138,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_13_110717) do
     t.string "external_uid", null: false
     t.text "content", null: false
     t.integer "status", null: false
-    t.integer "provider", null: false
     t.string "ticketable_type", null: false
     t.integer "ticketable_id", null: false
     t.integer "brand_id", null: false
@@ -173,6 +174,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_13_110717) do
   end
 
   add_foreign_key "internal_notes", "users", column: "creator_id"
+  add_foreign_key "internal_tickets", "brand_accounts", column: "source_id"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tickets", "users", column: "creator_id"
 end

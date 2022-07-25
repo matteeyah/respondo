@@ -23,32 +23,14 @@ RSpec.describe Brands::BrandAccountsController, type: :request do
           brand.users << browsing_user
         end
 
-        context 'when brand has only one account' do
-          it 'does not destroy the account' do
-            expect { delete_destroy }.not_to change(BrandAccount, :count).from(1)
-          end
-
-          it 'redirects to edit brand path' do
-            delete_destroy
-
-            expect(response).to redirect_to(edit_brand_path(brand))
-          end
+        it 'destroys the account' do
+          expect { delete_destroy }.to change(BrandAccount, :count).from(1).to(0)
         end
 
-        context 'when brand has multiple accounts' do
-          before do
-            create(:brand_account, provider: 'disqus', brand:)
-          end
+        it 'redirects to edit brand path' do
+          delete_destroy
 
-          it 'destroys the account' do
-            expect { delete_destroy }.to change(BrandAccount, :count).from(2).to(1)
-          end
-
-          it 'redirects to edit brand path' do
-            delete_destroy
-
-            expect(response).to redirect_to(edit_brand_path(brand))
-          end
+          expect(response).to redirect_to(edit_brand_path(brand))
         end
       end
 

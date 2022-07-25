@@ -21,7 +21,7 @@ RSpec.describe BrandPolicy, type: :policy do
 
   permissions :subscription? do
     it 'allows if subscription checks are skipped' do
-      allow(Flipper).to receive(:enabled?).with(:disable_subscriptions).and_return(true)
+      allow(Flipper).to receive(:enabled?).with(:subscriptions).and_return(false)
 
       expect(brand_policy).to permit(nil, brand)
     end

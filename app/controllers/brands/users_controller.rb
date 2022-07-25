@@ -21,16 +21,11 @@ module Brands
       authorize([:brands, brand_user])
 
       @user = brand_user
-      brand.users.delete(@user)
+      @success = remove_user!
 
       respond_to do |format|
         format.turbo_stream
-        format.html do
-          # If user is removing self from brand, redirecting back results in a
-          # redirect loop.
-          redirect_to (brand_user == current_user ? root_path : edit_brand_path(brand)),
-                      status: :see_other
-        end
+        format.html { redirect_to redirect_path, status: :see_other }
       end
     end
 
@@ -42,6 +37,20 @@ module Brands
 
     def brand_user
       @brand_user ||= brand.users.find(params[:user_id] || params[:id])
+    end
+
+    def remove_user!
+      if brand.users.count > 1
+        brand.users.delete(@user)
+      else
+        false
+      end
+    end
+
+    def redirect_path
+      # If user is removing self from brand, redirecting back results in a
+      # redirect loop.
+      brand_user == current_user ? root_path : edit_brand_path(brand)
     end
   end
 end

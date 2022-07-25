@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class TicketResponder < ApplicationService
-  attr_reader :ticket, :response, :user
-
   def initialize(ticket, response, user)
     super()
 
@@ -12,7 +10,7 @@ class TicketResponder < ApplicationService
   end
 
   def call
-    TicketCreator.new(ticket.provider, client_response, ticket.brand, user).call
+    TicketCreator.new(@ticket.provider, client_response, @ticket.source, @user).call
   rescue Twitter::Error
     false
   end
@@ -20,19 +18,19 @@ class TicketResponder < ApplicationService
   private
 
   def client_response
-    raw_response = client.reply(response, ticket.external_uid)
-    ticket.external? ? JSON.parse(raw_response).deep_symbolize_keys : raw_response
+    raw_response = client.reply(@response, @ticket.external_uid)
+    @ticket.external_ticket? ? JSON.parse(raw_response).deep_symbolize_keys : raw_response
   end
 
   def client
-    if ticket.external?
+    if @ticket.external_ticket?
       external_client
     else
-      user.brand.client_for_provider(ticket.provider)
+      @ticket.source.client
     end
   end
 
   def external_client
-    Clients::External.new(ticket.external_ticket.response_url, ticket.author.external_uid, ticket.author.username)
+    Clients::External.new(@ticket.external_ticket.response_url, @ticket.author.external_uid, @ticket.author.username)
   end
 end

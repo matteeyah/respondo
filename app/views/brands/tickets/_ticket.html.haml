@@ -34,7 +34,7 @@
               %span.small.me-1 #{internal_note.creator.name}:
               %span.small= internal_note.content
       .card-footer
-        - if policy(ticket.brand).subscription? || Flipper.enabled?(:disable_subscriptions)
+        - if !Flipper.enabled?(:subscriptions) || policy(ticket.brand).subscription?
           .row
             - if local_assigns[:action_form]
               - case action_form

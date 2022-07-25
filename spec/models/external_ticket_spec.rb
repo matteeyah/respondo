@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require './spec/support/concerns/models/ticketable_examples'
-
 RSpec.describe ExternalTicket, type: :model do
   describe 'Validations' do
     subject(:external_ticket) { create(:external_ticket) }
@@ -9,10 +7,12 @@ RSpec.describe ExternalTicket, type: :model do
     it { is_expected.to validate_presence_of(:response_url) }
   end
 
-  it_behaves_like 'ticketable'
+  describe 'Relations' do
+    it { is_expected.to have_one(:base_ticket).dependent(:destroy) }
+  end
 
-  describe '#actual_provider' do
-    subject(:actual_provider) { external_ticket.actual_provider }
+  describe '#provider' do
+    subject(:provider) { external_ticket.provider }
 
     let(:external_ticket) { create(:external_ticket) }
 

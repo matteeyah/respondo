@@ -14,10 +14,7 @@ FactoryBot.define do
     end
 
     base_ticket do
-      Ticket.new(
-        external_uid:, status:, content:, provider: 'external',
-        parent:, author:, brand:
-      )
+      Ticket.new(external_uid:, status:, content:, parent:, author:, brand:)
     end
 
     after(:build) do |external_ticket|

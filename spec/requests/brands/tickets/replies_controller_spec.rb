@@ -6,7 +6,7 @@ RSpec.describe Brands::Tickets::RepliesController, type: :request do
   include SignInOutRequestHelpers
 
   let(:brand) { create(:brand) }
-  let!(:ticket) { create(:internal_ticket, provider: 'twitter', brand:).base_ticket }
+  let!(:ticket) { create(:internal_ticket, brand:).base_ticket }
   let(:client) { instance_spy(Clients::Client) }
 
   before do
@@ -64,9 +64,15 @@ RSpec.describe Brands::Tickets::RepliesController, type: :request do
       end
 
       context 'when ticket is internal' do
-        (Ticket.providers.keys - ['external']).each do |provider|
+        BrandAccount.providers.except(:developer).each_key do |provider|
           context "when ticket provider is #{provider}" do
-            let(:ticket) { create(:internal_ticket, provider:, brand:).base_ticket }
+            let(:ticket) do
+              create(
+                :internal_ticket,
+                source: create(:brand_account, provider:, brand:),
+                brand:
+              ).base_ticket
+            end
 
             let(:client_error) { Twitter::Error::Forbidden.new('error') }
             let(:client_response) do
