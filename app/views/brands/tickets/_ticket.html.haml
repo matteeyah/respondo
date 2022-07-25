@@ -83,8 +83,7 @@
                         model: ticket, method: :patch do |status_form|
                         .row
                           .col-6
-                            = status_form.select :status,
-                              options_for_select(Ticket.statuses.keys, ticket.status),
+                            = status_form.collection_select :status, Ticket.statuses, :first, :first,
                               {}, required: true, class: 'custom-select form-control', id: 'ticket-status'
                           .col-6
                             = status_form.submit 'Update', class: 'btn btn-primary'
@@ -93,10 +92,10 @@
                         model: ticket, method: :post do |status_form|
                         .row
                           .col-8
-                            = status_form.fields_for :assignment do |assignment_form|
-                              = assignment_form.select :user_id,
-                                options_for_select(ticket.brand.users.pluck(:name, :id), ticket.assignment&.user&.id),
-                                {}, required: true, class: 'custom-select form-control', id: 'ticket-assignment'
+                            = status_form.fields_for :assignment, ticket.assignment do |assignment_form|
+                              = assignment_form.collection_select :user_id, ticket.brand.users, :id, :name,
+                                { prompt: true },
+                                { required: true, class: 'custom-select form-control', id: 'ticket-assignment' }
                           .col-4
                             = status_form.submit 'Assign', class: 'btn btn-primary'
               .col-12.col-lg-4
