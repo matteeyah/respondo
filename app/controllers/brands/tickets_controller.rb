@@ -5,21 +5,28 @@ module Brands
     include Pundit::Authorization
     include Pagy::Backend
 
+    TICKET_RENDER_PRELOADS = [
+      :author, :creator, :tags, :assignment,
+      { brand: [:users], ticketable: %i[base_ticket source], internal_notes: [:creator] }
+    ].freeze
+
     def index
       authorize(brand, policy_class: TicketPolicy)
       @pagy, tickets_relation = pagy(tickets)
-      @tickets = tickets_relation.with_descendants_hash(
-        :author, :creator, :tags, :assignment, brand: [:users],
-                                               ticketable: %i[base_ticket source], internal_notes: [:creator]
-      )
+      @tickets = tickets_relation.with_descendants_hash(TICKET_RENDER_PRELOADS)
       @brand = brand
     end
 
     def show
       authorize(ticket)
 
-      @ticket_hash = Ticket.where(id: ticket.id).with_descendants_hash
+      @ticket_hash = Ticket.where(id: ticket.id).with_descendants_hash(TICKET_RENDER_PRELOADS)
       @action_form = params[:action_form]
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html
+      end
     end
 
     def update

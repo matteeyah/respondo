@@ -10,7 +10,10 @@ module Brands
 
         update_assignment!
 
-        redirect_to brand_ticket_path(ticket.brand, ticket)
+        respond_to do |format|
+          format.turbo_stream
+          format.html { redirect_to brand_ticket_path(ticket.brand, ticket) }
+        end
       end
 
       private
