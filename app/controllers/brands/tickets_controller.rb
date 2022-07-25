@@ -20,6 +20,11 @@ module Brands
 
       @ticket_hash = Ticket.where(id: ticket.id).with_descendants_hash
       @action_form = params[:action_form]
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html
+      end
     end
 
     def update
