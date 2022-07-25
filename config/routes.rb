@@ -31,6 +31,12 @@ Rails.application.routes.draw do
           resources :tags, only: %i[create destroy]
           resources :internal_notes, only: :create
           resources :replies, only: :create
+
+          resources :assignments, only: [] do
+            collection do
+              post :update
+            end
+          end
         end
       end
 

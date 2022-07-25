@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_13_110717) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
+  create_table "assignments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "ticket_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ticket_id"], name: "index_assignments_on_ticket_id", unique: true
+    t.index ["user_id"], name: "index_assignments_on_user_id"
+  end
+
   create_table "authors", force: :cascade do |t|
     t.string "external_uid", null: false
     t.integer "provider", null: false

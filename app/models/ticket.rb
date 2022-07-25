@@ -24,10 +24,11 @@ class Ticket < ApplicationRecord
   belongs_to :creator, optional: true, class_name: 'User'
   belongs_to :author
   belongs_to :brand
-
   belongs_to :parent, class_name: 'Ticket', optional: true
-  has_many :replies, class_name: 'Ticket', foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
 
+  has_one :assignment, dependent: :destroy
+
+  has_many :replies, class_name: 'Ticket', foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
   has_many :internal_notes, dependent: :destroy
 
   class << self
