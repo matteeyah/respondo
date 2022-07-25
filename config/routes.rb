@@ -31,6 +31,8 @@ Rails.application.routes.draw do
           resources :tags, only: %i[create destroy]
           resources :internal_notes, only: :create
           resources :replies, only: :create
+
+          resource :assignments, only: :create
         end
       end
 

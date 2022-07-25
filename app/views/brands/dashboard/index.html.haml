@@ -20,26 +20,26 @@
           .card-body.text-center
             = link_to brand_tickets_path(current_brand),
               { class: 'text-decoration-none' } do
-              = bi_icon('envelope-open', 'fs-4 text-muted')
-              %h3.text-primary= @open_count
-              %p.text-muted.font-15.mb-0 Total Open
+              = bi_icon('check2-circle', 'fs-4 text-muted')
+              %h3.text-primary= @solved_count
+              %p.text-muted.font-15.mb-0 Total Resolved
     .row.mb-3
       .col-6
         .card
           .card-body.text-center
             = link_to brand_tickets_path(current_brand),
               { class: 'text-decoration-none' } do
-              = bi_icon('check2-circle', 'fs-4 text-muted')
-              %h3.text-primary= @solved_count
-              %p.text-muted.font-15.mb-0 Total Resolved
+              = bi_icon('envelope-open', 'fs-4 text-muted')
+              %h3.text-primary= @open_count
+              %p.text-muted.font-15.mb-0 Total Open
       .col-6
         .card
           .card-body.text-center
             = link_to brand_tickets_path(current_brand),
               { class: 'text-decoration-none' } do
               = bi_icon('stopwatch', 'fs-4 text-muted')
-              %h3.text-primary 1
-              %p.text-muted.font-15.mb-0 On-hold
+              %h3.text-primary= @unassigned_count
+              %p.text-muted.font-15.mb-0 Unassigned Tickets
   .col-12.col-lg-8
     .card
       .card-body
