@@ -1,3 +1,4 @@
+-# haml-lint:disable ViewLength
 .row
   .col-12
     .card.mb-5
@@ -83,7 +84,7 @@
                         class: 'btn btn-outline-secondary'
                     = status_form.submit 'Update status', class: 'btn btn-primary'
             - else
-              .col-12
+              .col-12.col-lg-8
                 .row
                   - if policy(ticket).reply?
                     .col-lg-4.d-flex.justify-content-start
@@ -105,4 +106,35 @@
                       = link_to bi_icon('check-square-fill', 'text-primary fs-5'),
                         brand_ticket_path(ticket.brand, ticket, action_form: 'status'),
                         class: 'card-link', id: "toggle-status-#{ticket.id}", title: 'Resolve Ticket'
-
+                        class: 'card-link', id: "toggle-internal-note-#{ticket.id}"
+                  - if policy(ticket).update?
+                    .col-lg-5
+                      = form_with url: brand_ticket_path(ticket.brand, ticket),
+                        model: ticket, method: :patch do |status_form|
+                        .row
+                          .col-6
+                            = status_form.collection_select :status, Ticket.statuses, :first, :first,
+                              {}, required: true, class: 'custom-select form-control', id: 'ticket-status'
+                          .col-6
+                            = status_form.submit 'Update', class: 'btn btn-primary'
+                    .col-lg-5
+                      = form_with url: brand_ticket_assignments_path(ticket.brand, ticket),
+                        model: ticket, method: :post do |status_form|
+                        .row
+                          .col-8
+                            = status_form.fields_for :assignment, ticket.assignment do |assignment_form|
+                              = assignment_form.collection_select :user_id, ticket.brand.users, :id, :name,
+                                { prompt: true },
+                                { required: true, class: 'custom-select form-control', id: 'ticket-assignment' }
+                          .col-4
+                            = status_form.submit 'Assign', class: 'btn btn-primary'
+              .col-12.col-lg-4
+                = form_with url: brand_ticket_tags_path(ticket.brand, ticket),
+                  model: ticket.tags.new, method: :post do |tag_form|
+                  .row
+                    .col-lg-7
+                      = tag_form.text_field :name, placeholder: 'Add tags to ticket',
+                        required: true, class: 'form-control'
+                    .col-lg-5
+                      = tag_form.submit 'Add Tags', class: 'form-control btn-primary'
+-# haml-lint:enable ViewLength

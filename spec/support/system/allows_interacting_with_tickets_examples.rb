@@ -77,7 +77,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
 
     within("#ticket_#{target_ticket.id}") do
       select 'solved', from: 'ticket-status'
-      click_button 'Update Status'
+      click_button 'Update'
     end
 
     click_link 'Solved Tickets'
@@ -116,6 +116,21 @@ RSpec.shared_examples 'allows interacting with tickets' do
     within("#ticket_#{target_ticket.id}") do
       expect(page).not_to have_selector(:css, 'span', text: 'hello')
       expect(page).to have_selector(:css, 'span', text: 'world')
+    end
+  end
+
+  it 'allows updating ticket assignment' do
+    user = sign_in_user
+    sign_in_brand(brand)
+    click_link('Brand Tickets')
+
+    within("#ticket_#{target_ticket.id}") do
+      select user.name, from: 'ticket-assignment'
+      click_button 'Assign'
+    end
+
+    within("#ticket_#{target_ticket.id}") do
+      expect(page).to have_select('ticket-assignment', selected: user.name)
     end
   end
 
