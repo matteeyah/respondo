@@ -8,25 +8,37 @@ module Brands
       def create
         authorize(ticket.brand, :user_in_brand?)
 
-        ticket.tag_list.add(tag_params[:name])
-        ticket.save
+        @tag = new_tag
+        @ticket = ticket
+        @ticket.tags << @tag
 
-        redirect_to brand_ticket_path(ticket.brand, ticket)
+        respond_to do |format|
+          format.turbo_stream
+          format.html { redirect_to brand_ticket_path(ticket.brand, ticket) }
+        end
       end
 
       def destroy
         authorize(ticket.brand, :user_in_brand?)
 
-        ticket.tag_list.remove(tag.name)
-        ticket.save
+        @tag = tag
+        @ticket = ticket
+        @ticket.tags.delete(@tag)
 
-        redirect_to brand_ticket_path(ticket.brand, ticket), status: :see_other
+        respond_to do |format|
+          format.turbo_stream
+          format.html { redirect_to brand_ticket_path(ticket.brand, ticket), status: :see_other }
+        end
       end
 
       private
 
       def tag_params
         params.require(:acts_as_taggable_on_tag).permit(:name)
+      end
+
+      def new_tag
+        ActsAsTaggableOn::Tag.find_or_create_by(name: tag_params[:name])
       end
 
       def tag
