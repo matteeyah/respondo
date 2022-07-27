@@ -1,6 +1,6 @@
 .row
   .col-12.col-lg-10
-    %h4 Tickets (#{@brand.screen_name})
+    %h4 Tickets
   .col-12.col-lg-2.d-flex.justify-content-end
     - if policy(:ticket).refresh? && policy(@brand).user_in_brand?
       = link_to 'Load Tickets', refresh_brand_tickets_path(@brand), class: 'btn btn-primary',
@@ -8,10 +8,10 @@
 .row.mt-3
   .col-lg-2
     %ul.list-group
-      = active_link_to 'Open Tickets', brand_tickets_path(@brand, status: 'open'), active: { status: 'open' },
-        class: 'list-group-item list-group-item-action'
-      = active_link_to 'Solved Tickets', brand_tickets_path(@brand, status: 'solved'), active: { status: 'solved' },
-        class: 'list-group-item list-group-item-action'
+      - Ticket.statuses.each_key do |status|
+        = link_to brand_tickets_path(@brand, status:), active: { status: },
+          class: 'list-group-item list-group-item-action' do
+          %span= status.capitalize
   .col-lg-10.mt-3.mt-lg-0
     = form_with url: brand_tickets_path(@brand), local: true, method: :get,
       class: 'mb-4', html: { autocomplete: 'off' } do |search_form|

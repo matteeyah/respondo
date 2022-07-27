@@ -39,7 +39,7 @@ RSpec.describe 'Brand', type: :system do
     target_ticket = tickets.first
 
     within("#ticket_#{target_ticket.id}") do
-      page.find(:css, 'i.bi-box-arrow-up-right').click
+      page.find(:css, 'i.bi-bullseye').click
     end
 
     expect(page).to have_text(target_ticket.content)
@@ -78,7 +78,7 @@ RSpec.describe 'Brand', type: :system do
       sign_in_brand(brand)
       click_link('Brand Tickets')
 
-      click_link 'Solved Tickets'
+      click_link 'Solved'
 
       # This is a hack to make Capybara wait until the page is loaded after navigating
       find(:xpath, "//input[@type='hidden'][@value='solved']", visible: :hidden)

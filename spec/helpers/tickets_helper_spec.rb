@@ -14,7 +14,7 @@ RSpec.describe TicketsHelper, type: :helper do
       end
 
       it 'shows provider' do
-        author_link = link_to(ticket.author.username, ticket.author.external_link)
+        author_link = link_to(ticket.author.username, ticket.author.external_link, class: 'text-decoration-none')
         expect(ticket_author_header).to eq(author_link.to_s)
       end
     end
@@ -27,7 +27,7 @@ RSpec.describe TicketsHelper, type: :helper do
       end
 
       it 'shows local ticket author' do
-        author_link = link_to(ticket.author.username, ticket.author.external_link)
+        author_link = link_to(ticket.author.username, ticket.author.external_link, class: 'text-decoration-none')
         expect(ticket_author_header).to eq("#{ticket.creator.name} as #{author_link}")
       end
     end
