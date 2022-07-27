@@ -57,7 +57,7 @@
                               'data-action' => 'turbo:submit-end->reset-form#reset' } do |internal_note_form|
                       .input-group.input-group-sm.mb-3
                         = internal_note_form.text_field :content, required: true,
-                          placeholder: 'Internal note text..', class: 'form-control'
+                          placeholder: 'Internal note text.', class: 'form-control'
                         = link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
                           class: 'btn btn-outline-secondary'
                         = internal_note_form.submit 'Create note', class: 'btn btn-primary'
@@ -96,18 +96,16 @@
             - else
               .col-12
                 .row
-                  - if policy(ticket).reply?
-                    .col-lg-4.d-flex.justify-content-start
+                  .col-lg-6.d-flex.justify-content-start
+                    - if policy(ticket).reply?
                       = link_to bi_icon('reply-fill', 'text-primary fs-4'),
                         brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
                         class: 'card-link', id: "toggle-reply-#{ticket.id}", title: 'Reply'
-                  .col-lg-4.d-flex.justify-content-center
-                    - if ticket.parent_id.nil?
-                      %span.small.text-muted Load replies
-                  .col-lg-4.d-flex.justify-content-end
-                    = link_to bi_icon('bookmark', 'text-primary fs-5'),
-                        brand_ticket_path(ticket.brand, ticket, action_form: 'tag'),
-                        class: 'card-link', id: "toggle-tag-#{ticket.id}", title: 'Tag Ticket'
+                  .col-lg-6.d-flex.justify-content-end
+                    - if policy(ticket).update?
+                      = link_to bi_icon('bookmark', 'text-primary fs-5'),
+                          brand_ticket_path(ticket.brand, ticket, action_form: 'tag'),
+                          class: 'card-link', id: "toggle-tag-#{ticket.id}", title: 'Tag Ticket'
                     - if policy(ticket).internal_note?
                       = link_to bi_icon('journal-text', 'text-primary fs-5'),
                         brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
