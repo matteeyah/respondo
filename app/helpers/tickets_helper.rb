@@ -9,13 +9,4 @@ module TicketsHelper
       author_link
     end
   end
-
-  def ticket_provider_as_author_link(user_authorized, ticket)
-    author_link = link_to(ticket.author.username, ticket.author.external_link)
-    if user_authorized && ticket.creator
-      "#{ticket.actual_provider} as #{author_link}"
-    else
-      author_link
-    end
-  end
 end
