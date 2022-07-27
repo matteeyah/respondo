@@ -8,17 +8,10 @@
 .row.mt-3
   .col-lg-2
     %ul.list-group
-      = link_to brand_tickets_path(@brand, status: 'open'), active: { status: 'open' },
-        class: 'list-group-item list-group-item-action' do
-        = bi_icon('envelope-open', 'fs-5 text-muted')
-        %span Open
-      = link_to brand_tickets_path(@brand, status: 'solved'), active: { status: 'solved' },
-        class: 'list-group-item list-group-item-action' do
-        = bi_icon('check2-circle', 'fs-5 text-muted')
-        %span Solved
-      = link_to '#', class: 'list-group-item list-group-item-action' do
-        = bi_icon('stopwatch', 'fs-5 text-muted')
-        %span On-Hold
+      - Ticket.statuses.each_key do |status|
+        = link_to brand_tickets_path(@brand, status: status), active: { status: status },
+          class: 'list-group-item list-group-item-action' do
+          %span= status.capitalize
   .col-lg-10.mt-3.mt-lg-0
     = form_with url: brand_tickets_path(@brand), local: true, method: :get,
       class: 'mb-4', html: { autocomplete: 'off' } do |search_form|
