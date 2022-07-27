@@ -78,11 +78,12 @@ RSpec.shared_examples 'allows interacting with tickets' do
     click_link('Brand Tickets')
 
     within("#ticket_#{target_ticket.id}") do
+      click_link "toggle-status-#{target_ticket.id}"
       select 'solved', from: 'ticket-status'
       click_button 'Update'
     end
 
-    click_link 'Solved Tickets'
+    click_link 'Solved'
 
     expect(page).to have_text(target_ticket.author.username)
     expect(page).to have_text(target_ticket.content)
@@ -94,8 +95,9 @@ RSpec.shared_examples 'allows interacting with tickets' do
     click_link('Brand Tickets')
 
     within("#ticket_#{target_ticket.id}") do
+      click_link "toggle-tag-#{target_ticket.id}"
       fill_in :'acts_as_taggable_on_tag[name]', with: 'hello'
-      click_button 'Add Tags'
+      click_button 'Tag ticket'
     end
 
     within("#ticket_#{target_ticket.id}") do
@@ -127,6 +129,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     click_link('Brand Tickets')
 
     within("#ticket_#{target_ticket.id}") do
+      click_link "toggle-assign-#{target_ticket.id}"
       select user.name, from: 'ticket-assignment'
       click_button 'Assign'
     end
