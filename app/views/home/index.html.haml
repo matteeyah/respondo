@@ -1,19 +1,36 @@
-.row
+.container
+  .row
+    .col-12
+      %h1.display-6 Welcome to the Respondo platform
+  .row
   .col-12
-    %h3 Welcome to Respondo!
-.row
-.col-12
-  %p.text-muted Ticketing system for social media posts.
-%hr.border-2.border-top
-
-
-.col-12
-  %p.text-muted Woohoo, you're signed in. The next step is to authorize a brand account.
-  = auth_provider_link('twitter', 'brand', { class: 'btn btn-primary' }) do
-    %span Authorize Brand
-  - if Rails.env.development?
-    .row
-      .col-12.mt-3
-        = auth_provider_link('developer', 'brand', { class: 'btn btn-primary' }) do
-          = bi_icon('code-slash')
-          %span Developer Sign In
+    %p.text-muted Ticketing system for social media posts.
+  .row
+  %hr.border-2.border-top
+  .row
+    .col-12
+      %h5 The next step is to authorize a brand account.
+      %span.text-muted Try to authorize your brand account by clicking to button below.
+      = auth_provider_link('twitter', 'brand', { class: 'btn btn-primary mt-3' }) do
+        %span Authorize Brand
+      - if Rails.env.development?
+        .row
+          .col-12.mt-3
+            = auth_provider_link('developer', 'brand', { class: 'btn btn-primary' }) do
+              = bi_icon('code-slash')
+              %span Developer Sign In
+  %hr.border-2.border-top
+    .col-12
+      %p The Respondo platform provides handy and user-friendly features which will make your social life more manageable. Your employees will be exposed to direct feedback about their work and your community will always get the best possible response. This is also the best way to ensure that you're building a product that people actually want.
+  .row
+    .col-12
+      %p Useful links:
+      %ul
+        %li
+          %span Check out our website -
+          = safe_blank_link_to 'https://respondohub.com/', 'https://respondohub.com/',
+                      class: 'span text-decoration-none text-primary'
+        %li
+          %span Read documentation -
+          = safe_blank_link_to 'https://docs.respondohub.com', 'https://docs.respondohub.com',
+                      class: 'span text-decoration-none text-primary'
