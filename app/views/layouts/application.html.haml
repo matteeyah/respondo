@@ -22,6 +22,15 @@
               %span.navbar-toggler-icon
             .flex-column.align-items-start.collapse.navbar-collapse.mt-5#main-nav
               %ul.flex-column.navbar-nav.text-center
+                - if !current_brand
+                  %li.nav-item
+                    = auth_provider_link('twitter', 'brand',
+                      { class: 'nav-link text-decoration-none bg-transparent border-0' }) do
+                      = bi_icon('plus-circle-dotted', 'fs-1')
+                  - if Rails.env.development?
+                    = auth_provider_link('developer', 'brand',
+                      { class: 'nav-link text-decoration-none bg-transparent border-0' }) do
+                      = bi_icon('wrench-adjustable-circle', 'fs-1')
                 - if current_brand
                   %li.nav-item
                     = active_link_to brand_dashboard_path(current_brand),

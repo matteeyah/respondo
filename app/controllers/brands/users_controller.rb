@@ -40,7 +40,7 @@ module Brands
     end
 
     def remove_user!
-      if brand.users.count > 1
+      if brand.users.count > 0
         brand.users.delete(@user)
       else
         false
