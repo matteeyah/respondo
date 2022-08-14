@@ -2,7 +2,7 @@
 
 RSpec.describe Clients::External do
   let(:client) { described_class.new('https://response_url.com') }
-  let(:response) { instance_double(Net::HTTPResponse, body: 'hello world') }
+  let(:response) { instance_double(Net::HTTPResponse, body: { hello: 'world' }.to_json) }
   let(:client_spy) { instance_spy(Net::HTTP, request: response) }
 
   before do
@@ -36,7 +36,7 @@ RSpec.describe Clients::External do
     end
 
     it 'returns response body' do
-      expect(reply).to eq('hello world')
+      expect(reply).to eq(hello: 'world')
     end
   end
 
@@ -56,7 +56,7 @@ RSpec.describe Clients::External do
     end
 
     it 'returns response body' do
-      expect(delete).to eq('hello world')
+      expect(delete).to eq(hello: 'world')
     end
   end
 end

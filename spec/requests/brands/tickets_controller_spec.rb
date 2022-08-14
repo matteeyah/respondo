@@ -247,6 +247,7 @@ RSpec.describe Brands::TicketsController, type: :request do
       context 'when user is authorized' do
         before do
           user.update!(brand:)
+          ticket.update!(creator: user)
         end
 
         it 'deletes the external post' do

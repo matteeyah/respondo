@@ -29,7 +29,9 @@ module Clients
     end
 
     def http_client
-      Net::HTTP.new(uri.host, uri.port)
+      Net::HTTP.new(uri.host, uri.port).tap do |net_http|
+        net_http.use_ssl = true
+      end
     end
 
     def send_request!(request)
