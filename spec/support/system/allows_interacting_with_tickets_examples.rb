@@ -32,7 +32,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     click_link('Brand Tickets')
 
     response_text = 'Hello from Respondo system tests'
-    target_ticket.ticketable = create(:external_ticket, response_url: 'https://example.com')
+    target_ticket.ticketable = create(:external_ticket, response_url: 'https://example.com/path')
     target_ticket.author.external!
     target_ticket.save
     response = {
@@ -42,7 +42,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
       parent_uid: target_ticket.external_uid,
       content: response_text
     }
-    stub_request(:post, target_ticket.external_ticket.response_url)
+    stub_request(:post, 'https://example.com/path')
       .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
 
     click_link "toggle-reply-#{target_ticket.id}"

@@ -15,10 +15,6 @@ class Brand < ApplicationRecord
     accounts.exists?(provider:)
   end
 
-  def client_for_provider(provider)
-    accounts.find_by(provider:)&.client
-  end
-
   private
 
   def increment_subscription_quantity(_)

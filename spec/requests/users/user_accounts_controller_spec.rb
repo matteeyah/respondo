@@ -43,7 +43,7 @@ RSpec.describe Users::UserAccountsController, type: :request do
           end
 
           it 'destroys the account' do
-            expect { delete_destroy }.to change(UserAccount, :count).from(3).to(2)
+            expect { delete_destroy }.to change { UserAccount.exists?(account.id) }.from(true).to(false)
           end
 
           it 'redirects to edit user path' do

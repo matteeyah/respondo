@@ -42,7 +42,7 @@ RSpec.describe Clients::Disqus do
     context 'when last_ticket_identifier is specified' do
       let(:last_ticket_identifier) { '12321' }
 
-      it 'calls the underlying twitter client with since' do
+      it 'calls the underlying disqus client with since' do
         new_mentions
 
         expect(posts_spy).to have_received(:list).with(
@@ -56,12 +56,25 @@ RSpec.describe Clients::Disqus do
   describe '#reply' do
     subject(:reply) { client.reply('response text', 'disqus_uid') }
 
-    it 'calls the underlying twitter client' do
+    it 'calls the underlying disqus client' do
       reply
 
       expect(posts_spy).to have_received(:create).with(
         api_key: 'api_key', api_secret: 'api_secret', access_token: 'token',
         parent: 'disqus_uid', message: 'response text'
+      )
+    end
+  end
+
+  describe '#delete' do
+    subject(:delete) { client.delete('disqus_uid') }
+
+    it 'calls the underlying disqus client' do
+      delete
+
+      expect(posts_spy).to have_received(:remove).with(
+        api_key: 'api_key', api_secret: 'api_secret', access_token: 'token',
+        post: 'disqus_uid'
       )
     end
   end

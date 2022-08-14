@@ -9,5 +9,9 @@ module Clients
     def reply(_response_text, _external_uid)
       raise NotImplementedError
     end
+
+    def delete(_external_uid)
+      raise NotImplementedError
+    end
   end
 end

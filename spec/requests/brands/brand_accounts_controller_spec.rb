@@ -24,7 +24,7 @@ RSpec.describe Brands::BrandAccountsController, type: :request do
         end
 
         it 'destroys the account' do
-          expect { delete_destroy }.to change(BrandAccount, :count).from(1).to(0)
+          expect { delete_destroy }.to change { BrandAccount.exists?(account.id) }.from(true).to(false)
         end
 
         it 'redirects to edit brand path' do

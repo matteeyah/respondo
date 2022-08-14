@@ -47,4 +47,14 @@ RSpec.describe Clients::Twitter do
       )
     end
   end
+
+  describe '#delete' do
+    subject(:delete) { client.delete(1) }
+
+    it 'calls the underlying twitter client' do
+      delete
+
+      expect(twitter_client_spy).to have_received(:destroy_status).with(1)
+    end
+  end
 end

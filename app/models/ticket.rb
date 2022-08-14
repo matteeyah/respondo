@@ -10,7 +10,7 @@ class Ticket < ApplicationRecord
   enum status: { open: 0, solved: 1 }
 
   delegated_type :ticketable, types: %w[InternalTicket ExternalTicket]
-  delegate :provider, :source, to: :ticketable
+  delegate :provider, :source, :client, to: :ticketable
 
   acts_as_taggable_on :tags
 

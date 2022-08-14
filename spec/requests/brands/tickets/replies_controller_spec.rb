@@ -141,7 +141,8 @@ RSpec.describe Brands::Tickets::RepliesController, type: :request do
 
         let(:client_error) { Twitter::Error::Forbidden.new('error') }
         let(:client_response) do
-          JSON.parse(file_fixture('external_post_hash.json').read).merge(parent_uid: ticket.external_uid).to_json
+          JSON.parse(file_fixture('external_post_hash.json').read)
+            .merge(parent_uid: ticket.external_uid).deep_symbolize_keys
         end
 
         context 'when user is authorized' do
