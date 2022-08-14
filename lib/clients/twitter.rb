@@ -22,6 +22,10 @@ module Clients
                                            tweet_mode: 'extended')
     end
 
+    def delete(tweet_id)
+      twitter_client.destroy_status(tweet_id)
+    end
+
     private
 
     def twitter_client
