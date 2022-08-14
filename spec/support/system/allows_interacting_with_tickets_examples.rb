@@ -32,7 +32,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
     click_link('Brand Tickets')
 
     response_text = 'Hello from Respondo system tests'
-    target_ticket.ticketable = create(:external_ticket, response_url: 'https://example.com')
+    target_ticket.ticketable = create(:external_ticket, response_url: 'https://example.com/path')
     target_ticket.author.external!
     target_ticket.save
     response = {

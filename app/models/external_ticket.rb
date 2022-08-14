@@ -12,4 +12,8 @@ class ExternalTicket < ApplicationRecord
   def provider
     self[:custom_provider] || 'external'
   end
+
+  def client
+    Clients::External.new(response_url)
+  end
 end
