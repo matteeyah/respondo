@@ -11,12 +11,29 @@ module Clients
     end
 
     def reply(response_text, parent_external_post_id)
-      Net::HTTP.post_form(
-        URI(@response_url),
+      request = Net::HTTP::Post.new(uri.path)
+      request.set_form_data(
         response_text:,
         parent_id: parent_external_post_id,
         author: { external_uid: @author_external_uid, username: @author_username }
-      ).body
+      )
+
+      http_client.request(request).body
+    end
+
+    def delete
+      request = Net::HTTP::Delete.new(uri.path)
+      http_client.request(request).body
+    end
+
+    private
+
+    def uri
+      @uri ||= URI(@response_url)
+    end
+
+    def http_client
+      Net::HTTP.new(uri.host, uri.port)
     end
   end
 end
