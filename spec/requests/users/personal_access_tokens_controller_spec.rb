@@ -107,7 +107,8 @@ RSpec.describe Users::PersonalAccessTokensController, type: :request do
         end
 
         it 'destroys the personal access token' do
-          expect { delete_destroy }.to change(PersonalAccessToken, :count).from(1).to(0)
+          expect { delete_destroy }.to change { PersonalAccessToken.exists?(personal_access_token.id) }
+            .from(true).to(false)
         end
 
         it 'redirects to edit user path' do
