@@ -23,6 +23,12 @@ module Clients
       ::DisqusApi.v3.posts.create(options_hash).response
     end
 
+    def delete(disqus_post_id)
+      options_hash = { post: disqus_post_id }.merge(permission_params)
+
+      ::DisqusApi.v3.posts.remove(options_hash).response
+    end
+
     private
 
     def forum
