@@ -18,8 +18,12 @@ module Clients
       send_request!(request)
     end
 
-    def delete
+    def delete(_external_uid)
       send_request!(Net::HTTP::Delete.new(uri.path))
+    end
+
+    def permalink(_external_uid)
+      @response_url
     end
 
     private

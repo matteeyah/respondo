@@ -78,4 +78,17 @@ RSpec.describe Clients::Disqus do
       )
     end
   end
+
+  describe '#permalink' do
+    subject(:permalink) { client.permalink('disqus_uid') }
+
+    it 'calls the underlying disqus client' do
+      permalink
+
+      expect(posts_spy).to have_received(:details).with(
+        api_key: 'api_key', api_secret: 'api_secret', access_token: 'token',
+        post: 'disqus_uid', related: 'thread'
+      )
+    end
+  end
 end

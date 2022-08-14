@@ -41,7 +41,7 @@ RSpec.describe Clients::External do
   end
 
   describe '#delete' do
-    subject(:delete) { client.delete }
+    subject(:delete) { client.delete('external_uid') }
 
     let(:delete_spy) { instance_spy(Net::HTTP::Delete) }
 
@@ -57,6 +57,14 @@ RSpec.describe Clients::External do
 
     it 'returns response body' do
       expect(delete).to eq(hello: 'world')
+    end
+  end
+
+  describe '#permalink' do
+    subject(:permalink) { client.permalink('external_uid') }
+
+    it 'returns the response url body' do
+      expect(permalink).to eq('https://response_url.com')
     end
   end
 end

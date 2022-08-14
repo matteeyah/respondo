@@ -26,6 +26,10 @@ module Clients
       twitter_client.destroy_status(tweet_id)
     end
 
+    def permalink(tweet_id)
+      twitter_client.status(tweet_id).uri
+    end
+
     private
 
     def twitter_client
