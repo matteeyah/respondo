@@ -226,6 +226,60 @@ RSpec.describe Brands::TicketsController, type: :request do
     end
   end
 
+  describe 'DELETE destroy' do
+    subject(:delete_destroy) { delete "/brands/#{brand.id}/tickets/#{ticket.id}" }
+
+    let(:brand_account) { create(:brand_account, provider: 'twitter', brand:) }
+    let(:ticket) { create(:internal_ticket, source: brand_account, brand:).base_ticket }
+    let(:client_spy) { instance_spy(Clients::Client) }
+
+    before do
+      stub_const(Clients::Twitter.to_s, class_spy(Clients::Twitter, new: client_spy))
+    end
+
+    context 'when user is signed in' do
+      let(:user) { create(:user, :with_account) }
+
+      before do
+        sign_in(user)
+      end
+
+      context 'when user is authorized' do
+        before do
+          user.update!(brand:)
+        end
+
+        it 'deletes the external post' do
+          delete_destroy
+
+          expect(client_spy).to have_received(:delete).with(ticket.external_uid)
+        end
+
+        it 'deletes the ticket' do
+          expect { delete_destroy }.to change { Ticket.exists?(ticket.id) }.from(true).to(false)
+        end
+
+        it 'redirects to brand tickets path' do
+          delete_destroy
+
+          expect(response).to redirect_to(brand_tickets_path(brand))
+        end
+      end
+
+      context 'when user is not authorized' do
+        it 'redirects the user back (to root)' do
+          expect(delete_destroy).to redirect_to(root_path)
+        end
+      end
+    end
+
+    context 'when user is not signed in' do
+      it 'redirects the user back (to root)' do
+        expect(delete_destroy).to redirect_to(root_path)
+      end
+    end
+  end
+
   describe 'POST refresh' do
     subject(:post_refresh) { post "/brands/#{brand.id}/tickets/refresh" }
 

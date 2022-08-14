@@ -4,7 +4,7 @@
     .card.mb-5
       .card-header
         .row
-          .col-4.col-lg-5
+          .col-4.col-lg-4
             = bi_icon('person-circle', 'text-primary')
             %span.m-0!= ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)
             - if ticket.parent_id.nil?
@@ -14,16 +14,20 @@
                 = ticket.source.screen_name
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-center
             %span.small.text-muted= ticket.created_at.to_formatted_s(:short)
-          .col-4.col-lg-4.d-flex.justify-content-start.justify-content-lg-end{ id: "#{dom_id(ticket)}_tags" }
+          .col-4.col-lg-3.d-flex.justify-content-start.justify-content-lg-end{ id: "#{dom_id(ticket)}_tags" }
             = render partial: 'brands/tickets/tag', collection: ticket.tags, as: :tag, locals: { ticket: }
           .col-2.col-lg-1.d-flex.justify-content-start.justify-content-lg-end
             - if policy(ticket).update?
               = link_to bi_icon('person-lines-fill'),
                 brand_ticket_path(ticket.brand, ticket, action_form: 'assign'),
                 class: 'me-2', id: "toggle-assign-#{ticket.id}", title: 'Assign Ticket'
+          .col-2.col-lg-1.d-flex.justify-content-start.justify-content-lg-end
             - if ticket.parent_id.nil?
               = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-frame' => :_top, title: 'Focus mode' do
                 = bi_icon('bullseye')
+          .col-2.col-lg-1.d-flex.justify-content-start.justify-content-lg-end
+            = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-method' => :delete do
+              = bi_icon('x-lg')
       .card-body.mx-5
         .card-text
           %p= ticket.content

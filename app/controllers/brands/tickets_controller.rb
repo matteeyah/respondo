@@ -40,6 +40,18 @@ module Brands
       end
     end
 
+    def destroy
+      authorize(ticket)
+
+      ticket.client.delete(ticket.external_uid)
+      ticket.destroy
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to brand_tickets_path(brand) }
+      end
+    end
+
     def refresh
       authorize(Ticket)
       authorize(brand, :user_in_brand?)
