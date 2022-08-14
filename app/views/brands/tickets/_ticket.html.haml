@@ -26,8 +26,9 @@
               = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-frame' => :_top, title: 'Focus mode' do
                 = bi_icon('bullseye')
           .col-2.col-lg-1.d-flex.justify-content-start.justify-content-lg-end
-            = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-method' => :delete do
-              = bi_icon('x-lg')
+            - if policy(ticket).destroy?
+              = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-method' => :delete do
+                = bi_icon('x-lg')
       .card-body.mx-5
         .card-text
           %p= ticket.content

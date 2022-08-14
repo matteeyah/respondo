@@ -18,7 +18,8 @@ class TicketPolicy < ApplicationPolicy
 
   def destroy?
     user &&
-      user.brand == record.brand
+      user.brand == record.brand &&
+      record.creator_id.present?
   end
 
   def reply?
