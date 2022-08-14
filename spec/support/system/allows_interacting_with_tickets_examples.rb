@@ -152,6 +152,25 @@ RSpec.shared_examples 'allows interacting with tickets' do
     expect(page).not_to have_text(target_ticket.content)
   end
 
+  it 'allows navigating to tickets externally' do
+    sign_in_user
+    sign_in_brand(brand)
+    click_link('Brand Tickets')
+
+    target_ticket.source.update!(token: 'hello', secret: 'world')
+    stub_request(:get, 'https://api.twitter.com/1.1/statuses/show/0.json').to_return(
+      status: 200,
+      body: { id: 1, user: { id: 2, screen_name: 'hello' } }.to_json,
+      headers: { content_type: 'application/json' }
+    )
+
+    within("#ticket_#{target_ticket.id}") do
+      click_link "permalink-#{target_ticket.id}"
+    end
+
+    expect(page).to have_current_path('https://twitter.com/hello/status/1')
+  end
+
   private
 
   def stub_twitter_reply_response(user_external_uid, user_screen_name, in_reply_to_status_id, response_text)

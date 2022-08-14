@@ -14,7 +14,7 @@
                 = ticket.source.screen_name
           .col-2.col-lg-2.d-flex.justify-content-start.justify-content-lg-center
             %span.small.text-muted= ticket.created_at.to_formatted_s(:short)
-          .col-4.col-lg-3.d-flex.justify-content-start.justify-content-lg-end{ id: "#{dom_id(ticket)}_tags" }
+          .col-4.col-lg-2.d-flex.justify-content-start.justify-content-lg-end{ id: "#{dom_id(ticket)}_tags" }
             = render partial: 'brands/tickets/tag', collection: ticket.tags, as: :tag, locals: { ticket: }
           .col-2.col-lg-1.d-flex.justify-content-start.justify-content-lg-end
             - if policy(ticket).update?
@@ -30,6 +30,10 @@
               = link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-method' => :delete,
                 id: "delete-#{ticket.id}" do
                 = bi_icon('x-lg')
+          .col-2.col-lg-1.d-flex.justify-content-start.justify-content-lg-end
+            = link_to brand_ticket_permalink_path(ticket.brand, ticket), 'data-turbo-frame' => :_top,
+              id: "permalink-#{ticket.id}" do
+              = bi_icon('box-arrow-up-right')
       .card-body.mx-5
         .card-text
           %p= ticket.content
