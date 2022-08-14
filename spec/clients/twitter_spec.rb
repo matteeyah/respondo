@@ -2,7 +2,8 @@
 
 RSpec.describe Clients::Twitter do
   let(:client) { described_class.new('api_key', 'api_secret', 'token', 'secret') }
-  let(:twitter_client_spy) { instance_spy(Twitter::REST::Client, mentions_timeline: []) }
+  let(:twitter_tweet_spy) { instance_spy(Twitter::Tweet, uri: 'https://example.com') }
+  let(:twitter_client_spy) { instance_spy(Twitter::REST::Client, mentions_timeline: [], status: twitter_tweet_spy) }
 
   before do
     allow(client).to receive(:twitter_client).and_return(twitter_client_spy)
@@ -55,6 +56,16 @@ RSpec.describe Clients::Twitter do
       delete
 
       expect(twitter_client_spy).to have_received(:destroy_status).with(1)
+    end
+  end
+
+  describe '#permalink' do
+    subject(:permalink) { client.permalink(1) }
+
+    it 'calls the underlying twitter client' do
+      permalink
+
+      expect(twitter_client_spy).to have_received(:status).with(1)
     end
   end
 end

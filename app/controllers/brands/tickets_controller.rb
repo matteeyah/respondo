@@ -64,6 +64,12 @@ module Brands
       end
     end
 
+    def permalink
+      authorize(ticket)
+
+      redirect_to ticket.client.permalink(ticket.external_uid), allow_other_host: true
+    end
+
     private
 
     def ticket

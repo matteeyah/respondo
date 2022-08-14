@@ -29,6 +29,12 @@ module Clients
       ::DisqusApi.v3.posts.remove(options_hash).response
     end
 
+    def permalink(disqus_post_id)
+      options_hash = { post: disqus_post_id, related: 'thread' }.merge(permission_params)
+
+      ::DisqusApi.v3.posts.details(options_hash).response['url']
+    end
+
     private
 
     def forum
