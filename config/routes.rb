@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   resources :brands, only: %i[edit update] do
     scope module: :brands do
       resources :tickets, only: %i[index show update destroy] do
+        get :permalink
+
         collection do
           post :refresh
         end

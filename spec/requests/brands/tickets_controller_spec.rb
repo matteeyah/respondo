@@ -328,4 +328,42 @@ RSpec.describe Brands::TicketsController, type: :request do
       end
     end
   end
+
+  describe 'GET permalink' do
+    subject(:get_permalink) { get "/brands/#{brand.id}/tickets/#{ticket.id}/permalink" }
+
+    let(:ticket) { create(:external_ticket, brand:).base_ticket }
+
+    context 'when user is signed in' do
+      let(:user) { create(:user, :with_account) }
+
+      before do
+        sign_in(user)
+      end
+
+      context 'when user is authorized' do
+        before do
+          brand.users << user
+        end
+
+        it 'redirects to ticket permalink path' do
+          get_permalink
+
+          expect(response).to redirect_to(ticket.ticketable.response_url)
+        end
+      end
+
+      context 'when user is not authorized' do
+        it 'redirects the user back (to root)' do
+          expect(get_permalink).to redirect_to(root_path)
+        end
+      end
+    end
+
+    context 'when user is not signed in' do
+      it 'redirects the user back (to root)' do
+        expect(get_permalink).to redirect_to(root_path)
+      end
+    end
+  end
 end
