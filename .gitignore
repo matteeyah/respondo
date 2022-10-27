@@ -60,3 +60,6 @@ coverage
 
 # Ignore idea files
 .idea/
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

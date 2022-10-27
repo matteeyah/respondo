@@ -33,6 +33,7 @@ gem 'aasm', '~> 5.4.0' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
 gem 'acts-as-taggable-on' # Tags mechanism
 gem 'bootstrap', '~> 5.2.2'
+gem 'dartsass-rails', '~> 0.4.0' # SASS processor for Rails
 gem 'disqus_api', '~> 0.0.7' # Disqus client
 gem 'flipper', '~> 0.25.0' # Feature flags
 gem 'flipper-active_record', '~> 0.25.0' # ActiveRecord adapter for flipper
@@ -41,7 +42,6 @@ gem 'hashie', '~> 5.0.0' # Hash utilities
 gem 'json-schema', '~> 3.0.0' # JSON schema validation
 gem 'pagy', '~> 5.10.1' # Pagination
 gem 'pundit', '~> 2.2.0' # OO Policy objects
-gem 'sass-rails', '~> 6.0.0' # SCSS CSS pre-processor
 gem 'sidekiq', '7.0.0.beta1' # Background job processing
 gem 'twitter', '~> 7.0.0' # Twitter client
 
