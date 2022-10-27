@@ -32,7 +32,6 @@ gem 'omniauth-twitter', '~> 1.4.0'
 gem 'aasm', '~> 5.4.0' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
 gem 'acts-as-taggable-on' # Tags mechanism
-gem 'bootstrap', '~> 5.2.2'
 gem 'dartsass-rails', '~> 0.4.0' # SASS processor for Rails
 gem 'disqus_api', '~> 0.0.7' # Disqus client
 gem 'flipper', '~> 0.25.0' # Feature flags
