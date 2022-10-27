@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe TicketsHelper, type: :helper do
+RSpec.describe TicketsHelper do
   describe '#ticket_author_header' do
     subject(:ticket_author_header) { helper.ticket_author_header(user_authorized, ticket) }
 

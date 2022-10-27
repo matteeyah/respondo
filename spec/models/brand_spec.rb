@@ -2,7 +2,7 @@
 
 require './spec/support/has_accounts_examples'
 
-RSpec.describe Brand, type: :model do
+RSpec.describe Brand do
   describe 'Validations' do
     subject(:brand) { create(:brand) }
 

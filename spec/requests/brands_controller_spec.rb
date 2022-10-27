@@ -2,7 +2,7 @@
 
 require './spec/support/sign_in_out_request_helpers'
 
-RSpec.describe BrandsController, type: :request do
+RSpec.describe BrandsController do
   include SignInOutRequestHelpers
 
   describe 'GET edit' do

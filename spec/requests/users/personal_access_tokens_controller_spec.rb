@@ -2,7 +2,7 @@
 
 require './spec/support/sign_in_out_request_helpers'
 
-RSpec.describe Users::PersonalAccessTokensController, type: :request do
+RSpec.describe Users::PersonalAccessTokensController do
   include SignInOutRequestHelpers
 
   describe 'POST create' do

@@ -3,7 +3,7 @@
 require './spec/support/omniauth_helpers'
 require './spec/support/sign_in_out_system_helpers'
 
-RSpec.describe 'Authentication', type: :system do
+RSpec.describe 'Authentication' do
   include OmniauthHelpers
   include SignInOutSystemHelpers
 
@@ -12,7 +12,7 @@ RSpec.describe 'Authentication', type: :system do
 
     add_oauth_mock(:google_oauth2, '123', { name: 'Test User', email: 'test@example.com' }, {})
     click_button('Sign in with Google')
-    find('#settings').click
+    find_by_id('settings').click
     expect(page).to have_link('User settings')
   end
 
@@ -37,7 +37,7 @@ RSpec.describe 'Authentication', type: :system do
 
     add_oauth_mock(:twitter, '123', { nickname: 'test_brand' }, {})
     click_button('Authorize Brand')
-    find('#settings').click
+    find_by_id('settings').click
     expect(page).to have_link('Brand settings')
   end
 
@@ -45,7 +45,7 @@ RSpec.describe 'Authentication', type: :system do
     visit '/'
 
     sign_in_user
-    find('#settings').click
+    find_by_id('settings').click
     click_button 'Sign Out'
 
     expect(page).to have_current_path(login_path)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Assignment, type: :model do
+RSpec.describe Assignment do
   describe 'Validations' do
     subject(:assignment) { create(:assignment) }
 

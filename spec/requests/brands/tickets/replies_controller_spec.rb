@@ -2,7 +2,7 @@
 
 require './spec/support/sign_in_out_request_helpers'
 
-RSpec.describe Brands::Tickets::RepliesController, type: :request do
+RSpec.describe Brands::Tickets::RepliesController do
   include SignInOutRequestHelpers
 
   let(:brand) { create(:brand) }

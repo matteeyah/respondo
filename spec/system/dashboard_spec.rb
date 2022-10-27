@@ -2,7 +2,7 @@
 
 require './spec/support/sign_in_out_system_helpers'
 
-RSpec.describe 'Dashboard', type: :system do
+RSpec.describe 'Dashboard' do
   include SignInOutSystemHelpers
 
   let(:brand) { create(:brand, :with_account) }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Ticket, type: :model do
+RSpec.describe Ticket do
   describe 'Validations' do
     subject(:ticket) { create(:internal_ticket).base_ticket }
 

@@ -2,7 +2,7 @@
 
 require './spec/support/omniauth_helpers'
 
-RSpec.describe 'Homepage', type: :system do
+RSpec.describe 'Homepage' do
   include OmniauthHelpers
 
   it 'guides user through the set-up process' do
@@ -18,7 +18,7 @@ RSpec.describe 'Homepage', type: :system do
     add_oauth_mock_for_brand(create(:brand, :with_account))
     click_button('Authorize Brand', class: 'btn btn-primary')
 
-    find('#settings').click
+    find_by_id('settings').click
     click_button('Sign Out')
     expect(page).to have_button('Sign in with Google')
   end

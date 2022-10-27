@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe InternalNote, type: :model do
+RSpec.describe InternalNote do
   describe 'Validations' do
     subject(:internal_note) { create(:internal_note) }
 

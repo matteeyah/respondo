@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ExternalTicket, type: :model do
+RSpec.describe ExternalTicket do
   describe 'Validations' do
     subject(:external_ticket) { create(:external_ticket) }
 

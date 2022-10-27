@@ -2,7 +2,7 @@
 
 require './spec/support/has_accounts_examples'
 
-RSpec.describe User, type: :model do
+RSpec.describe User do
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:name) }
   end

@@ -2,7 +2,7 @@
 
 require './spec/support/omniauth_helpers'
 
-RSpec.describe UserAccount, type: :model do
+RSpec.describe UserAccount do
   describe 'Validations' do
     subject(:account) { create(:user_account) }
 

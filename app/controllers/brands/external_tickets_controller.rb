@@ -22,7 +22,7 @@ module Brands
     private
 
     def validate_json_payload
-      schema = File.read(Rails.root.join('lib/external_ticket_json_schema.json'))
+      schema = Rails.root.join('lib/external_ticket_json_schema.json').read
       JSON::Validator.validate(schema, request.raw_post)
     end
 
