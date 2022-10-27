@@ -134,7 +134,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
       click_button 'Assign'
     end
 
-    expect(page).to have(user.name)
+    expect(page).to have_text(user.name)
   end
 
   it 'allows deleting tickets' do
