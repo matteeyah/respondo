@@ -64,10 +64,10 @@
             - else
               = button_tag 'Buy Subscription', class: 'btn btn-primary', id: 'buy-subscription'
 = content_for :custom_javascript do
-  - if Rails.application.credentials.paddle.vendor_id
+  - if Rails.application.credentials.dig(:paddle, :vendor_id)
     %script{ src: 'https://cdn.paddle.com/paddle/paddle.js' }
     :javascript
-      Paddle.Setup({ vendor: #{Rails.application.credentials.paddle.vendor_id} })
+      Paddle.Setup({ vendor: #{Rails.application.credentials.dig(:paddle, :vendor_id)} })
     -# rubocop:disable Style/IdenticalConditionalBranches
     - if @brand.subscription&.running?
       :javascript

@@ -112,10 +112,6 @@ GEM
     docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    dotenv (2.8.1)
-    dotenv-rails (2.8.1)
-      dotenv (= 2.8.1)
-      railties (>= 3.2)
     equalizer (0.0.11)
     erubi (1.11.0)
     factory_bot (6.2.1)
@@ -487,7 +483,6 @@ DEPENDENCIES
   dartsass-rails (~> 0.4.0)
   debug
   disqus_api (~> 0.0.7)
-  dotenv-rails (~> 2.8.1)
   factory_bot_rails (~> 6.2.0)
   faker (~> 2.23.0)
   flipper (~> 0.25.0)
