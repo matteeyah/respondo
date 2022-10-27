@@ -13,7 +13,7 @@ jobs:
       - name: Run rspec specs
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bin/rspec --tag ~type:system
+        run: bundle exec rspec --tag ~type:system
   rspec-system:
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +27,7 @@ jobs:
       - name: Run rspec system specs
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bin/rspec --tag type:system
+        run: bundle exec rspec --tag type:system
   license_finder:
     runs-on: ubuntu-latest
     steps:
@@ -40,9 +40,9 @@ jobs:
           node-version-file: '.node-version'
           cache: 'yarn'
       - name: Install yarn dependencies
-        run: bin/yarn install --immutable
+        run: yarn install --immutable
       - name: Run license_finder
-        run: bin/bundle exec license_finder --decisions_file dependency_decisions.yml
+        run: bundle exec license_finder --decisions_file dependency_decisions.yml
   rubocop:
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +51,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Run rubocop
-        run: bin/bundle exec rubocop
+        run: bundle exec rubocop
   haml-lint:
     runs-on: ubuntu-latest
     steps:
@@ -60,7 +60,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Run haml-lint
-        run: bin/bundle exec haml-lint
+        run: bundle exec haml-lint
   markdownlint:
     runs-on: ubuntu-latest
     steps:
@@ -69,7 +69,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Run mdl
-        run: bin/bundle exec mdl docs --config .mdlrc
+        run: bundle exec mdl docs --config .mdlrc
   stylelint:
     runs-on: ubuntu-latest
     steps:
@@ -79,9 +79,9 @@ jobs:
           node-version-file: '.node-version'
           cache: 'yarn'
       - name: Install yarn dependencies
-        run: bin/yarn install --immutable
+        run: yarn install --immutable
       - name: Run stylelint
-        run: bin/yarn run stylelint '**/*.scss' 
+        run: yarn run stylelint '**/*.scss' 
   standard:
     runs-on: ubuntu-latest
     steps:
@@ -91,9 +91,9 @@ jobs:
           node-version-file: '.node-version'
           cache: 'yarn'
       - name: Install yarn dependencies
-        run: bin/yarn install --immutable
+        run: yarn install --immutable
       - name: Run standard
-        run: bin/yarn run standard
+        run: yarn run standard
   vale:
     runs-on: ubuntu-latest
     container: jdkato/vale:v2.18.0
