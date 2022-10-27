@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe LoadNewTicketsJob, type: :job do
+RSpec.describe LoadNewTicketsJob do
   describe '#perform' do
     subject(:perform_now) { described_class.perform_now(brand.id) }
 

@@ -3,6 +3,6 @@
     .col-8
       %p.fw-bold.mb-1= personal_access_token.name
     .col-4.d-flex.justify-content-end
-      = link_to user_personal_access_token_path(@user, personal_access_token),
+      = link_to user_personal_access_token_path(personal_access_token.user, personal_access_token),
         'data-turbo-method' => :delete do
         = bi_icon('trash3-fill')

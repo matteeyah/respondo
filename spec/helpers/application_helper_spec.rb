@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ApplicationHelper, type: :helper do
+RSpec.describe ApplicationHelper do
   describe '#auth_provider_link' do
     subject(:auth_provider_link) { helper.auth_provider_link(provider, 'model') { 'test' } }
 

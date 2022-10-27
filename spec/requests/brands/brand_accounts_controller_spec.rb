@@ -2,7 +2,7 @@
 
 require './spec/support/sign_in_out_request_helpers'
 
-RSpec.describe Brands::BrandAccountsController, type: :request do
+RSpec.describe Brands::BrandAccountsController do
   include SignInOutRequestHelpers
 
   describe 'DELETE destroy' do

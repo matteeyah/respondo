@@ -3,7 +3,7 @@
 require './spec/support/omniauth_helpers'
 require './spec/support/sign_in_out_system_helpers'
 
-RSpec.describe 'User settings', type: :system do
+RSpec.describe 'User settings' do
   include OmniauthHelpers
   include SignInOutSystemHelpers
 
@@ -16,7 +16,7 @@ RSpec.describe 'User settings', type: :system do
   end
 
   it 'allows the user to authorize an account' do
-    find('#settings').click
+    find_by_id('settings').click
     click_link 'User settings'
 
     add_oauth_mock_for_user(user, create(:user_account, provider: 'activedirectory'))
@@ -29,7 +29,7 @@ RSpec.describe 'User settings', type: :system do
 
   it 'allows the user to remove an account' do
     create(:user_account, provider: 'activedirectory', user:)
-    find('#settings').click
+    find_by_id('settings').click
     click_link 'User settings'
 
     within(page.find('h6', text: 'Existing accounts').find(:xpath, '..')) do
@@ -44,7 +44,7 @@ RSpec.describe 'User settings', type: :system do
   end
 
   it 'allows the user to create a personal access token' do
-    find('#settings').click
+    find_by_id('settings').click
     click_link 'User settings'
 
     fill_in :name, with: 'something_nice'
@@ -57,7 +57,7 @@ RSpec.describe 'User settings', type: :system do
 
   it 'allows the user to remove a personal access token' do
     create(:personal_access_token, name: 'something_nice', user:)
-    find('#settings').click
+    find_by_id('settings').click
     click_link 'User settings'
 
     within(page.find('h6', text: 'Existing personal access tokens').find(:xpath, '..')) do

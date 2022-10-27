@@ -1,7 +1,7 @@
 %tr
   %td
     %p.small.my-1.fw-normal= ticket.content.first(100)
-    %span.small.text-muted.text-primary= ticket.created_at.to_formatted_s(:short)
+    %span.small.text-muted.text-primary= ticket.created_at.to_fs(:short)
   %td
     %p.small.my-1.fw-normal.text-center @#{ticket.author.username}
     %span.small.text-muted.d-flex.justify-content-center Customer

@@ -2,7 +2,7 @@
 
 require './spec/support/sign_in_out_system_helpers'
 
-RSpec.describe 'Brands', type: :system do
+RSpec.describe 'Brands' do
   include SignInOutSystemHelpers
 
   let!(:brands) { create_list(:brand, 2) }

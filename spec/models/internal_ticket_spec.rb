@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe InternalTicket, type: :model do
+RSpec.describe InternalTicket do
   describe 'Relations' do
     it { is_expected.to have_one(:base_ticket).dependent(:destroy) }
     it { is_expected.to belong_to(:source) }

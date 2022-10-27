@@ -3,7 +3,7 @@
 require './spec/support/sign_in_out_request_helpers'
 require './spec/support/omniauth_helpers'
 
-RSpec.describe SessionsController, type: :request do
+RSpec.describe SessionsController do
   include SignInOutRequestHelpers
 
   describe 'POST create' do

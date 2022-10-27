@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SubscriptionsController, type: :request do
+RSpec.describe SubscriptionsController do
   describe 'POST create' do
     subject(:post_create) do
       post '/subscriptions.json',

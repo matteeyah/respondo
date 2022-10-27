@@ -9,7 +9,7 @@ RSpec.describe Clients::Twitter do
     allow(client).to receive(:twitter_client).and_return(twitter_client_spy)
   end
 
-  it { expect(client).to be_a_kind_of(Clients::Client) }
+  it { expect(client).to be_a(Clients::Client) }
 
   describe '#new_mentions' do
     subject(:new_mentions) { client.new_mentions(last_ticket_identifier) }

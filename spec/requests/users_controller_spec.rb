@@ -2,7 +2,7 @@
 
 require './spec/support/sign_in_out_request_helpers'
 
-RSpec.describe UsersController, type: :request do
+RSpec.describe UsersController do
   include SignInOutRequestHelpers
 
   describe 'GET edit' do

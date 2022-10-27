@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe BrandsHelper, type: :helper do
+RSpec.describe BrandsHelper do
   describe '#add_users_dropdown_options_for' do
     subject(:add_users_dropdown_options_for) { helper.add_users_dropdown_options_for }
 

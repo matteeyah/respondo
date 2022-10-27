@@ -3,7 +3,7 @@
 require './spec/support/omniauth_helpers'
 require './spec/support/sign_in_out_system_helpers'
 
-RSpec.describe 'Brand settings', type: :system do
+RSpec.describe 'Brand settings' do
   include OmniauthHelpers
   include SignInOutSystemHelpers
 
@@ -18,7 +18,7 @@ RSpec.describe 'Brand settings', type: :system do
   end
 
   it 'allows the user to authorize an account' do
-    find('#settings').click
+    find_by_id('settings').click
     click_link 'Brand settings'
 
     add_oauth_mock_for_brand(brand, create(:brand_account, provider: 'disqus'))
@@ -33,7 +33,7 @@ RSpec.describe 'Brand settings', type: :system do
 
   it 'allows the user to remove an account' do
     create(:brand_account, provider: 'disqus', brand:)
-    find('#settings').click
+    find_by_id('settings').click
     click_link 'Brand settings'
 
     within(page.find('h6', text: 'Existing accounts').find(:xpath, '..')) do
@@ -49,7 +49,7 @@ RSpec.describe 'Brand settings', type: :system do
 
   it 'allows the user to add users to brand' do
     external_user = create(:user)
-    find('#settings').click
+    find_by_id('settings').click
     click_link 'Brand settings'
 
     select external_user.name, from: 'add-user'
@@ -62,7 +62,7 @@ RSpec.describe 'Brand settings', type: :system do
 
   it 'allows the user to remove users from brand' do
     existing_user = create(:user, brand:)
-    find('#settings').click
+    find_by_id('settings').click
     click_link 'Brand settings'
 
     within(page.find('h6', text: 'Users in Brand').find(:xpath, '..')) do
@@ -77,7 +77,7 @@ RSpec.describe 'Brand settings', type: :system do
   end
 
   it 'allows the user to edit the brand domain' do
-    find('#settings').click
+    find_by_id('settings').click
     click_link 'Brand settings'
 
     fill_in 'brand[domain]', with: 'example.com'
@@ -87,7 +87,7 @@ RSpec.describe 'Brand settings', type: :system do
   end
 
   it 'prevents the user to update the brand with an invalid domain' do
-    find('#settings').click
+    find_by_id('settings').click
     click_link 'Brand settings'
 
     fill_in 'brand[domain]', with: 'invalid!domain.com'

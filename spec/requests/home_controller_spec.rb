@@ -2,7 +2,7 @@
 
 require './spec/support/sign_in_out_request_helpers'
 
-RSpec.describe HomeController, type: :request do
+RSpec.describe HomeController do
   include SignInOutRequestHelpers
 
   describe 'GET index' do

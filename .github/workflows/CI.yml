@@ -10,6 +10,8 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Compile assets
+        run: bundle exec rails assets:precompile
       - name: Run rspec specs
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
@@ -24,6 +26,8 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: Compile assets
+        run: bundle exec rails assets:precompile
       - name: Run rspec system specs
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
@@ -40,7 +44,7 @@ jobs:
           node-version-file: '.node-version'
           cache: 'yarn'
       - name: Install yarn dependencies
-        run: bin/yarn install --immutable
+        run: yarn install --immutable
       - name: Run license_finder
         run: bundle exec license_finder --decisions_file dependency_decisions.yml
   rubocop:
@@ -79,9 +83,9 @@ jobs:
           node-version-file: '.node-version'
           cache: 'yarn'
       - name: Install yarn dependencies
-        run: bin/yarn install --immutable
+        run: yarn install --immutable
       - name: Run stylelint
-        run: bin/yarn run stylelint '**/*.scss' 
+        run: yarn run stylelint '**/*.scss' 
   standard:
     runs-on: ubuntu-latest
     steps:
@@ -91,9 +95,9 @@ jobs:
           node-version-file: '.node-version'
           cache: 'yarn'
       - name: Install yarn dependencies
-        run: bin/yarn install --immutable
+        run: yarn install --immutable
       - name: Run standard
-        run: bin/yarn run standard
+        run: yarn run standard
   vale:
     runs-on: ubuntu-latest
     container: jdkato/vale:v2.18.0

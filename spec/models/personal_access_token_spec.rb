@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe PersonalAccessToken, type: :model do
+RSpec.describe PersonalAccessToken do
   describe 'Validations' do
     subject(:personal_access_token) { create(:personal_access_token) }
 

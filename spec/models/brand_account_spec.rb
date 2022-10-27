@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe BrandAccount, type: :model do
+RSpec.describe BrandAccount do
   describe 'Validations' do
     subject(:account) { create(:brand_account) }
 
@@ -242,7 +242,7 @@ RSpec.describe BrandAccount, type: :model do
           account.provider = provider
         end
 
-        it { is_expected.to be_kind_of(Clients::Client) }
+        it { is_expected.to be_a(Clients::Client) }
       end
     end
   end

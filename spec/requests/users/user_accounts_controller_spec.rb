@@ -2,7 +2,7 @@
 
 require './spec/support/sign_in_out_request_helpers'
 
-RSpec.describe Users::UserAccountsController, type: :request do
+RSpec.describe Users::UserAccountsController do
   include SignInOutRequestHelpers
 
   describe 'DELETE destroy' do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Brands::ExternalTicketsController, type: :request do
+RSpec.describe Brands::ExternalTicketsController do
   let(:brand) { create(:brand) }
   let(:user) { create(:user) }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Author, type: :model do
+RSpec.describe Author do
   describe 'Validations' do
     subject(:author) { create(:author) }
 
