@@ -67,8 +67,6 @@ end
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
-  # Other
-  gem 'dotenv-rails', '~> 2.8.1' # .env
 end
 
 group :test do

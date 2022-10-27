@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :google_oauth2, ENV.fetch('GOOGLE_CLIENT_ID', nil), ENV.fetch('GOOGLE_CLIENT_SECRET', nil)
-  provider :activedirectory, ENV.fetch('AAD_CLIENT_ID', nil), ENV.fetch('AAD_TENANT', nil)
-  provider :twitter, ENV.fetch('TWITTER_API_KEY', nil), ENV.fetch('TWITTER_API_SECRET', nil)
-  provider :disqus, ENV.fetch('DISQUS_PUBLIC_KEY', nil), ENV.fetch('DISQUS_SECRET_KEY', nil)
+  provider :google_oauth2, Rails.application.credentials.google.client_id, Rails.application.credentials.google.client_secret
+  provider :activedirectory, Rails.application.credentials.azure_active_directory.client_id, Rails.application.credentials.azure_active_directory.tenant
+  provider :twitter, Rails.application.credentials.twitter.api_key, Rails.application.credentials.twitter.api_secret
+  provider :disqus, Rails.application.credentials.disqus.public_key, Rails.application.credentials.disqus.secret_key
   provider :developer, fields: %i[email name nickname], uid_field: :email if Rails.env.development?
 end
 

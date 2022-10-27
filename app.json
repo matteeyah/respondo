@@ -24,30 +24,6 @@
       "value": "en_US.UTF-8",
       "required": true
     },
-    "GOOGLE_CLIENT_ID": {
-      "required": true
-    },
-    "GOOGLE_CLIENT_SECRET": {
-      "required": true
-    },
-    "TWITTER_API_KEY": {
-      "required": true
-    },
-    "TWITTER_API_SECRET": {
-      "required": true
-    },
-    "DISQUS_PUBLIC_KEY": {
-      "required": true
-    },
-    "DISQUS_SECRET_KEY": {
-      "required": true
-    },
-    "PADDLE_VENDOR_ID": {
-      "required": true
-    },
-    "PADDLE_VENDOR_AUTH": {
-      "required": true
-    },
     "ERROR_PAGE_URL": {
       "value": "https://www.herokucdn.com/error-pages/application-error.html",
       "required": true
