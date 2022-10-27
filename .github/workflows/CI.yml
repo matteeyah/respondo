@@ -13,7 +13,7 @@ jobs:
       - name: Run rspec specs
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bundle exec rspec --tag ~type:system
+        run: bin/rspec --tag ~type:system
   rspec-system:
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +27,7 @@ jobs:
       - name: Run rspec system specs
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bundle exec rspec --tag type:system
+        run: bin/rspec --tag type:system
   license_finder:
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +42,7 @@ jobs:
       - name: Install yarn dependencies
         run: bin/yarn install --immutable
       - name: Run license_finder
-        run: bundle exec license_finder --decisions_file dependency_decisions.yml
+        run: bin/bundle exec license_finder --decisions_file dependency_decisions.yml
   rubocop:
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +51,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Run rubocop
-        run: bundle exec rubocop
+        run: bin/bundle exec rubocop
   haml-lint:
     runs-on: ubuntu-latest
     steps:
@@ -60,7 +60,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Run haml-lint
-        run: bundle exec haml-lint
+        run: bin/bundle exec haml-lint
   markdownlint:
     runs-on: ubuntu-latest
     steps:
@@ -69,7 +69,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Run mdl
-        run: bundle exec mdl docs --config .mdlrc
+        run: bin/bundle exec mdl docs --config .mdlrc
   stylelint:
     runs-on: ubuntu-latest
     steps:
