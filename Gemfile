@@ -56,24 +56,19 @@ group :development, :test do
   ## Haml linter
   gem 'haml_lint', '~> 0.40.0', require: false
   # Other
+  gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails', '~> 6.2.0' # Use factory_bot
   gem 'faker', '~> 2.21.0' # Sample data
   gem 'license_finder', '~> 7.0.1' # license checking
-  gem 'pry-byebug', '~> 3.9.0' # pry debugging
   gem 'rspec-rails', '~> 5.1.2' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
 end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'listen', '~> 3.7.1'
   gem 'web-console', '>= 3.3.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
   # Other
   gem 'dotenv-rails', '~> 2.7.5' # .env
-  gem 'pry-rails', '~> 0.3.9' # pry console
 end
 
 group :test do
@@ -82,7 +77,6 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers' # Easy installation and use of web drivers to run system tests with browsers
   # Other
-  gem 'mini_racer', '~> 0.6.2' # JS runtime for execjs
   gem 'shoulda-matchers', '~> 5.1.0' # One-liner matchers
   gem 'simplecov', '~> 0.21.1', require: false # Code coverage
   gem 'webmock', '~> 3.14.0' # Stubs and expectations for HTTP requests
