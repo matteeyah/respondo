@@ -9,7 +9,7 @@ ruby '3.1.2'
 gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
 gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
 gem 'importmap-rails', '~> 1.1.0'
-gem 'puma', '~> 6.0.0' # Use Puma as the application server
+gem 'puma', '~> 5.6.5' # Use Puma as the application server
 gem 'rails', '~> 7.0.3'
 gem 'stimulus-rails', '~> 1.1.0' # Hotwire Stimulus
 gem 'turbo-rails', '~> 1.3.2' # Hotwire Turbo
