@@ -36,7 +36,7 @@ $primary: #7858A6;
 }
 
 body {
-  background: #{image_url('bg-pattern-light.svg')};
+  background: url('bg-pattern-light.svg');
   background-repeat: no-repeat;
   background-size: cover;
 }
