@@ -8,35 +8,30 @@
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
-  %body.d-flex.flex-column.min-vh-100
-    .account-pages.pt-sm-5.pb-sm-5.pt-2.pb-4.my-auto
-      .container
-        .row.justify-content-center
-          .col-xxl-4.col-lg-5
-            .card
-              .card-header.pt-4.pb-4.text-center.bg-default.opacity-75
-                .row.mb-3
-                  .col-6.mx-auto
-                    = image_tag('logo_circle_white.svg', class: 'img-fluid')
-                .row
-                  .col-6.mx-auto.fs-3.text-light Respondo
-
-              .card-body.p-4
-                .text-center.w-75.m-auto
-                  %p.text-muted.mb-4 Sign in is only available with a Google or Microsoft AD account.
-                  %hr
-                  .d-grid.gap-3
-                    = auth_provider_link('google_oauth2', 'user',
-                      { class: 'btn form-control btn-primary' }, origin: '/') do
-                      %i.bi.bi-google
-                      %span Sign in with Google
-                    = auth_provider_link('activedirectory', 'user',
-                      { class: 'btn form-control btn-info text-light' }, origin: '/') do
-                      %i.bi.bi-microsoft
-                      %span Sign in with Microsoft AD
-                    - if Rails.env.development?
-                      = auth_provider_link('developer', 'user',
-                        { class: 'btn form-control btn-danger text-light' }, origin: '/') do
-                        %i.bi.bi-code-slash
-                        %span Developer Sign In
-    %footer.footer.mt-auto.text-center.text-muted 2022 © Respondo Ltd. All Rights Reserved.
+  %body.d-flex.flex-column
+    .row.min-vh-100
+      .col-lg-6.d-flex.align-items-center.justify-content-center
+        .card.color-shadow.px-3.px-lg-4.py-5
+          .card-body
+            .card-title.text-center.fs-3.fw-bold
+              Sign in to
+              %span.text-primary Respondo
+            %hr
+            %p.card-text.text-muted.text-center
+              Sign in is only available with a Google or Microsoft AD account.
+            .d-grid.gap-3
+              = auth_provider_link('google_oauth2', 'user',
+                { class: 'btn form-control btn-outline-dark' }, origin: '/') do
+                %i.bi.bi-google.text-primary
+                %span Sign in with Google
+              = auth_provider_link('activedirectory', 'user',
+                { class: 'btn form-control btn-outline-dark' }, origin: '/') do
+                %i.bi.bi-microsoft.text-info
+                %span Sign in with Microsoft AD
+              - if Rails.env.development?
+                = auth_provider_link('developer', 'user',
+                  { class: 'btn form-control btn-danger text-light' }, origin: '/') do
+                  %i.bi.bi-code-slash
+                  %span Developer Sign In
+      .col-lg-6.d-lg-flex.d-none.justify-content-end.pe-0
+        = image_tag('login_shapes.svg', class: 'vw-50 vh-100')
