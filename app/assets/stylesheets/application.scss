@@ -39,21 +39,27 @@ $primary: #7858A6;
   background: var(--background-gradient);
 }
 
-.card-header.bg-default {
-  opacity: 0.85;
-}
-
 .color-shadow {
-  box-shadow: 10px 10px 0px #f9d154;
+  box-shadow: 10px 10px 0 #f9d154;
 }
 
 @media (max-width: 992px) {
+  // Login page card
+  .card.color-shadow {
+    width: 75%;
+  }
+
   .navbar .navbar-brand img {
     max-width: 5rem;
   }
 }
 
 @media (min-width: 992px) {
+  // Login page card
+  .card.color-shadow {
+    width: 50%;
+  }
+
   .navbar {
     max-width: 5rem;
   }
