@@ -13,7 +13,7 @@
   %body
     .container-fluid.p-0
       .d-flex.flex-column.flex-lg-row.vh-100
-        .navbar.navbar-dark.navbar-expand-lg.bg-primary
+        .navbar.navbar-dark.navbar-expand-lg.bg-secondary
           .container-fluid.d-flex.flex-lg-column.flex-grow-1.justify-content-center.align-items-center.h-100
             .navbar-brand.mx-auto
               = link_to root_path do
@@ -37,7 +37,7 @@
                   = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
                     'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
                     = bi_icon('question-circle-fill', 'fs-1')
-                  %ul.dropdown-menu.dropdown-menu-dark.bg-primary.shadow{ 'aria-labelledby' => 'help' }
+                  %ul.dropdown-menu.dropdown-menu-dark.bg-secondary.shadow{ 'aria-labelledby' => 'help' }
                     %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com',
                       class: 'dropdown-item'
                     %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback',
@@ -54,11 +54,11 @@
                         class: 'dropdown-item'
               %ul.flex-column.navbar-nav.mt-auto.text-center
                 - if current_user
-                  %li.nav-item.dropup
+                  %li.nav-item.dropend
                     = link_to '#', class: 'nav-link text-decoration-none', id: 'settings', title: 'Settings',
                       'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
                       = bi_icon('gear-fill', 'fs-1')
-                    %ul.dropdown-menu.dropdown-menu-dark.bg-primary.shadow{ 'aria-labelledby' => 'settings' }
+                    %ul.dropdown-menu.dropdown-menu-dark.bg-secondary.shadow{ 'aria-labelledby' => 'settings' }
                       - if current_brand
                         %li= active_link_to 'Brand settings', edit_brand_path(current_brand),
                           active: [{ brands: :edit }], class: 'dropdown-item', 'data-turbo-frame' => :_top
@@ -68,7 +68,7 @@
                   %hr.text-white
                 %li.nav-item
                   = button_to sign_out_path, method: :delete, class: 'btn btn-link', 'data-turbo' => false do
-                    = bi_icon('box-arrow-left', 'fs-1 text-white-50')
+                    = bi_icon('box-arrow-left', 'fs-1 text-white text-opacity-50')
         .h-100.flex-grow-1.overflow-auto
           %main.container.p-5{ role: 'main' }
             = yield
