@@ -11,7 +11,7 @@
   %body.d-flex.flex-column
     .row.min-vh-100
       .col-lg-6.d-flex.align-items-center.justify-content-center
-        .card.color-shadow.px-3.px-lg-4.py-5
+        .card.shadow-warning.px-3.px-lg-4.py-5
           .card-body
             .card-title.text-center.fs-3.fw-bold
               Sign in to
@@ -22,11 +22,11 @@
             .d-grid.gap-3
               = auth_provider_link('google_oauth2', 'user',
                 { class: 'btn form-control btn-outline-dark' }, origin: '/') do
-                %i.bi.bi-google.text-primary
+                %i.bi.bi-google.text-warning
                 %span Sign in with Google
               = auth_provider_link('activedirectory', 'user',
                 { class: 'btn form-control btn-outline-dark' }, origin: '/') do
-                %i.bi.bi-microsoft.text-info
+                %i.bi.bi-microsoft.text-primary
                 %span Sign in with Microsoft AD
               - if Rails.env.development?
                 = auth_provider_link('developer', 'user',

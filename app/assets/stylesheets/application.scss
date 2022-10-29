@@ -15,9 +15,8 @@
  */
 
 @import "https://fonts.googleapis.com/css2?family=Roboto&display=swap";
-@import "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css";
 
-$primary: #7858A6;
+@import "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css";
 @import "https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.css";
 
 :root {
@@ -32,20 +31,43 @@ $primary: #7858A6;
     "Segoe UI Emoji",
     "Segoe UI Symbol",
     "Noto Color Emoji";
-  --background-gradient: linear-gradient(135deg, #8f75da 0%, #727cf5 60%);
+  --bs-primary: #307DF6;
+  --bs-primary-rgb: 48, 125, 246;
+  --bs-secondary: #2458CC;
+  --bs-secondary-rgb: 36, 88, 204;
+  --bs-info: #9763F6;
+  --bs-info-rgb: 151, 99, 246;
+  --bs-warning: #F9D154;
+  --bs-warning-rgb: 249, 209, 84;
+  --bs-danger: #E15A32;
+  --bs-danger-rgb: 225, 90, 50;
+  --bs-dark: #030235;
+  --bs-dark-rgb: 3, 2, 53;
 }
 
-.bg-default {
-  background: var(--background-gradient);
+.card.border-primary:hover {
+  background-color: rgba(var(--bs-primary-rgb), 0.55);
 }
 
-.color-shadow {
-  box-shadow: 10px 10px 0 #f9d154;
+.card.border-info:hover {
+  background-color: rgba(var(--bs-info-rgb), 0.55);
+}
+
+.card.border-warning:hover {
+  background-color: rgba(var(--bs-warning-rgb), 0.55);
+}
+
+.card.border-danger:hover {
+  background-color: rgba(var(--bs-danger-rgb), 0.55);
+}
+
+.shadow-warning {
+  box-shadow: 10px 10px 0 var(--bs-warning);
 }
 
 @media (max-width: 992px) {
   // Login page card
-  .card.color-shadow {
+  .card.shadow-warning {
     width: 75%;
   }
 
@@ -56,7 +78,7 @@ $primary: #7858A6;
 
 @media (min-width: 992px) {
   // Login page card
-  .card.color-shadow {
+  .card.shadow-warning {
     width: 50%;
   }
 
