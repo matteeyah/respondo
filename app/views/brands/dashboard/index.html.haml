@@ -1,54 +1,52 @@
 .row
   .col-12
-    %h3 Welcome to your dashboard, #{current_user.name}!
+    %h3 Overview
 .row
-.col-12
-  %p.text-muted You're all set! Feel free to hop into the brand tickets!
+  .col-12
+    %p.text-muted Welcome #{current_user.name}, you're all set! Feel free to hop into the brand tickets!
 .row
-  .col-12.col-lg-4
-    .row.mb-3
-      .col-6
-        .card
-          .card-body.text-center
-            = link_to brand_tickets_path(current_brand),
-              { class: 'text-decoration-none' } do
-              = bi_icon('app-indicator', 'fs-4 text-muted')
-              %h3.text-primary= @new_count
-              %p.text-muted.font-15.mb-0 New Tickets
-      .col-6
-        .card
-          .card-body.text-center
-            = link_to brand_tickets_path(current_brand, status: 'solved'),
-              { class: 'text-decoration-none' } do
-              = bi_icon('check2-circle', 'fs-4 text-muted')
-              %h3.text-primary= @solved_count
-              %p.text-muted.font-15.mb-0 Total Resolved
-    .row.mb-3
-      .col-6
-        .card
-          .card-body.text-center
-            = link_to brand_tickets_path(current_brand, status: 'open'),
-              { class: 'text-decoration-none' } do
-              = bi_icon('envelope-open', 'fs-4 text-muted')
-              %h3.text-primary= @open_count
-              %p.text-muted.font-15.mb-0 Total Open
-      .col-6
-        .card
-          .card-body.text-center
-            = link_to brand_tickets_path(current_brand),
-              { class: 'text-decoration-none' } do
-              = bi_icon('stopwatch', 'fs-4 text-muted')
-              %h3.text-primary= @unassigned_count
-              %p.text-muted.font-15.mb-0 Unassigned Tickets
-  .col-12.col-lg-8
-    .card
+  .col-lg-6.mb-5
+    .row.gy-3
+      .col-lg-6
+        .card.border.border-2.border-info.p-3
+          .card-body
+            = link_to brand_tickets_path(current_brand), { class: 'text-decoration-none' } do
+              .card-title
+                = bi_icon('magic', 'fs-3 bg-info bg-opacity-50 text-info p-3 rounded')
+                %p.text-muted.mt-3 New Tickets
+              %p.fs-1= @new_count
+      .col-lg-6
+        .card.border.border-2.border-primary.p-3
+          .card-body
+            = link_to brand_tickets_path(current_brand, status: 'open'), { class: 'text-decoration-none' } do
+              .card-title
+                = bi_icon('folder2-open', 'fs-3 bg-primary bg-opacity-50 text-primary p-3 rounded')
+                %p.text-muted.mt-3 Total Open
+              %p.fs-1= @open_count
+    .row.my-1.my-lg-2.gy-3
+      .col-lg-6
+        .card.border.border-2.border-warning.p-3
+          .card-body
+            = link_to brand_tickets_path(current_brand), { class: 'text-decoration-none' } do
+              .card-title
+                = bi_icon('stopwatch-fill', 'fs-3 bg-warning bg-opacity-50 text-warning p-3 rounded')
+                %p.text-muted.mt-3 Unassigned Tickets
+              %p.fs-1= @unassigned_count
+      .col-lg-6
+        .card.border.border-2.border-danger.p-3
+          .card-body
+            = link_to brand_tickets_path(current_brand, status: 'solved'), { class: 'text-decoration-none' } do
+              .card-title
+                = bi_icon('folder2', 'fs-3 bg-danger bg-opacity-50 text-danger p-3 rounded')
+                %p.text-muted.mt-3 Total Solved
+              %p.fs-1= @solved_count
+  .col-lg-6
+    .card.bg-primary.p-3
       .card-body
-        .d-flex.justify-content-between.align-items-center.mb-2
-          %span.lead.text-muted Newest
+        .card-title.d-flex.justify-content-between.align-items-center.mb-2.text-light
+          %span.fs-4 Newest
           = active_link_to brand_tickets_path(current_brand),
            { active: :exclusive, class: 'text-decoration-none', 'data-turbo-frame' => :_top } do
-            = bi_icon('box-arrow-up-right')
-        .table-responsive
-          %table.table.table-centered.table-nowrap.table-hover.mb-0
-            %tbody
-              = render partial: 'ticket', collection: @newest_tickets
+            = bi_icon('box-arrow-up-right text-light')
+        .list-group.list-group-flush
+          = render partial: 'ticket', collection: @newest_tickets

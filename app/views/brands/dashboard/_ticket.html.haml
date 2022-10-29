@@ -1,10 +1,14 @@
-%tr
-  %td
-    %p.small.my-1.fw-normal= ticket.content.first(100)
-    %span.small.text-muted.text-primary= ticket.created_at.to_fs(:short)
-  %td
-    %p.small.my-1.fw-normal.text-center @#{ticket.author.username}
-    %span.small.text-muted.d-flex.justify-content-center Customer
-  %td
-    %p.small.my-1.fw-normal.text-primary.text-center= bi_icon(ticket.provider)
-    %span.small.text-muted.d-flex.justify-content-center Social
+.list-group-item.bg-transparent
+  = link_to brand_ticket_path(ticket.brand, ticket) do
+    .row
+      .col-lg-2.d-none.d-lg-flex.align-items-center
+        .social-icon
+        = bi_icon(ticket.provider, 'bg-white text-primary rounded-circle fs-3 py-2 px-3')
+      .col-lg-8
+        %p.m-0.text-white-50= ticket.author.username
+        %p.mx-0.my-1.fs-6.text-light= ticket.content.first(100)
+        %p.m-0.text-white-50= ticket.created_at.to_fs(:short)
+      .col-lg-2.d-none.d-lg-flex.flex-column.justify-content-center.align-items-center
+        .replies-icon
+          = bi_icon('chat-dots-fill', 'fs-3 text-light')
+        %p.text-white-50 #{ticket.replies.count} replies
