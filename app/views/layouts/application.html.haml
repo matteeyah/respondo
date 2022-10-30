@@ -63,19 +63,20 @@
                       'data-bs-toggle' => 'collapse', 'data-bs-target' => '#settings-menu', 'aria-expanded' => false do
                       = bi_icon('gear-fill', 'fs-4')
                       %span Settings
-                %ul#settings-menu{ class: 'text-center text-lg-start collapse list-group list-group-flush w-100',
-                  'aria-labelledby' => 'settings' }
-                  - if current_brand
+                  - class_list = ['text-center', 'text-lg-start', 'collapse', 'list-group', 'list-group-flush', 'w-100',
+                    ('show' if show_settings_collapse?)]
+                  %ul#settings-menu{ class: class_list, 'aria-labelledby' => '#settings-menu' }
+                    - if current_brand
+                      %li.list-group-item.list-group-item-action
+                        = active_link_to 'Brand settings', edit_brand_path(current_brand),
+                          active: [{ brands: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
                     %li.list-group-item.list-group-item-action
-                      = active_link_to 'Brand settings', edit_brand_path(current_brand),
-                        active: [{ brands: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
-                  %li.list-group-item.list-group-item-action
-                    = active_link_to 'User settings', edit_user_path(current_user),
-                      active: [{ users: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
-                %li.nav-item
-                  = button_to sign_out_path, method: :delete, class: 'btn btn-link nav-link', 'data-turbo' => false do
-                    = bi_icon('box-arrow-left', 'fs-5')
-                    %span Log out
+                      = active_link_to 'User settings', edit_user_path(current_user),
+                        active: [{ users: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
+                  %li.nav-item
+                    = button_to sign_out_path, method: :delete, class: 'btn btn-link nav-link', 'data-turbo' => false do
+                      = bi_icon('box-arrow-left', 'fs-5')
+                      %span Log out
         .h-100.flex-grow-1.overflow-auto
           %main.container.p-5{ role: 'main' }
             = yield
