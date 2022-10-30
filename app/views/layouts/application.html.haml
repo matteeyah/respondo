@@ -41,13 +41,14 @@
                     'data-bs-toggle' => 'collapse', 'data-bs-target' => '#help-menu', 'aria-expanded' => false do
                     = bi_icon('question-circle', 'fs-4')
                     %span Help
-                %ul.text-center.text-lg-start.collapse.list-group.list-group-flush.w-100#help-menu{ 'aria-labelledby' => 'help' }
-                  %li.list-group-item.list-group-item-action= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com',
-                    class: 'nav-link'
-                  %li.list-group-item.list-group-item-action= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback',
-                    class: 'nav-link'
-                  %li.list-group-item.list-group-item-action= safe_blank_link_to 'Support', 'mailto:support@respondohub.com',
-                    class: 'nav-link'
+                %ul#help-menu{ class: 'text-center text-lg-start collapse list-group list-group-flush w-100',
+                  'aria-labelledby' => 'help' }
+                  %li.list-group-item.list-group-item-action
+                    = safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link'
+                  %li.list-group-item.list-group-item-action
+                    = safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link'
+                  %li.list-group-item.list-group-item-action
+                    = safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link'
                   %li.list-group-item
                   %li.list-group-item.list-group-item-action
                     = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
@@ -62,12 +63,15 @@
                       'data-bs-toggle' => 'collapse', 'data-bs-target' => '#settings-menu', 'aria-expanded' => false do
                       = bi_icon('gear-fill', 'fs-4')
                       %span Settings
-                %ul.text-center.text-lg-start.collapse.list-group.list-group-flush.w-100#settings-menu{ 'aria-labelledby' => 'settings' }
+                %ul#settings-menu{ class: 'text-center text-lg-start collapse list-group list-group-flush w-100',
+                  'aria-labelledby' => 'settings' }
                   - if current_brand
-                    %li.list-group-item.list-group-item-action= active_link_to 'Brand settings', edit_brand_path(current_brand),
-                      active: [{ brands: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
-                  %li.list-group-item.list-group-item-action= active_link_to 'User settings', edit_user_path(current_user),
-                    active: [{ users: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
+                    %li.list-group-item.list-group-item-action
+                      = active_link_to 'Brand settings', edit_brand_path(current_brand),
+                        active: [{ brands: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
+                  %li.list-group-item.list-group-item-action
+                    = active_link_to 'User settings', edit_user_path(current_user),
+                      active: [{ users: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
                 %li.nav-item
                   = button_to sign_out_path, method: :delete, class: 'btn btn-link nav-link', 'data-turbo' => false do
                     = bi_icon('box-arrow-left', 'fs-5')
