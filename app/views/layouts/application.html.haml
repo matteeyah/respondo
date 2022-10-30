@@ -13,62 +13,65 @@
   %body
     .container-fluid.p-0
       .d-flex.flex-column.flex-lg-row.vh-100
-        .navbar.navbar-dark.navbar-expand-lg.bg-secondary
-          .container-fluid.d-flex.flex-lg-column.flex-grow-1.justify-content-center.align-items-center.h-100
-            .navbar-brand.mx-auto
-              = link_to root_path do
+        .navbar.navbar-expand-lg
+          .container-fluid.d-flex.flex-lg-column.flex-grow-1.h-100
+            .navbar-brand
+              = link_to root_path, class: 'nav-link text-primary fs-4 fw-bold' do
                 = image_tag('logo_square_white.svg', class: 'img-fluid')
+                %span Respondo
             %button.navbar-toggler{ type: 'button', 'data-bs-toggle' => 'collapse', 'data-bs-target' => '#main-nav' }
               %span.navbar-toggler-icon
-            .flex-column.align-items-start.collapse.navbar-collapse.mt-5#main-nav
-              %ul.flex-column.navbar-nav.text-center
+            .flex-column.collapse.navbar-collapse.w-100.mt-5#main-nav
+              %ul.flex-column.align-items-center.align-items-lg-start.navbar-nav.w-100
                 - if current_brand
                   %li.nav-item
                     = active_link_to brand_dashboard_path(current_brand),
-                      { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top,
+                      { active: :exclusive, class: 'nav-link', 'data-turbo-frame' => :_top,
                       :title => 'Dashboard' } do
-                      = bi_icon('house-door-fill', 'fs-1')
+                      = bi_icon('house-door', 'fs-4')
+                      %span Dashboard
                   %li.nav-item
                     = active_link_to brand_tickets_path(current_brand),
-                      { active: :exclusive, class: 'nav-link text-decoration-none', 'data-turbo-frame' => :_top,
+                      { active: :exclusive, class: 'nav-link', 'data-turbo-frame' => :_top,
                       :title => 'Brand Tickets' } do
-                      = bi_icon('ticket-fill', 'fs-1')
-                %li.nav-item.dropend
-                  = link_to '#', class: 'nav-link text-decoration-none', id: 'help', title: 'Help',
-                    'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
-                    = bi_icon('question-circle-fill', 'fs-1')
-                  %ul.dropdown-menu.dropdown-menu-dark.bg-secondary.shadow{ 'aria-labelledby' => 'help' }
-                    %li.nav-item= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com',
-                      class: 'dropdown-item'
-                    %li.nav-item= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback',
-                      class: 'dropdown-item'
-                    %li.nav-item= safe_blank_link_to 'Support', 'mailto:support@respondohub.com',
-                      class: 'dropdown-item'
-                    %li.nav-item
-                      %hr.dropdown-divider
-                    %li.nav-item
-                      = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
-                        class: 'dropdown-item'
-                    %li.nav-item
-                      = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy',
-                        class: 'dropdown-item'
-              %ul.flex-column.navbar-nav.mt-auto.text-center
+                      = bi_icon('ticket', 'fs-4')
+                      %span Tickets
+                %li.nav-item
+                  = link_to '#', class: 'nav-link', id: 'help', title: 'Help',
+                    'data-bs-toggle' => 'collapse', 'data-bs-target' => '#help-menu', 'aria-expanded' => false do
+                    = bi_icon('question-circle', 'fs-4')
+                    %span Help
+                %ul.text-center.text-lg-start.collapse.list-group.list-group-flush.w-100#help-menu{ 'aria-labelledby' => 'help' }
+                  %li.list-group-item.list-group-item-action= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com',
+                    class: 'nav-link'
+                  %li.list-group-item.list-group-item-action= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback',
+                    class: 'nav-link'
+                  %li.list-group-item.list-group-item-action= safe_blank_link_to 'Support', 'mailto:support@respondohub.com',
+                    class: 'nav-link'
+                  %li.list-group-item
+                  %li.list-group-item.list-group-item-action
+                    = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
+                      class: 'nav-link'
+                  %li.list-group-item.list-group-item-action
+                    = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy',
+                      class: 'nav-link'
+              %ul.flex-column.align-items-center.align-items-lg-start.navbar-nav.mt-auto.w-100
                 - if current_user
-                  %li.nav-item.dropend
-                    = link_to '#', class: 'nav-link text-decoration-none', id: 'settings', title: 'Settings',
-                      'data-bs-toggle' => 'dropdown', 'aria-expanded' => false do
-                      = bi_icon('gear-fill', 'fs-1')
-                    %ul.dropdown-menu.dropdown-menu-dark.bg-secondary.shadow{ 'aria-labelledby' => 'settings' }
-                      - if current_brand
-                        %li= active_link_to 'Brand settings', edit_brand_path(current_brand),
-                          active: [{ brands: :edit }], class: 'dropdown-item', 'data-turbo-frame' => :_top
-                      %li= active_link_to 'User settings', edit_user_path(current_user),
-                        active: [{ users: :edit }], class: 'dropdown-item', 'data-turbo-frame' => :_top
+                  %li.nav-item
+                    = link_to '#', class: 'nav-link', id: 'settings', title: 'Settings',
+                      'data-bs-toggle' => 'collapse', 'data-bs-target' => '#settings-menu', 'aria-expanded' => false do
+                      = bi_icon('gear-fill', 'fs-4')
+                      %span Settings
+                %ul.text-center.text-lg-start.collapse.list-group.list-group-flush.w-100#settings-menu{ 'aria-labelledby' => 'settings' }
+                  - if current_brand
+                    %li.list-group-item.list-group-item-action= active_link_to 'Brand settings', edit_brand_path(current_brand),
+                      active: [{ brands: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
+                  %li.list-group-item.list-group-item-action= active_link_to 'User settings', edit_user_path(current_user),
+                    active: [{ users: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
                 %li.nav-item
-                  %hr.text-white
-                %li.nav-item
-                  = button_to sign_out_path, method: :delete, class: 'btn btn-link', 'data-turbo' => false do
-                    = bi_icon('box-arrow-left', 'fs-1 text-white text-opacity-50')
+                  = button_to sign_out_path, method: :delete, class: 'btn btn-link nav-link', 'data-turbo' => false do
+                    = bi_icon('box-arrow-left', 'fs-5')
+                    %span Log out
         .h-100.flex-grow-1.overflow-auto
           %main.container.p-5{ role: 'main' }
             = yield

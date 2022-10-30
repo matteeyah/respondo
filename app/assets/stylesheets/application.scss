@@ -65,14 +65,18 @@
   box-shadow: 10px 10px 0 var(--bs-warning);
 }
 
+.navbar {
+  min-width: 15rem;
+}
+
+.navbar-brand img {
+  max-width: 4rem;
+}
+
 @media (max-width: 992px) {
   // Login page card
   .card.shadow-warning {
     width: 75%;
-  }
-
-  .navbar .navbar-brand img {
-    max-width: 5rem;
   }
 }
 
@@ -80,9 +84,5 @@
   // Login page card
   .card.shadow-warning {
     width: 50%;
-  }
-
-  .navbar {
-    max-width: 5rem;
   }
 }
