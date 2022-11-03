@@ -43,17 +43,17 @@
                     %span Help
                 %ul#help-menu{ class: 'text-center text-lg-start collapse list-group list-group-flush w-100',
                   'aria-labelledby' => 'help' }
-                  %li.list-group-item.list-group-item-action
+                  %li.list-group-item.list-group-item-action.border-0
                     = safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link'
-                  %li.list-group-item.list-group-item-action
+                  %li.list-group-item.list-group-item-action.border-0
                     = safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link'
-                  %li.list-group-item.list-group-item-action
+                  %li.list-group-item.list-group-item-action.border-0
                     = safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link'
                   %li.list-group-item
-                  %li.list-group-item.list-group-item-action
+                  %li.list-group-item.list-group-item-action.border-0
                     = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
                       class: 'nav-link'
-                  %li.list-group-item.list-group-item-action
+                  %li.list-group-item.list-group-item-action.border-0
                     = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy',
                       class: 'nav-link'
               %ul.flex-column.align-items-center.align-items-lg-start.navbar-nav.mt-auto.w-100
@@ -67,10 +67,10 @@
                     ('show' if show_settings_collapse?)]
                   %ul#settings-menu{ class: class_list, 'aria-labelledby' => '#settings-menu' }
                     - if current_brand
-                      %li.list-group-item.list-group-item-action
+                      %li.nav-item.list-group-item.list-group-item-action
                         = active_link_to 'Brand settings', edit_brand_path(current_brand),
                           active: [{ brands: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
-                    %li.list-group-item.list-group-item-action
+                    %li.nav-item.list-group-item.list-group-item-action
                       = active_link_to 'User settings', edit_user_path(current_user),
                         active: [{ users: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
                   %li.nav-item

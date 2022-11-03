@@ -66,11 +66,18 @@
 }
 
 .navbar {
+  --bs-navbar-active-color:var(--bs-primary);
+  --bs-navbar-hover-color: var(--bs-primary);
+
   min-width: 15rem;
 }
 
 .navbar-brand img {
   max-width: 4rem;
+}
+
+.nav-item > .nav-link.active {
+  border-left: 0.5rem var(--bs-border-style) var(--bs-primary);
 }
 
 @media (max-width: 992px) {
