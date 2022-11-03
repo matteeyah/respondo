@@ -9,6 +9,7 @@ RSpec.describe Brand do
     it { is_expected.to validate_presence_of(:screen_name) }
     it { is_expected.to allow_value('example.com').for(:domain) }
     it { is_expected.not_to allow_value('not!adomain.com').for(:domain) }
+    it { is_expected.to validate_uniqueness_of(:domain) }
   end
 
   describe 'Relations' do
