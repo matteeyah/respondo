@@ -148,7 +148,7 @@ RSpec.shared_examples 'allows interacting with tickets' do
       .to_return(status: 200, body: { id: 'world' }.to_json, headers: { content_type: 'application/json' })
 
     within("#ticket_#{target_ticket.id}") do
-      page.find_link("delete-#{target_ticket.id}").click
+      page.find_link("delete-#{target_ticket.id}", wait: 5).click
     end
 
     expect(page).not_to have_text(target_ticket.content)
