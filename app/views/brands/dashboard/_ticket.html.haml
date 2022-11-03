@@ -1,5 +1,5 @@
-.list-group-item.bg-transparent
-  = link_to brand_ticket_path(ticket.brand, ticket) do
+.list-group-item.list-group-item-action.bg-secondary.rounded-5
+  = link_to brand_ticket_path(ticket.brand, ticket), class: 'text-decoration-none' do
     .row
       .col-lg-2.d-none.d-lg-flex.align-items-center
         .social-icon

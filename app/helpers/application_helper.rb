@@ -26,4 +26,9 @@ module ApplicationHelper
   def bi_icon(icon, custom_class = nil)
     sanitize("<i class='bi bi-#{icon} #{custom_class}'></i>")
   end
+
+  def show_settings_collapse?
+    current_page?(edit_user_path(current_user)) ||
+      (current_brand && current_page?(edit_brand_path(current_brand)))
+  end
 end

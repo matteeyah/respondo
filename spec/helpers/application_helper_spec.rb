@@ -45,4 +45,44 @@ RSpec.describe ApplicationHelper do
 
     it { is_expected.to eq('<i class="bi bi-test "></i>') }
   end
+
+  describe '#show_settings_collapse?' do
+    subject(:show_settings_collapse?) { helper.show_settings_collapse? }
+
+    let(:user_double) { instance_double(User) }
+    let(:brand_double) { instance_double(Brand) }
+
+    before do
+      without_partial_double_verification do
+        allow(helper).to receive(:current_user).and_return(user_double)
+        allow(helper).to receive(:current_brand).and_return(brand_double)
+      end
+    end
+
+    context 'when current page is user settings' do
+      before do
+        allow(helper).to receive(:current_page?).with(edit_user_path(user_double)).and_return(true)
+      end
+
+      it { is_expected.to be(true) }
+    end
+
+    context 'when current page is brand settings' do
+      before do
+        allow(helper).to receive(:current_page?).with(edit_user_path(user_double)).and_return(false)
+        allow(helper).to receive(:current_page?).with(edit_brand_path(brand_double)).and_return(true)
+      end
+
+      it { is_expected.to be(true) }
+    end
+
+    context 'when current page is something else' do
+      before do
+        allow(helper).to receive(:current_page?).with(edit_user_path(user_double)).and_return(false)
+        allow(helper).to receive(:current_page?).with(edit_brand_path(brand_double)).and_return(false)
+      end
+
+      it { is_expected.to be(false) }
+    end
+  end
 end
