@@ -48,6 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.string "domain"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["domain"], name: "index_brands_on_domain", unique: true
   end
 
   create_table "external_tickets", force: :cascade do |t|
