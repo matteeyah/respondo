@@ -45,6 +45,9 @@
   --bs-dark-rgb: 3, 2, 53;
 }
 
+.body{
+  overflow:hidden;
+}
 .card.border-primary:hover {
   background-color: rgba(var(--bs-primary-rgb), 0.55);
 }
@@ -59,6 +62,31 @@
 
 .card.border-danger:hover {
   background-color: rgba(var(--bs-danger-rgb), 0.55);
+}
+
+.card.card-body{
+  position: relative;
+}
+
+.text-logo{
+  color: transparent;
+  animation: effect 5s linear infinite;
+}
+
+.logo{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 21.6px;
+  border: 1px solid var(--bs-primary);
+  color: white;
+  background: var(--bs-primary);
+  position: absolute;
+  margin: auto;
+  top: -40px;
+  right: 0;
+  left: 0;
 }
 
 .list-group-item.list-group-item-action.bg-secondary:hover {
@@ -86,6 +114,30 @@
 
 #users-in-brand {
   max-height: 35rem;
+}
+
+@keyframes effect {
+  0% {
+    background: #307DF6;
+    -webkit-background-clip: text;
+  }
+
+  33% {
+    background: #F9D154;
+    -webkit-background-clip: text;
+  }
+
+
+  66% {
+    background: #E15A32;
+    -webkit-background-clip: text;
+  }
+
+
+  100% {
+    background: #9763F6;
+    -webkit-background-clip: text;
+  }
 }
 
 @media (max-width: 992px) {

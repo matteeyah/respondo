@@ -13,9 +13,11 @@
       .col-lg-6.d-flex.align-items-center.justify-content-center
         .card.shadow-warning.px-3.px-lg-4.py-5
           .card-body
+            .logo
+              = image_tag('logo_circle_white.svg', class: 'img-fluid')
             .card-title.text-center.fs-3.fw-bold
               Sign in to
-              %span.text-primary Respondo
+              %span.text-logo Respondo
             %hr
             %p.card-text.text-muted.text-center
               Sign in is only available with a Google or Microsoft AD account.
