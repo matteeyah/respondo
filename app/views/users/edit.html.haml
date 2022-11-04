@@ -3,15 +3,20 @@
     %span.fs-2.me-2 User
     %span.rounded-pill.text-white.bg-info.opacity-75.py-1.px-3
       = bi_icon('person-fill')
-      #{@user.name}
+      = @user.name
 .row
   %ul.nav.nav-tabs{ role: 'tablist' }
     %li.nav-item#account-settings-tab{ role: 'presentation' }
-      = button_tag 'Account settings', class: 'nav-link active', 'data-bs-toggle' => 'tab', 'data-bs-target' => '#account-settings-tab-pane', role: 'tab', 'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true
+      = button_tag 'Account settings', class: 'nav-link active', role: 'tab',
+        'data-bs-toggle' => 'tab', 'data-bs-target' => '#account-settings-tab-pane',
+        'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true
     %li.nav-item#user-settings-tab{ role: 'presentation' }
-      = button_tag 'User settings', class: 'nav-link', 'data-bs-toggle' => 'tab', 'data-bs-target' => '#user-settings-tab-pane', role: 'tab', 'aria-controls' => 'user-settings-tab-pane', 'aria-selected' => false
+      = button_tag 'User settings', class: 'nav-link', role: 'tab',
+        'data-bs-toggle' => 'tab', 'data-bs-target' => '#user-settings-tab-pane',
+        'aria-controls' => 'user-settings-tab-pane', 'aria-selected' => false
   .tab-content.mt-4
-    .tab-pane.active#account-settings-tab-pane{ role: 'tabpanel', 'aria-labelledby' => 'account-settings-tab', tabindex: '0' }
+    .tab-pane.active#account-settings-tab-pane{ role: 'tabpanel', tabindex: '0',
+      'aria-labelledby' => 'account-settings-tab' }
       = render partial: 'shared/accounts', locals: { model: @user }
     .tab-pane#user-settings-tab-pane{ role: 'tabpanel', 'aria-labelledby' => 'user-settings-tab', tabindex: '0' }
       .row

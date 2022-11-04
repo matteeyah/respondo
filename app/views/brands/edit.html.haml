@@ -1,3 +1,4 @@
+-# haml-lint:disable ViewLength
 - subscription_status = @brand.subscription&.status
 - checkout_redirect_path = request.original_url
 .row.my-3
@@ -5,15 +6,20 @@
     %span.fs-2.me-2 Brand
     %span.rounded-pill.text-white.bg-danger.opacity-75.py-1.px-3
       = bi_icon('people-fill')
-      #{@brand.screen_name}
+      = @brand.screen_name
 .row
   %ul.nav.nav-tabs{ role: 'tablist' }
     %li.nav-item#account-settings-tab{ role: 'presentation' }
-      = button_tag 'Account settings', class: 'nav-link active', 'data-bs-toggle' => 'tab', 'data-bs-target' => '#account-settings-tab-pane', role: 'tab', 'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true
+      = button_tag 'Account settings', class: 'nav-link active', role: 'tab',
+        'data-bs-toggle' => 'tab', 'data-bs-target' => '#account-settings-tab-pane',
+        'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true
     %li.nav-item#team-settings-tab{ role: 'presentation' }
-      = button_tag 'Team settings', class: 'nav-link', 'data-bs-toggle' => 'tab', 'data-bs-target' => '#team-settings-tab-pane', role: 'tab', 'aria-controls' => 'team-settings-tab-pane', 'aria-selected' => false
+      = button_tag 'Team settings', class: 'nav-link', role: 'tab',
+        'data-bs-toggle' => 'tab', 'data-bs-target' => '#team-settings-tab-pane',
+        'aria-controls' => 'team-settings-tab-pane', 'aria-selected' => false
   .tab-content.mt-4
-    .tab-pane.active#account-settings-tab-pane{ role: 'tabpanel', 'aria-labelledby' => 'account-settings-tab', tabindex: '0' }
+    .tab-pane.active#account-settings-tab-pane{ role: 'tabpanel', tabindex: '0',
+      'aria-labelledby' => 'account-settings-tab' }
       = render partial: 'shared/accounts', locals: { model: @brand }
     .tab-pane#team-settings-tab-pane{ role: 'tabpanel', 'aria-labelledby' => 'team-settings-tab', tabindex: '0' }
       .row
@@ -27,7 +33,8 @@
               = form_with model: @brand, method: :patch do |update_brand_form|
                 .row
                   .col-8.col-lg-8
-                    = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com', class: 'form-control'
+                    = update_brand_form.text_field :domain, required: true, placeholder: 'domain.com',
+                      class: 'form-control'
                   .col-4.col-lg-4
                     = update_brand_form.submit 'Update', name: nil, class: 'btn form-control btn-primary'
         .col-lg-6
@@ -105,3 +112,4 @@
         }
         document.getElementById('buy-subscription').addEventListener('click', buySubscription, false)
     -# rubocop:enable Style/IdenticalConditionalBranches
+-# haml-lint:enable ViewLength
