@@ -23,11 +23,11 @@ RSpec.describe 'Brand settings' do
 
     add_oauth_mock_for_brand(brand, create(:brand_account, provider: 'disqus'))
     within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
-      page.find(:css, 'i.bi-plus-lg').click
+      page.find(:button, 'Connect').click
     end
 
-    within(page.find('h6', text: 'Existing accounts').find(:xpath, '..')) do
-      expect(page).to have_selector(:css, 'i.bi-trash3-fill')
+    within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
+      expect(page).to have_selector(:link, 'Remove')
     end
   end
 
@@ -36,14 +36,14 @@ RSpec.describe 'Brand settings' do
     find_by_id('settings').click
     click_link 'Brand settings'
 
-    within(page.find('h6', text: 'Existing accounts').find(:xpath, '..')) do
+    within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
-        page.find(:css, 'i.bi-trash3-fill').click
+        page.find(:link, 'Remove').click
       end
     end
 
     within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
-      expect(page).to have_selector(:css, 'i.bi-plus-lg')
+      expect(page).to have_selector(:button, 'Connect')
     end
   end
 
@@ -51,12 +51,13 @@ RSpec.describe 'Brand settings' do
     external_user = create(:user)
     find_by_id('settings').click
     click_link 'Brand settings'
+    click_button 'Team settings'
 
     select external_user.name, from: 'add-user'
     click_button 'Add'
 
-    within(page.find('h6', text: 'Users in Brand').find(:xpath, '..')) do
-      expect(page).to have_selector(:css, 'i.bi-trash3-fill')
+    within(page.find('span', text: 'Brand team').find(:xpath, '../..')) do
+      expect(page).to have_selector(:link, 'Remove')
     end
   end
 
@@ -64,14 +65,15 @@ RSpec.describe 'Brand settings' do
     existing_user = create(:user, brand:)
     find_by_id('settings').click
     click_link 'Brand settings'
+    click_button 'Team settings'
 
-    within(page.find('h6', text: 'Users in Brand').find(:xpath, '..')) do
+    within(page.find('span', text: 'Brand team').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: existing_user.name)) do
-        page.find(:css, 'i.bi-trash3-fill').click
+        page.find(:link, 'Remove').click
       end
     end
 
-    within(page.find('h6', text: 'Users in Brand').find(:xpath, '..')) do
+    within(page.find('span', text: 'Brand team').find(:xpath, '../..')) do
       expect(page).not_to have_text(existing_user.name)
     end
   end
@@ -79,6 +81,7 @@ RSpec.describe 'Brand settings' do
   it 'allows the user to edit the brand domain' do
     find_by_id('settings').click
     click_link 'Brand settings'
+    click_button 'Team settings'
 
     fill_in 'brand[domain]', with: 'example.com'
     click_button 'Update'
@@ -89,6 +92,7 @@ RSpec.describe 'Brand settings' do
   it 'prevents the user to update the brand with an invalid domain' do
     find_by_id('settings').click
     click_link 'Brand settings'
+    click_button 'Team settings'
 
     fill_in 'brand[domain]', with: 'invalid!domain.com'
     click_button 'Update'

@@ -21,10 +21,10 @@ RSpec.describe 'User settings' do
 
     add_oauth_mock_for_user(user, create(:user_account, provider: 'activedirectory'))
     within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
-      page.find(:css, 'i.bi-plus-lg').click
+      page.find(:button, text: 'Connect').click
     end
 
-    expect(page).to have_selector(:css, 'i.bi-trash3-fill')
+    expect(page).to have_selector(:link, 'Remove')
   end
 
   it 'allows the user to remove an account' do
@@ -32,26 +32,27 @@ RSpec.describe 'User settings' do
     find_by_id('settings').click
     click_link 'User settings'
 
-    within(page.find('h6', text: 'Existing accounts').find(:xpath, '..')) do
+    within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
-        page.find(:css, 'i.bi-trash3-fill').click
+        page.find(:link, 'Remove').click
       end
     end
 
     within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
-      expect(page).to have_selector(:css, 'i.bi-plus-lg')
+      expect(page).to have_selector(:button, 'Connect')
     end
   end
 
   it 'allows the user to create a personal access token' do
     find_by_id('settings').click
     click_link 'User settings'
+    click_button 'User settings'
 
     fill_in :name, with: 'something_nice'
     click_button 'Create'
 
-    within(page.find('h6', text: 'Existing personal access tokens').find(:xpath, '..')) do
-      expect(page).to have_selector(:css, 'i.bi-trash3-fill')
+    within(page.find('p', text: 'Personal Access Tokens').find(:xpath, '../..')) do
+      expect(page).to have_selector(:link, 'Remove')
     end
   end
 
@@ -59,9 +60,10 @@ RSpec.describe 'User settings' do
     create(:personal_access_token, name: 'something_nice', user:)
     find_by_id('settings').click
     click_link 'User settings'
+    click_button 'User settings'
 
-    within(page.find('h6', text: 'Existing personal access tokens').find(:xpath, '..')) do
-      page.find(:css, 'i.bi-trash3-fill').click
+    within(page.find('p', text: 'Personal Access Tokens').find(:xpath, '../..')) do
+      page.find(:link, 'Remove').click
     end
 
     expect(page).not_to have_text('something_nice')
