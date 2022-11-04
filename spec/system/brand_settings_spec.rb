@@ -56,7 +56,7 @@ RSpec.describe 'Brand settings' do
     select external_user.name, from: 'add-user'
     click_button 'Add'
 
-    within(page.find('span', text: 'Brand team').find(:xpath, '../..')) do
+    within(page.find('p', text: 'Brand team').find(:xpath, '../..')) do
       expect(page).to have_selector(:link, 'Remove')
     end
   end
@@ -67,13 +67,13 @@ RSpec.describe 'Brand settings' do
     click_link 'Brand settings'
     click_button 'Team settings'
 
-    within(page.find('span', text: 'Brand team').find(:xpath, '../..')) do
+    within(page.find('p', text: 'Brand team').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: existing_user.name)) do
         page.find(:link, 'Remove').click
       end
     end
 
-    within(page.find('span', text: 'Brand team').find(:xpath, '../..')) do
+    within(page.find('p', text: 'Brand team').find(:xpath, '../..')) do
       expect(page).not_to have_text(existing_user.name)
     end
   end

@@ -59,7 +59,7 @@
           .card
             .card-body
               .card-title
-                %span.fs-4.fw-bold Brand team
+                %p.fs-4.fw-bold Brand team
               .row
                 = form_with url: brand_users_path(@brand), method: :post,
                   html: { 'data-controller' => 'reset-form',
