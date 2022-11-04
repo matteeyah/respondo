@@ -1,8 +1,9 @@
-.list-group-item{ id: dom_id(user) }
+.list-group-item.col-lg-4{ id: dom_id(user) }
   .row
-    .col-8
-      %p.mb-0.fw-bold= user.name
-    .col-4.d-flex.justify-content-end
+    .col-7.d-flex.align-content-center
+      %span.my-2.fw-bold= user.name
+    .col-5.d-flex.align-items-center.justify-content-end
       = link_to brand_user_path(user.brand, user),
-        'data-turbo-method' => :delete do
-        = bi_icon('trash3-fill')
+        'data-turbo-method' => :delete, class: 'btn btn-outline-danger' do
+        %span Remove
+        = bi_icon('x-circle')

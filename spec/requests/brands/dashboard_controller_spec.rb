@@ -26,7 +26,7 @@ RSpec.describe Brands::DashboardController do
           get_index
 
           expect(response.body).to include(<<~WELCOME_STRING.strip
-            Welcome <span class='text-black'>#{user.name}</span>, you&#39;re all set! Feel free to hop into the brand tickets!
+            Welcome <span class='text-black'>#{CGI.escapeHTML(user.name)}</span>, you&#39;re all set! Feel free to hop into the brand tickets!
           WELCOME_STRING
                                           )
         end

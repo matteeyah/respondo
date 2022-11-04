@@ -84,6 +84,10 @@
   border-left: 0.5rem var(--bs-border-style) var(--bs-primary);
 }
 
+#users-in-brand {
+  max-height: 35rem;
+}
+
 @media (max-width: 992px) {
   // Login page card
   .card.shadow-warning {

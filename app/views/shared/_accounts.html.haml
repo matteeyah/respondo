@@ -1,13 +1,17 @@
-.row.my-3
-  .col-12
-    %h6.mb-3 Existing accounts
-    %hr.border-2.border-top
-    .list-group#accounts
-      = render partial: 'shared/account', collection: model.accounts, locals: { model: }
+.row
+  .col-lg-6
+    .card
+      .card-body
+        .card-title
+          %p.fs-4.fw-bold Add account
+        .list-group.list-group-flush#account-providers
+          = render partial: 'shared/account_provider', collection: model.accounts.klass.providers.keys,
+            locals: { model: }, as: :provider
 .row.mt-4
   .col-12
-    %h6 Add account
-    %hr.border-2.border-top
-    .list-group#account-providers
-      = render partial: 'shared/account_provider', collection: model.accounts.klass.providers.keys,
-        locals: { model: }, as: :provider
+    .card
+      .card-body
+        .card-title
+          %p.fs-4.fw-bold Accounts
+        .list-group.list-group-flush#accounts
+          = render partial: 'shared/account', collection: model.accounts, locals: { model: }

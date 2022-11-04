@@ -12,7 +12,7 @@
       .col-lg-6
         .card.border.border-2.rounded-5.border-info.p-3
           .card-body
-            = link_to brand_tickets_path(current_brand), { class: 'text-decoration-none m-0' } do
+            = link_to brand_tickets_path(current_brand), { class: 'text-decoration-none m-0 stretched-link' } do
               .card-title
                 = bi_icon('magic', 'fs-3 bg-info bg-opacity-50 text-info p-3 rounded')
                 %p.text-muted.mt-3 New Tickets
@@ -20,7 +20,8 @@
       .col-lg-6
         .card.border.border-2.rounded-5.border-primary.p-3
           .card-body
-            = link_to brand_tickets_path(current_brand, status: 'open'), { class: 'text-decoration-none' } do
+            = link_to brand_tickets_path(current_brand, status: 'open'),
+              { class: 'text-decoration-none stretched-link' } do
               .card-title
                 = bi_icon('folder2-open', 'fs-3 bg-primary bg-opacity-50 text-primary p-3 rounded')
                 %p.text-muted.mt-3 Total Open
@@ -29,7 +30,7 @@
       .col-lg-6
         .card.border.border-2.rounded-5.border-warning.p-3
           .card-body
-            = link_to brand_tickets_path(current_brand), { class: 'text-decoration-none' } do
+            = link_to brand_tickets_path(current_brand), { class: 'text-decoration-none stretched-link' } do
               .card-title
                 = bi_icon('stopwatch-fill', 'fs-3 bg-warning bg-opacity-50 text-warning p-3 rounded')
                 %p.text-muted.mt-3 Unassigned Tickets
@@ -37,7 +38,8 @@
       .col-lg-6
         .card.border.border-2.rounded-5.border-danger.p-3
           .card-body
-            = link_to brand_tickets_path(current_brand, status: 'solved'), { class: 'text-decoration-none' } do
+            = link_to brand_tickets_path(current_brand, status: 'solved'),
+              { class: 'text-decoration-none stretched-link' } do
               .card-title
                 = bi_icon('folder2', 'fs-3 bg-danger bg-opacity-50 text-danger p-3 rounded')
                 %p.text-muted.mt-3 Total Solved
