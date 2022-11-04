@@ -36,9 +36,5 @@
                         placeholder: 'Enter token name', class: 'form-control'
                     .col-4.col-lg-4
                       = create_token_form.submit 'Create', name: nil, class: 'btn form-control btn-primary'
-                - if @user.personal_access_tokens.any?
-                  .list-group.list-group-flush#personal-access-tokens
-                    = render partial: 'users/personal_access_token', collection: @user.personal_access_tokens
-                - else
-                  %p.mt-3.fst-italic
-                    You do not have any tokens.
+                .list-group.list-group-flush#personal-access-tokens
+                  = render partial: 'users/personal_access_token', collection: @user.personal_access_tokens
