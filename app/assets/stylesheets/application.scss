@@ -19,6 +19,8 @@
 @import "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css";
 @import "https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.css";
 
+/* -- Bootstrap overrides -- */
+
 :root {
   --bs-font-sans-serif:
     "Roboto",
@@ -45,9 +47,6 @@
   --bs-dark-rgb: 3, 2, 53;
 }
 
-.body{
-  overflow:hidden;
-}
 .card.border-primary:hover {
   background-color: rgba(var(--bs-primary-rgb), 0.55);
 }
@@ -64,37 +63,8 @@
   background-color: rgba(var(--bs-danger-rgb), 0.55);
 }
 
-.card.card-body{
-  position: relative;
-}
-
-.text-logo{
-  color: transparent;
-  animation: effect 5s linear infinite;
-}
-
-.logo{
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  text-align: center;
-  font-size: 21.6px;
-  border: 1px solid var(--bs-primary);
-  color: white;
-  background: var(--bs-primary);
-  position: absolute;
-  margin: auto;
-  top: -40px;
-  right: 0;
-  left: 0;
-}
-
 .list-group-item.list-group-item-action.bg-secondary:hover {
   background-color: var(--bs-primary) !important;
-}
-
-.shadow-warning {
-  box-shadow: 10px 10px 0 var(--bs-warning);
 }
 
 .navbar {
@@ -112,44 +82,72 @@
   border-left: 0.5rem var(--bs-border-style) var(--bs-primary);
 }
 
-#users-in-brand {
-  max-height: 35rem;
+/* -- Bootstrap overrides -- */
+
+/* -- Custom utilities -- */
+
+.text-color-switch {
+  color: transparent;
+  animation: color-switch 5s linear infinite;
 }
 
-@keyframes effect {
+.shadow-warning {
+  box-shadow: 10px 10px 0 var(--bs-warning);
+}
+
+@keyframes color-switch {
   0% {
-    background: #307DF6;
-    -webkit-background-clip: text;
+    background-color: var(--bs-primary);
+    background-clip: text;
+    -webkit-background-clip: text; /* stylelint-disable-line property-no-vendor-prefix */
   }
 
   33% {
-    background: #F9D154;
-    -webkit-background-clip: text;
+    background-color: var(--bs-warning);
+    background-clip: text;
+    -webkit-background-clip: text; /* stylelint-disable-line property-no-vendor-prefix */
   }
 
 
   66% {
-    background: #E15A32;
-    -webkit-background-clip: text;
+    background-color: var(--bs-danger);
+    background-clip: text;
+    -webkit-background-clip: text; /* stylelint-disable-line property-no-vendor-prefix */
   }
 
 
   100% {
-    background: #9763F6;
-    -webkit-background-clip: text;
+    background-color: var(--bs-info);
+    background-clip: text;
+    -webkit-background-clip: text; /* stylelint-disable-line property-no-vendor-prefix */
   }
 }
 
+/* -- Custom utilities -- */
+
+/* -- Specific styles -- */
+
+#users-in-brand {
+  max-height: 35rem;
+}
+
+#login-card > .card-body > .rounded-circle {
+  width: 5rem;
+  height: 5rem;
+  margin-top: -6.5rem;
+}
+
+
 @media (max-width: 992px) {
-  // Login page card
-  .card.shadow-warning {
+  #login-card {
     width: 75%;
   }
 }
 
 @media (min-width: 992px) {
-  // Login page card
-  .card.shadow-warning {
+  #login-card {
     width: 50%;
   }
 }
+
+/* -- Specific styles -- */
