@@ -27,18 +27,18 @@
                     = active_link_to brand_dashboard_path(current_brand),
                       { active: :exclusive, class: 'nav-link', 'data-turbo-frame' => :_top,
                       :title => 'Dashboard' } do
-                      = bi_icon('house-door', 'fs-4')
+                      = bi_icon('grid-1x2', 'fs-4 pe-3')
                       %span Dashboard
                   %li.nav-item
                     = active_link_to brand_tickets_path(current_brand),
                       { active: :exclusive, class: 'nav-link', 'data-turbo-frame' => :_top,
                       :title => 'Brand Tickets' } do
-                      = bi_icon('ticket', 'fs-4')
+                      = bi_icon('ticket', 'fs-4 pe-3')
                       %span Tickets
                 %li.nav-item
                   = link_to '#', class: 'nav-link', id: 'help', title: 'Help',
                     'data-bs-toggle' => 'collapse', 'data-bs-target' => '#help-menu', 'aria-expanded' => false do
-                    = bi_icon('question-circle', 'fs-4')
+                    = bi_icon('question-square', 'fs-4 pe-3')
                     %span Help
                 %ul#help-menu{ class: 'text-center text-lg-start collapse list-group list-group-flush w-100',
                   'aria-labelledby' => 'help' }
@@ -60,7 +60,7 @@
                   %li.nav-item
                     = link_to '#', class: 'nav-link', id: 'settings', title: 'Settings',
                       'data-bs-toggle' => 'collapse', 'data-bs-target' => '#settings-menu', 'aria-expanded' => false do
-                      = bi_icon('gear-fill', 'fs-4')
+                      = bi_icon('gear-wide', 'fs-4 pe-3')
                       %span Settings
                   - class_list = ['text-center', 'text-lg-start', 'collapse', 'list-group', 'list-group-flush', 'w-100',
                     ('show' if show_settings_collapse?)]
@@ -72,9 +72,9 @@
                     %li.nav-item.list-group-item.list-group-item-action
                       = active_link_to 'User settings', edit_user_path(current_user),
                         active: [{ users: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
-                  %li.nav-item
+                  %li.nav-item.pb-3
                     = button_to sign_out_path, method: :delete, class: 'btn btn-link nav-link', 'data-turbo' => false do
-                      = bi_icon('box-arrow-left', 'fs-5')
+                      = bi_icon('box-arrow-left', 'fs-5 pe-3')
                       %span Sign Out
         .h-100.flex-grow-1.overflow-auto.rounded-5.rounded-end.bg-white
           %main.container.p-4{ role: 'main' }
