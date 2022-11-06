@@ -10,15 +10,14 @@
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_importmap_tags
-  %body
+  %body.body
     .container-fluid.p-0
       .d-flex.flex-column.flex-lg-row.vh-100
-        .navbar.navbar-expand-lg
-          .container-fluid.d-flex.flex-lg-column.flex-grow-1.h-100
-            .navbar-brand
+        .navbar.navbar-expand-lg.ps-2.pe-3
+          .container-fluid.d-flex.flex-lg-column.flex-grow-1.h-100.bg-white.rounded-5
+            .navbar-brand.p-2
               = link_to root_path, class: 'nav-link text-primary fs-4 fw-bold' do
-                = image_tag('logo_square_white.svg', class: 'img-fluid')
-                %span Respondo
+                = image_tag('logo_circle_white.svg', class: 'img-fluid')
             %button.navbar-toggler{ type: 'button', 'data-bs-toggle' => 'collapse', 'data-bs-target' => '#main-nav' }
               %span.navbar-toggler-icon
             .flex-column.collapse.navbar-collapse.w-100.mt-5#main-nav
@@ -77,8 +76,8 @@
                     = button_to sign_out_path, method: :delete, class: 'btn btn-link nav-link', 'data-turbo' => false do
                       = bi_icon('box-arrow-left', 'fs-5')
                       %span Sign Out
-        .h-100.flex-grow-1.overflow-auto
-          %main.container.p-5{ role: 'main' }
+        .h-100.flex-grow-1.overflow-auto.rounded-5.rounded-end.bg-white
+          %main.container.p-4{ role: 'main' }
             = yield
-            .toast-container.position-fixed.bottom-0.end-0.p-3#toasts
+            .toast-container.position-fixed.bottom-0.end-0#toasts
     = yield :custom_javascript
