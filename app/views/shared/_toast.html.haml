@@ -1,7 +1,7 @@
 .toast{ role: 'alert', 'aria-live': 'assertive', 'aria-atomic' => 'true', 'data-controller' => 'toast' }
   .toast-header.d-flex.align-items-center
     :ruby
-      if @toast_status == :success
+      if success
         color_class = 'success'
         icon = 'emoji-sunglasses-fill'
         title_text = 'Success'
