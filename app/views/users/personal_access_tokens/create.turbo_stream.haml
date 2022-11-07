@@ -1,4 +1,12 @@
+:ruby
+  if @success
+    toast_status = :success
+    toast_message = "User personal access token was successfully created. Please write it down: #{@token.token}"
+  else
+    toast_status = :error
+    toast_message = "Unable to create personal access token.\n#{@token.errors.full_messages.join(', ')}."
+  end
 = turbo_stream.append(:toasts, partial: 'shared/toast',
-  locals: { title: 'Personal access token', message: @toast_message })
+  locals: { status: toast_status, message: toast_message })
 = turbo_stream.append('personal-access-tokens', partial: 'users/personal_access_token',
   locals: { personal_access_token: @token })

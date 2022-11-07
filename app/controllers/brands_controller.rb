@@ -14,11 +14,7 @@ class BrandsController < Brands::ApplicationController
   def update
     authorize(brand)
 
-    @toast_message = if brand.update(update_params)
-                       'Brand was successfully updated.'
-                     else
-                       'Brand could not be updated.'
-                     end
+    @success = brand.update(update_params)
 
     respond_to do |format|
       format.turbo_stream

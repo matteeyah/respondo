@@ -1,1 +1,9 @@
-= turbo_stream.append(:toasts, partial: 'shared/toast', locals: { title: 'Brand', message: @toast_message })
+:ruby
+  if @success
+    toast_status = :success
+    toast_message = 'Brand was successfully updated.'
+  else
+    toast_status = :error
+    toast_message = 'Brand could not be updated.'
+  end
+= turbo_stream.append(:toasts, partial: 'shared/toast', locals: { status: toast_status, message: toast_message })

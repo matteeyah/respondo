@@ -1,6 +1,7 @@
 - toast_message = @success ? 'User account was successfully deleted.' : @account.errors.full_messages.join(',')
+- toast_status = @success ? :success : :error
 = turbo_stream.append(:toasts, partial: 'shared/toast',
-  locals: { title: 'User account', message: toast_message })
+  locals: { status: toast_status, message: toast_message })
 
 - if @success
   = turbo_stream.remove(@account)
