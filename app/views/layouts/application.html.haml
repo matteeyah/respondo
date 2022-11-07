@@ -11,74 +11,74 @@
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_importmap_tags
   %body
-    .container-fluid.p-0
-      .d-flex.flex-column.flex-lg-row.vh-100
-        .navbar.navbar-expand-lg
-          .container-fluid.d-flex.flex-lg-column.flex-grow-1.h-100
-            .navbar-brand
-              = link_to root_path, class: 'nav-link text-primary fs-4 fw-bold' do
-                = image_tag('logo_square_white.svg', class: 'img-fluid')
-                %span Respondo
-            %button.navbar-toggler{ type: 'button', 'data-bs-toggle' => 'collapse', 'data-bs-target' => '#main-nav' }
-              %span.navbar-toggler-icon
-            .flex-column.collapse.navbar-collapse.w-100.mt-5#main-nav
-              %ul.flex-column.align-items-center.align-items-lg-start.navbar-nav.w-100
-                - if current_brand
-                  %li.nav-item
-                    = active_link_to brand_dashboard_path(current_brand),
-                      { active: :exclusive, class: 'nav-link', 'data-turbo-frame' => :_top,
-                      :title => 'Dashboard' } do
-                      = bi_icon('house-door', 'fs-4')
-                      %span Dashboard
-                  %li.nav-item
-                    = active_link_to brand_tickets_path(current_brand),
-                      { active: :exclusive, class: 'nav-link', 'data-turbo-frame' => :_top,
-                      :title => 'Brand Tickets' } do
-                      = bi_icon('ticket', 'fs-4')
-                      %span Tickets
+    .d-flex.flex-column.flex-lg-row.vh-100.bg-light
+      .navbar.navbar-expand-lg.m-3.rounded-4.bg-white
+        .container-fluid.ps-0.d-flex.flex-lg-column.flex-grow-1.h-100
+          .navbar-brand
+            = link_to root_path, class: 'nav-link text-primary fs-4 fw-bold' do
+              = image_tag('logo_circle_white.svg', class: 'img-fluid')
+              %span Respondo
+          %button.navbar-toggler{ type: 'button', 'data-bs-toggle' => 'collapse', 'data-bs-target' => '#main-nav' }
+            %span.navbar-toggler-icon
+          .flex-column.collapse.navbar-collapse.w-100.mt-5#main-nav
+            %ul.flex-column.align-items-center.align-items-lg-start.navbar-nav.w-100
+              - if current_brand
                 %li.nav-item
-                  = link_to '#', class: 'nav-link', id: 'help', title: 'Help',
-                    'data-bs-toggle' => 'collapse', 'data-bs-target' => '#help-menu', 'aria-expanded' => false do
-                    = bi_icon('question-circle', 'fs-4')
-                    %span Help
-                %ul#help-menu{ class: 'text-center text-lg-start collapse list-group list-group-flush w-100',
-                  'aria-labelledby' => 'help' }
-                  %li.list-group-item.list-group-item-action.border-0
-                    = safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link'
-                  %li.list-group-item.list-group-item-action.border-0
-                    = safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link'
-                  %li.list-group-item.list-group-item-action.border-0
-                    = safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link'
-                  %li.list-group-item
-                  %li.list-group-item.list-group-item-action.border-0
-                    = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
-                      class: 'nav-link'
-                  %li.list-group-item.list-group-item-action.border-0
-                    = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy',
-                      class: 'nav-link'
-              %ul.flex-column.align-items-center.align-items-lg-start.navbar-nav.mt-auto.w-100
-                - if current_user
-                  %li.nav-item
-                    = link_to '#', class: 'nav-link', id: 'settings', title: 'Settings',
-                      'data-bs-toggle' => 'collapse', 'data-bs-target' => '#settings-menu', 'aria-expanded' => false do
-                      = bi_icon('gear-fill', 'fs-4')
-                      %span Settings
-                  - class_list = ['text-center', 'text-lg-start', 'collapse', 'list-group', 'list-group-flush', 'w-100',
-                    ('show' if show_settings_collapse?)]
-                  %ul#settings-menu{ class: class_list, 'aria-labelledby' => '#settings-menu' }
-                    - if current_brand
-                      %li.nav-item.list-group-item.list-group-item-action
-                        = active_link_to 'Brand settings', edit_brand_path(current_brand),
-                          active: [{ brands: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
-                    %li.nav-item.list-group-item.list-group-item-action
-                      = active_link_to 'User settings', edit_user_path(current_user),
-                        active: [{ users: :edit }], class: 'nav-link', 'data-turbo-frame' => :_top
-                  %li.nav-item
-                    = button_to sign_out_path, method: :delete, class: 'btn btn-link nav-link', 'data-turbo' => false do
-                      = bi_icon('box-arrow-left', 'fs-5')
-                      %span Sign Out
-        .h-100.flex-grow-1.overflow-auto
-          %main.container.p-5{ role: 'main' }
-            = yield
-            .toast-container.position-fixed.bottom-0.end-0.p-3#toasts
-    = yield :custom_javascript
+                  = active_link_to brand_dashboard_path(current_brand),
+                    { active: :exclusive, class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
+                    :title => 'Dashboard' } do
+                    = bi_icon('grid-1x2', 'fs-4 me-3')
+                    %span Dashboard
+                %li.nav-item
+                  = active_link_to brand_tickets_path(current_brand),
+                    { active: :exclusive, class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
+                    :title => 'Brand Tickets' } do
+                    = bi_icon('ticket', 'fs-4 me-3')
+                    %span Tickets
+              %li.nav-item
+                = link_to '#', class: 'nav-link d-flex align-items-center ps-4', id: 'help', title: 'Help',
+                  'data-bs-toggle' => 'collapse', 'data-bs-target' => '#help-menu', 'aria-expanded' => false do
+                  = bi_icon('question-square', 'fs-4 me-3')
+                  %span Help
+              %ul#help-menu{ class: 'text-center text-lg-start collapse list-group list-group-flush w-100',
+                'aria-labelledby' => 'help' }
+                %li.list-group-item.list-group-item-action.border-0
+                  = safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link'
+                %li.list-group-item.list-group-item-action.border-0
+                  = safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link'
+                %li.list-group-item.list-group-item-action.border-0
+                  = safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link'
+                %li.list-group-item
+                %li.list-group-item.list-group-item-action.border-0
+                  = safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
+                    class: 'nav-link'
+                %li.list-group-item.list-group-item-action.border-0
+                  = safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy',
+                    class: 'nav-link'
+            %ul.flex-column.align-items-center.align-items-lg-start.navbar-nav.mt-auto.w-100
+              - if current_user
+                %li.nav-item
+                  = link_to '#', class: 'nav-link d-flex align-items-center ps-4', id: 'settings', title: 'Settings',
+                    'data-bs-toggle' => 'collapse', 'data-bs-target' => '#settings-menu', 'aria-expanded' => false do
+                    = bi_icon('gear-wide', 'fs-4 me-3')
+                    %span Settings
+                - class_list = ['text-center', 'text-lg-start', 'collapse', 'list-group', 'list-group-flush', 'w-100',
+                  ('show' if show_settings_collapse?)]
+                %ul#settings-menu{ class: class_list, 'aria-labelledby' => '#settings-menu' }
+                  - if current_brand
+                    %li.nav-item.list-group-item.list-group-item-action.ps-0
+                      = active_link_to 'Brand settings', edit_brand_path(current_brand),
+                        active: [{ brands: :edit }], class: 'nav-link ps-4', 'data-turbo-frame' => :_top
+                  %li.nav-item.list-group-item.list-group-item-action.ps-0
+                    = active_link_to 'User settings', edit_user_path(current_user),
+                      active: [{ users: :edit }], class: 'nav-link ps-4', 'data-turbo-frame' => :_top
+                %li.nav-item
+                  = button_to sign_out_path, method: :delete, 'data-turbo' => false,
+                    class: 'btn btn-link nav-link d-flex align-items-center ps-4' do
+                    = bi_icon('box-arrow-left', 'fs-4 me-3')
+                    %span Sign Out
+      .h-100.flex-grow-1.overflow-auto.bg-white#main-content
+        %main.container.p-4{ role: 'main' }
+          = yield
+          .toast-container.position-fixed.bottom-0.end-0.p-3#toasts
+  = yield :custom_javascript

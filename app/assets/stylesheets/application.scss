@@ -37,12 +37,16 @@
   --bs-primary-rgb: 48, 125, 246;
   --bs-secondary: #2458CC;
   --bs-secondary-rgb: 36, 88, 204;
-  --bs-info: #9763F6;
-  --bs-info-rgb: 151, 99, 246;
-  --bs-warning: #F9D154;
-  --bs-warning-rgb: 249, 209, 84;
+  --bs-success: #ABBE53;
+  --bs-success-rgb: 171, 190, 83;
   --bs-danger: #E15A32;
   --bs-danger-rgb: 225, 90, 50;
+  --bs-warning: #F9D154;
+  --bs-warning-rgb: 249, 209, 84;
+  --bs-info: #9763F6;
+  --bs-info-rgb: 151, 99, 246;
+  --bs-light: #E4E7EB;
+  --bs-light-rgb: 228, 231, 235;
   --bs-dark: #030235;
   --bs-dark-rgb: 3, 2, 53;
 }
@@ -142,11 +146,19 @@
   #login-card {
     width: 75%;
   }
+
+  #main-content {
+    border-radius: var(--bs-border-radius-xl) var(--bs-border-radius-xl) 0 0 !important;
+  }
 }
 
 @media (min-width: 992px) {
   #login-card {
     width: 50%;
+  }
+
+  #main-content {
+    border-radius: var(--bs-border-radius-xl) 0 0 var(--bs-border-radius-xl) !important;
   }
 }
 
