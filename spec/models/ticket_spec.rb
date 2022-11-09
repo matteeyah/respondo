@@ -133,6 +133,57 @@ RSpec.describe Ticket do
       end
     end
 
+    describe '.from_client_response!' do
+      subject(:from_client_response!) { described_class.from_client_response!(provider, ticket_body, source, user) }
+
+      context 'when ticket is internal' do
+        BrandAccount.providers.except(:developer).each_key do |provider_param|
+          context "when provider is #{provider_param}" do
+            let(:provider) { provider_param }
+            let(:source) { create(:brand_account, provider:) }
+            let!(:parent) { create(:internal_ticket, source:, brand: source.brand).base_ticket }
+            let(:user) { parent.creator }
+
+            let(:ticket_body) do
+              case provider
+              when 'twitter'
+                instance_double(
+                  Twitter::Tweet,
+                  JSON.parse(file_fixture('twitter_post_hash.json').read).merge(
+                    in_reply_to_tweet_id: parent.external_uid,
+                    user: instance_double(Twitter::User, id: '2', screen_name: 'test')
+                  ).deep_symbolize_keys
+                )
+              when 'disqus'
+                JSON.parse(file_fixture('disqus_post_hash.json').read)
+                  .merge(parent: parent.external_uid).deep_symbolize_keys
+              end
+            end
+
+            it 'creates ticket' do
+              expect { from_client_response! }.to change(described_class, :count).from(1).to(2)
+            end
+          end
+        end
+      end
+
+      context 'when ticket is external' do
+        let!(:parent) { create(:external_ticket).base_ticket }
+        let(:provider) { 'external' }
+        let(:source) { parent.brand }
+        let(:user) { parent.creator }
+
+        let(:ticket_body) do
+          JSON.parse(file_fixture('external_post_hash.json').read)
+            .merge(parent_uid: parent.external_uid).deep_symbolize_keys
+        end
+
+        it 'creates ticket' do
+          expect { from_client_response! }.to change(described_class, :count).from(1).to(2)
+        end
+      end
+    end
+
     describe '.from_tweet!' do
       subject(:from_tweet!) { described_class.from_tweet!(tweet, account, user) }
 
@@ -250,25 +301,23 @@ RSpec.describe Ticket do
   end
 
   describe '#respond_as' do
-    subject(:respond_as) { ticket.respond_as(user_spy, 'response') }
+    subject(:respond_as) { ticket.respond_as(user, 'response') }
 
-    let(:ticket) { create(:internal_ticket).base_ticket }
-    let(:user_spy) { instance_spy(User) }
-    let(:client_spy) { instance_spy(Clients::Client, reply: 'response') }
-    let(:ticket_creator_class) { class_spy(TicketCreator, new: spy) }
+    let(:ticket) { create(:external_ticket).base_ticket }
+    let(:user) { create(:user) }
+    let(:client_spy) { instance_spy(Clients::Client, reply: response_body) }
+
+    let(:response_body) do
+      JSON.parse(file_fixture('external_post_hash.json').read)
+        .merge(parent_uid: ticket.external_uid).deep_symbolize_keys
+    end
 
     before do
-      stub_const('TicketCreator', ticket_creator_class)
-
       allow(ticket).to receive(:client).and_return(client_spy)
     end
 
-    it 'calls TicketCreator service' do
-      respond_as
-
-      expect(ticket_creator_class).to have_received(:new).with(
-        ticket.provider, 'response', ticket.source, user_spy
-      )
+    it 'creates a response ticket' do
+      expect { respond_as }.to change(described_class, :count).from(1).to(2)
     end
   end
 end

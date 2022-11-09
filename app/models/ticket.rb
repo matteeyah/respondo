@@ -32,6 +32,17 @@ class Ticket < ApplicationRecord
   has_many :internal_notes, dependent: :destroy
 
   class << self
+    def from_client_response!(provider, body, source, user)
+      case provider
+      when 'twitter'
+        Ticket.from_tweet!(body, source, user)
+      when 'disqus'
+        Ticket.from_disqus_post!(body, source, user)
+      when 'external'
+        Ticket.from_external_ticket!(body, source, user)
+      end
+    end
+
     def from_tweet!(tweet, source, user)
       Ticket.create!(
         external_uid: tweet.id, content: tweet.attrs[:full_text], created_at: tweet.created_at,
@@ -83,7 +94,8 @@ class Ticket < ApplicationRecord
   end
 
   def respond_as(user, reply)
-    TicketCreator.new(provider, client.reply(reply, external_uid), source, user).call
+    client_response = client.reply(reply, external_uid)
+    Ticket.from_client_response!(provider, client_response, source, user)
   rescue Twitter::Error
     false
   end
