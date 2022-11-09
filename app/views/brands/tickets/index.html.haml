@@ -19,7 +19,7 @@
           = link_to brand_tickets_path(@brand, status: request.parameters[:status]),
             class: 'btn btn-outline-secondary' do
             = bi_icon('x-lg')
-          = search_form.button name: nil, class: 'btn btn-outline-secondary' do
+          = search_form.button name: :search, class: 'btn btn-outline-secondary' do
             = bi_icon('search')
 .row
   %ul.nav.nav-tabs

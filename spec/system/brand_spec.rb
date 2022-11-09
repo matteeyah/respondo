@@ -52,7 +52,7 @@ RSpec.describe 'Brand' do
       click_link('Brand Tickets')
 
       fill_in 'query', with: tickets.first.author.username
-      click_button 'Search'
+      click_button :search
 
       expect(page).to have_text(tickets.first.content)
       expect(page).not_to have_text(tickets.second.content)
@@ -64,7 +64,7 @@ RSpec.describe 'Brand' do
       click_link('Brand Tickets')
 
       fill_in 'query', with: tickets.first.content
-      click_button 'Search'
+      click_button :search
 
       expect(page).to have_text(tickets.first.content)
       expect(page).not_to have_text(tickets.second.content)
@@ -84,7 +84,7 @@ RSpec.describe 'Brand' do
       find(:xpath, "//input[@type='hidden'][@value='solved']", visible: :hidden)
 
       fill_in 'query', with: solved_tickets.first.content
-      click_button 'Search'
+      click_button :search
 
       expect(page).to have_text(solved_tickets.first.author.username)
       expect(page).not_to have_text(solved_tickets.second.author.username)
@@ -101,7 +101,7 @@ RSpec.describe 'Brand' do
       click_link('Brand Tickets')
 
       fill_in 'query', with: nested_ticket.content
-      click_button 'Search'
+      click_button :search
 
       expect(page).to have_text(nested_ticket.content)
       expect(page).to have_text(nested_nested_ticket.content)
