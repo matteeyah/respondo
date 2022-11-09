@@ -140,12 +140,13 @@ RSpec.shared_examples 'allows interacting with tickets' do
   it 'allows deleting tickets' do
     user = sign_in_user
     sign_in_brand(brand)
-    click_link('Brand Tickets')
 
     target_ticket.update!(creator: user)
     target_ticket.source.update!(token: 'hello', secret: 'world')
     stub_request(:post, 'https://api.twitter.com/1.1/statuses/destroy/0.json')
       .to_return(status: 200, body: { id: 'world' }.to_json, headers: { content_type: 'application/json' })
+
+    click_link('Brand Tickets')
 
     within("#ticket_#{target_ticket.id}") do
       page.find_link("delete-#{target_ticket.id}").click
