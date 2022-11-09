@@ -82,6 +82,12 @@ class Ticket < ApplicationRecord
     end
   end
 
+  def respond_as(user, reply)
+    TicketCreator.new(provider, client.reply(reply, external_uid), source, user).call
+  rescue Twitter::Error
+    false
+  end
+
   private
 
   def parent_in_brand

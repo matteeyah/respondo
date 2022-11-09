@@ -248,4 +248,27 @@ RSpec.describe Ticket do
       )
     end
   end
+
+  describe '#respond_as' do
+    subject(:respond_as) { ticket.respond_as(user_spy, 'response') }
+
+    let(:ticket) { create(:internal_ticket).base_ticket }
+    let(:user_spy) { instance_spy(User) }
+    let(:client_spy) { instance_spy(Clients::Client, reply: 'response') }
+    let(:ticket_creator_class) { class_spy(TicketCreator, new: spy) }
+
+    before do
+      stub_const('TicketCreator', ticket_creator_class)
+
+      allow(ticket).to receive(:client).and_return(client_spy)
+    end
+
+    it 'calls TicketCreator service' do
+      respond_as
+
+      expect(ticket_creator_class).to have_received(:new).with(
+        ticket.provider, 'response', ticket.source, user_spy
+      )
+    end
+  end
 end

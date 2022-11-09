@@ -24,7 +24,7 @@ module Brands
       end
 
       def ticket_hash!
-        TicketResponder.new(ticket, reply_params[:content], current_user).call
+        ticket.respond_as(current_user, reply)
         Ticket.where(id: ticket.id).with_descendants_hash(Brands::TicketsController::TICKET_RENDER_PRELOADS)
       end
     end
