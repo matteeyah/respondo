@@ -49,7 +49,7 @@
       .card-body
         .card-title.d-flex.justify-content-between.align-items-center.mb-2.text-light
           %span.fs-4 Newest
-          = active_link_to brand_tickets_path(current_brand),
+          = link_to brand_tickets_path(current_brand),
            { active: :exclusive, class: 'text-decoration-none', 'data-turbo-frame' => :_top } do
             = bi_icon('box-arrow-up-right text-light')
         .list-group.list-group-flush
