@@ -24,9 +24,10 @@ require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
-require './spec/support/factory_bot'
 # Add additional requires below this line. Rails is not loaded until this point!
-
+require 'pundit/rspec'
+require 'webmock/rspec'
+require 'webdrivers'
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -79,6 +80,9 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
+  # Include FactoryBot DSL
+  config.include FactoryBot::Syntax::Methods
+
   # Use selenium and headless chrome for driving system tests
   config.before(:each, type: :system) do
     driven_by(:selenium, using: :headless_chrome, screen_size: [1920, 1080]) do |driver_options|
@@ -93,6 +97,7 @@ RSpec.configure do |config|
   end
 end
 
+# Integrate Shoulda matchers with Rails and RSpec
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
@@ -100,4 +105,11 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+# Disable external requests
+# https://github.com/titusfortner/webdrivers/wiki/Using-with-VCR-or-WebMock
+driver_urls = (ObjectSpace.each_object(Webdrivers::Common.singleton_class).to_a - [Webdrivers::Common])
+  .map(&:base_url)
+WebMock.disable_net_connect!(allow_localhost: true, allow: driver_urls)
+
+# Use OmniAuth in test mode
 OmniAuth.config.test_mode = true
