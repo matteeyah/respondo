@@ -147,7 +147,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
   create_table "tickets", force: :cascade do |t|
     t.string "external_uid", null: false
     t.text "content", null: false
-    t.integer "status", null: false
+    t.integer "status", default: 0, null: false
     t.string "ticketable_type", null: false
     t.integer "ticketable_id", null: false
     t.integer "brand_id", null: false

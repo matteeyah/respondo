@@ -20,7 +20,7 @@ module Brands
     def show
       authorize(ticket)
 
-      @ticket_hash = Ticket.where(id: ticket.id).with_descendants_hash(TICKET_RENDER_PRELOADS)
+      @ticket_hash = ticket.with_descendants_hash(TICKET_RENDER_PRELOADS)
       @action_form = params[:action_form]
 
       respond_to do |format|

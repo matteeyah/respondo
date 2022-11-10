@@ -156,6 +156,11 @@ RSpec.describe SessionsController do
 
     context 'when model is brand' do
       let(:model) { 'brand' }
+      let(:load_new_tickets_class_spy) { class_spy(LoadNewTicketsJob, perform_later: nil) }
+
+      before do
+        stub_const(LoadNewTicketsJob.to_s, load_new_tickets_class_spy)
+      end
 
       BrandAccount.providers.except(:developer).each_key do |provider_param|
         context "when provider is #{provider_param}" do
@@ -200,6 +205,12 @@ RSpec.describe SessionsController do
                   expect { post_create }.to change { brand.reload.accounts.count }
                     .from(1).to(2)
                 end
+
+                it 'queues a background job for loading new tickets' do
+                  post_create
+
+                  expect(load_new_tickets_class_spy).to have_received(:perform_later)
+                end
               end
 
               context 'when account exists' do
@@ -217,6 +228,12 @@ RSpec.describe SessionsController do
                   it 'associates the account with the current brand' do
                     expect { post_create }.to change { account.reload.brand }.from(account.brand).to(brand)
                   end
+
+                  it 'does not queue a background job for loading new tickets' do
+                    post_create
+
+                    expect(load_new_tickets_class_spy).not_to have_received(:perform_later)
+                  end
                 end
 
                 context 'when account belongs to current brand' do
@@ -230,6 +247,12 @@ RSpec.describe SessionsController do
 
                   it 'does not create a new brand' do
                     expect { post_create }.not_to change(Brand, :count).from(1)
+                  end
+
+                  it 'does not queue a background job for loading new tickets' do
+                    post_create
+
+                    expect(load_new_tickets_class_spy).not_to have_received(:perform_later)
                   end
                 end
               end
@@ -254,6 +277,12 @@ RSpec.describe SessionsController do
 
                   expect(controller).to redirect_to(root_path)
                 end
+
+                it 'queues a background job for loading new tickets' do
+                  post_create
+
+                  expect(load_new_tickets_class_spy).to have_received(:perform_later)
+                end
               end
 
               context 'when the account exists' do
@@ -277,6 +306,12 @@ RSpec.describe SessionsController do
                   post_create
 
                   expect(controller).to redirect_to(root_path)
+                end
+
+                it 'does not queue a background job for loading new tickets' do
+                  post_create
+
+                  expect(load_new_tickets_class_spy).not_to have_received(:perform_later)
                 end
               end
             end
