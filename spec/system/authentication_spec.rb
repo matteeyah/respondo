@@ -35,8 +35,12 @@ RSpec.describe 'Authentication' do
 
     sign_in_user
 
+    load_new_tickets_job_spy = class_spy(LoadNewTicketsJob)
+    stub_const(LoadNewTicketsJob.to_s, load_new_tickets_job_spy)
     add_oauth_mock(:twitter, '123', { nickname: 'test_brand' }, {})
+
     click_button('Authorize Brand')
+    expect(load_new_tickets_job_spy).to have_received(:perform_later)
     find_by_id('settings').click
     expect(page).to have_link('Brand settings')
   end

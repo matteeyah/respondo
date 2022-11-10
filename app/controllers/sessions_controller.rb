@@ -43,6 +43,8 @@ class SessionsController < ApplicationController
 
     account = BrandAccount.from_omniauth(auth_hash, current_brand)
 
+    # This checks if the account was just created.
+    LoadNewTicketsJob.perform_later(account.brand) if account.id_previously_changed?
     current_user.update(brand: account.brand) if account.persisted?
   end
 
