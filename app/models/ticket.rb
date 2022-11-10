@@ -86,6 +86,10 @@ class Ticket < ApplicationRecord
     end
   end
 
+  def with_descendants_hash(*included_relations)
+    Ticket.where(id:).with_descendants_hash(*included_relations)
+  end
+
   def respond_as(user, reply)
     client_response = client.reply(reply, external_uid)
     Ticket.from_client_response!(provider, client_response, source, user)

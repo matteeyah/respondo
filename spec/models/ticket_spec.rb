@@ -288,14 +288,31 @@ RSpec.describe Ticket do
       create(:internal_ticket, parent: second_root_ticket, brand: second_root_ticket.brand).base_ticket
     end
 
-    it 'returns tickets in hash format' do
-      expect(with_descendants_hash).to be_an_instance_of(Hash)
+    it 'maintains the ticket structure' do
+      expect(with_descendants_hash).to eq(
+        first_root_ticket => { first_child_ticket => {} },
+        second_root_ticket => { second_child_ticket => {} }
+      )
+    end
+  end
+
+  describe '#with_descendants_hash' do
+    subject(:with_descendants_hash) { first_root_ticket.with_descendants_hash }
+
+    let(:first_root_ticket) { create(:internal_ticket).base_ticket }
+
+    let!(:first_child_ticket) do
+      create(:internal_ticket, parent: first_root_ticket, brand: first_root_ticket.brand).base_ticket
+    end
+
+    before do
+      second_root_ticket = create(:internal_ticket).base_ticket
+      create(:internal_ticket, parent: second_root_ticket, brand: second_root_ticket.brand).base_ticket
     end
 
     it 'maintains the ticket structure' do
-      expect(with_descendants_hash).to include(
-        first_root_ticket => { first_child_ticket => {} },
-        second_root_ticket => { second_child_ticket => {} }
+      expect(with_descendants_hash).to eq(
+        first_root_ticket => { first_child_ticket => {} }
       )
     end
   end
