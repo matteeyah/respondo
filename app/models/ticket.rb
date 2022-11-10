@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Ticket < ApplicationRecord
-  include AASM
-
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[ticketable_type brand_id] }
   validates :content, presence: { allow_blank: false }
   validate :parent_in_brand
@@ -13,11 +11,6 @@ class Ticket < ApplicationRecord
   delegate :provider, :source, :client, to: :ticketable
 
   acts_as_taggable_on :tags
-
-  aasm column: :status, enum: true do
-    state :open, initial: true
-    state :solved
-  end
 
   scope :root, -> { where(parent: nil) }
 

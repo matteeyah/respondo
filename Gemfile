@@ -29,7 +29,6 @@ gem 'omniauth-google-oauth2', '~> 1.0.1'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.0'
 gem 'omniauth-twitter', '~> 1.4.0'
 # Other
-gem 'aasm', '~> 5.4.0' # state machine
 gem 'active_link_to', '~> 1.0.5' # View helper for adding active class
 gem 'acts-as-taggable-on' # Tags mechanism
 gem 'dartsass-rails', '~> 0.4.0' # SASS processor for Rails
