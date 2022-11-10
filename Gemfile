@@ -41,7 +41,7 @@ gem 'json-schema', '~> 3.0.0' # JSON schema validation
 gem 'pagy', '~> 5.10.1' # Pagination
 gem 'propshaft', '~> 0.6.4' # Rails assets
 gem 'pundit', '~> 2.2.0' # OO Policy objects
-gem 'sidekiq', '7.0.1' # Background job processing
+gem 'resque', '~> 2.4.0' # Background job processing
 gem 'twitter', '~> 7.0.0' # Twitter client
 
 group :development, :test do
