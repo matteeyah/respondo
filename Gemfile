@@ -9,7 +9,7 @@ ruby '3.1.2'
 gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
 gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
 gem 'importmap-rails', '~> 1.1.0'
-gem 'puma', '~> 5.6.5' # Use Puma as the application server
+gem 'puma', '~> 6.0.0' # Use Puma as the application server
 gem 'rails', '~> 7.0.3'
 gem 'stimulus-rails', '~> 1.1.0' # Hotwire Stimulus
 gem 'turbo-rails', '~> 1.3.2' # Hotwire Turbo
@@ -35,29 +35,29 @@ gem 'dartsass-rails', '~> 0.4.0' # SASS processor for Rails
 gem 'disqus_api', '~> 0.0.7' # Disqus client
 gem 'flipper', '~> 0.25.0' # Feature flags
 gem 'flipper-active_record', '~> 0.25.0' # ActiveRecord adapter for flipper
-gem 'hamlit', '~> 3.0.2' # High-Performance HAML markup processing
+gem 'haml', '~> 6.0.10' # HAML markup processing
 gem 'hashie', '~> 5.0.0' # Hash utilities
 gem 'json-schema', '~> 3.0.0' # JSON schema validation
 gem 'pagy', '~> 5.10.1' # Pagination
 gem 'propshaft', '~> 0.6.4' # Rails assets
 gem 'pundit', '~> 2.2.0' # OO Policy objects
-gem 'sidekiq', '7.0.0.beta1' # Background job processing
+gem 'sidekiq', '7.0.1' # Background job processing
 gem 'twitter', '~> 7.0.0' # Twitter client
 
 group :development, :test do
   # Linters
   gem 'mdl', '~> 0.12.0', require: false
   ## Ruby linter
-  gem 'rubocop', '~> 1.37.1', require: false
+  gem 'rubocop', '~> 1.38.0', require: false
   gem 'rubocop-performance', '~> 1.15.0', require: false
   gem 'rubocop-rails', '~> 2.17.2', require: false
-  gem 'rubocop-rspec', '~> 2.14.2', require: false
+  gem 'rubocop-rspec', '~> 2.15.0', require: false
   ## Haml linter
   gem 'haml_lint', '~> 0.42.0', require: false
   # Other
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails', '~> 6.2.0' # Use factory_bot
-  gem 'faker', '~> 2.23.0' # Sample data
+  gem 'faker', '~> 3.0.0' # Sample data
   gem 'license_finder', '~> 7.0.1' # license checking
   gem 'rspec-rails', '~> 6.0.1' # rspec testing framework
   gem 'sqlite3', '~> 1.4' # AR database adapter
