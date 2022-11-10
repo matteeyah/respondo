@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require './spec/concerns/with_descendants_spec'
+
 RSpec.describe Ticket do
   describe 'Validations' do
     subject(:ticket) { create(:internal_ticket).base_ticket }
@@ -275,45 +277,16 @@ RSpec.describe Ticket do
     end
   end
 
-  describe '.with_descendants_hash' do
-    subject(:with_descendants_hash) { described_class.root.with_descendants_hash }
+  it_behaves_like 'with_descendants' do
+    let!(:root_model) { create(:internal_ticket).base_ticket }
+    let!(:second_root_model) { create(:internal_ticket).base_ticket }
 
-    let(:first_root_ticket) { create(:internal_ticket).base_ticket }
-    let(:second_root_ticket) { create(:internal_ticket).base_ticket }
-
-    let!(:first_child_ticket) do
-      create(:internal_ticket, parent: first_root_ticket, brand: first_root_ticket.brand).base_ticket
+    # These are used in the shared examples
+    let!(:child_model) do # rubocop:disable RSpec/LetSetup
+      create(:internal_ticket, parent: root_model, brand: root_model.brand).base_ticket
     end
-    let!(:second_child_ticket) do
-      create(:internal_ticket, parent: second_root_ticket, brand: second_root_ticket.brand).base_ticket
-    end
-
-    it 'maintains the ticket structure' do
-      expect(with_descendants_hash).to eq(
-        first_root_ticket => { first_child_ticket => {} },
-        second_root_ticket => { second_child_ticket => {} }
-      )
-    end
-  end
-
-  describe '#with_descendants_hash' do
-    subject(:with_descendants_hash) { first_root_ticket.with_descendants_hash }
-
-    let(:first_root_ticket) { create(:internal_ticket).base_ticket }
-
-    let!(:first_child_ticket) do
-      create(:internal_ticket, parent: first_root_ticket, brand: first_root_ticket.brand).base_ticket
-    end
-
-    before do
-      second_root_ticket = create(:internal_ticket).base_ticket
-      create(:internal_ticket, parent: second_root_ticket, brand: second_root_ticket.brand).base_ticket
-    end
-
-    it 'maintains the ticket structure' do
-      expect(with_descendants_hash).to eq(
-        first_root_ticket => { first_child_ticket => {} }
-      )
+    let!(:second_child_model) do # rubocop:disable RSpec/LetSetup
+      create(:internal_ticket, parent: second_root_model, brand: second_root_model.brand).base_ticket
     end
   end
 
