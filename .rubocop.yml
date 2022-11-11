@@ -1,10 +1,11 @@
 inherit_from: .rubocop_todo.yml
 
 require:
+  - rubocop-performance
+  - rubocop-md
+  - rubocop-minitest
   - rubocop-rails
   - rubocop-rspec
-  - rubocop-minitest
-  - rubocop-performance
 
 AllCops:
   Exclude:

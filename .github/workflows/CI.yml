@@ -31,7 +31,7 @@ jobs:
       - name: Run system tests
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bundle exec rails test:system
+        run: RAILS_ENV=test bundle exec rails test:system
   license_finder:
     runs-on: ubuntu-latest
     steps:
