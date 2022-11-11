@@ -49,6 +49,8 @@ group :development, :test do
   gem 'mdl', '~> 0.12.0', require: false
   ## Ruby linter
   gem 'rubocop', '~> 1.38.0', require: false
+  gem 'rubocop-md', '~> 1.1.0', require: false
+  gem 'rubocop-minitest', '~> 0.23.2', require: false
   gem 'rubocop-performance', '~> 1.15.0', require: false
   gem 'rubocop-rails', '~> 2.17.2', require: false
   gem 'rubocop-rspec', '~> 2.15.0', require: false
