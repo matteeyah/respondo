@@ -6,6 +6,8 @@ require 'rails/test_help'
 
 module ActiveSupport
   class TestCase
+    include FactoryBot::Syntax::Methods
+
     # Run tests in parallel with specified workers
     parallelize(workers: :number_of_processors)
 
@@ -15,3 +17,12 @@ module ActiveSupport
     # Add more helper methods to be used by all tests here...
   end
 end
+
+# Disable external requests
+# https://github.com/titusfortner/webdrivers/wiki/Using-with-VCR-or-WebMock
+driver_urls = (ObjectSpace.each_object(Webdrivers::Common.singleton_class).to_a - [Webdrivers::Common])
+  .map(&:base_url)
+WebMock.disable_net_connect!(allow_localhost: true, allow: driver_urls)
+
+# Use OmniAuth in test mode
+OmniAuth.config.test_mode = true
