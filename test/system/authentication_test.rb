@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'application_system_test_case'
+require 'minitest/mock'
 
 require 'omniauth_helper'
 require 'sign_in_out_system_helper'
@@ -37,7 +38,10 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     add_oauth_mock(:twitter, '123', { nickname: 'test_brand' }, {})
 
-    click_button('Authorize')
+    LoadNewTicketsJob.stub :perform_later, nil do
+      click_button('Authorize')
+    end
+
     find_by_id('settings').click
 
     assert has_link?('Brand settings')
