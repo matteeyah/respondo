@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'application_system_test_case'
 
 require 'omniauth_helper'
@@ -15,7 +17,6 @@ class AuthenticationTest < ApplicationSystemTestCase
     find_by_id('settings').click
     assert has_link?('User settings')
   end
-
 
   test 'adds the user to the brand' do
     create(:brand, domain: 'example.com')
