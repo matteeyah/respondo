@@ -75,7 +75,7 @@ class BrandSettingsTest < ApplicationSystemTestCase
     end
 
     within(page.find('p', text: 'Brand team').find(:xpath, '../..')) do
-      assert_not has_text?(existing_user.name)
+      assert has_no_text?(existing_user.name)
     end
   end
 

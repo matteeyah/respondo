@@ -141,7 +141,7 @@ class TicketTest < ApplicationSystemTestCase
     end
 
     within("#ticket_#{@ticket.id}") do
-      assert_not has_selector?(:css, 'span', text: 'hello')
+      assert has_no_selector?(:css, 'span', text: 'hello')
       assert has_selector?(:css, 'span', text: 'world')
     end
   end
@@ -175,7 +175,7 @@ class TicketTest < ApplicationSystemTestCase
       page.find_link("delete-#{@ticket.id}").click
     end
 
-    assert_not has_text?(@ticket.content)
+    assert has_no_text?(@ticket.content)
   end
 
   test 'allows navigating to tickets externally' do

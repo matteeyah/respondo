@@ -67,6 +67,6 @@ class UserSettingsTest < ApplicationSystemTestCase
       page.find(:link, 'Remove').click
     end
 
-    assert_not has_text?('something_nice')
+    assert has_no_text?('something_nice')
   end
 end
