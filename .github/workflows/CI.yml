@@ -16,7 +16,7 @@ jobs:
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bundle exec rspec --tag ~type:system
-  rspec-system:
+  test_system:
     runs-on: ubuntu-latest
     steps:
       - uses: browser-actions/setup-chrome@latest
@@ -28,10 +28,10 @@ jobs:
           bundler-cache: true
       - name: Compile assets
         run: bundle exec rails assets:precompile
-      - name: Run rspec system specs
+      - name: Run system tests
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bundle exec rspec --tag type:system
+        run: bundle exec rails test:system
   license_finder:
     runs-on: ubuntu-latest
     steps:
