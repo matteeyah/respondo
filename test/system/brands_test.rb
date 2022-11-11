@@ -18,7 +18,7 @@ class BrandsTest < ApplicationSystemTestCase
     sign_in_user
     sign_in_brand(@brands.first)
 
-    click_link('Brand Tickets')
+    click_link('Tickets')
 
     assert has_text?('Tickets')
   end

@@ -18,7 +18,7 @@ class TicketTest < ApplicationSystemTestCase
   test 'shows the ticket' do
     user = create(:user, :with_account, brand: @brand)
     sign_in_user(user)
-    click_link('Brand Tickets')
+    click_link('Tickets')
 
     assert has_text?(@ticket.content)
     assert has_text?(@ticket.author.username)
