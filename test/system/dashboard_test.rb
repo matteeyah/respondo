@@ -20,10 +20,7 @@ class DashboardTest < ApplicationSystemTestCase
     click_link('Dashboard')
 
     assert has_text?(@tickets.first.content)
-    assert has_text?(@tickets.first.author.username)
-
     assert has_text?(@tickets.second.content)
-    assert has_text?(@tickets.second.author.username)
   end
 
   test 'shows the tickets info widgets' do
@@ -34,10 +31,7 @@ class DashboardTest < ApplicationSystemTestCase
     click_link('Dashboard')
 
     assert has_text?('New Tickets')
-    assert has_text?(@tickets.count)
-
     assert has_text?('Total Open')
-    assert has_text?(@tickets.count)
   end
 
   test 'allows show all tickets with home widget' do

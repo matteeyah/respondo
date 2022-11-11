@@ -15,6 +15,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     add_oauth_mock(:google_oauth2, '123', { name: 'Test User', email: 'test@example.com' }, {})
     click_button('Sign in with Google')
     find_by_id('settings').click
+
     assert has_link?('User settings')
   end
 
@@ -25,6 +26,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     add_oauth_mock(:google_oauth2, '123', { name: 'Test User', email: 'test@example.com' }, {})
     click_button('Sign in with Google')
+
     assert has_link?('Tickets')
   end
 
@@ -37,6 +39,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     click_button('Authorize')
     find_by_id('settings').click
+
     assert has_link?('Brand settings')
   end
 

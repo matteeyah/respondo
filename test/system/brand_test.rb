@@ -21,10 +21,7 @@ class BrandTest < ApplicationSystemTestCase
     click_link('Tickets')
 
     assert has_text?(@tickets.first.content)
-    assert has_text?(@tickets.first.author.username)
-
     assert has_text?(@tickets.second.content)
-    assert has_text?(@tickets.second.author.username)
   end
 
   test 'allows navigating to tickets' do
@@ -82,9 +79,7 @@ class BrandTest < ApplicationSystemTestCase
     click_button :search
 
     assert has_text?(solved_tickets.first.author.username)
-    assert_not has_text?(solved_tickets.second.author.username)
     assert_not has_text?(@tickets.first.author.username)
-    assert_not has_text?(@tickets.second.author.username)
   end
 
   test 'allows searching by nested ticket content' do
@@ -101,6 +96,5 @@ class BrandTest < ApplicationSystemTestCase
     assert has_text?(nested_ticket.content)
     assert has_text?(nested_nested_ticket.content)
     assert_not has_text?(@tickets.first.content)
-    assert_not has_text?(@tickets.second.content)
   end
 end

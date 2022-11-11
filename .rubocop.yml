@@ -3,6 +3,7 @@ inherit_from: .rubocop_todo.yml
 require:
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-minitest
   - rubocop-performance
 
 AllCops:
@@ -27,6 +28,10 @@ Metrics/BlockLength:
     - 'spec/**/*'
     - 'config/environments/*'
     - 'config/routes.rb'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'test/system/**/*'
 
 Metrics/MethodLength:
   Exclude:
