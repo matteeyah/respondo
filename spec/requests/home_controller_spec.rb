@@ -18,7 +18,7 @@ RSpec.describe HomeController do
       it 'renders the home page' do
         get_index
 
-        expect(response.body).to include("Woohoo, you're signed in")
+        expect(response.body).to include("Woohoo, you're in")
       end
     end
 

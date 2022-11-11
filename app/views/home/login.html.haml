@@ -32,7 +32,7 @@
                 %span Sign in with Microsoft AD
               - if Rails.env.development?
                 = auth_provider_link('developer', 'user',
-                  { class: 'btn form-control btn-danger text-light' }, origin: '/') do
+                  { class: 'btn form-control btn-danger' }, origin: '/') do
                   %i.bi.bi-code-slash
                   %span Developer Sign In
       .col-lg-6.d-lg-flex.d-none.justify-content-end.pe-0
