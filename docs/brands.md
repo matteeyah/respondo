@@ -5,7 +5,7 @@ description: Documentation about managing brands.
 
 # Managing brands
 
-When you first sign in, you can click `Authorize Brand` to connect your brand
+When you first sign in, you can click `Authorize` to connect your brand
 Twitter account.
 
 When signed in, you can load new tickets associated with your Brand by pressing
