@@ -1,38 +1,39 @@
 # frozen_string_literal: true
 
-require './spec/support/omniauth_helpers'
-require './spec/support/sign_in_out_system_helpers'
+require 'application_system_test_case'
 
-RSpec.describe 'Brand settings' do
-  include OmniauthHelpers
-  include SignInOutSystemHelpers
+require 'omniauth_helper'
+require 'sign_in_out_system_helper'
 
-  let!(:brand) { create(:brand, :with_account) }
+class BrandSettingsTest < ApplicationSystemTestCase
+  include OmniauthHelper
+  include SignInOutSystemHelper
 
-  before do
+  def setup
     visit '/'
 
+    @brand = create(:brand, :with_account)
     user = sign_in_user
-    user.update!(brand:)
-    sign_in_brand(brand)
+    user.update!(brand: @brand)
+    sign_in_brand(@brand)
   end
 
-  it 'allows the user to authorize an account' do
+  test 'allows the user to authorize an account' do
     find_by_id('settings').click
     click_link 'Brand settings'
 
-    add_oauth_mock_for_brand(brand, create(:brand_account, provider: 'disqus'))
+    add_oauth_mock_for_brand(@brand, create(:brand_account, provider: 'disqus'))
     within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
       page.find(:button, 'Connect').click
     end
 
     within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
-      expect(page).to have_selector(:link, 'Remove')
+      assert has_selector?(:link, 'Remove')
     end
   end
 
-  it 'allows the user to remove an account' do
-    create(:brand_account, provider: 'disqus', brand:)
+  test 'allows the user to remove an account' do
+    create(:brand_account, provider: 'disqus', brand: @brand)
     find_by_id('settings').click
     click_link 'Brand settings'
 
@@ -43,11 +44,11 @@ RSpec.describe 'Brand settings' do
     end
 
     within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
-      expect(page).to have_selector(:button, 'Connect')
+      assert has_selector?(:button, 'Connect')
     end
   end
 
-  it 'allows the user to add users to brand' do
+  test 'allows the user to add users to brand' do
     external_user = create(:user)
     find_by_id('settings').click
     click_link 'Brand settings'
@@ -57,12 +58,12 @@ RSpec.describe 'Brand settings' do
     click_button 'Add'
 
     within(page.find('p', text: 'Brand team').find(:xpath, '../..')) do
-      expect(page).to have_selector(:link, 'Remove')
+      assert has_selector?(:link, 'Remove')
     end
   end
 
-  it 'allows the user to remove users from brand' do
-    existing_user = create(:user, brand:)
+  test 'allows the user to remove users from brand' do
+    existing_user = create(:user, brand: @brand)
     find_by_id('settings').click
     click_link 'Brand settings'
     click_button 'Team settings'
@@ -74,11 +75,11 @@ RSpec.describe 'Brand settings' do
     end
 
     within(page.find('p', text: 'Brand team').find(:xpath, '../..')) do
-      expect(page).not_to have_text(existing_user.name)
+      assert_not has_text?(existing_user.name)
     end
   end
 
-  it 'allows the user to edit the brand domain' do
+  test 'allows the user to edit the brand domain' do
     find_by_id('settings').click
     click_link 'Brand settings'
     click_button 'Team settings'
@@ -86,10 +87,10 @@ RSpec.describe 'Brand settings' do
     fill_in 'brand[domain]', with: 'example.com'
     click_button 'Update'
 
-    expect(page).to have_field('brand[domain]', with: 'example.com')
+    assert has_field?('brand[domain]', with: 'example.com')
   end
 
-  it 'prevents the user to update the brand with an invalid domain' do
+  test 'prevents the user to update the brand with an invalid domain' do
     find_by_id('settings').click
     click_link 'Brand settings'
     click_button 'Team settings'
@@ -97,6 +98,6 @@ RSpec.describe 'Brand settings' do
     fill_in 'brand[domain]', with: 'invalid!domain.com'
     click_button 'Update'
 
-    expect(page).to have_field('brand[domain]', with: 'invalid!domain.com')
+    assert has_field?('brand[domain]', with: 'invalid!domain.com')
   end
 end
