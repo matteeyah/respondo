@@ -2,10 +2,10 @@
 
 require 'application_system_test_case'
 
-require 'sign_in_out_system_helper'
+require 'support/authentication_helper'
 
 class BrandsTest < ApplicationSystemTestCase
-  include SignInOutSystemHelper
+  include AuthenticationHelper
 
   def setup
     @brands = create_list(:brand, 2)

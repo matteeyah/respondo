@@ -3,13 +3,13 @@
 require 'application_system_test_case'
 require 'minitest/mock'
 
-require 'omniauth_helper'
-require 'sign_in_out_system_helper'
+require 'support/omniauth_helper'
+require 'support/authentication_helper'
 
 class AuthenticationTest < ApplicationSystemTestCase
   include ActiveJob::TestHelper
   include OmniauthHelper
-  include SignInOutSystemHelper
+  include AuthenticationHelper
 
   test 'allows user creation' do
     visit '/'

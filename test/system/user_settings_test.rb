@@ -2,12 +2,12 @@
 
 require 'application_system_test_case'
 
-require 'omniauth_helper'
-require 'sign_in_out_system_helper'
+require 'support/omniauth_helper'
+require 'support/authentication_helper'
 
 class UserSettingsTest < ApplicationSystemTestCase
   include OmniauthHelper
-  include SignInOutSystemHelper
+  include AuthenticationHelper
 
   def setup
     visit '/'

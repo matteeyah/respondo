@@ -2,10 +2,10 @@
 
 require 'application_system_test_case'
 
-require 'sign_in_out_system_helper'
+require 'support/authentication_helper'
 
 class DashboardTest < ApplicationSystemTestCase
-  include SignInOutSystemHelper
+  include AuthenticationHelper
 
   def setup
     @brand = create(:brand, :with_account)

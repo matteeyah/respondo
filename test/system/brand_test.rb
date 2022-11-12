@@ -2,10 +2,10 @@
 
 require 'application_system_test_case'
 
-require 'sign_in_out_system_helper'
+require 'support/authentication_helper'
 
 class BrandTest < ApplicationSystemTestCase
-  include SignInOutSystemHelper
+  include AuthenticationHelper
 
   def setup
     @brand = create(:brand, :with_account)
@@ -47,7 +47,7 @@ class BrandTest < ApplicationSystemTestCase
     click_button :search
 
     assert has_text?(@tickets.first.content)
-    assert_not has_text?(@tickets.second.content)
+    assert has_no_text?(@tickets.second.content)
   end
 
   test 'allows searching tickets by content' do
@@ -59,7 +59,7 @@ class BrandTest < ApplicationSystemTestCase
     click_button :search
 
     assert has_text?(@tickets.first.content)
-    assert_not has_text?(@tickets.second.content)
+    assert has_no_text?(@tickets.second.content)
   end
 
   test 'keeps ticket status context when searching' do
@@ -79,7 +79,7 @@ class BrandTest < ApplicationSystemTestCase
     click_button :search
 
     assert has_text?(solved_tickets.first.author.username)
-    assert_not has_text?(@tickets.first.author.username)
+    assert has_no_text?(@tickets.first.author.username)
   end
 
   test 'allows searching by nested ticket content' do
@@ -95,6 +95,6 @@ class BrandTest < ApplicationSystemTestCase
 
     assert has_text?(nested_ticket.content)
     assert has_text?(nested_nested_ticket.content)
-    assert_not has_text?(@tickets.first.content)
+    assert has_no_text?(@tickets.first.content)
   end
 end

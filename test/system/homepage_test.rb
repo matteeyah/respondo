@@ -2,7 +2,7 @@
 
 require 'application_system_test_case'
 
-require 'omniauth_helper'
+require 'support/omniauth_helper'
 
 class HomepageTest < ApplicationSystemTestCase
   include OmniauthHelper
