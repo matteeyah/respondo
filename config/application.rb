@@ -33,7 +33,5 @@ module Respondo
     #
     config.time_zone = 'UTC'
     config.eager_load_paths << Rails.root.join('lib')
-
-    config.active_job.queue_adapter = :resque
   end
 end

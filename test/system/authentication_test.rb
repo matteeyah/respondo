@@ -7,6 +7,7 @@ require 'omniauth_helper'
 require 'sign_in_out_system_helper'
 
 class AuthenticationTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
   include OmniauthHelper
   include SignInOutSystemHelper
 
@@ -37,10 +38,9 @@ class AuthenticationTest < ApplicationSystemTestCase
     sign_in_user
 
     add_oauth_mock(:twitter, '123', { nickname: 'test_brand' }, {})
+    click_button('Authorize')
 
-    LoadNewTicketsJob.stub :perform_later, nil do
-      click_button('Authorize')
-    end
+    assert_enqueued_with(job: LoadNewTicketsJob)
 
     find_by_id('settings').click
 
