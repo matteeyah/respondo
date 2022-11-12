@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SubscriptionTest < ActiveSupport::TestCase
-
   test 'validates presence of external_uid' do
     subscription = create(:subscription)
     subscription.external_uid = nil
