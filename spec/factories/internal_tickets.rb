@@ -11,10 +11,11 @@ FactoryBot.define do
       parent { nil }
       author { FactoryBot.build(:author) }
       brand { FactoryBot.build(:brand) }
+      creator { FactoryBot.build(:user) }
     end
 
     base_ticket do
-      Ticket.new(external_uid:, status:, content:, parent:, author:, brand:)
+      Ticket.new(external_uid:, status:, content:, parent:, author:, brand:, creator:)
     end
 
     after(:build) do |internal_ticket|
