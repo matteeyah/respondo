@@ -49,4 +49,7 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # Use the test adapter for ActiveJob
+  config.active_job.queue_adapter = :test
 end
