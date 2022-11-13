@@ -1,0 +1,4 @@
+default:
+  content: This is an internal note.
+  ticket: internal_twitter
+  creator: john
