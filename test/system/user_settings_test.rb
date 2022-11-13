@@ -10,9 +10,10 @@ class UserSettingsTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
   def setup
+    @user = users(:john)
+
     visit '/'
 
-    @user = users(:john)
     sign_in_user(@user)
   end
 

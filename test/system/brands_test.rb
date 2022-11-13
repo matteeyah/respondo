@@ -7,15 +7,11 @@ require 'support/authentication_helper'
 class BrandsTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
-  def setup
-    @brands = brands(:respondo, :other)
-  end
-
   test 'allows the user to navigate to logged in brand tickets' do
     visit '/'
 
-    sign_in_user
-    sign_in_brand(@brands.first)
+    sign_in_user(users(:john))
+    sign_in_brand(brands(:respondo))
 
     click_link('Tickets')
 

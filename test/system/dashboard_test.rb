@@ -8,42 +8,31 @@ class DashboardTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
   def setup
+    @user = users(:john)
     @brand = brands(:respondo)
-    @tickets = tickets(:internal_twitter, :internal_disqus)
+
+    visit '/'
+
+    sign_in_user(@user)
+    sign_in_brand(@brand)
+
+    click_link('Dashboard')
   end
 
   test 'shows the newest tickets' do
-    visit '/'
-
-    sign_in_user
-    sign_in_brand(@brand)
-    click_link('Dashboard')
-
-    assert has_text?(@tickets.first.content)
-    assert has_text?(@tickets.second.content)
+    assert has_text?(tickets(:internal_twitter).content)
+    assert has_text?(tickets(:internal_disqus).content)
   end
 
   test 'shows the tickets info widgets' do
-    visit '/'
-
-    sign_in_user
-    sign_in_brand(@brand)
-    click_link('Dashboard')
-
     assert has_text?('New Tickets')
     assert has_text?('Total Open')
   end
 
   test 'allows show all tickets with home widget' do
-    visit '/'
-
-    sign_in_user
-    sign_in_brand(@brand)
-    click_link('Dashboard')
-
     click_link('New Tickets')
 
-    assert has_text?(@tickets.first.content)
-    assert has_text?(@tickets.second.content)
+    assert has_text?(tickets(:internal_twitter).content)
+    assert has_text?(tickets(:internal_disqus).content)
   end
 end

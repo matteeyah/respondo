@@ -10,11 +10,12 @@ class BrandSettingsTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
   def setup
+    @user = users(:john)
+    @brand = brands(:respondo)
+
     visit '/'
 
-    @brand = brands(:respondo)
-    user = sign_in_user
-    user.update!(brand: @brand)
+    sign_in_user(@user)
     sign_in_brand(@brand)
   end
 
@@ -71,6 +72,7 @@ class BrandSettingsTest < ApplicationSystemTestCase
   test 'allows the user to remove users from brand' do
     existing_user = users(:other)
     existing_user.update!(brand: @brand)
+
     find_by_id('settings').click
     click_link 'Brand settings'
     click_button 'Team settings'

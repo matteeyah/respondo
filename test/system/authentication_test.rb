@@ -11,9 +11,11 @@ class AuthenticationTest < ApplicationSystemTestCase
   include OmniauthHelper
   include AuthenticationHelper
 
-  test 'allows user creation' do
+  def setup
     visit '/'
+  end
 
+  test 'allows user creation' do
     add_oauth_mock(:google_oauth2, '123', { name: 'Test User', email: 'test@example.com' }, {})
     click_button('Sign in with Google')
     find_by_id('settings').click
@@ -33,9 +35,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'allows brand creation' do
-    visit '/'
-
-    sign_in_user
+    sign_in_user(users(:john))
 
     add_oauth_mock(:twitter, '123', { nickname: 'test_brand' }, {})
     click_button('Authorize')
@@ -50,7 +50,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   test 'allows signing out' do
     visit '/'
 
-    sign_in_user
+    sign_in_user(users(:john))
     find_by_id('settings').click
     click_button 'Sign Out'
 

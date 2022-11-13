@@ -6,15 +6,13 @@ require 'minitest/mock'
 
 class LoadNewTicketsJobTest < ActiveJob::TestCase
   def setup
-    @brand = brands(:respondo)
-
     stub_twitter
     stub_disqus
   end
 
   test 'creates tickets' do
     assert_equal 3, Ticket.count
-    LoadNewTicketsJob.perform_now(@brand.id)
+    LoadNewTicketsJob.perform_now(brands(:respondo))
 
     assert_equal 5, Ticket.count
   end
