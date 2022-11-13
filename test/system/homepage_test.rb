@@ -2,7 +2,7 @@
 
 require 'application_system_test_case'
 
-require 'omniauth_helper'
+require 'support/omniauth_helper'
 
 class HomepageTest < ApplicationSystemTestCase
   include OmniauthHelper
@@ -12,10 +12,10 @@ class HomepageTest < ApplicationSystemTestCase
 
     assert has_button?('Sign in with Google')
 
-    add_oauth_mock_for_user(create(:user, :with_account))
+    add_oauth_mock_for_user(users(:john), user_accounts(:google_oauth2))
     click_button('Sign in with Google')
 
-    add_oauth_mock_for_brand(create(:brand, :with_account))
+    add_oauth_mock_for_brand(brands(:respondo), brand_accounts(:twitter))
     click_button('Authorize', class: 'btn btn-primary')
 
     find_by_id('settings').click

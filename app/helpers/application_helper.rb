@@ -28,7 +28,6 @@ module ApplicationHelper
   end
 
   def show_settings_collapse?
-    current_page?(edit_user_path(current_user)) ||
-      (current_brand && current_page?(edit_brand_path(current_brand)))
+    action_name == 'edit' && (controller_name == 'brands' || controller_name == 'users')
   end
 end

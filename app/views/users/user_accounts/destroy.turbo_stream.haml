@@ -4,3 +4,5 @@
 
 - if @success
   = turbo_stream.remove(@account)
+  = turbo_stream.append(:'account-providers', partial: 'shared/account_provider',
+    locals: { account_provider: @account.provider, model: 'user' })

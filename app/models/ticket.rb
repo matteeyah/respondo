@@ -17,7 +17,7 @@ class Ticket < ApplicationRecord
 
   scope :root, -> { where(parent: nil) }
 
-  belongs_to :creator, optional: true, class_name: 'User'
+  belongs_to :creator, class_name: 'User', optional: true
   belongs_to :author
   belongs_to :brand
   belongs_to :parent, class_name: 'Ticket', optional: true

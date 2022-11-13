@@ -1,0 +1,14 @@
+james:
+  external_uid: 'uid_1'
+  username: james_is_cool
+  provider: twitter
+
+robert:
+  external_uid: 'uid_2'
+  username: robert_is_cool
+  provider: disqus
+
+external:
+  external_uid: 'uid_3'
+  username: matt_is_cool
+  provider: external

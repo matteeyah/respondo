@@ -17,6 +17,16 @@
   .tab-content.mt-4
     .tab-pane.active#account-settings-tab-pane{ role: 'tabpanel', tabindex: '0',
       'aria-labelledby' => 'account-settings-tab' }
+      .row
+        .col-lg-6
+          .card
+            .card-body
+              .card-title
+                %p.fs-4.fw-bold Add account
+              .list-group.list-group-flush#account-providers
+                = render partial: 'shared/account_provider',
+                  collection: (UserAccount.providers.keys - @user.accounts.map(&:provider)),
+                  as: :account_provider, locals: { model: 'user' }
       = render partial: 'shared/accounts', locals: { model: @user }
     .tab-pane#user-settings-tab-pane{ role: 'tabpanel', 'aria-labelledby' => 'user-settings-tab', tabindex: '0' }
       .row

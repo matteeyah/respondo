@@ -2,22 +2,26 @@
 
 require 'application_system_test_case'
 
-require 'sign_in_out_system_helper'
+require 'support/authentication_helper'
 
 class TicketTest < ApplicationSystemTestCase
-  include SignInOutSystemHelper
+  include AuthenticationHelper
 
   def setup
-    @brand = create(:brand, :with_account)
-    @ticket = create(:internal_ticket, source: @brand.accounts.first, brand: @brand).base_ticket
-    create(:subscription, brand: @brand)
+    @user = users(:john)
+    @brand = brands(:respondo)
+    @ticket = tickets(:internal_twitter)
+
+    Subscription.create!(external_uid: 'uid_1', status: 'active', email: 'hello@respondo.com', brand: @brand,
+                         cancel_url: 'https://respondo.com/cancel', update_url: 'https://respondo.com/update')
 
     visit '/'
+
+    sign_in_user(@user)
+    sign_in_brand(@brand)
   end
 
   test 'shows the ticket' do
-    user = create(:user, :with_account, brand: @brand)
-    sign_in_user(user)
     click_link('Tickets')
 
     assert has_text?(@ticket.content)
@@ -25,8 +29,6 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows replying to ticket' do
-    user = sign_in_user
-    sign_in_brand(@brand)
     click_link('Tickets')
 
     account = @ticket.source
@@ -45,41 +47,35 @@ class TicketTest < ApplicationSystemTestCase
     fill_in 'ticket[content]', with: response_text
     click_button 'Reply'
 
-    assert has_text?("#{user.name} as #{@brand.screen_name}")
+    assert has_text?("#{@user.name} as #{@brand.screen_name}")
     assert has_text?(response_text)
   end
 
   test 'allows replying to external tickets' do
-    user = sign_in_user
-    sign_in_brand(@brand)
     click_link('Tickets')
 
     response_text = 'Hello from Respondo system tests'
-    @ticket.ticketable = create(:external_ticket, response_url: 'https://example.com/path')
-    @ticket.author.external!
-    @ticket.save
+    external_ticket = tickets(:external)
     response = {
       external_uid: 123_456,
       author: { external_uid: '123', username: @brand.screen_name },
-      response_url: @ticket.external_ticket.response_url,
-      parent_uid: @ticket.external_uid,
+      response_url: external_ticket.ticketable.response_url,
+      parent_uid: external_ticket.external_uid,
       content: response_text
     }
-    stub_request(:post, 'https://example.com/path')
+    stub_request(:post, external_ticket.ticketable.response_url)
       .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
 
-    click_link "toggle-reply-#{@ticket.id}"
+    click_link "toggle-reply-#{external_ticket.id}"
 
     fill_in 'ticket[content]', with: response_text
     click_button 'Reply'
 
-    assert has_text?("#{user.name} as #{@brand.screen_name}")
+    assert has_text?("#{@user.name} as #{@brand.screen_name}")
     assert has_text?(response_text)
   end
 
   test 'allows leaving internal notes on tickets' do
-    user = sign_in_user
-    sign_in_brand(@brand)
     click_link('Tickets')
 
     internal_note_text = 'Internal note from Respondo system tests.'
@@ -90,14 +86,12 @@ class TicketTest < ApplicationSystemTestCase
     click_button 'Create note'
 
     within("#ticket_#{@ticket.id}_internal_notes") do
-      assert has_text?(user.name)
+      assert has_text?(@user.name)
       assert has_text?(internal_note_text)
     end
   end
 
   test 'allows solving tickets' do
-    sign_in_user
-    sign_in_brand(@brand)
     click_link('Tickets')
 
     within("#ticket_#{@ticket.id}") do
@@ -113,8 +107,6 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows adding ticket tags' do
-    sign_in_user
-    sign_in_brand(@brand)
     click_link('Tickets')
 
     within("#ticket_#{@ticket.id}") do
@@ -129,47 +121,41 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows removing ticket tags' do
-    sign_in_user
-    sign_in_brand(@brand)
-    @ticket.update(tag_list: 'hello, world')
     click_link('Tickets')
 
+    @ticket.update(tag_list: 'first_tag, second_tag')
+
     within("#ticket_#{@ticket.id}") do
-      within('span', text: 'hello') do
+      within('span', text: 'first_tag') do
         page.find(:css, 'i.bi-x').click
       end
     end
 
     within("#ticket_#{@ticket.id}") do
-      assert has_no_selector?(:css, 'span', text: 'hello')
-      assert has_selector?(:css, 'span', text: 'world')
+      assert has_no_selector?(:css, 'span', text: 'first_tag')
+      assert has_selector?(:css, 'span', text: 'second_tag')
     end
   end
 
   test 'allows updating ticket assignment' do
-    user = sign_in_user
-    sign_in_brand(@brand)
     click_link('Tickets')
 
     within("#ticket_#{@ticket.id}") do
       click_link "toggle-assign-#{@ticket.id}"
-      select user.name, from: 'ticket-assignment'
+      select @user.name, from: 'ticket-assignment'
       click_button 'Assign'
     end
 
-    assert has_text?(user.name)
+    assert has_text?(@user.name)
   end
 
   test 'allows deleting tickets' do
-    user = sign_in_user
-    sign_in_brand(@brand)
-
-    @ticket.update!(creator: user)
+    @ticket.update!(creator: @user)
     @ticket.source.update!(token: 'hello', secret: 'world')
+    click_link('Tickets')
+
     stub_request(:post, 'https://api.twitter.com/1.1/statuses/destroy/0.json')
       .to_return(status: 200, body: { id: 'world' }.to_json, headers: { content_type: 'application/json' })
-
-    click_link('Tickets')
 
     within("#ticket_#{@ticket.id}") do
       page.find_link("delete-#{@ticket.id}").click
@@ -179,11 +165,9 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows navigating to tickets externally' do
-    sign_in_user
-    sign_in_brand(@brand)
+    @ticket.source.update!(token: 'hello', secret: 'world')
     click_link('Tickets')
 
-    @ticket.source.update!(token: 'hello', secret: 'world')
     stub_request(:get, 'https://api.twitter.com/1.1/statuses/show/0.json').to_return(
       status: 200,
       body: { id: 1, user: { id: 2, screen_name: 'hello' } }.to_json,

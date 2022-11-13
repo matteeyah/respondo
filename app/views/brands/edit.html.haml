@@ -20,6 +20,15 @@
   .tab-content.mt-4
     .tab-pane.active#account-settings-tab-pane{ role: 'tabpanel', tabindex: '0',
       'aria-labelledby' => 'account-settings-tab' }
+      .row
+        .col-lg-6
+          .card
+            .card-body
+              .card-title
+                %p.fs-4.fw-bold Add account
+              .list-group.list-group-flush#account-providers
+                = render partial: 'shared/account_provider', collection: BrandAccount.providers.keys,
+                  as: :account_provider, locals: { model: 'brand' }
       = render partial: 'shared/accounts', locals: { model: @brand }
     .tab-pane#team-settings-tab-pane{ role: 'tabpanel', 'aria-labelledby' => 'team-settings-tab', tabindex: '0' }
       .row

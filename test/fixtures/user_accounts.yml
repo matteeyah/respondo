@@ -1,0 +1,9 @@
+google_oauth2:
+  external_uid: uid_1
+  provider: google_oauth2
+  user: john
+
+activedirectory:
+  external_uid: uid_1
+  provider: activedirectory
+  user: john
