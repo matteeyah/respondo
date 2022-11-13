@@ -22,7 +22,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'adds the user to the brand' do
-    create(:brand, domain: 'example.com')
+    brands(:respondo).update!(domain: 'example.com')
 
     visit '/'
 

@@ -12,7 +12,7 @@ class UserSettingsTest < ApplicationSystemTestCase
   def setup
     visit '/'
 
-    @user = create(:user, :with_account)
+    @user = users(:john)
     sign_in_user(@user)
   end
 
@@ -20,16 +20,18 @@ class UserSettingsTest < ApplicationSystemTestCase
     find_by_id('settings').click
     click_link 'User settings'
 
-    add_oauth_mock_for_user(@user, create(:user_account, provider: 'activedirectory'))
-    within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
-      page.find(:button, text: 'Connect').click
+    add_oauth_mock_for_user(@user, user_accounts(:activedirectory))
+    within(page.find('p', text: 'Add account').find(:xpath, '../..')) do
+      within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
+        page.find(:button, text: 'Connect').click
+      end
     end
 
+    take_screenshot
     assert has_selector?(:link, 'Remove')
   end
 
   test 'allows the user to remove an account' do
-    create(:user_account, provider: 'activedirectory', user: @user)
     find_by_id('settings').click
     click_link 'User settings'
 
@@ -58,7 +60,7 @@ class UserSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to remove a personal access token' do
-    create(:personal_access_token, name: 'something_nice', user: @user)
+    pat = personal_access_tokens(:default)
     find_by_id('settings').click
     click_link 'User settings'
     click_button 'User settings'
@@ -67,6 +69,6 @@ class UserSettingsTest < ApplicationSystemTestCase
       page.find(:link, 'Remove').click
     end
 
-    assert has_no_text?('something_nice')
+    assert has_no_text?(pat.name)
   end
 end

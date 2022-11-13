@@ -6,16 +6,16 @@ require 'support/omniauth_helper'
 module AuthenticationHelper
   extend OmniauthHelper
 
-  def sign_in_user(user = nil)
-    (user || FactoryBot.create(:user, :with_account)).tap do |active_user|
-      AuthenticationHelper.add_oauth_mock_for_user(active_user)
+  def sign_in_user(user = users(:john))
+    user.tap do |active_user|
+      AuthenticationHelper.add_oauth_mock_for_user(active_user, user_accounts(:google_oauth2))
       click_button('Sign in with Google')
     end
   end
 
-  def sign_in_brand(brand = nil)
-    (brand || FactoryBot.create(:brand, :with_account)).tap do |active_brand|
-      AuthenticationHelper.add_oauth_mock_for_brand(active_brand)
+  def sign_in_brand(brand = brands(:respondo))
+    brand.tap do |active_brand|
+      AuthenticationHelper.add_oauth_mock_for_brand(active_brand, brand_accounts(:twitter))
       click_button('Authorize')
     end
   end

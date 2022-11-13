@@ -8,7 +8,7 @@ class DashboardTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
   def setup
-    @brand = create(:brand, :with_account)
+    @brand = brands(:respondo)
     @tickets = create_list(:internal_ticket, 2, brand: @brand).map(&:base_ticket)
   end
 

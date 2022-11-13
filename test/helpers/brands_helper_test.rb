@@ -4,14 +4,9 @@ require 'test_helper'
 
 class BrandsHelperTest < ActionView::TestCase
   test '#add_users_dropdown_options_for returns users outside of brand' do
-    first_brand = create(:brand)
-    create(:user, brand: first_brand)
-    second_brand = create(:brand)
-    create(:user, brand: second_brand)
+    users(:john).update!(brand: brands(:respondo))
 
-    user_without_brand = create(:user)
-
-    assert_equal [[user_without_brand.id, user_without_brand.name]], add_users_dropdown_options_for
+    assert_equal [[users(:other).id, users(:other).name]], add_users_dropdown_options_for
   end
 
   [[nil, 'danger'], %w[deleted danger], %w[past_due warning], %w[trialing success],

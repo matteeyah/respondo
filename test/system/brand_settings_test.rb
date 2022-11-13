@@ -12,7 +12,7 @@ class BrandSettingsTest < ApplicationSystemTestCase
   def setup
     visit '/'
 
-    @brand = create(:brand, :with_account)
+    @brand = brands(:respondo)
     user = sign_in_user
     user.update!(brand: @brand)
     sign_in_brand(@brand)
@@ -22,9 +22,11 @@ class BrandSettingsTest < ApplicationSystemTestCase
     find_by_id('settings').click
     click_link 'Brand settings'
 
-    add_oauth_mock_for_brand(@brand, create(:brand_account, provider: 'disqus'))
-    within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
-      page.find(:button, 'Connect').click
+    add_oauth_mock_for_brand(@brand, brand_accounts(:disqus))
+    within(page.find('p', text: 'Add account').find(:xpath, '../..')) do
+      within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
+        page.find(:button, 'Connect').click
+      end
     end
 
     within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
@@ -33,7 +35,6 @@ class BrandSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to remove an account' do
-    create(:brand_account, provider: 'disqus', brand: @brand)
     find_by_id('settings').click
     click_link 'Brand settings'
 
@@ -49,7 +50,7 @@ class BrandSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to add users to brand' do
-    external_user = create(:user)
+    external_user = users(:other)
     find_by_id('settings').click
     click_link 'Brand settings'
     click_button 'Team settings'
@@ -63,7 +64,8 @@ class BrandSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to remove users from brand' do
-    existing_user = create(:user, brand: @brand)
+    existing_user = users(:other)
+    existing_user.update!(brand: @brand)
     find_by_id('settings').click
     click_link 'Brand settings'
     click_button 'Team settings'

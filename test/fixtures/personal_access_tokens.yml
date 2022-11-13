@@ -1,0 +1,4 @@
+default:
+  name: PERSONAL_ACCESS_TOKEN_1
+  token_digest: $2a$12$.tkC6m0nafRB0BMQDNNsNOqqbNtAl387i4zNP.lnKPe4kzQXGCIIi # FSmksj0yku4eMg==
+  user: john

@@ -8,13 +8,12 @@ class BrandsTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
   def setup
-    @brands = create_list(:brand, 2)
+    @brands = brands(:respondo, :other)
   end
 
   test 'allows the user to navigate to logged in brand tickets' do
     visit '/'
 
-    create(:brand_account, brand: @brands.first, provider: 'twitter')
     sign_in_user
     sign_in_brand(@brands.first)
 
