@@ -12,7 +12,7 @@ class CreateTickets < ActiveRecord::Migration[7.0]
 
       t.references :brand, index: true, null: false
       t.references :author, index: true, null: false
-      t.references :creator, index: true, null: true, foreign_key: { to_table: :users }
+      t.references :creator, index: true, null: true
       t.references :parent, index: true, null: true
 
       t.timestamps

@@ -183,8 +183,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.index ["brand_id"], name: "index_users_on_brand_id"
   end
 
-  add_foreign_key "internal_notes", "users", column: "creator_id"
-  add_foreign_key "internal_tickets", "brand_accounts", column: "source_id"
   add_foreign_key "taggings", "tags"
-  add_foreign_key "tickets", "users", column: "creator_id"
 end
