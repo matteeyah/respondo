@@ -121,9 +121,8 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows removing ticket tags' do
-    click_link('Tickets')
-
     @ticket.update(tag_list: 'first_tag, second_tag')
+    click_link('Tickets')
 
     within("#ticket_#{@ticket.id}") do
       within('span', text: 'first_tag') do
