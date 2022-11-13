@@ -17,10 +17,11 @@ class BrandSettingsTest < ApplicationSystemTestCase
 
     sign_in_user(@user)
     sign_in_brand(@brand)
+
+    find_by_id('settings').click
   end
 
   test 'allows the user to authorize an account' do
-    find_by_id('settings').click
     click_link 'Brand settings'
 
     account = Struct.new(:provider, :external_uid, :token, :secret).new(:disqus, 'uid_20')
@@ -37,7 +38,6 @@ class BrandSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to remove an account' do
-    find_by_id('settings').click
     click_link 'Brand settings'
 
     within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
@@ -55,8 +55,8 @@ class BrandSettingsTest < ApplicationSystemTestCase
 
   test 'allows the user to add users to brand' do
     external_user = users(:other)
-    find_by_id('settings').click
     click_link 'Brand settings'
+
     click_button 'Team settings'
 
     select external_user.name, from: 'add-user'
@@ -72,9 +72,8 @@ class BrandSettingsTest < ApplicationSystemTestCase
   test 'allows the user to remove users from brand' do
     existing_user = users(:other)
     existing_user.update!(brand: @brand)
-
-    find_by_id('settings').click
     click_link 'Brand settings'
+
     click_button 'Team settings'
 
     within(page.find('p', text: 'Brand team').find(:xpath, '../..')) do
@@ -89,8 +88,8 @@ class BrandSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to edit the brand domain' do
-    find_by_id('settings').click
     click_link 'Brand settings'
+
     click_button 'Team settings'
 
     fill_in 'brand[domain]', with: 'example.com'
@@ -100,8 +99,8 @@ class BrandSettingsTest < ApplicationSystemTestCase
   end
 
   test 'prevents the user to update the brand with an invalid domain' do
-    find_by_id('settings').click
     click_link 'Brand settings'
+
     click_button 'Team settings'
 
     fill_in 'brand[domain]', with: 'invalid!domain.com'

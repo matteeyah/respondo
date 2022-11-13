@@ -19,15 +19,18 @@ class TicketTest < ApplicationSystemTestCase
 
     sign_in_user(@user)
     sign_in_brand(@brand)
-    click_link('Tickets')
   end
 
   test 'shows the ticket' do
+    click_link('Tickets')
+
     assert has_text?(@ticket.content)
     assert has_text?(@ticket.author.username)
   end
 
   test 'allows replying to ticket' do
+    click_link('Tickets')
+
     account = @ticket.source
     account.update!(token: 'hello', secret: 'world')
 
@@ -49,6 +52,8 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows replying to external tickets' do
+    click_link('Tickets')
+
     response_text = 'Hello from Respondo system tests'
     external_ticket = tickets(:external)
     response = {
@@ -71,6 +76,8 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows leaving internal notes on tickets' do
+    click_link('Tickets')
+
     internal_note_text = 'Internal note from Respondo system tests.'
 
     click_link "toggle-internal-note-#{@ticket.id}"
@@ -85,6 +92,8 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows solving tickets' do
+    click_link('Tickets')
+
     within("#ticket_#{@ticket.id}") do
       click_link "toggle-status-#{@ticket.id}"
       select 'solved', from: 'ticket-status'
@@ -98,6 +107,8 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows adding ticket tags' do
+    click_link('Tickets')
+
     within("#ticket_#{@ticket.id}") do
       click_link "toggle-tag-#{@ticket.id}"
       fill_in :'acts_as_taggable_on_tag[name]', with: 'hello'
@@ -110,21 +121,25 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows removing ticket tags' do
-    @ticket.update(tag_list: 'hello, world')
+    click_link('Tickets')
+
+    @ticket.update(tag_list: 'first_tag, second_tag')
 
     within("#ticket_#{@ticket.id}") do
-      within('span', text: 'hello') do
+      within('span', text: 'first_tag') do
         page.find(:css, 'i.bi-x').click
       end
     end
 
     within("#ticket_#{@ticket.id}") do
-      assert has_no_selector?(:css, 'span', text: 'hello')
-      assert has_selector?(:css, 'span', text: 'world')
+      assert has_no_selector?(:css, 'span', text: 'first_tag')
+      assert has_selector?(:css, 'span', text: 'second_tag')
     end
   end
 
   test 'allows updating ticket assignment' do
+    click_link('Tickets')
+
     within("#ticket_#{@ticket.id}") do
       click_link "toggle-assign-#{@ticket.id}"
       select @user.name, from: 'ticket-assignment'
@@ -137,6 +152,8 @@ class TicketTest < ApplicationSystemTestCase
   test 'allows deleting tickets' do
     @ticket.update!(creator: @user)
     @ticket.source.update!(token: 'hello', secret: 'world')
+    click_link('Tickets')
+
     stub_request(:post, 'https://api.twitter.com/1.1/statuses/destroy/0.json')
       .to_return(status: 200, body: { id: 'world' }.to_json, headers: { content_type: 'application/json' })
 
@@ -149,6 +166,8 @@ class TicketTest < ApplicationSystemTestCase
 
   test 'allows navigating to tickets externally' do
     @ticket.source.update!(token: 'hello', secret: 'world')
+    click_link('Tickets')
+
     stub_request(:get, 'https://api.twitter.com/1.1/statuses/show/0.json').to_return(
       status: 200,
       body: { id: 1, user: { id: 2, screen_name: 'hello' } }.to_json,

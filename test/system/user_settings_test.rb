@@ -15,13 +15,14 @@ class UserSettingsTest < ApplicationSystemTestCase
     visit '/'
 
     sign_in_user(@user)
+
+    find_by_id('settings').click
   end
 
   test 'allows the user to authorize an account' do
-    find_by_id('settings').click
+    user_accounts(:activedirectory).destroy
     click_link 'User settings'
 
-    user_accounts(:activedirectory).destroy
     account = Struct.new(:provider, :external_uid, :name, :email).new(:activedirectory, 'uid_20')
     add_oauth_mock_for_user(@user, account)
     within(page.find('p', text: 'Add account').find(:xpath, '../..')) do
@@ -38,7 +39,6 @@ class UserSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to remove an account' do
-    find_by_id('settings').click
     click_link 'User settings'
 
     within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
@@ -53,7 +53,6 @@ class UserSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to create a personal access token' do
-    find_by_id('settings').click
     click_link 'User settings'
     click_button 'User settings'
 
@@ -67,8 +66,8 @@ class UserSettingsTest < ApplicationSystemTestCase
 
   test 'allows the user to remove a personal access token' do
     pat = personal_access_tokens(:default)
-    find_by_id('settings').click
     click_link 'User settings'
+
     click_button 'User settings'
 
     within(page.find('p', text: 'Personal Access Tokens').find(:xpath, '../..')) do
