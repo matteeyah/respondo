@@ -1,0 +1,19 @@
+internal_twitter:
+  external_uid: 'uid_1'
+  status: open
+  content: Lorem ipsum dolor sit amet
+  parent:
+  author: james
+  brand: respondo
+  creator: john
+  ticketable: twitter (InternalTicket)
+
+internal_disqus:
+  external_uid: 'uid_2'
+  status: open
+  content: Lorem ipsum dolor sit amet
+  parent:
+  author: james
+  brand: respondo
+  creator: john
+  ticketable: disqus (InternalTicket)

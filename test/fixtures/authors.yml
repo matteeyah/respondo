@@ -1,0 +1,4 @@
+james:
+  external_uid: 'uid_1'
+  username: james_is_cool
+  provider: twitter

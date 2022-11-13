@@ -6,7 +6,7 @@ require 'minitest/mock'
 
 class LoadNewTicketsJobTest < ActiveJob::TestCase
   def setup
-    @brand = create(:brand)
+    @brand = brands(:respondo)
 
     stub_twitter
     stub_disqus
@@ -22,22 +22,20 @@ class LoadNewTicketsJobTest < ActiveJob::TestCase
   private
 
   def stub_twitter
-    twitter_account = create(:brand_account, provider: 'twitter', brand: @brand)
-    twitter_ticket = create(:internal_ticket, brand: @brand, external_uid: 'twitter_1', source: twitter_account)
+    twitter_ticket = tickets(:internal_twitter)
 
     stub_request(:post, 'https://api.twitter.com/oauth2/token').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: { token_type: 'bearer', access_token: 'HELLO' }.to_json
     )
-    stub_request(:get, "https://api.twitter.com/1.1/statuses/mentions_timeline.json?since_id=#{twitter_ticket.base_ticket.external_uid}&tweet_mode=extended").to_return(
+    stub_request(:get, "https://api.twitter.com/1.1/statuses/mentions_timeline.json?since_id=#{twitter_ticket.external_uid}&tweet_mode=extended").to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: file_fixture('twitter_mentions_timeline.json').read
     )
   end
 
   def stub_disqus
-    disqus_account = create(:brand_account, provider: 'disqus', brand: @brand)
-    disqus_ticket = create(:internal_ticket, brand: @brand, source: disqus_account).base_ticket
+    disqus_ticket = tickets(:internal_disqus)
 
     stub_request(:get, 'https://disqus.com/api/3.0/users/listForums.json?access_token&api_key&api_secret&order=asc').to_return(
       status: 200,
