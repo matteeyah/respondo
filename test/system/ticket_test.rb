@@ -8,16 +8,19 @@ class TicketTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
   def setup
-    @brand = create(:brand, :with_account)
-    @ticket = create(:internal_ticket, source: @brand.accounts.first, brand: @brand).base_ticket
-    create(:subscription, brand: @brand)
+    @brand = brands(:respondo)
+    @ticket = tickets(:internal_twitter)
+    Subscription.create!(
+      external_uid: 'uid_1', status: 'active', email: 'hello@respondo.com', brand: @brand,
+      cancel_url: 'https://respondo.com/cancel', update_url: 'https://respondo.com/update'
+    )
 
     visit '/'
   end
 
   test 'shows the ticket' do
-    user = create(:user, :with_account, brand: @brand)
-    sign_in_user(user)
+    sign_in_user
+    sign_in_brand(@brand)
     click_link('Tickets')
 
     assert has_text?(@ticket.content)
@@ -55,20 +58,18 @@ class TicketTest < ApplicationSystemTestCase
     click_link('Tickets')
 
     response_text = 'Hello from Respondo system tests'
-    @ticket.ticketable = create(:external_ticket, response_url: 'https://example.com/path')
-    @ticket.author.external!
-    @ticket.save
+    external_ticket = tickets(:external)
     response = {
       external_uid: 123_456,
       author: { external_uid: '123', username: @brand.screen_name },
-      response_url: @ticket.external_ticket.response_url,
-      parent_uid: @ticket.external_uid,
+      response_url: external_ticket.ticketable.response_url,
+      parent_uid: external_ticket.external_uid,
       content: response_text
     }
-    stub_request(:post, 'https://example.com/path')
+    stub_request(:post, external_ticket.ticketable.response_url)
       .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
 
-    click_link "toggle-reply-#{@ticket.id}"
+    click_link "toggle-reply-#{external_ticket.id}"
 
     fill_in 'ticket[content]', with: response_text
     click_button 'Reply'

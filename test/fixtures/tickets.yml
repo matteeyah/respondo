@@ -1,19 +1,29 @@
 internal_twitter:
   external_uid: 'uid_1'
   status: open
-  content: Lorem ipsum dolor sit amet
+  content: Internal twitter ticket content.
   parent:
   author: james
   brand: respondo
-  creator: john
+  creator:
   ticketable: twitter (InternalTicket)
 
 internal_disqus:
   external_uid: 'uid_2'
   status: open
-  content: Lorem ipsum dolor sit amet
+  content: Internal disqus ticket content.
   parent:
-  author: james
+  author: robert
   brand: respondo
-  creator: john
+  creator:
   ticketable: disqus (InternalTicket)
+
+external:
+  external_uid: 'uid_3'
+  status: open
+  content: External ticket content.
+  parent:
+  author: external
+  brand: respondo
+  creator:
+  ticketable: default (ExternalTicket)

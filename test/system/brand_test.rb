@@ -8,16 +8,19 @@ class BrandTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
   def setup
-    @brand = create(:brand, :with_account)
-    @tickets = create_list(:internal_ticket, 2, brand: @brand, source: @brand.accounts.first).map(&:base_ticket)
-    create(:subscription, brand: @brand)
+    @brand = brands(:respondo)
+    @tickets = tickets(:internal_twitter, :internal_disqus)
+    Subscription.create!(
+      external_uid: 'uid_1', status: 'active', email: 'hello@respondo.com', brand: @brand,
+      cancel_url: 'https://respondo.com/cancel', update_url: 'https://respondo.com/update'
+    )
 
     visit '/'
   end
 
   test 'shows the tickets' do
-    user = create(:user, :with_account, brand: @brand)
-    sign_in_user(user)
+    sign_in_user
+    sign_in_brand(@brand)
     click_link('Tickets')
 
     assert has_text?(@tickets.first.content)
@@ -63,8 +66,7 @@ class BrandTest < ApplicationSystemTestCase
   end
 
   test 'keeps ticket status context when searching' do
-    solved_tickets = create_list(:internal_ticket, 2, status: :solved, brand: @brand).map(&:base_ticket)
-    @tickets.first.update!(content: solved_tickets.first.content)
+    @tickets.second.update!(status: :solved)
 
     sign_in_user
     sign_in_brand(@brand)
@@ -75,16 +77,22 @@ class BrandTest < ApplicationSystemTestCase
     # This is a hack to make Capybara wait until the page is loaded after navigating
     find(:xpath, "//input[@type='hidden'][@value='solved']", visible: :hidden)
 
-    fill_in 'query', with: solved_tickets.first.content
+    fill_in 'query', with: @tickets.second.content
     click_button :search
 
-    assert has_text?(solved_tickets.first.author.username)
+    assert has_text?(@tickets.second.author.username)
     assert has_no_text?(@tickets.first.author.username)
   end
 
   test 'allows searching by nested ticket content' do
-    nested_ticket = create(:internal_ticket, brand: @brand, parent: @tickets.first).base_ticket
-    nested_nested_ticket = create(:internal_ticket, brand: @brand, parent: nested_ticket).base_ticket
+    nested_ticket = Ticket.create!(
+      external_uid: 'nested_1', status: :open, content: 'Lorem', parent: @tickets.first,
+      author: authors(:james), brand: @brand, creator: users(:john), ticketable: internal_tickets(:twitter)
+    )
+    nested_nested_ticket = Ticket.create!(
+      external_uid: 'nested_2', status: :open, content: 'Lorem', parent: nested_ticket,
+      author: authors(:james), brand: @brand, creator: users(:john), ticketable: internal_tickets(:twitter)
+    )
 
     sign_in_user
     sign_in_brand(@brand)

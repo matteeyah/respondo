@@ -1,11 +1,11 @@
 twitter:
   external_uid: uid_1
   provider: twitter
-  screen_name: hello_respondo
+  screen_name: respondo
   brand: respondo
 
 disqus:
   external_uid: uid_2
   provider: disqus
-  screen_name: hello_respondo
+  screen_name: respondo
   brand: respondo
