@@ -20,15 +20,20 @@ class UserSettingsTest < ApplicationSystemTestCase
     find_by_id('settings').click
     click_link 'User settings'
 
-    add_oauth_mock_for_user(@user, user_accounts(:activedirectory))
+    user_accounts(:activedirectory).destroy
+    account = Struct.new(:provider, :external_uid, :name, :email).new(:activedirectory, 'uid_20')
+    add_oauth_mock_for_user(@user, account)
     within(page.find('p', text: 'Add account').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
         page.find(:button, text: 'Connect').click
       end
     end
 
-    take_screenshot
-    assert has_selector?(:link, 'Remove')
+    within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
+      within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
+        assert has_selector?(:link, 'Remove')
+      end
+    end
   end
 
   test 'allows the user to remove an account' do
@@ -55,7 +60,7 @@ class UserSettingsTest < ApplicationSystemTestCase
     click_button 'Create'
 
     within(page.find('p', text: 'Personal Access Tokens').find(:xpath, '../..')) do
-      assert has_selector?(:link, 'Remove')
+      assert has_selector?(:link, 'Remove', count: 2)
     end
   end
 

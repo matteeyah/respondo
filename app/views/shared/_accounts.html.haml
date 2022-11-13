@@ -1,12 +1,3 @@
-.row
-  .col-lg-6
-    .card
-      .card-body
-        .card-title
-          %p.fs-4.fw-bold Add account
-        .list-group.list-group-flush#account-providers
-          = render partial: 'shared/account_provider', collection: model.accounts.klass.providers.keys,
-            locals: { model: }, as: :provider
 .row.mt-4
   .col-12
     .card

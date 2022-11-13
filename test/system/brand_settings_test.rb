@@ -22,7 +22,8 @@ class BrandSettingsTest < ApplicationSystemTestCase
     find_by_id('settings').click
     click_link 'Brand settings'
 
-    add_oauth_mock_for_brand(@brand, brand_accounts(:disqus))
+    account = Struct.new(:provider, :external_uid, :token, :secret).new(:disqus, 'uid_20')
+    add_oauth_mock_for_brand(@brand, account)
     within(page.find('p', text: 'Add account').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
         page.find(:button, 'Connect').click
@@ -30,7 +31,7 @@ class BrandSettingsTest < ApplicationSystemTestCase
     end
 
     within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
-      assert has_selector?(:link, 'Remove')
+      assert has_selector?(:css, 'div.list-group-item', text: 'Disqus', count: 2)
     end
   end
 
@@ -44,8 +45,10 @@ class BrandSettingsTest < ApplicationSystemTestCase
       end
     end
 
-    within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
-      assert has_selector?(:button, 'Connect')
+    within(page.find('p', text: 'Add account').find(:xpath, '../..')) do
+      within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
+        assert has_selector?(:button, 'Connect')
+      end
     end
   end
 
@@ -59,7 +62,9 @@ class BrandSettingsTest < ApplicationSystemTestCase
     click_button 'Add'
 
     within(page.find('p', text: 'Brand team').find(:xpath, '../..')) do
-      assert has_selector?(:link, 'Remove')
+      within(page.find('span', text: external_user.name).find(:xpath, '../..')) do
+        assert has_selector?(:link, 'Remove')
+      end
     end
   end
 
