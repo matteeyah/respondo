@@ -9,7 +9,7 @@ class DashboardTest < ApplicationSystemTestCase
 
   def setup
     @brand = brands(:respondo)
-    @tickets = create_list(:internal_ticket, 2, brand: @brand).map(&:base_ticket)
+    @tickets = tickets(:internal_twitter, :internal_disqus)
   end
 
   test 'shows the newest tickets' do

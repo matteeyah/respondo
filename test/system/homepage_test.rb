@@ -12,7 +12,7 @@ class HomepageTest < ApplicationSystemTestCase
 
     assert has_button?('Sign in with Google')
 
-    add_oauth_mock_for_user(users(:respondo), user_accounts(:google_oauth2))
+    add_oauth_mock_for_user(users(:john), user_accounts(:google_oauth2))
     click_button('Sign in with Google')
 
     add_oauth_mock_for_brand(brands(:respondo), brand_accounts(:twitter))

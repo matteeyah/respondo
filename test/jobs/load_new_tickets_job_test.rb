@@ -13,10 +13,10 @@ class LoadNewTicketsJobTest < ActiveJob::TestCase
   end
 
   test 'creates tickets' do
-    assert_equal 2, Ticket.count
+    assert_equal 3, Ticket.count
     LoadNewTicketsJob.perform_now(@brand.id)
 
-    assert_equal 4, Ticket.count
+    assert_equal 5, Ticket.count
   end
 
   private
