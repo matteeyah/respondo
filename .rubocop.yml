@@ -32,7 +32,7 @@ Metrics/BlockLength:
 
 Metrics/ClassLength:
   Exclude:
-    - 'test/system/**/*'
+    - 'test/**/*'
 
 Metrics/MethodLength:
   Exclude:

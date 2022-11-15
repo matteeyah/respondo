@@ -11,10 +11,9 @@ class LoadNewTicketsJobTest < ActiveJob::TestCase
   end
 
   test 'creates tickets' do
-    assert_equal 3, Ticket.count
-    LoadNewTicketsJob.perform_now(brands(:respondo))
-
-    assert_equal 5, Ticket.count
+    assert_difference -> { Ticket.count }, 2 do
+      LoadNewTicketsJob.perform_now(brands(:respondo))
+    end
   end
 
   private

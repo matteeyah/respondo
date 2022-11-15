@@ -6,31 +6,31 @@ class SubscriptionTest < ActiveSupport::TestCase
   test 'validates presence of external_uid' do
     subscription.external_uid = nil
 
-    assert_not subscription.save
+    assert_not subscription.valid?
   end
 
   test 'validates presence of status' do
     subscription.status = nil
 
-    assert_not subscription.save
+    assert_not subscription.valid?
   end
 
   test 'validates presence of email' do
     subscription.email = nil
 
-    assert_not subscription.save
+    assert_not subscription.valid?
   end
 
   test 'validates presence of cancel_url' do
     subscription.cancel_url = nil
 
-    assert_not subscription.save
+    assert_not subscription.valid?
   end
 
   test 'validates presence of update_url' do
     subscription.update_url = nil
 
-    assert_not subscription.save
+    assert_not subscription.valid?
   end
 
   [[:trialing, true], [:active, true], [:past_due, true], [:deleted, false]].each do |status_pair|
@@ -47,9 +47,9 @@ class SubscriptionTest < ActiveSupport::TestCase
     @subscription ||= Subscription.create!(
       external_uid: 'uid_1',
       status: :active,
-      email: 'hello@respondo.com',
-      cancel_url: 'https://respondo.com/cancel',
-      update_url: 'https://respondo.com/update',
+      email: 'hello@respondohub.com',
+      cancel_url: 'https://respondohub.com/cancel',
+      update_url: 'https://respondohub.com/update',
       brand: brands(:respondo)
     )
   end

@@ -12,8 +12,8 @@ class BrandTest < ApplicationSystemTestCase
     @brand = brands(:respondo)
 
     Subscription.create!(
-      external_uid: 'uid_1', status: 'active', email: 'hello@respondo.com', brand: @brand,
-      cancel_url: 'https://respondo.com/cancel', update_url: 'https://respondo.com/update'
+      external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', brand: @brand,
+      cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update'
     )
 
     visit '/'
