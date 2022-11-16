@@ -170,7 +170,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["external_uid", "provider"], name: "index_user_accounts_on_external_uid_and_provider", unique: true
     t.index ["user_id", "provider"], name: "index_user_accounts_on_user_id_and_provider", unique: true
     t.index ["user_id"], name: "index_user_accounts_on_user_id"
   end

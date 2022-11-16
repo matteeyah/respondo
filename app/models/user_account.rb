@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserAccount < ApplicationRecord
-  validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: :provider }
+  validates :external_uid, presence: { allow_blank: false }
   validates :provider, presence: true, uniqueness: { scope: :user_id }
   validates :email, presence: { allow_blank: false, allow_nil: true }
 
@@ -19,6 +19,7 @@ class UserAccount < ApplicationRecord
         account.user = current_user || account.user || User.new(name: auth.info.name)
         account.user.brand = find_brand(account.email)
 
+        account.user.save
         account.save
       end
     end

@@ -12,8 +12,8 @@ class TicketTest < ApplicationSystemTestCase
     @brand = brands(:respondo)
     @ticket = tickets(:internal_twitter)
 
-    Subscription.create!(external_uid: 'uid_1', status: 'active', email: 'hello@respondo.com', brand: @brand,
-                         cancel_url: 'https://respondo.com/cancel', update_url: 'https://respondo.com/update')
+    Subscription.create!(external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', brand: @brand,
+                         cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update')
 
     visit '/'
 
@@ -121,9 +121,8 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows removing ticket tags' do
-    click_link('Tickets')
-
     @ticket.update(tag_list: 'first_tag, second_tag')
+    click_link('Tickets')
 
     within("#ticket_#{@ticket.id}") do
       within('span', text: 'first_tag') do

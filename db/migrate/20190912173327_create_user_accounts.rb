@@ -13,6 +13,5 @@ class CreateUserAccounts < ActiveRecord::Migration[7.0]
     end
 
     add_index :user_accounts, %i[user_id provider], unique: true
-    add_index :user_accounts, %i[external_uid provider], unique: true
   end
 end
