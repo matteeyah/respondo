@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Clients::Client do
+RSpec.describe Clients::ProviderClient do
   let(:klass) { Class.new(described_class) }
   let(:klass_instance) { klass.new }
 

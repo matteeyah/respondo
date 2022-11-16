@@ -36,12 +36,12 @@ RSpec.describe Brands::UsersController do
           end
 
           context 'when brand has subscription' do
-            let(:paddle_client_class_spy) { class_spy(Paddle::Client, new: paddle_client_spy) }
-            let(:paddle_client_spy) { instance_spy(Paddle::Client) }
+            let(:paddle_client_class_spy) { class_spy(Clients::Paddle, new: paddle_client_spy) }
+            let(:paddle_client_spy) { instance_spy(Clients::Paddle) }
             let!(:subscription) { create(:subscription, brand:) }
 
             before do
-              stub_const('Paddle::Client', paddle_client_class_spy)
+              stub_const('Clients::Paddle', paddle_client_class_spy)
             end
 
             it 'updates quantity on subscription' do
@@ -69,12 +69,12 @@ RSpec.describe Brands::UsersController do
           end
 
           context 'when brand has subscription' do
-            let(:paddle_client_class_spy) { class_spy(Paddle::Client) }
+            let(:paddle_client_class_spy) { class_spy(Clients::Paddle) }
 
             before do
               create(:subscription, brand:)
 
-              stub_const('Paddle::Client', paddle_client_class_spy)
+              stub_const('Clients::Paddle', paddle_client_class_spy)
             end
 
             it 'does not update subscription quantity' do
@@ -127,12 +127,12 @@ RSpec.describe Brands::UsersController do
           end
 
           context 'when brand has subscription' do
-            let(:paddle_client_class_spy) { class_spy(Paddle::Client, new: paddle_client_spy) }
-            let(:paddle_client_spy) { instance_spy(Paddle::Client) }
+            let(:paddle_client_class_spy) { class_spy(Clients::Paddle, new: paddle_client_spy) }
+            let(:paddle_client_spy) { instance_spy(Clients::Paddle) }
             let!(:subscription) { create(:subscription, brand:) }
 
             before do
-              stub_const('Paddle::Client', paddle_client_class_spy)
+              stub_const('Clients::Paddle', paddle_client_class_spy)
             end
 
             it 'updates quantity on subscription' do

@@ -22,7 +22,7 @@ class Subscription < ApplicationRecord
   private
 
   def paddle_client
-    @paddle_client ||= Paddle::Client.new(vendor_id, vendor_auth)
+    @paddle_client ||= Clients::Paddle.new(vendor_id, vendor_auth)
   end
 
   def vendor_id

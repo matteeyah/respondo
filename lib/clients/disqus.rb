@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Clients
-  class Disqus < Clients::Client
+  class Disqus < Clients::ProviderClient
     def initialize(api_key, api_secret, access_token)
       super()
 

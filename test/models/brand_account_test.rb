@@ -150,7 +150,7 @@ class BrandAccountTest < ActiveSupport::TestCase
       account = brand_accounts(:twitter)
       account.provider = provider
 
-      assert_kind_of Clients::Client, account.client
+      assert_kind_of Clients::ProviderClient, account.client
     end
   end
 end

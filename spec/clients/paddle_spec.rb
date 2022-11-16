@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Paddle::Client do
+RSpec.describe Clients::Paddle do
   let(:client) { described_class.new('vendor_id', 'vendor_auth_code') }
   let(:net_http_spy) { class_spy(Net::HTTP, post_form: instance_double(Net::HTTPResponse, body: nil)) }
 
@@ -13,7 +13,7 @@ RSpec.describe Paddle::Client do
       change_quantity
 
       expect(net_http_spy).to have_received(:post_form)
-        .with(URI(Paddle::Client::UPDATE_SUBSCRIPTION_URL),
+        .with(URI(Clients::Paddle::UPDATE_SUBSCRIPTION_URL),
               vendor_id: 'vendor_id', vendor_auth_code: 'vendor_auth_code', subscription_id: 1, quantity: 10)
     end
   end

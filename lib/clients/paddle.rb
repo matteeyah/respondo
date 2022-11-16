@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Paddle
-  class Client
+module Clients
+  class Paddle
     UPDATE_SUBSCRIPTION_URL = 'https://vendors.paddle.com/api/2.0/subscription/users/update'
 
     def initialize(vendor_id, vendor_auth_code)

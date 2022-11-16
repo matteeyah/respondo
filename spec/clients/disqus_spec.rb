@@ -21,7 +21,7 @@ RSpec.describe Clients::Disqus do
     stub_const(DisqusApi.to_s, disqus_client_spy)
   end
 
-  it { expect(client).to be_a(Clients::Client) }
+  it { expect(client).to be_a(Clients::ProviderClient) }
 
   describe '#new_mentions' do
     subject(:new_mentions) { client.new_mentions(last_ticket_identifier) }

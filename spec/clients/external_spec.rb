@@ -9,7 +9,7 @@ RSpec.describe Clients::External do
     stub_const(Net::HTTP.to_s, class_spy(Net::HTTP, new: client_spy), transfer_nested_constants: true)
   end
 
-  it { expect(client).to be_a(Clients::Client) }
+  it { expect(client).to be_a(Clients::ProviderClient) }
 
   describe '#reply' do
     subject(:reply) { client.reply('responsetext', 'external_uid') }
