@@ -6,31 +6,31 @@ class SubscriptionTest < ActiveSupport::TestCase
   test 'validates presence of external_uid' do
     subscription.external_uid = nil
 
-    assert_not subscription.valid?
+    assert_predicate subscription, :invalid?
   end
 
   test 'validates presence of status' do
     subscription.status = nil
 
-    assert_not subscription.valid?
+    assert_predicate subscription, :invalid?
   end
 
   test 'validates presence of email' do
     subscription.email = nil
 
-    assert_not subscription.valid?
+    assert_predicate subscription, :invalid?
   end
 
   test 'validates presence of cancel_url' do
     subscription.cancel_url = nil
 
-    assert_not subscription.valid?
+    assert_predicate subscription, :invalid?
   end
 
   test 'validates presence of update_url' do
     subscription.update_url = nil
 
-    assert_not subscription.valid?
+    assert_predicate subscription, :invalid?
   end
 
   [[:trialing, true], [:active, true], [:past_due, true], [:deleted, false]].each do |status_pair|

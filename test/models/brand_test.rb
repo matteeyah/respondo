@@ -7,14 +7,14 @@ class BrandTest < ActiveSupport::TestCase
     brand = brands(:respondo)
     brand.screen_name = nil
 
-    assert_not brand.valid?
+    assert_predicate brand, :invalid?
   end
 
   test 'validates format of domain' do
     brand = brands(:respondo)
     brand.domain = 'invalid!respondohub.com'
 
-    assert_not brand.valid?
+    assert_predicate brand, :invalid?
   end
 
   test 'validates uniqueness of domain' do
@@ -22,7 +22,8 @@ class BrandTest < ActiveSupport::TestCase
     brands(:other).update!(domain: 'respondohub.com')
     brand.domain = 'respondohub.com'
 
-    assert_not brand.valid?
+    assert_predicate brand, :invalid?
+    assert brand.errors.added?(:domain, :taken, value: 'respondohub.com')
   end
 
   test 'increases subscription quantity when adding a user to the team' do

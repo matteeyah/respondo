@@ -7,34 +7,35 @@ class BrandAccountTest < ActiveSupport::TestCase
     account = brand_accounts(:twitter)
     account.provider = nil
 
-    assert_not account.valid?
+    assert_predicate account, :invalid?
   end
 
   test 'validates presence of external_uid' do
     account = brand_accounts(:twitter)
     account.external_uid = nil
 
-    assert_not account.valid?
+    assert_predicate account, :invalid?
   end
 
   test 'validates email is not blank' do
     account = brand_accounts(:twitter)
     account.email = '  '
 
-    assert_not account.valid?
+    assert_predicate account, :invalid?
   end
 
   test 'validates screen_name is not blank' do
     account = brand_accounts(:twitter)
     account.screen_name = '  '
 
-    assert_not account.valid?
+    assert_predicate account, :invalid?
   end
 
   test 'validates uniqueness of external_uid' do
     account = brand_accounts(:twitter).dup
 
-    assert_not account.valid?
+    assert_predicate account, :invalid?
+    assert account.errors.added?(:external_uid, :taken, value: 'uid_1')
   end
 
   test '.from_omniauth returns a brand account' do

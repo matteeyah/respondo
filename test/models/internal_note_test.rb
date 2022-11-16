@@ -7,6 +7,6 @@ class InternalNoteTest < ActiveSupport::TestCase
     internal_note = internal_notes(:default)
     internal_note.content = nil
 
-    assert_not internal_note.valid?
+    assert_predicate internal_note, :invalid?
   end
 end

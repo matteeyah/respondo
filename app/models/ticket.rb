@@ -6,7 +6,6 @@ class Ticket < ApplicationRecord
 
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[ticketable_type brand_id] }
   validates :content, presence: { allow_blank: false }
-  validate :parent_in_brand
 
   enum status: { open: 0, solved: 1 }
 
@@ -32,14 +31,5 @@ class Ticket < ApplicationRecord
     Ticket.from_client_response!(provider, client_response, source, user)
   rescue Twitter::Error
     false
-  end
-
-  private
-
-  def parent_in_brand
-    return unless parent
-    return unless parent.brand != brand
-
-    errors.add(:parent, 'must be in same brand as ticket')
   end
 end

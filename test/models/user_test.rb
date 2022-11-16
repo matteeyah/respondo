@@ -7,7 +7,7 @@ class UserTest < ActiveSupport::TestCase
     user = users(:other)
     user.name = nil
 
-    assert_not user.valid?
+    assert_predicate user, :invalid?
   end
 
   UserAccount.providers.each_key do |provider_name|

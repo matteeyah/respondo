@@ -7,27 +7,28 @@ class UserAccountTest < ActiveSupport::TestCase
     account = user_accounts(:google_oauth2)
     account.provider = nil
 
-    assert_not account.valid?
+    assert_predicate account, :invalid?
   end
 
   test 'validates presence of external_uid' do
     account = user_accounts(:google_oauth2)
     account.external_uid = nil
 
-    assert_not account.valid?
+    assert_predicate account, :invalid?
   end
 
   test 'validates email is not blank' do
     account = user_accounts(:google_oauth2)
     account.email = '  '
 
-    assert_not account.valid?
+    assert_predicate account, :invalid?
   end
 
   test 'validates uniqueness of provider' do
     account = user_accounts(:google_oauth2).dup
 
-    assert_not account.valid?
+    assert_predicate account, :invalid?
+    assert account.errors.added?(:provider, :taken, value: 0)
   end
 
   test '.from_omniauth returns a user account' do
