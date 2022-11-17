@@ -17,6 +17,23 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+
+    # Pundit permission assertions
+    def assert_permit(policy, user, record, action)
+      msg = "User #{user.inspect} should be permitted to #{action} #{record}, but isn't permitted"
+
+      assert permit(policy, user, record, action), msg
+    end
+
+    def assert_not_permit(policy, user, record, action)
+      msg = "User #{user.inspect} should NOT be permitted to #{action} #{record}, but is permitted"
+
+      assert_not permit(policy, user, record, action), msg
+    end
+
+    def permit(policy, user, record, action)
+      policy.new(user, record).public_send("#{action}?")
+    end
   end
 end
 
