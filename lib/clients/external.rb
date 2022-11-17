@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Clients
-  class External < Clients::Client
+  class External < Clients::ProviderClient
     def initialize(response_url)
       super()
 

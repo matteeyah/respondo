@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Clients
-  class Client
+  class ProviderClient
     def new_mentions(_last_ticket_identifier)
       raise NotImplementedError
     end

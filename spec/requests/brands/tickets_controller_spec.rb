@@ -231,7 +231,7 @@ RSpec.describe Brands::TicketsController do
 
     let(:brand_account) { create(:brand_account, provider: 'twitter', brand:) }
     let(:ticket) { create(:internal_ticket, source: brand_account, brand:).base_ticket }
-    let(:client_spy) { instance_spy(Clients::Client) }
+    let(:client_spy) { instance_spy(Clients::ProviderClient) }
 
     before do
       stub_const(Clients::Twitter.to_s, class_spy(Clients::Twitter, new: client_spy))

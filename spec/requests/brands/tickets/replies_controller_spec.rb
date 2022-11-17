@@ -7,7 +7,7 @@ RSpec.describe Brands::Tickets::RepliesController do
 
   let(:brand) { create(:brand) }
   let!(:ticket) { create(:internal_ticket, brand:).base_ticket }
-  let(:client) { instance_spy(Clients::Client) }
+  let(:client) { instance_spy(Clients::ProviderClient) }
 
   before do
     stub_const(Clients::Twitter.to_s, class_spy(Clients::Twitter, new: client))
