@@ -1,0 +1,21 @@
+<div aria-atomic="true" aria-live="assertive" class="toast" data-controller="toast" role="alert">
+  <div class="toast-header d-flex align-items-center">
+    <% if success
+         color_class = 'success'
+         icon = 'emoji-sunglasses-fill'
+         title_text = 'Success'
+       else
+         color_class = 'danger'
+         icon = 'heartbreak-fill'
+         title_text = 'Error'
+       end %>
+    <%= bi_icon(icon, "text-#{color_class} fs-4 me-2") %>
+    <strong class="text-<%= color_class %> fs-5 me-auto">
+      <%= title_text %>
+    </strong>
+    <%= button_tag '', class: 'btn-close', 'data-bs-dismiss' => 'toast', 'aria-label' => 'Close' %>
+  </div>
+  <div class="toast-body text-muted fs-6">
+    <%= message %>
+  </div>
+</div>

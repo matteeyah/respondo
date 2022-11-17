@@ -1,0 +1,56 @@
+<div class="row my-3">
+  <div class="col-lg-3 d-flex align-items-center">
+    <span class="fs-2 me-2">Tickets</span>
+    <span class="rounded-pill text-white bg-danger opacity-75 py-1 px-3">
+      <%= bi_icon('people-fill') %>
+      <%= @brand.screen_name %>
+    </span>
+  </div>
+  <div class="col-lg-9 d-flex justify-content-end align-items-center">
+    <% if policy(:ticket).refresh? && policy(@brand).user_in_brand? %>
+      <%= link_to refresh_brand_tickets_path(@brand), class: 'btn btn-outline-primary',
+                  'data-turbo-method' => :post, 'data-turbo-frame' => :_top do %>
+        <%= bi_icon('arrow-clockwise') %>
+        <span>Reload</span>
+      <% end %>
+      <%= form_with url: brand_tickets_path(@brand), local: true, method: :get,
+                    class: 'flex-grow-1 ms-3', html: { autocomplete: 'off' } do |search_form| %>
+        <%= search_form.hidden_field :status, value: request.parameters[:status] %>
+        <div class="input-group">
+          <%= search_form.text_field :query, required: true, value: request.parameters[:query],
+                                     placeholder: 'Search by ticket content or author name', class: 'form-control' %>
+          <%= link_to brand_tickets_path(@brand, status: request.parameters[:status]),
+                      class: 'btn btn-outline-secondary' do %>
+            <%= bi_icon('x-lg') %>
+          <% end %>
+          <%= search_form.button name: :search, class: 'btn btn-outline-secondary' do %>
+            <%= bi_icon('search') %>
+          <% end %>
+        </div>
+      <% end %>
+      </div>
+      <div class="row">
+        <ul class="nav nav-tabs">
+          <% Ticket.statuses.each_key do |status| %>
+            <li class="nav-item">
+              <%= active_link_to brand_tickets_path(@brand, status:), active: { status: }, class: 'nav-link' do %>
+          <span>
+            <%= status.capitalize %>
+          </span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="row mb-2">
+        <%= render partial: 'brands/tickets/tickets', locals: { brand: @brand, tickets: @tickets } %>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center">
+            <%= raw(pagy_bootstrap_nav(@pagy)) %>
+          </div>
+        </div>
+      </div>
+      </div>
+    <% end %>
