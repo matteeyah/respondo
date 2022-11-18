@@ -1,0 +1,9 @@
+<li class="list-group-item list-group-item-primary" id="<%= dom_id(internal_note, dom_id(internal_note.ticket)) %>">
+  <span class="small">
+    <%= bi_icon('sticky') %>
+  </span>
+  <span class="small me-1">#{internal_note.creator.name}:</span>
+  <span class="small">
+    <%= internal_note.content %>
+  </span>
+</li>
