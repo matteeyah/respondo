@@ -1,0 +1,16 @@
+<div class="list-group-item col-lg-4" id="<%= dom_id(user) %>">
+  <div class="row">
+    <div class="col-7 d-flex align-content-center">
+      <span class="my-2 fw-bold">
+        <%= user.name %>
+      </span>
+    </div>
+    <div class="col-5 d-flex align-items-center justify-content-end">
+      <%= link_to brand_user_path(user.brand, user),
+                  'data-turbo-method' => :delete, class: 'btn btn-outline-danger' do %>
+        <span>Remove</span>
+        <%= bi_icon('x-circle') %>
+      <% end %>
+    </div>
+  </div>
+</div>
