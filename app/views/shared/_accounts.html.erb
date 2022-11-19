@@ -1,0 +1,14 @@
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <p class="fs-4 fw-bold">Accounts</p>
+        </div>
+        <div class="list-group list-group-flush" id="accounts">
+          <%= render partial: 'shared/account', collection: model.accounts, locals: { model: } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
