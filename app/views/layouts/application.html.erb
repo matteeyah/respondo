@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+  <title>Respondo</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_importmap_tags %>
+</head>
+<body>
+<div class="d-flex flex-column flex-lg-row vh-100 bg-light">
+  <div class="navbar navbar-expand-lg overflow-auto m-3 rounded-4 bg-white">
+    <div class="container-fluid ps-0 pe-0 d-flex flex-lg-column flex-grow-1 h-100">
+      <div class="navbar-brand">
+        <%= link_to root_path, class: 'nav-link text-primary fs-4 fw-bold' do %>
+          <%= image_tag('logo_circle_white.svg', class: 'img-fluid') %>
+          <span>Respondo</span>
+        <% end %>
+      </div>
+      <button class="navbar-toggler" data-bs-target="#main-nav" data-bs-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"/>
+      </button>
+      <div class="flex-column collapse navbar-collapse w-100 mt-5" id="main-nav">
+        <ul class="flex-column align-items-center align-items-lg-start navbar-nav w-100">
+          <% if current_brand %>
+            <li class="nav-item">
+              <%= active_link_to brand_dashboard_path(current_brand),
+                                 { active: :exclusive, class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
+                                   :title => 'Dashboard' } do %>
+                <%= bi_icon('grid-1x2', 'fs-4 me-3') %>
+                <span>Dashboard</span>
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= active_link_to brand_tickets_path(current_brand),
+                                 { active: :exclusive, class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
+                                   :title => 'Dashboard' } do %>
+                <%= bi_icon('ticket', 'fs-4 me-3') %>
+                <span>Tickets</span>
+              <% end %>
+            </li>
+          <% end %>
+          <li class="nav-item">
+            <%= link_to '#', class: 'nav-link d-flex align-items-center ps-4', id: 'help', title: 'Help',
+                        'data-bs-toggle' => 'collapse', 'data-bs-target' => '#help-menu', 'aria-expanded' => false do %>
+              <%= bi_icon('question-square', 'fs-4 me-3') %>
+              <span>Help</span>
+            <% end %>
+          </li>
+          <ul aria-labelledby="help" class="text-center text-lg-start collapse list-group list-group-flush w-100"
+              id="help-menu">
+            <li class="list-group-item list-group-item-action border-0">
+              <%= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link' %>
+            </li>
+            <li class="list-group-item list-group-item-action border-0">
+              <%= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link' %>
+            </li>
+            <li class="list-group-item list-group-item-action border-0">
+              <%= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link' %>
+            </li>
+            <li class="list-group-item"></li>
+            <li class="list-group-item list-group-item-action border-0">
+              <%= safe_blank_link_to 'Terms and conditions', 'https://respondohub.com/terms_and_conditions',
+                                     class: 'nav-link' %>
+            </li>
+            <li class="list-group-item list-group-item-action border-0">
+              <%= safe_blank_link_to 'Privacy policy', 'https://respondohub.com/privacy_policy',
+                                     class: 'nav-link' %>
+            </li>
+          </ul>
+        </ul>
+        <ul class="flex-column align-items-center align-items-lg-start navbar-nav mt-auto w-100">
+          <% if current_user %>
+            <li class="nav-item">
+              <%= link_to '#', class: 'nav-link d-flex align-items-center ps-4', id: 'settings', title: 'Settings',
+                          'data-bs-toggle' => 'collapse', 'data-bs-target' => '#settings-menu', 'aria-expanded' => false do %>
+                <%= bi_icon('gear-wide', 'fs-4 me-3') %>
+                <span>Settings</span>
+              <% end %>
+            </li>
+            <% class_list = ['text-center', 'text-lg-start', 'collapse', 'list-group', 'list-group-flush', 'w-100',
+                             ('show' if show_settings_collapse?)] %>
+            <ul aria-labelledby="#settings-menu" class="<%= class_list %>" id="settings-menu">
+              <% if current_brand %>
+                <li class="nav-item list-group-item list-group-item-action ps-0">
+                  <%= active_link_to 'Brand settings', edit_brand_path(current_brand),
+                                     active: [{ brands: :edit }], class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
+                </li>
+              <% end %>
+              <li class="nav-item list-group-item list-group-item-action ps-0">
+                <%= active_link_to 'User settings', edit_user_path(current_user),
+                                   active: [{ users: :edit }], class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
+          <% end %>
+          </li>
+          </ul>
+          <li class="nav-item">
+            <%= button_to sign_out_path, method: :delete, 'data-turbo' => false,
+                          class: 'btn btn-link nav-link d-flex align-items-center ps-4' do %>
+              <%= bi_icon('box-arrow-left', 'fs-4 me-3') %>
+              <span>Sign Out</span>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="h-100 flex-grow-1 overflow-auto bg-white" id="main-content">
+    <main class="container p-4" role="main">
+      <%= yield %>
+      <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toasts"></div>
+    </main>
+  </div>
+</div>
+</body>
+<%= yield :custom_javascript %>
+</html>
