@@ -22,7 +22,7 @@ module ActiveSupport
     def assert_permit(policy, user, record, action)
       msg = "User #{user.inspect} should be permitted to #{action} #{record}, but isn't permitted"
 
-      assert permit(policy, user, record, action), msg
+      assert permit(policy, user, record, action), msg # rubocop:disable Minitest/AssertWithExpectedArgument
     end
 
     def assert_not_permit(policy, user, record, action)
