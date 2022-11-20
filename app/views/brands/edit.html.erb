@@ -1,0 +1,190 @@
+<% subscription_status = @brand.subscription&.status %>
+<% checkout_redirect_path = request.original_url %>
+<div class="row my-3">
+  <div class="col d-flex align-items-center">
+    <span class="fs-2 me-2">Brand</span>
+    <span class="rounded-pill text-white bg-danger opacity-75 py-1 px-3">
+      <%= bi_icon('people-fill') %>
+      <%= @brand.screen_name %>
+    </span>
+  </div>
+</div>
+<div class="row">
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item" id="account-settings-tab" role="presentation">
+      <%= button_tag 'Account settings', class: 'nav-link active', role: 'tab',
+                     'data-bs-toggle' => 'tab', 'data-bs-target' => '#account-settings-tab-pane',
+                     'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true %>
+    </li>
+    <li class="nav-item" id="team-settings-tab" role="presentation">
+      <%= button_tag 'Team settings', class: 'nav-link', role: 'tab',
+                     'data-bs-toggle' => 'tab', 'data-bs-target' => '#team-settings-tab-pane',
+                     'aria-controls' => 'team-settings-tab-pane', 'aria-selected' => false %>
+    </li>
+  </ul>
+  <div class="tab-content mt-4">
+    <div aria-labelledby="account-settings-tab" class="tab-pane active" id="account-settings-tab-pane" role="tabpanel" tabindex="0">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title">
+                <p class="fs-4 fw-bold">Add account</p>
+              </div>
+              <div class="list-group list-group-flush" id="account-providers">
+                <%= render partial: 'shared/account_provider', collection: BrandAccount.providers.keys,
+                           as: :account_provider, locals: { model: 'brand' } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%= render partial: 'shared/accounts', locals: { model: @brand } %>
+    </div>
+    <div aria-labelledby="team-settings-tab" class="tab-pane" id="team-settings-tab-pane" role="tabpanel" tabindex="0">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="card-title">
+                <p class="fs-4 fw-bold">Brand Domain</p>
+                <p class="text-muted">Add users from your email domain automatially to your team.</p>
+              </div>
+              <hr class="border-2 border-top"/>
+              <%= form_with model: @brand, method: :patch do |update_brand_form| %>
+                <div class="row">
+                  <div class="col-8 col-lg-8">
+                    <%= update_brand_form.text_field :domain, required: true, placeholder: 'domain.com',
+                                                     class: 'form-control' %>
+                  </div>
+                  <div class="col-4 col-lg-4">
+                    <%= update_brand_form.submit 'Update', name: nil, class: 'btn form-control btn-primary' %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="card-title">
+                <p class="fs-4 fw-bold">Subscription</p>
+              </div>
+              <% if Flipper.enabled?(:subscriptions) %>
+                <p>
+                  Subscription status:
+                  <span class="badge-<%= subscription_badge_class(subscription_status) %> badge">
+            <%= subscription_status || 'no subscription' %>
+          </span>
+                </p>
+                <% if @brand.subscription&.running? %>
+                  <%= button_tag 'Update Payment Details', class: 'btn btn-primary', id: 'update-subscription' %>
+                  <%= button_tag 'Cancel Subscription', class: 'btn btn-primary', id: 'cancel-subscription' %>
+                <% else %>
+                  <%= button_tag 'Buy Subscription', class: 'btn btn-primary', id: 'buy-subscription' %>
+                <% end %>
+              <% else %>
+                <p class="text-muted">Subscriptions are currently disabled.</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title">
+                <p class="fs-4 fw-bold">Brand team</p>
+              </div>
+              <div class="row">
+                <%= form_with url: brand_users_path(@brand), method: :post,
+                              html: { 'data-controller' => 'reset-form',
+                                      'data-action' => 'turbo:submit-end->reset-form#reset' } do |add_user_form| %>
+                  <div class="row">
+                    <div class="col-8 col-lg-4">
+                      <%= add_user_form.select :user_id, nil, { include_blank: 'Select user' },
+                                               { required: true, class: 'custom-select form-control', id: 'add-user' } do %>
+                        <% unless add_users_dropdown_options_for.empty? %>
+                          <% add_users_dropdown_options_for.each do |id, name| %>
+                            <option value="<%= id %>">
+                              <%= name %>
+                            </option>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    </div>
+                    <div class="col-4 col-lg-1">
+                      <%= add_user_form.submit 'Add', class: 'btn form-control btn-primary' %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12">
+                  <span>Members</span>
+                  <hr class="my-3"/>
+                  <div class="list-group list-group-flush mw-100 flex-wrap" id="users-in-brand">
+                    <%= render partial: 'brands/user', collection: @brand_users %>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="d-flex justify-content-center">
+                      <%= raw(pagy_bootstrap_nav(@pagy)) %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%= content_for :custom_javascript do %>
+  <% if Rails.application.credentials.dig(:paddle, :vendor_id) %>
+    <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
+    <script>
+
+        Paddle.Setup({vendor: <%=Rails.application.credentials.dig(:paddle, :vendor_id) %>})
+
+    </script>
+    <% # rubocop:disable Style/IdenticalConditionalBranches %>
+    <% if @brand.subscription&.running? %>
+      <script>
+
+          function cancelSubscription() {
+              Paddle.Checkout.open({
+                  override: "<%=@brand.subscription.cancel_url%>", success: "<%=checkout_redirect_path%>"
+              })
+          }
+
+          function updateSubscription() {
+              Paddle.Checkout.open({
+                  override: "<%=@brand.subscription.update_url%>", success: "<%=checkout_redirect_path%>"
+              })
+          }
+
+          document.getElementById('cancel-subscription').addEventListener('click', cancelSubscription, false)
+          document.getElementById('update-subscription').addEventListener('click', updateSubscription, false)
+
+      </script>
+    <% else %>
+      <script>
+
+          function buySubscription() {
+              Paddle.Checkout.open({
+                  product: 592438, allowQuantity: false, quantity: "<%= @brand.users.count %>",
+                  passthrough: "{\"brand_id\": <%=@brand.id%>}", success: "<%=checkout_redirect_path%>"
+              })
+          }
+
+          document.getElementById('buy-subscription').addEventListener('click', buySubscription, false)
+
+      </script>
+    <% end %>
+    <% # rubocop:enable Style/IdenticalConditionalBranches %>
+  <% end %>
+<% end %>
