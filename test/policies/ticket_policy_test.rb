@@ -77,8 +77,8 @@ class TicketPolicyTest < ActiveSupport::TestCase
     assert_not_permit TicketPolicy, nil, tickets(:internal_twitter), :refresh
   end
 
-  test 'allows access to refresh? for users outside of brand' do
-    assert_permit TicketPolicy, users(:john), tickets(:internal_twitter), :refresh
+  test 'denies access to refresh? for users outside of brand' do
+    assert_not_permit TicketPolicy, users(:john), tickets(:internal_twitter), :refresh
   end
 
   test 'allows access to refresh? for users in brand' do

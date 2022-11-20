@@ -7,7 +7,7 @@
     </span>
   </div>
   <div class="col-lg-9 d-flex justify-content-end align-items-center">
-    <% if policy(:ticket).refresh? && policy(@brand).user_in_brand? %>
+    <% if policy(@brand, policy_class: TicketPolicy).refresh? %>
       <%= link_to refresh_brand_tickets_path(@brand), class: 'btn btn-outline-primary',
                                                       'data-turbo-method' => :post, 'data-turbo-frame' => :_top do %>
         <%= bi_icon('arrow-clockwise') %>

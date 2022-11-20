@@ -53,8 +53,7 @@ module Brands
     end
 
     def refresh
-      authorize(Ticket)
-      authorize(brand, :user_in_brand?)
+      authorize(brand, policy_class: TicketPolicy)
 
       LoadNewTicketsJob.perform_later(brand.id)
 

@@ -32,8 +32,8 @@ class TicketPolicy < ApplicationPolicy
   end
 
   def refresh?
-    # There's a subsequent check if the user is in the brand.
-    user.present?
+    user &&
+      user.brand == record.brand
   end
 
   def permalink?
