@@ -35,6 +35,15 @@ class BrandPolicyTest < ActiveSupport::TestCase
     assert_not_permit BrandPolicy, users(:john), brands(:respondo), :subscription
   end
 
+  test 'denies access to subscription? when brand has inactive subscription' do
+    Subscription.create!(
+      update_url: 'https://respondohub.com/update', cancel_url: 'https://respondohub.com/cancel',
+      brand: brands(:respondo), external_uid: '123', email: 'support@respondohub.com', status: :deleted
+    )
+
+    assert_not_permit BrandPolicy, users(:john), brands(:respondo), :subscription
+  end
+
   test 'allows access to subscription? when brand has active subscription' do
     Subscription.create!(
       update_url: 'https://respondohub.com/update', cancel_url: 'https://respondohub.com/cancel',
@@ -42,5 +51,19 @@ class BrandPolicyTest < ActiveSupport::TestCase
     )
 
     assert_permit BrandPolicy, users(:john), brands(:respondo), :subscription
+  end
+
+  test 'denies access to user_in_brand? for guests' do
+    assert_not_permit BrandPolicy, nil, brands(:respondo), :user_in_brand
+  end
+
+  test 'denies access to user_in_brand? for users outside of brand' do
+    assert_not_permit BrandPolicy, users(:john), brands(:respondo), :user_in_brand
+  end
+
+  test 'allows access to user_in_brand? for users in brand' do
+    brands(:respondo).users << users(:john)
+
+    assert_permit BrandPolicy, users(:john), brands(:respondo), :user_in_brand
   end
 end

@@ -18,8 +18,7 @@ class TicketPolicy < ApplicationPolicy
 
   def destroy?
     user &&
-      user.brand == record.brand &&
-      record.creator_id.present?
+      user.brand == record.brand
   end
 
   def reply?
@@ -33,7 +32,8 @@ class TicketPolicy < ApplicationPolicy
   end
 
   def refresh?
-    user.present?
+    user &&
+      user.brand == record.brand
   end
 
   def permalink?
