@@ -29,16 +29,16 @@
           <% if current_user.brand %>
             <li class="nav-item">
               <%= active_link_to brand_dashboard_path(current_user.brand), { active: :exclusive,
-                                                                        class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
-                                                                        :title => 'Dashboard' } do %>
+                                                                             class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
+                                                                             :title => 'Dashboard' } do %>
                 <%= bi_icon('grid-1x2', 'fs-4 me-3') %>
                 <span>Dashboard</span>
               <% end %>
             </li>
             <li class="nav-item">
               <%= active_link_to brand_tickets_path(current_user.brand), { active: :exclusive,
-                                                                      class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
-                                                                      :title => 'Tickets' } do %>
+                                                                           class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
+                                                                           :title => 'Tickets' } do %>
                 <%= bi_icon('ticket', 'fs-4 me-3') %>
                 <span>Tickets</span>
               <% end %>
