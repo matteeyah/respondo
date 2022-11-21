@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <title>Respondo</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all' %>
@@ -22,24 +22,24 @@
                 Sign in to
                 <span class="text-color-switch">Respondo</span>
               </div>
-              <hr/>
+              <hr>
               <p class="card-text text-muted text-center">
                 Sign in is only available with a Google or Microsoft AD account.
               </p>
               <div class="d-grid gap-3">
                 <%= auth_provider_link('google_oauth2', 'user',
-                  { class: 'btn form-control btn-outline-dark' }, origin: '/') do%>
+                                       { class: 'btn form-control btn-outline-dark' }, origin: '/') do %>
                   <i class="bi bi-google text-warning"></i>
                   <span>Sign in with Google</span>
                 <% end %>
                 <%= auth_provider_link('activedirectory', 'user',
-                  { class: 'btn form-control btn-outline-dark' }, origin: '/') do %>
+                                       { class: 'btn form-control btn-outline-dark' }, origin: '/') do %>
                   <i class="bi bi-microsoft text-primary"></i>
                   <span>Sign in with Microsoft AD</span>
                 <% end %>
                 <% if Rails.env.development? %>
                   <%= auth_provider_link('developer', 'user',
-                    { class: 'btn form-control btn-danger' }, origin: '/') do %>
+                                         { class: 'btn form-control btn-danger' }, origin: '/') do %>
                     <i class="bi bi-code-slash"></i>
                     <span>Developer Sign In</span>
                   <% end %>

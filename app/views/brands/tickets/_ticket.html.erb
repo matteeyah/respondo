@@ -39,14 +39,14 @@
           <div class="col-2 col-lg-1 d-flex justify-content-start justify-content-lg-end">
             <% if policy(ticket).destroy? %>
               <%= link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-method' => :delete,
-                          id: "delete-#{ticket.id}" do %>
+                                                                   id: "delete-#{ticket.id}" do %>
                 <%= bi_icon('x-lg') %>
               <% end %>
             <% end %>
           </div>
           <div class="col-2 col-lg-1 d-flex justify-content-start justify-content-lg-end">
             <%= link_to brand_ticket_permalink_path(ticket.brand, ticket), 'data-turbo-frame' => :_top,
-                        id: "permalink-#{ticket.id}" do %>
+                                                                           id: "permalink-#{ticket.id}" do %>
               <%= bi_icon('box-arrow-up-right') %>
             <% end %>
           </div>
@@ -77,7 +77,7 @@
                                   html: { autocomplete: 'off' } do |reply_form| %>
                       <div class="input-group input-group-sm mb-3">
                         <%= reply_form.text_area :content, required: true,
-                                                 placeholder: 'Reply Text', class: 'form-control' %>
+                                                           placeholder: 'Reply Text', class: 'form-control' %>
                         <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
                                     class: 'btn btn-outline-secondary' %>
                         <%= reply_form.submit 'Reply', class: 'btn btn-primary' %>
@@ -95,7 +95,7 @@
                                           'data-action' => 'turbo:submit-end->reset-form#reset' } do |internal_note_form| %>
                       <div class="input-group input-group-sm mb-3">
                         <%= internal_note_form.text_field :content, required: true,
-                                                          placeholder: 'Internal note text.', class: 'form-control' %>
+                                                                    placeholder: 'Internal note text.', class: 'form-control' %>
                         <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
                                     class: 'btn btn-outline-secondary' %>
                         <%= internal_note_form.submit 'Create note', class: 'btn btn-primary' %>
@@ -110,7 +110,7 @@
                                       'data-action' => 'turbo:submit-end->reset-form#reset' } do |tag_form| %>
                   <div class="input-group input-group-sm mb-3">
                     <%= tag_form.text_field :name, required: true,
-                                            placeholder: 'Add tags to ticket..', class: 'form-control' %>
+                                                   placeholder: 'Add tags to ticket..', class: 'form-control' %>
                     <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
                                 class: 'btn btn-outline-secondary' %>
                     <%= tag_form.submit 'Tag ticket', class: 'btn btn-primary' %>

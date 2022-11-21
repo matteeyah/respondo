@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <title>Respondo</title>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= stylesheet_link_tag 'application', media: 'all' %>
@@ -46,7 +46,7 @@
           <% end %>
           <li class="nav-item">
             <%= link_to '#', class: 'nav-link d-flex align-items-center ps-4', id: 'help', title: 'Help',
-                        'data-bs-toggle' => 'collapse', 'data-bs-target' => '#help-menu', 'aria-expanded' => false do %>
+                             'data-bs-toggle' => 'collapse', 'data-bs-target' => '#help-menu', 'aria-expanded' => false do %>
               <%= bi_icon('question-square', 'fs-4 me-3') %>
               <span>Help</span>
             <% end %>
@@ -77,7 +77,7 @@
           <% if current_user %>
             <li class="nav-item">
               <%= link_to '#', class: 'nav-link d-flex align-items-center ps-4', id: 'settings', title: 'Settings',
-                          'data-bs-toggle' => 'collapse', 'data-bs-target' => '#settings-menu', 'aria-expanded' => false do %>
+                               'data-bs-toggle' => 'collapse', 'data-bs-target' => '#settings-menu', 'aria-expanded' => false do %>
                 <%= bi_icon('gear-wide', 'fs-4 me-3') %>
                 <span>Settings</span>
               <% end %>
@@ -98,7 +98,7 @@
             </ul>
             <li class="nav-item">
               <%= button_to sign_out_path, method: :delete, 'data-turbo' => false,
-                            class: 'btn btn-link nav-link d-flex align-items-center ps-4' do %>
+                                           class: 'btn btn-link nav-link d-flex align-items-center ps-4' do %>
                 <%= bi_icon('box-arrow-left', 'fs-4 me-3') %>
                 <span>Sign Out</span>
               <% end %>
