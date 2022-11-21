@@ -14,9 +14,4 @@ class BrandPolicy < ApplicationPolicy
   def subscription?
     record.subscription&.running?
   end
-
-  def user_in_brand?
-    user &&
-      record == user.brand
-  end
 end

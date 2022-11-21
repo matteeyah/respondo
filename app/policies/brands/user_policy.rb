@@ -4,7 +4,7 @@ module Brands
   class UserPolicy < ApplicationPolicy
     def create?
       user &&
-        record.brand.nil?
+        user.brand == record
     end
 
     def destroy?

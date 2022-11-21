@@ -5,17 +5,17 @@ require 'test_helper'
 module Brands
   class UserPolicyTest < ActiveSupport::TestCase
     test 'denies access to create? for guests' do
-      assert_not_permit Brands::UserPolicy, nil, users(:other), :create
+      assert_not_permit Brands::UserPolicy, nil, brands(:respondo), :create
     end
 
-    test 'denies access to create? if external user already has brand' do
-      brands(:respondo).users << users(:other)
-
-      assert_not_permit Brands::UserPolicy, users(:john), users(:other), :create
+    test 'denies access to create? for users outside of brand' do
+      assert_not_permit Brands::UserPolicy, users(:john), brands(:respondo), :create
     end
 
-    test 'allows access to create? if external user does not have brand' do
-      assert_permit Brands::UserPolicy, users(:john), users(:other), :create
+    test 'allows access to create? for users in brand' do
+      brands(:respondo).users << users(:john)
+
+      assert_permit Brands::UserPolicy, users(:john), brands(:respondo), :create
     end
 
     test 'denies access to destroy? for guests' do

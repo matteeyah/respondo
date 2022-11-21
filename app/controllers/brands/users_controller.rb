@@ -5,8 +5,7 @@ module Brands
     include Pundit::Authorization
 
     def create
-      authorize([:brands, external_user])
-      authorize(brand, :user_in_brand?)
+      authorize(brand, policy_class: Brands::UserPolicy)
 
       @user = external_user
       brand.users << @user
