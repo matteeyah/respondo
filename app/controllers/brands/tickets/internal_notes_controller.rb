@@ -5,7 +5,7 @@ module Brands
     class InternalNotesController < ApplicationController
       def create
         authorize(:internal_note)
-        raise Pundit::NotAuthorizedError unless brand.subscription.running?
+        raise Pundit::NotAuthorizedError unless brand.subscription&.running?
 
         @internal_note = create_note!
 

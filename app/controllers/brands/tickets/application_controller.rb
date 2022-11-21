@@ -2,7 +2,7 @@
 
 module Brands
   module Tickets
-    class ApplicationController < ::ApplicationController
+    class ApplicationController < ::Brands::ApplicationController
       private
 
       def ticket
