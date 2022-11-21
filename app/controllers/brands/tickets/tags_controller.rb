@@ -4,7 +4,7 @@ module Brands
   module Tickets
     class TagsController < ApplicationController
       def create
-        authorize(ticket.brand, policy_class: TagPolicy)
+        authorize(:tag)
 
         @tag = new_tag
         @ticket = ticket
@@ -17,9 +17,9 @@ module Brands
       end
 
       def destroy
-        @ticket = ticket
-        authorize(@ticket, policy_class: TagPolicy)
+        authorize(:tag)
 
+        @ticket = ticket
         @tag = tag
         @ticket.tags.delete(@tag)
 

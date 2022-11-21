@@ -65,7 +65,7 @@
         <% end %>
       </div>
       <div class="card-footer">
-        <% if !Flipper.enabled?(:subscriptions) || policy(ticket.brand).subscription? %>
+        <% if !Flipper.enabled?(:subscriptions) || # TODO: Check for subscription %>
           <div class="row">
             <% if local_assigns[:action_form] %>
               <% case action_form %>

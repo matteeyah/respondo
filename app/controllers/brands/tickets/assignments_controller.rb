@@ -4,7 +4,7 @@ module Brands
   module Tickets
     class AssignmentsController < ApplicationController
       def create
-        authorize(ticket.brand, policy_class: AssignmentPolicy)
+        authorize(:assignment)
 
         update_assignment!
 

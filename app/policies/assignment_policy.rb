@@ -3,6 +3,7 @@
 class AssignmentPolicy < ApplicationPolicy
   def create?
     user &&
-      user.brand == record
+      user.brand == target_object.first &&
+      target_object.first == target_object.second.brand
   end
 end

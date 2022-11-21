@@ -2,12 +2,11 @@
 
 class PersonalAccessTokenPolicy < ApplicationPolicy
   def create?
-    user &&
-      user == record.user
+    user == target_object
   end
 
   def destroy?
-    user &&
+    user == target_object &&
       user == record.user
   end
 end

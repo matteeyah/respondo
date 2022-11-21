@@ -4,8 +4,8 @@ module Brands
   module Tickets
     class RepliesController < ApplicationController
       def create
-        authorize(ticket.brand, policy_class: ReplyPolicy)
-        authorize(ticket.brand, :subscription?)
+        authorize(:reply)
+        # TODO: Check for subscription
 
         @ticket_hash = ticket_hash!
 

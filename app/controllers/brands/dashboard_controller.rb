@@ -3,7 +3,7 @@
 module Brands
   class DashboardController < ApplicationController
     def index
-      authorize(brand, policy_class: DashboardPolicy)
+      authorize(:dashboard
 
       @newest_tickets = newest_tickets
       @new_count = new_tickets.count

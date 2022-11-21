@@ -7,5 +7,9 @@ module Users
     def user
       @user ||= User.find(params[:user_id] || params[:id])
     end
+
+    def pundit_user
+      [current_user, user]
+    end
   end
 end

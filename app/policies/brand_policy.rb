@@ -3,15 +3,11 @@
 class BrandPolicy < ApplicationPolicy
   def edit?
     user &&
-      record == user.brand
+      user.brand == record
   end
 
   def update?
     user &&
-      record == user.brand
-  end
-
-  def subscription?
-    record.subscription&.running?
+      user.brand == record
   end
 end

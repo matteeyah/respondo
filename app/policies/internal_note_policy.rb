@@ -3,6 +3,7 @@
 class InternalNotePolicy < ApplicationPolicy
   def create?
     user &&
-      record == user.brand
+      user.brand == target_object.first &&
+      target_object.first == target_object.second.brand
   end
 end

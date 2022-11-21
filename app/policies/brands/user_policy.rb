@@ -4,12 +4,12 @@ module Brands
   class UserPolicy < ApplicationPolicy
     def create?
       user &&
-        user.brand == record
+        user.brand == target_object
     end
 
     def destroy?
       user &&
-        user.brand == record.brand
+        user.brand == target_object
     end
   end
 end

@@ -3,6 +3,6 @@
 class DashboardPolicy < ApplicationPolicy
   def index?
     user &&
-      record == user.brand
+      user.brand == target_object
   end
 end

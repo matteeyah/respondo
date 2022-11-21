@@ -10,7 +10,8 @@ module Brands
     ].freeze
 
     def index
-      authorize(brand, policy_class: TicketPolicy)
+      authorize(:ticket)
+
       @pagy, tickets_relation = pagy(tickets)
       @tickets = tickets_relation.with_descendants_hash(TICKET_RENDER_PRELOADS)
       @brand = brand
@@ -52,7 +53,7 @@ module Brands
     end
 
     def refresh
-      authorize(brand, policy_class: TicketPolicy)
+      authorize(:ticket)
 
       LoadNewTicketsJob.perform_later(brand.id)
 

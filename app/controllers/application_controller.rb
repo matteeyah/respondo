@@ -40,6 +40,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_brand
 
   def pundit_user
-    [current_user, current_brand]
+    [current_user, nil]
   end
 end

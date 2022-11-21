@@ -3,11 +3,13 @@
 class TagPolicy < ApplicationPolicy
   def create?
     user &&
-      user.brand == record
+      user.brand == target_object.first &&
+      target_object.first == target_object.second.brand
   end
 
   def destroy?
     user &&
-      user.brand == record.brand
+      user.brand == target_object.first &&
+      target_object.first == target_object.second.brand
   end
 end

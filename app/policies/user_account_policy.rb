@@ -2,7 +2,7 @@
 
 class UserAccountPolicy < ApplicationPolicy
   def destroy?
-    user &&
+    user == target_object &&
       user == record.user
   end
 end

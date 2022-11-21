@@ -3,7 +3,7 @@
 module Brands
   class UsersController < ApplicationController
     def create
-      authorize(brand, policy_class: Brands::UserPolicy)
+      authorize([:brands, :user])
 
       @user = external_user
       brand.users << @user
