@@ -69,15 +69,15 @@ jobs:
           bundler-cache: true
       - name: Run rubocop
         run: bundle exec rubocop
-  haml-lint:
+  erblint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Run haml-lint
-        run: bundle exec haml-lint
+      - name: Run erb-lint
+        run: bundle exec erblint '**/*.erb'
   markdownlint:
     runs-on: ubuntu-latest
     steps:

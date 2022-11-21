@@ -1,0 +1,77 @@
+<div class="row my-3">
+  <div class="col d-flex align-items-center">
+    <span class="fs-2 me-2">User</span>
+    <span class="rounded-pill text-white bg-info opacity-75 py-1 px-3">
+      <%= bi_icon('person-fill') %>
+      <%= @user.name %>
+    </span>
+  </div>
+</div>
+<div class="row">
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item" id="account-settings-tab" role="presentation">
+      <%= button_tag 'Account settings', class: 'nav-link active', role: 'tab',
+                                         'data-bs-toggle' => 'tab', 'data-bs-target' => '#account-settings-tab-pane',
+                                         'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true %>
+    </li>
+    <li class="nav-item" id="user-settings-tab" role="presentation">
+      <%= button_tag 'User settings', class: 'nav-link', role: 'tab',
+                                      'data-bs-toggle' => 'tab', 'data-bs-target' => '#user-settings-tab-pane',
+                                      'aria-controls' => 'user-settings-tab-pane', 'aria-selected' => false %>
+    </li>
+  </ul>
+  <div class="tab-content mt-4">
+    <div aria-labelledby="account-settings-tab" class="tab-pane active"
+         id="account-settings-tab-pane" role="tabpanel" tabindex="0">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title">
+                <p class="fs-4 fw-bold">Add account</p>
+              </div>
+              <div class="list-group list-group-flush" id="account-providers">
+                <%= render partial: 'shared/account_provider',
+                           collection: (UserAccount.providers.keys - @user.accounts.map(&:provider)),
+                           as: :account_provider, locals: { model: 'user' } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%= render partial: 'shared/accounts', locals: { model: @user } %>
+    </div>
+    <div aria-labelledby="user-settings-tab" class="tab-pane" id="user-settings-tab-pane" role="tabpanel" tabindex="0">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title">
+                <p class="fs-4 fw-bold">Personal Access Tokens</p>
+                <p class="text-muted">Create or delete personal access tokens used for API access.</p>
+              </div>
+              <div class="row">
+                <%= form_with url: user_personal_access_tokens_path(@user),
+                              html: { autocomplete: 'off', 'data-controller' => 'reset-form',
+                                      'data-action' => 'turbo:submit-end->reset-form#reset' } do |create_token_form| %>
+                  <div class="row">
+                    <div class="col-8 col-lg-8">
+                      <%= create_token_form.text_field :name, required: true,
+                                                              placeholder: 'Enter token name', class: 'form-control' %>
+                    </div>
+                    <div class="col-4 col-lg-4">
+                      <%= create_token_form.submit 'Create', name: nil, class: 'btn form-control btn-primary' %>
+                    </div>
+                  </div>
+                <% end %>
+                <div class="list-group list-group-flush" id="personal-access-tokens">
+                  <%= render partial: 'users/personal_access_token', collection: @user.personal_access_tokens %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-12">
+    <h3>Overview</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <p class="text-muted">
+      Welcome,
+      <span class="text-black">
+        <%= current_user.name %>
+      </span>
+      , you're all set! Feel free to hop into the brand tickets!
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6 mb-5">
+    <div class="row gy-3">
+      <div class="col-lg-6">
+        <div class="card border border-2 rounded-5 border-info p-3">
+          <div class="card-body">
+            <%= link_to brand_tickets_path(current_brand), { class: 'text-decoration-none m-0 stretched-link' } do %>
+              <div class="card-title">
+                <%= bi_icon('magic', 'fs-3 bg-info bg-opacity-50 text-info p-3 rounded') %>
+                <p class="text-muted mt-3">New Tickets</p>
+              </div>
+              <p class="fs-1">
+                <%= @new_count %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card border border-2 rounded-5 border-primary p-3">
+          <div class="card-body">
+            <%= link_to brand_tickets_path(current_brand, status: 'open'),
+                        { class: 'text-decoration-none stretched-link' } do %>
+              <div class="card-title">
+                <%= bi_icon('folder2-open', 'fs-3 bg-primary bg-opacity-50 text-primary p-3 rounded') %>
+                <p class="text-muted mt-3">Total Open</p>
+              </div>
+              <p class="fs-1">
+                <%= @open_count %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row my-1 my-lg-2 gy-3">
+      <div class="col-lg-6">
+        <div class="card border border-2 rounded-5 border-warning p-3">
+          <div class="card-body">
+            <%= link_to brand_tickets_path(current_brand), { class: 'text-decoration-none stretched-link' } do %>
+              <div class="card-title">
+                <%= bi_icon('stopwatch-fill', 'fs-3 bg-warning bg-opacity-50 text-warning p-3 rounded') %>
+                <p class="text-muted mt-3">Unassigned Tickets</p>
+              </div>
+              <p class="fs-1">
+                <%= @unassigned_count %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card border border-2 rounded-5 border-danger p-3">
+          <div class="card-body">
+            <%= link_to brand_tickets_path(current_brand, status: 'solved'),
+                        { class: 'text-decoration-none stretched-link' } do %>
+              <div class="card-title">
+                <%= bi_icon('folder2', 'fs-3 bg-danger bg-opacity-50 text-danger p-3 rounded') %>
+                <p class="text-muted mt-3">Total Solved</p>
+              </div>
+              <p class="fs-1">
+                <%= @solved_count %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card bg-secondary p-3 rounded-5">
+      <div class="card-body">
+        <div class="card-title d-flex justify-content-between align-items-center mb-2 text-light">
+          <span class="fs-4">Newest</span>
+          <%= link_to brand_tickets_path(current_brand),
+                      { active: :exclusive, class: 'text-decoration-none', 'data-turbo-frame' => :_top } do %>
+            <%= bi_icon('box-arrow-up-right text-light') %>
+          <% end %>
+        </div>
+        <div class="list-group list-group-flush">
+          <%= render partial: 'ticket', collection: @newest_tickets %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
