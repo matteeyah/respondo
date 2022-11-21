@@ -2,8 +2,6 @@
 
 module Users
   class PersonalAccessTokensController < ApplicationController
-    include Pundit::Authorization
-
     def create
       @token = build_personal_access_token
       authorize(@token)

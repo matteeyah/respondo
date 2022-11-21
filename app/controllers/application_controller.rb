@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+
   etag { Rails.application.importmap.digest(resolver: helpers) if request.format&.html? }
 
   protect_from_forgery with: :exception
@@ -36,4 +38,8 @@ class ApplicationController < ActionController::Base
     @current_brand ||= current_user&.brand
   end
   helper_method :current_brand
+
+  def pundit_user
+    [current_user, current_brand]
+  end
 end

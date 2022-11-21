@@ -3,8 +3,6 @@
 module Brands
   module Tickets
     class AssignmentsController < ApplicationController
-      include Pundit::Authorization
-
       def create
         authorize(ticket.brand, policy_class: AssignmentPolicy)
 

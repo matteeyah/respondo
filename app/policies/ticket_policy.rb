@@ -33,7 +33,7 @@ class TicketPolicy < ApplicationPolicy
 
   def refresh?
     user &&
-      user.brand == record.brand
+      user.brand == brand
   end
 
   def permalink?

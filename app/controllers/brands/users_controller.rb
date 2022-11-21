@@ -2,8 +2,6 @@
 
 module Brands
   class UsersController < ApplicationController
-    include Pundit::Authorization
-
     def create
       authorize(brand, policy_class: Brands::UserPolicy)
 

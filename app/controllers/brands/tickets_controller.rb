@@ -2,7 +2,6 @@
 
 module Brands
   class TicketsController < ApplicationController
-    include Pundit::Authorization
     include Pagy::Backend
 
     TICKET_RENDER_PRELOADS = [

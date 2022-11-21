@@ -3,8 +3,6 @@
 module Brands
   module Tickets
     class RepliesController < ApplicationController
-      include Pundit::Authorization
-
       def create
         authorize(ticket.brand, policy_class: ReplyPolicy)
         authorize(ticket.brand, :subscription?)

@@ -2,8 +2,6 @@
 
 module Brands
   class DashboardController < ApplicationController
-    include Pundit::Authorization
-
     def index
       authorize(brand, policy_class: DashboardPolicy)
 
