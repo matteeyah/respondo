@@ -24,6 +24,24 @@ class TicketPolicy < ApplicationPolicy
       user.brand == record.brand
   end
 
+  def reply?
+    user &&
+      user.brand == target_object &&
+      user.brand == record.brand
+  end
+
+  def internal_note?
+    user &&
+      user.brand == target_object &&
+      user.brand == record.brand
+  end
+
+  def assign?
+    user &&
+      user.brand == target_object &&
+      user.brand == record.brand
+  end
+
   def refresh?
     user &&
       user.brand == target_object

@@ -45,6 +45,48 @@ class TicketPolicyTest < ActiveSupport::TestCase
     assert_permit TicketPolicy, [users(:john), brands(:respondo)], tickets(:internal_twitter), :destroy
   end
 
+  test 'denies access to reply? for guests' do
+    assert_not_permit TicketPolicy, [nil, brands(:respondo)], tickets(:internal_twitter), :reply
+  end
+
+  test 'denies access to reply? for users outside of brand' do
+    assert_not_permit TicketPolicy, [users(:john), brands(:respondo)], tickets(:internal_twitter), :reply
+  end
+
+  test 'allows access to reply? for users in brand' do
+    brands(:respondo).users << users(:john)
+
+    assert_permit TicketPolicy, [users(:john), brands(:respondo)], tickets(:internal_twitter), :reply
+  end
+
+  test 'denies access to internal_note? for guests' do
+    assert_not_permit TicketPolicy, [nil, brands(:respondo)], tickets(:internal_twitter), :internal_note
+  end
+
+  test 'denies access to internal_note? for users outside of brand' do
+    assert_not_permit TicketPolicy, [users(:john), brands(:respondo)], tickets(:internal_twitter), :internal_note
+  end
+
+  test 'allows access to internal_note? for users in brand' do
+    brands(:respondo).users << users(:john)
+
+    assert_permit TicketPolicy, [users(:john), brands(:respondo)], tickets(:internal_twitter), :internal_note
+  end
+
+  test 'denies access to assign? for guests' do
+    assert_not_permit TicketPolicy, [nil, brands(:respondo)], tickets(:internal_twitter), :assign
+  end
+
+  test 'denies access to assign? for users outside of brand' do
+    assert_not_permit TicketPolicy, [users(:john), brands(:respondo)], tickets(:internal_twitter), :assign
+  end
+
+  test 'allows access to assign? for users in brand' do
+    brands(:respondo).users << users(:john)
+
+    assert_permit TicketPolicy, [users(:john), brands(:respondo)], tickets(:internal_twitter), :assign
+  end
+
   test 'denies access to refresh? for guests' do
     assert_not_permit TicketPolicy, [nil, brands(:respondo)], tickets(:internal_twitter), :refresh
   end

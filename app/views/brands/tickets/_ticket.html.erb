@@ -58,14 +58,14 @@
             <%= ticket.content %>
           </p>
         </div>
-        <% if policy(ticket).update? %>
+        <% if policy(ticket).internal_note? %>
           <ul class="list-group list-group-flush" id="<%= dom_id(ticket) %>_internal_notes">
             <%= render partial: 'brands/tickets/internal_note', collection: ticket.internal_notes %>
           </ul>
         <% end %>
       </div>
       <div class="card-footer">
-        <% if !Flipper.enabled?(:subscriptions) || current_user.brand.subscription&.running? %>
+        <% if !Flipper.enabled?(:subscriptions) || current_user.brand.subscribed? %>
           <div class="row">
             <% if local_assigns[:action_form] %>
               <% case action_form %>

@@ -4,8 +4,8 @@ module Brands
   module Tickets
     class InternalNotesController < ApplicationController
       def create
-        authorize(:internal_note)
-        raise Pundit::NotAuthorizedError unless brand.subscription&.running?
+        authorize(ticket, :internal_note?)
+        raise Pundit::NotAuthorizedError unless brand.subscribed?
 
         @internal_note = create_note!
 
@@ -23,6 +23,10 @@ module Brands
 
       def create_note!
         ticket.internal_notes.create(creator: current_user, **note_params)
+      end
+
+      def pundit_user
+        [current_user, brand]
       end
     end
   end

@@ -16,6 +16,11 @@ class Brand < ApplicationRecord
     accounts.exists?(provider:)
   end
 
+  def subscribed?
+    !Flipper.enabled?(:subscriptions) ||
+      subscription&.running?
+  end
+
   private
 
   def increment_subscription_quantity(_)
