@@ -35,7 +35,6 @@ gem 'dartsass-rails', '~> 0.4.0' # SASS processor for Rails
 gem 'disqus_api', '~> 0.0.7' # Disqus client
 gem 'flipper', '~> 0.25.0' # Feature flags
 gem 'flipper-active_record', '~> 0.25.0' # ActiveRecord adapter for flipper
-gem 'haml', '~> 6.0.10' # HAML markup processing
 gem 'hashie', '~> 5.0.0' # Hash utilities
 gem 'json-schema', '~> 3.0.0' # JSON schema validation
 gem 'pagy', '~> 5.10.1' # Pagination
@@ -54,8 +53,8 @@ group :development, :test do
   gem 'rubocop-performance', '~> 1.15.0', require: false
   gem 'rubocop-rails', '~> 2.17.2', require: false
   gem 'rubocop-rspec', '~> 2.15.0', require: false
-  ## Haml linter
-  gem 'haml_lint', '~> 0.42.0', require: false
+  ## ERB
+  gem 'erb_lint', '~> 0.3.1', require: false
   # Other
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails', '~> 6.2.0' # Use factory_bot

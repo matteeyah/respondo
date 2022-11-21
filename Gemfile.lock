@@ -75,6 +75,13 @@ GEM
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
     bcrypt (3.1.18)
+    better_html (2.0.1)
+      actionview (>= 6.0)
+      activesupport (>= 6.0)
+      ast (~> 2.0)
+      erubi (~> 1.4)
+      parser (>= 2.4)
+      smart_properties
     bindex (0.8.1)
     bootsnap (1.13.0)
       msgpack (~> 1.2)
@@ -111,6 +118,13 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     equalizer (0.0.11)
+    erb_lint (0.3.1)
+      activesupport
+      better_html (>= 2.0.1)
+      parser (>= 2.7.1.4)
+      rainbow
+      rubocop
+      smart_properties
     erubi (1.11.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -154,16 +168,6 @@ GEM
       flipper (~> 0.25.4)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    haml (6.0.10)
-      temple (>= 0.8.2)
-      thor
-      tilt
-    haml_lint (0.42.0)
-      haml (>= 4.0, < 6.1)
-      parallel (~> 1.10)
-      rainbow
-      rubocop (>= 0.50.0)
-      sysexits (~> 1.1)
     hashdiff (1.0.1)
     hashie (5.0.0)
     http (4.4.1)
@@ -415,6 +419,7 @@ GEM
       rack (~> 2.2, >= 2.2.4)
       rack-protection (= 3.0.2)
       tilt (~> 2.0)
+    smart_properties (1.17.0)
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
@@ -423,8 +428,6 @@ GEM
     sqlite3 (1.5.3-x86_64-linux)
     stimulus-rails (1.1.1)
       railties (>= 6.0.0)
-    sysexits (1.2.0)
-    temple (0.9.1)
     thor (1.2.1)
     thread_safe (0.3.6)
     tilt (2.0.11)
@@ -490,12 +493,11 @@ DEPENDENCIES
   dartsass-rails (~> 0.4.0)
   debug
   disqus_api (~> 0.0.7)
+  erb_lint (~> 0.3.1)
   factory_bot_rails (~> 6.2.0)
   faker (~> 3.0.0)
   flipper (~> 0.25.0)
   flipper-active_record (~> 0.25.0)
-  haml (~> 6.0.10)
-  haml_lint (~> 0.42.0)
   hashie (~> 5.0.0)
   importmap-rails (~> 1.1.0)
   json-schema (~> 3.0.0)
