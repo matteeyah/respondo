@@ -5,7 +5,7 @@ module Brands
     class RepliesController < ApplicationController
       def create
         authorize(:reply)
-        # TODO: Check for subscription
+        raise Pundit::NotAuthorizedError unless brand.subscription.running?
 
         @ticket_hash = ticket_hash!
 

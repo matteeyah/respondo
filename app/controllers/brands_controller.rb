@@ -17,7 +17,7 @@ class BrandsController < Brands::ApplicationController
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to edit_brand_path(current_brand) }
+      format.html { redirect_to edit_brand_path(current_user.brand) }
     end
   end
 

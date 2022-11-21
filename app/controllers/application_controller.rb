@@ -34,11 +34,6 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
 
-  def current_brand
-    @current_brand ||= current_user&.brand
-  end
-  helper_method :current_brand
-
   def pundit_user
     [current_user, nil]
   end

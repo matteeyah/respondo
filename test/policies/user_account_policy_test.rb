@@ -8,7 +8,7 @@ class UserAccountPolicyTest < ActiveSupport::TestCase
   end
 
   test 'denies access to destroy? for other users' do
-    assert_not_permit UserAccountPolicy, [users(:other), users(:john)] , user_accounts(:google_oauth2), :destroy
+    assert_not_permit UserAccountPolicy, [users(:other), users(:john)], user_accounts(:google_oauth2), :destroy
   end
 
   test 'allows access to destroy? for user that owns the account' do

@@ -20,7 +20,8 @@ class PersonalAccessTokenPolicyTest < ActiveSupport::TestCase
   end
 
   test 'denies access to destroy? for other users' do
-    assert_not_permit PersonalAccessTokenPolicy, [users(:other), users(:john)], personal_access_tokens(:default), :destroy
+    assert_not_permit PersonalAccessTokenPolicy, [users(:other), users(:john)], personal_access_tokens(:default),
+                      :destroy
   end
 
   test 'allows access to destroy? for user that owns the token' do
