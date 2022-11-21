@@ -44,7 +44,7 @@
               <% end %>
             </li>
           <% end %>
-          <li class="nav-item">x
+          <li class="nav-item">
             <%= link_to '#', class: 'nav-link d-flex align-items-center ps-4', id: 'help', title: 'Help',
                         'data-bs-toggle' => 'collapse', 'data-bs-target' => '#help-menu', 'aria-expanded' => false do %>
               <%= bi_icon('question-square', 'fs-4 me-3') %>
@@ -86,7 +86,7 @@
                              ('show' if show_settings_collapse?)] %>
             <ul aria-labelledby="#settings-menu" class="<%= class_list %>" id="settings-menu">
               <% if current_brand %>
-                <li class="nav-item list-group-item list-group-item-action ps-0"><
+                <li class="nav-item list-group-item list-group-item-action ps-0">
                   <%= active_link_to 'Brand settings', edit_brand_path(current_brand),
                                      active: [{ brands: :edit }], class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
                 </li>
