@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-4 col-lg-4">
             <%= bi_icon('person-circle', 'text-primary') %>
-            <span class="m-0"><%= raw(ticket_author_header(policy(ticket.brand).user_in_brand?, ticket)) %></span>
+            <span class="m-0"><%= raw(ticket_author_header(ticket)) %></span>
             <% if ticket.parent_id.nil? %>
               <span class="m-0">via</span>
               <span class="badge rounded-pill list-group-item-primary me-1">

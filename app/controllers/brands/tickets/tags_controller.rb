@@ -6,7 +6,7 @@ module Brands
       include Pundit::Authorization
 
       def create
-        authorize(ticket.brand, :user_in_brand?)
+        authorize(ticket.brand, policy_class: TagPolicy)
 
         @tag = new_tag
         @ticket = ticket
@@ -19,10 +19,10 @@ module Brands
       end
 
       def destroy
-        authorize(ticket.brand, :user_in_brand?)
+        @ticket = ticket
+        authorize(@ticket, policy_class: TagPolicy)
 
         @tag = tag
-        @ticket = ticket
         @ticket.tags.delete(@tag)
 
         respond_to do |format|

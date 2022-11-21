@@ -6,7 +6,7 @@ module Brands
       include Pundit::Authorization
 
       def create
-        authorize(ticket.brand, :user_in_brand?)
+        authorize(ticket.brand, policy_class: ReplyPolicy)
         authorize(ticket.brand, :subscription?)
 
         @ticket_hash = ticket_hash!

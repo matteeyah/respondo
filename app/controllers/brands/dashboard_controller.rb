@@ -5,7 +5,7 @@ module Brands
     include Pundit::Authorization
 
     def index
-      authorize(brand, :user_in_brand?)
+      authorize(brand, policy_class: DashboardPolicy)
 
       @newest_tickets = newest_tickets
       @new_count = new_tickets.count
