@@ -33,7 +33,7 @@
               <div class="list-group list-group-flush" id="account-providers">
                 <%= render partial: 'shared/account_provider',
                            collection: (UserAccount.providers.keys - @user.accounts.map(&:provider)),
-                           as: :account_provider, locals: { model: 'user' } %>
+                           as: :account_provider %>
               </div>
             </div>
           </div>

@@ -5,13 +5,11 @@ module ApplicationHelper
     'google_oauth2' => 'Google',
     'activedirectory' => 'Azure Active Directory',
     'twitter' => 'Twitter',
-    'disqus' => 'Disqus',
-    'developer' => 'Developer',
-    nil => 'Developer'
+    'disqus' => 'Disqus'
   }.freeze
 
-  def auth_provider_link(provider, model, html_options = {}, origin: nil, &block)
-    params = { state: model, origin: }.compact.to_query
+  def auth_provider_link(provider, html_options = {}, origin: nil, &block)
+    params = { origin: }.compact.to_query
     button_to "/auth/#{provider}?#{params}", method: :post, 'data-turbo' => false, **html_options, &block
   end
 

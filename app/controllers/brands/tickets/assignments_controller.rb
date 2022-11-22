@@ -3,11 +3,7 @@
 module Brands
   module Tickets
     class AssignmentsController < ApplicationController
-      include Pundit::Authorization
-
       def create
-        authorize(ticket.brand, :user_in_brand?)
-
         update_assignment!
 
         respond_to do |format|

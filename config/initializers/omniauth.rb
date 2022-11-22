@@ -9,7 +9,6 @@ Rails.application.config.middleware.use OmniAuth::Builder do
            Rails.application.credentials.dig(:twitter, :api_secret)
   provider :disqus, Rails.application.credentials.dig(:disqus, :public_key),
            Rails.application.credentials.dig(:disqus, :secret_key)
-  provider :developer, fields: %i[email name nickname], uid_field: :email if Rails.env.development?
 end
 
 # omniauth-disqus currently has a problem with #callback_url because it passes

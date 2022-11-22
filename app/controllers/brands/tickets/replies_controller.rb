@@ -3,11 +3,8 @@
 module Brands
   module Tickets
     class RepliesController < ApplicationController
-      include Pundit::Authorization
-
       def create
-        authorize(ticket.brand, :user_in_brand?)
-        authorize(ticket.brand, :subscription?)
+        raise StandardError, 'Unauthorized' unless brand.subscribed?
 
         @ticket_hash = ticket_hash!
 

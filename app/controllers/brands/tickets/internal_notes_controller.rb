@@ -3,12 +3,7 @@
 module Brands
   module Tickets
     class InternalNotesController < ApplicationController
-      include Pundit::Authorization
-
       def create
-        authorize(ticket.brand, :user_in_brand?)
-        authorize(ticket.brand, :subscription?)
-
         @internal_note = create_note!
 
         respond_to do |format|

@@ -55,8 +55,8 @@ RSpec.describe BrandsController do
     end
 
     context 'when user is not signed in' do
-      it 'redirects the user back (to root)' do
-        expect(get_edit).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(get_edit).to redirect_to(login_path)
       end
     end
   end
@@ -116,8 +116,8 @@ RSpec.describe BrandsController do
     end
 
     context 'when user is not signed in' do
-      it 'redirects the user back (to root)' do
-        expect(patch_update).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(patch_update).to redirect_to(login_path)
       end
     end
   end

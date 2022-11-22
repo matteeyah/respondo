@@ -139,8 +139,8 @@ RSpec.describe Brands::TicketsController do
       let(:query) { '' }
       let(:ticket_status) { nil }
 
-      it 'redirects the user back (to root)' do
-        expect(get_index).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(get_index).to redirect_to(login_path)
       end
     end
   end
@@ -177,8 +177,8 @@ RSpec.describe Brands::TicketsController do
     end
 
     context 'when user is not signed in' do
-      it 'redirects the user back (to root)' do
-        expect(get_show).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(get_show).to redirect_to(login_path)
       end
     end
   end
@@ -220,8 +220,8 @@ RSpec.describe Brands::TicketsController do
     end
 
     context 'when user is not signed in' do
-      it 'redirects the user back (to root)' do
-        expect(patch_update).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(patch_update).to redirect_to(login_path)
       end
     end
   end
@@ -275,8 +275,8 @@ RSpec.describe Brands::TicketsController do
     end
 
     context 'when user is not signed in' do
-      it 'redirects the user back (to root)' do
-        expect(delete_destroy).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(delete_destroy).to redirect_to(login_path)
       end
     end
   end
@@ -323,8 +323,8 @@ RSpec.describe Brands::TicketsController do
     end
 
     context 'when user is not signed in' do
-      it 'redirects the user back (to root)' do
-        expect(post_refresh).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(post_refresh).to redirect_to(login_path)
       end
     end
   end
@@ -361,8 +361,8 @@ RSpec.describe Brands::TicketsController do
     end
 
     context 'when user is not signed in' do
-      it 'redirects the user back (to root)' do
-        expect(get_permalink).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(get_permalink).to redirect_to(login_path)
       end
     end
   end

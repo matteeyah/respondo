@@ -69,8 +69,8 @@ RSpec.describe Brands::Tickets::AssignmentsController do
     context 'when user is not signed in' do
       let(:user_id) { nil }
 
-      it 'redirects the user back (to root)' do
-        expect(post_create).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(post_create).to redirect_to(login_path)
       end
     end
   end

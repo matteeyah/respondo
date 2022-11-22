@@ -2,12 +2,7 @@
 
 module Brands
   class UsersController < ApplicationController
-    include Pundit::Authorization
-
     def create
-      authorize([:brands, external_user])
-      authorize(brand, :user_in_brand?)
-
       @user = external_user
       brand.users << @user
 
@@ -18,8 +13,6 @@ module Brands
     end
 
     def destroy
-      authorize([:brands, brand_user])
-
       @user = brand_user
       @success = remove_user!
 

@@ -3,11 +3,7 @@
 module Brands
   module Tickets
     class TagsController < ApplicationController
-      include Pundit::Authorization
-
       def create
-        authorize(ticket.brand, :user_in_brand?)
-
         @tag = new_tag
         @ticket = ticket
         @ticket.tags << @tag
@@ -19,10 +15,8 @@ module Brands
       end
 
       def destroy
-        authorize(ticket.brand, :user_in_brand?)
-
-        @tag = tag
         @ticket = ticket
+        @tag = tag
         @ticket.tags.delete(@tag)
 
         respond_to do |format|

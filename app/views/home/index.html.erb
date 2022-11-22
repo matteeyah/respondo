@@ -3,17 +3,7 @@
   <h2>Woohoo, you're in!</h2>
   <p class="text-muted">The next step is to authorize a brand account.</p>
   <hr>
-  <%= auth_provider_link('twitter', 'brand', { class: 'btn btn-primary rounded-pill px-5' }) do %>
+  <%= auth_provider_link('twitter', { class: 'btn btn-primary rounded-pill px-5' }) do %>
     <span>Authorize</span>
-  <% end %>
-  <% if Rails.env.development? %>
-    <div class="row">
-      <div class="col-12 mt-3">
-        <%= auth_provider_link('developer', 'brand', { class: 'btn btn-danger' }) do %>
-          <%= bi_icon('code-slash') %>
-          <span>Developer Sign In</span>
-        <% end %>
-      </div>
-    </div>
   <% end %>
 </div>

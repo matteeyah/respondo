@@ -2,12 +2,8 @@
 
 module Users
   class UserAccountsController < ApplicationController
-    include Pundit::Authorization
-
     def destroy
       @account = account
-      authorize(@account)
-
       @success = @account.destroy
 
       respond_to do |format|

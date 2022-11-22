@@ -6,7 +6,7 @@ class BrandAccount < ApplicationRecord
   validates :email, presence: { allow_blank: false, allow_nil: true }
   validates :screen_name, presence: { allow_blank: false, allow_nil: true }
 
-  enum provider: { twitter: 0, disqus: 1, developer: 99 }
+  enum provider: { twitter: 0, disqus: 1 }
 
   belongs_to :brand
 

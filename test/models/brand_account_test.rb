@@ -145,7 +145,7 @@ class BrandAccountTest < ActiveSupport::TestCase
     assert_requested(stubbed_twitter_request)
   end
 
-  BrandAccount.providers.except(:developer).each_key do |provider|
+  BrandAccount.providers.each_key do |provider|
     test "#client returns a client for #{provider}" do
       account = brand_accounts(:twitter)
       account.provider = provider

@@ -33,7 +33,7 @@
               </div>
               <div class="list-group list-group-flush" id="account-providers">
                 <%= render partial: 'shared/account_provider', collection: BrandAccount.providers.keys,
-                           as: :account_provider, locals: { model: 'brand' } %>
+                           as: :account_provider %>
               </div>
             </div>
           </div>
@@ -74,11 +74,11 @@
               <% if Flipper.enabled?(:subscriptions) %>
                 <p>
                   Subscription status:
-                  <span class="badge-<%= subscription_badge_class(subscription_status) %> badge">
-            <%= subscription_status || 'no subscription' %>
-          </span>
+                  <span class="bg-<%= subscription_badge_class(subscription_status) %> badge">
+                    <%= subscription_status || 'no subscription' %>
+                  </span>
                 </p>
-                <% if @brand.subscription&.running? %>
+                <% if @brand.subscription %>
                   <%= button_tag 'Update Payment Details', class: 'btn btn-primary', id: 'update-subscription' %>
                   <%= button_tag 'Cancel Subscription', class: 'btn btn-primary', id: 'cancel-subscription' %>
                 <% else %>
@@ -151,8 +151,7 @@
         Paddle.Setup({vendor: <%= Rails.application.credentials.dig(:paddle, :vendor_id) %>})
 
     </script>
-# rubocop:disable Style/IdenticalConditionalBranches %>
-    <% if @brand.subscription&.running? %>
+    <% if @brand.subscribed? %>
       <script>
 
           function cancelSubscription() {
@@ -185,6 +184,5 @@
 
       </script>
     <% end %>
-# rubocop:enable Style/IdenticalConditionalBranches %>
   <% end %>
 <% end %>

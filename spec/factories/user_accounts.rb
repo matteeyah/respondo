@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :user_account do
     external_uid { generate(:external_uid) }
-    provider { UserAccount.providers.except(:developer).keys.sample }
+    provider { UserAccount.providers.keys.sample }
 
     user
   end

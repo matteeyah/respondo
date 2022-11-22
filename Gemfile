@@ -39,7 +39,6 @@ gem 'hashie', '~> 5.0.0' # Hash utilities
 gem 'json-schema', '~> 3.0.0' # JSON schema validation
 gem 'pagy', '~> 5.10.1' # Pagination
 gem 'propshaft', '~> 0.6.4' # Rails assets
-gem 'pundit', '~> 2.2.0' # OO Policy objects
 gem 'resque', '~> 2.4.0' # Background job processing
 gem 'twitter', '~> 7.0.0' # Twitter client
 

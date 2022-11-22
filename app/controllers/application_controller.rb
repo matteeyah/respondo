@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  before_action :authenticate_user!
+
   etag { Rails.application.importmap.digest(resolver: helpers) if request.format&.html? }
 
   protect_from_forgery with: :exception
 
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
   protected
-
-  def user_not_authorized(_exception)
-    redirect_back fallback_location: root_path
-  end
 
   def sign_in(user)
     session[:user_id] = user.id
@@ -32,8 +28,9 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
 
-  def current_brand
-    @current_brand ||= current_user&.brand
+  def authenticate_user!
+    return unless current_user.nil?
+
+    redirect_to login_path
   end
-  helper_method :current_brand
 end

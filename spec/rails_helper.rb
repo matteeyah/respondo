@@ -8,7 +8,6 @@ SimpleCov.start do
   add_filter 'vendor/ruby/'
 
   add_group 'Controllers', 'app/controllers'
-  add_group 'Policies',    'app/policies'
   add_group 'Models',      'app/models'
   add_group 'Services',    'app/services'
   add_group 'Queries',     'app/queries'
@@ -25,7 +24,6 @@ require File.expand_path('../config/environment', __dir__)
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
-require 'pundit/rspec'
 require 'webmock/rspec'
 require 'webdrivers'
 # Requires supporting ruby files with custom matchers and macros, etc, in

@@ -24,64 +24,30 @@ RSpec.describe Brands::UsersController do
           brand.users << browsing_user
         end
 
-        context 'when user does not belong to other brand' do
-          it 'adds the user to the brand' do
-            expect { post_create }.to change { user.reload.brand_id }.from(nil).to(brand.id)
-          end
-
-          it 'redirects to edit brand path' do
-            post_create
-
-            expect(response).to redirect_to(edit_brand_path(brand))
-          end
-
-          context 'when brand has subscription' do
-            let(:paddle_client_class_spy) { class_spy(Clients::Paddle, new: paddle_client_spy) }
-            let(:paddle_client_spy) { instance_spy(Clients::Paddle) }
-            let!(:subscription) { create(:subscription, brand:) }
-
-            before do
-              stub_const('Clients::Paddle', paddle_client_class_spy)
-            end
-
-            it 'updates quantity on subscription' do
-              post_create
-
-              expect(paddle_client_spy).to have_received(:change_quantity).with(subscription.external_uid,
-                                                                                brand.users.count)
-            end
-          end
+        it 'adds the user to the brand' do
+          expect { post_create }.to change { user.reload.brand_id }.from(nil).to(brand.id)
         end
 
-        context 'when user belongs to other brand' do
+        it 'redirects to edit brand path' do
+          post_create
+
+          expect(response).to redirect_to(edit_brand_path(brand))
+        end
+
+        context 'when brand has subscription' do
+          let(:paddle_client_class_spy) { class_spy(Clients::Paddle, new: paddle_client_spy) }
+          let(:paddle_client_spy) { instance_spy(Clients::Paddle) }
+          let!(:subscription) { create(:subscription, brand:) }
+
           before do
-            create(:brand).users << user
+            stub_const('Clients::Paddle', paddle_client_class_spy)
           end
 
-          it 'does not add the user to the brand' do
-            expect { post_create }.not_to change(user.reload, :brand_id)
-          end
-
-          it 'redirects to root path' do
+          it 'updates quantity on subscription' do
             post_create
 
-            expect(response).to redirect_to(root_path)
-          end
-
-          context 'when brand has subscription' do
-            let(:paddle_client_class_spy) { class_spy(Clients::Paddle) }
-
-            before do
-              create(:subscription, brand:)
-
-              stub_const('Clients::Paddle', paddle_client_class_spy)
-            end
-
-            it 'does not update subscription quantity' do
-              post_create
-
-              expect(paddle_client_class_spy).not_to have_received(:new)
-            end
+            expect(paddle_client_spy).to have_received(:change_quantity).with(subscription.external_uid,
+                                                                              brand.users.count)
           end
         end
       end
@@ -94,8 +60,8 @@ RSpec.describe Brands::UsersController do
     end
 
     context 'when user is not signed in' do
-      it 'redirects the user back (to root)' do
-        expect(post_create).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(post_create).to redirect_to(login_path)
       end
     end
   end
@@ -189,8 +155,8 @@ RSpec.describe Brands::UsersController do
     context 'when user is not signed in' do
       let(:user) { create(:user, brand:) }
 
-      it 'redirects the user back (to root)' do
-        expect(delete_destroy).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(delete_destroy).to redirect_to(login_path)
       end
     end
   end

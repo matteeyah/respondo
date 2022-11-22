@@ -2,12 +2,8 @@
 
 module Brands
   class BrandAccountsController < ApplicationController
-    include Pundit::Authorization
-
     def destroy
       @account = account
-      authorize(@account)
-
       @account.destroy
 
       respond_to do |format|
