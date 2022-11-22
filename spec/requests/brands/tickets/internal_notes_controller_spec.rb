@@ -26,26 +26,14 @@ RSpec.describe Brands::Tickets::InternalNotesController do
           brand.users << user
         end
 
-        context 'when brand has subscription' do
-          before do
-            create(:subscription, brand:)
-          end
-
-          it 'creates an internal note' do
-            expect { post_create }.to change { ticket.internal_notes.count }.from(0).to(1)
-          end
-
-          it 'redirects to the ticket' do
-            post_create
-
-            expect(response.body).to redirect_to(brand_ticket_path(ticket.brand, ticket))
-          end
+        it 'creates an internal note' do
+          expect { post_create }.to change { ticket.internal_notes.count }.from(0).to(1)
         end
 
-        context 'when brand does not have subscription' do
-          it 'redirects the user back (to root)' do
-            expect(post_create).to redirect_to(root_path)
-          end
+        it 'redirects to the ticket' do
+          post_create
+
+          expect(response.body).to redirect_to(brand_ticket_path(ticket.brand, ticket))
         end
       end
 
@@ -57,8 +45,8 @@ RSpec.describe Brands::Tickets::InternalNotesController do
     end
 
     context 'when user is not signed in' do
-      it 'redirects the user back (to root)' do
-        expect(post_create).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(post_create).to redirect_to(login_path)
       end
     end
   end

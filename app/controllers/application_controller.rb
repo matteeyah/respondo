@@ -31,6 +31,6 @@ class ApplicationController < ActionController::Base
   def authenticate_user!
     return unless current_user.nil?
 
-    redirect_back fallback_location: login_path
+    redirect_to login_path
   end
 end

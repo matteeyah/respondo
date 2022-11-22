@@ -60,8 +60,8 @@ RSpec.describe Brands::UsersController do
     end
 
     context 'when user is not signed in' do
-      it 'redirects the user back (to root)' do
-        expect(post_create).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(post_create).to redirect_to(login_path)
       end
     end
   end
@@ -155,8 +155,8 @@ RSpec.describe Brands::UsersController do
     context 'when user is not signed in' do
       let(:user) { create(:user, brand:) }
 
-      it 'redirects the user back (to root)' do
-        expect(delete_destroy).to redirect_to(root_path)
+      it 'redirects the user back (to login)' do
+        expect(delete_destroy).to redirect_to(login_path)
       end
     end
   end

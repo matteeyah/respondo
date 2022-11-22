@@ -167,10 +167,10 @@ RSpec.describe SessionsController do
           let(:provider) { provider_param }
 
           context 'when user is not signed in' do
-            it 'redirects to root' do
+            it 'redirects to login' do
               post_create
 
-              expect(controller).to redirect_to(root_path)
+              expect(controller).to redirect_to(login_path)
             end
           end
 
