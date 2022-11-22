@@ -4,7 +4,9 @@ class SessionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :create
   skip_before_action :authenticate_user!, only: :create
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize
+    return redirect_to login_path if current_user.nil? && request.env['omniauth.params']['state'] == 'brand'
+
     omniauth_hash = request.env['omniauth.auth']
     redirect_uri = request.env['omniauth.origin'] || root_path
 
