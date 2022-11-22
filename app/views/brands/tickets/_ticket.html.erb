@@ -59,7 +59,7 @@
         </ul>
       </div>
       <div class="card-footer">
-        <% if !Flipper.enabled?(:subscriptions) || current_user.brand.subscribed? %>
+        <% if current_user.brand.subscribed? %>
           <div class="row">
             <% if local_assigns[:action_form] %>
               <% case action_form %>

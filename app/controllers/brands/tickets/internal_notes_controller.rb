@@ -4,8 +4,6 @@ module Brands
   module Tickets
     class InternalNotesController < ApplicationController
       def create
-        raise Pundit::NotAuthorizedError unless brand.subscribed?
-
         @internal_note = create_note!
 
         respond_to do |format|

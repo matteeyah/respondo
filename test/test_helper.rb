@@ -17,23 +17,6 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
-
-    # Pundit permission assertions
-    def assert_permit(policy, identity, record, action)
-      msg = "User #{identity.inspect} should be permitted to #{action} #{record}, but isn't permitted"
-
-      assert permit(policy, identity, record, action), msg # rubocop:disable Minitest/AssertWithExpectedArgument
-    end
-
-    def assert_not_permit(policy, identity, record, action)
-      msg = "User #{identity.inspect} should NOT be permitted to #{action} #{record}, but is permitted"
-
-      assert_not permit(policy, identity, record, action), msg
-    end
-
-    def permit(policy, identity, record, action)
-      policy.new(identity, record).public_send("#{action}?")
-    end
   end
 end
 

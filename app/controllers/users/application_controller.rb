@@ -13,7 +13,7 @@ module Users
     def authorize_user!
       return if current_user != user
 
-      redirect_back fallback_location: login_path
+      redirect_back fallback_location: root_path
     end
   end
 end
