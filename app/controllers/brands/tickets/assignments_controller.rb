@@ -4,8 +4,6 @@ module Brands
   module Tickets
     class AssignmentsController < ApplicationController
       def create
-        authorize(ticket, :assign?)
-
         update_assignment!
 
         respond_to do |format|
@@ -24,10 +22,6 @@ module Brands
 
       def assignment_params
         params.require(:ticket).permit(assignment: :user_id)
-      end
-
-      def pundit_user
-        [current_user, brand]
       end
     end
   end

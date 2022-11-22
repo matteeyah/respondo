@@ -4,7 +4,6 @@ module Brands
   module Tickets
     class RepliesController < ApplicationController
       def create
-        authorize(ticket, :reply?)
         raise Pundit::NotAuthorizedError unless brand.subscribed?
 
         @ticket_hash = ticket_hash!
@@ -24,10 +23,6 @@ module Brands
       def ticket_hash!
         ticket.respond_as(current_user, reply_params[:content])
         ticket.with_descendants_hash(Brands::TicketsController::TICKET_RENDER_PRELOADS)
-      end
-
-      def pundit_user
-        [current_user, brand]
       end
     end
   end

@@ -4,8 +4,6 @@ module Brands
   module Tickets
     class TagsController < ApplicationController
       def create
-        authorize(:tag)
-
         @tag = new_tag
         @ticket = ticket
         @ticket.tags << @tag
@@ -17,8 +15,6 @@ module Brands
       end
 
       def destroy
-        authorize(:tag)
-
         @ticket = ticket
         @tag = tag
         @ticket.tags.delete(@tag)

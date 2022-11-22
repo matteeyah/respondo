@@ -3,8 +3,6 @@
 module Brands
   class UsersController < ApplicationController
     def create
-      authorize(%i[brands user])
-
       @user = external_user
       brand.users << @user
 
@@ -15,8 +13,6 @@ module Brands
     end
 
     def destroy
-      authorize([:brands, brand_user])
-
       @user = brand_user
       @success = remove_user!
 

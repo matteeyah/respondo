@@ -10,16 +10,12 @@ module Brands
     ].freeze
 
     def index
-      authorize(:ticket)
-
       @pagy, tickets_relation = pagy(tickets)
       @tickets = tickets_relation.with_descendants_hash(TICKET_RENDER_PRELOADS)
       @brand = brand
     end
 
     def show
-      authorize(ticket)
-
       @ticket_hash = ticket.with_descendants_hash(TICKET_RENDER_PRELOADS)
       @action_form = params[:action_form]
 
@@ -30,8 +26,6 @@ module Brands
     end
 
     def update
-      authorize(ticket)
-
       ticket.update(update_params)
 
       respond_to do |format|
@@ -41,8 +35,6 @@ module Brands
     end
 
     def destroy
-      authorize(ticket)
-
       ticket.client.delete(ticket.external_uid)
       ticket.destroy
 
@@ -53,8 +45,6 @@ module Brands
     end
 
     def refresh
-      authorize(:ticket)
-
       LoadNewTicketsJob.perform_later(brand.id)
 
       respond_to do |format|
@@ -64,8 +54,6 @@ module Brands
     end
 
     def permalink
-      authorize(ticket)
-
       redirect_to ticket.client.permalink(ticket.external_uid), allow_other_host: true
     end
 

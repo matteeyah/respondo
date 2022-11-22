@@ -2,7 +2,7 @@
 
 class SessionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :create
-  before_action :authenticate!, only: :destroy
+  skip_before_action :authenticate_user!, only: :create
 
   def create
     omniauth_hash = request.env['omniauth.auth']
@@ -25,12 +25,6 @@ class SessionsController < ApplicationController
   end
 
   private
-
-  def authenticate!
-    return unless current_user.nil?
-
-    redirect_back fallback_location: login_path
-  end
 
   def authenticate_user(auth_hash)
     account = UserAccount.from_omniauth(auth_hash, current_user)

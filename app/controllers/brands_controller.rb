@@ -4,15 +4,11 @@ class BrandsController < Brands::ApplicationController
   include Pagy::Backend
 
   def edit
-    authorize(brand)
-
     @pagy, @brand_users = pagy(brand.users)
     @brand = brand
   end
 
   def update
-    authorize(brand)
-
     @success = brand.update(update_params)
 
     respond_to do |format|

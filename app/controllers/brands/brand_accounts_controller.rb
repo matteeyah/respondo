@@ -4,8 +4,6 @@ module Brands
   class BrandAccountsController < ApplicationController
     def destroy
       @account = account
-      authorize(@account)
-
       @account.destroy
 
       respond_to do |format|

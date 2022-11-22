@@ -4,8 +4,6 @@ module Users
   class PersonalAccessTokensController < ApplicationController
     def create
       @token = build_personal_access_token
-      authorize(@token)
-
       @success = @token.save
 
       respond_to do |format|
@@ -15,9 +13,7 @@ module Users
     end
 
     def destroy
-      authorize(personal_access_token)
       @token = personal_access_token
-
       @token.destroy
 
       respond_to do |format|

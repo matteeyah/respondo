@@ -23,11 +23,9 @@
             <%= render partial: 'brands/tickets/tag', collection: ticket.tags, as: :tag, locals: { ticket: } %>
           </div>
           <div class="col-2 col-lg-1 d-flex justify-content-start justify-content-lg-end">
-            <% if policy(ticket).update? %>
-              <%= link_to bi_icon('person-lines-fill'),
-                          brand_ticket_path(ticket.brand, ticket, action_form: 'assign'),
-                          class: 'me-2', id: "toggle-assign-#{ticket.id}", title: 'Assign Ticket' %>
-            <% end %>
+            <%= link_to bi_icon('person-lines-fill'),
+                        brand_ticket_path(ticket.brand, ticket, action_form: 'assign'),
+                        class: 'me-2', id: "toggle-assign-#{ticket.id}", title: 'Assign Ticket' %>
           </div>
           <div class="col-2 col-lg-1 d-flex justify-content-start justify-content-lg-end">
             <% if ticket.parent_id.nil? %>
@@ -37,11 +35,9 @@
             <% end %>
           </div>
           <div class="col-2 col-lg-1 d-flex justify-content-start justify-content-lg-end">
-            <% if policy(ticket).destroy? %>
-              <%= link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-method' => :delete,
-                                                                   id: "delete-#{ticket.id}" do %>
-                <%= bi_icon('x-lg') %>
-              <% end %>
+            <%= link_to brand_ticket_path(ticket.brand, ticket), 'data-turbo-method' => :delete,
+                                                                 id: "delete-#{ticket.id}" do %>
+              <%= bi_icon('x-lg') %>
             <% end %>
           </div>
           <div class="col-2 col-lg-1 d-flex justify-content-start justify-content-lg-end">
@@ -55,124 +51,110 @@
       <div class="card-body mx-5">
         <div class="card-text">
           <p>
-            <%= ticket.content %>
+          <%= ticket.content %>
           </p>
         </div>
-        <% if policy(ticket).internal_note? %>
-          <ul class="list-group list-group-flush" id="<%= dom_id(ticket) %>_internal_notes">
-            <%= render partial: 'brands/tickets/internal_note', collection: ticket.internal_notes %>
-          </ul>
-        <% end %>
+        <ul class="list-group list-group-flush" id="<%= dom_id(ticket) %>_internal_notes">
+          <%= render partial: 'brands/tickets/internal_note', collection: ticket.internal_notes %>
+        </ul>
       </div>
       <div class="card-footer">
         <% if !Flipper.enabled?(:subscriptions) || current_user.brand.subscribed? %>
           <div class="row">
             <% if local_assigns[:action_form] %>
               <% case action_form %>
-            <% when 'reply' %>
-                <% if policy(ticket).reply? %>
-                  <div class="col-12">
-                    <%= form_with url: brand_ticket_replies_path(ticket.brand, ticket),
-                                  model: ticket.replies.new, method: :post,
-                                  html: { autocomplete: 'off' } do |reply_form| %>
-                      <div class="input-group input-group-sm mb-3">
-                        <%= reply_form.text_area :content, required: true,
-                                                           placeholder: 'Reply Text', class: 'form-control' %>
-                        <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
-                                    class: 'btn btn-outline-secondary' %>
-                        <%= reply_form.submit 'Reply', class: 'btn btn-primary' %>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
+              <% when 'reply' %>
+                <div class="col-12">
+                  <%= form_with url: brand_ticket_replies_path(ticket.brand, ticket),
+                                model: ticket.replies.new, method: :post,
+                                html: { autocomplete: 'off' } do |reply_form| %>
+                    <div class="input-group input-group-sm mb-3">
+                      <%= reply_form.text_area :content, required: true,
+                                                         placeholder: 'Reply Text', class: 'form-control' %>
+                      <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
+                                  class: 'btn btn-outline-secondary' %>
+                              <%= reply_form.submit 'Reply', class: 'btn btn-primary' %>
+                    </div>
+                  <% end %>
+                </div>
               <% when 'internal_note' %>
-                <% if policy(ticket).internal_note? %>
-                  <div class="col-12">
-                    <%= form_with url: brand_ticket_internal_notes_path(ticket.brand, ticket),
-                                  model: ticket.internal_notes.new, method: :post,
-                                  html: { autocomplete: 'off',
-                                          'data-controller' => 'reset-form',
-                                          'data-action' => 'turbo:submit-end->reset-form#reset' } do |internal_note_form| %>
-                      <div class="input-group input-group-sm mb-3">
-                        <%= internal_note_form.text_field :content, required: true,
-                                                                    placeholder: 'Internal note text.', class: 'form-control' %>
-                        <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
-                                    class: 'btn btn-outline-secondary' %>
-                        <%= internal_note_form.submit 'Create note', class: 'btn btn-primary' %>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
+                <div class="col-12">
+                  <%= form_with url: brand_ticket_internal_notes_path(ticket.brand, ticket),
+                                model: ticket.internal_notes.new, method: :post,
+                                html: { autocomplete: 'off',
+                                        'data-controller' => 'reset-form',
+                                        'data-action' => 'turbo:submit-end->reset-form#reset' } do |internal_note_form| %>
+                            <div class="input-group input-group-sm mb-3">
+                              <%= internal_note_form.text_field :content, required: true,
+                                                                          placeholder: 'Internal note text.', class: 'form-control' %>
+                              <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
+                                          class: 'btn btn-outline-secondary' %>
+                              <%= internal_note_form.submit 'Create note', class: 'btn btn-primary' %>
+                            </div>
+                          <% end %>
+                </div>
               <% when 'tag' %>
                 <%= form_with url: brand_ticket_tags_path(ticket.brand, ticket),
                               model: ticket.tags.new, method: :post,
                               html: { 'data-controller' => 'reset-form',
                                       'data-action' => 'turbo:submit-end->reset-form#reset' } do |tag_form| %>
-                  <div class="input-group input-group-sm mb-3">
-                    <%= tag_form.text_field :name, required: true,
-                                                   placeholder: 'Add tags to ticket..', class: 'form-control' %>
-                    <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
-                                class: 'btn btn-outline-secondary' %>
-                    <%= tag_form.submit 'Tag ticket', class: 'btn btn-primary' %>
-                  </div>
-                <% end %>
-              <% when 'status' %>
-                <%= form_with url: brand_ticket_path(ticket.brand, ticket),
-                              model: ticket, method: :patch do |status_form| %>
-                  <div class="input-group input-group-sm mb-3">
-                    <%= status_form.select :status,
-                                           options_for_select(Ticket.statuses.keys, ticket.status),
-                                           {}, required: true, class: 'custom-select form-control', id: 'ticket-status' %>
-                    <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
-                                class: 'btn btn-outline-secondary' %>
-                    <%= status_form.submit 'Update status', class: 'btn btn-primary' %>
-                  </div>
-                <% end %>
-              <% when 'assign' %>
-                <%= form_with url: brand_ticket_assignments_path(ticket.brand, ticket),
-                              model: ticket, method: :post do |status_form| %>
-                  <div class="input-group input-group-sm mb-3">
-                    <%= status_form.fields_for :assignment, ticket.assignment do |assignment_form| %>
-                      <%= assignment_form.collection_select :user_id, ticket.brand.users, :id, :name,
-                                                            { prompt: true },
-                                                            { required: true, class: 'custom-select form-control', id: 'ticket-assignment' } %>
-                      <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
-                                  class: 'btn btn-outline-secondary' %>
-                      <%= status_form.submit 'Assign', class: 'btn btn-primary' %>
+                          <div class="input-group input-group-sm mb-3">
+                            <%= tag_form.text_field :name, required: true,
+                                                           placeholder: 'Add tags to ticket..', class: 'form-control' %>
+                            <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
+                                        class: 'btn btn-outline-secondary' %>
+                            <%= tag_form.submit 'Tag ticket', class: 'btn btn-primary' %>
+                          </div>
+                        <% end %>
+                      <% when 'status' %>
+                        <%= form_with url: brand_ticket_path(ticket.brand, ticket),
+                                      model: ticket, method: :patch do |status_form| %>
+                          <div class="input-group input-group-sm mb-3">
+                            <%= status_form.select :status,
+                                                   options_for_select(Ticket.statuses.keys, ticket.status),
+                                                   {}, required: true, class: 'custom-select form-control', id: 'ticket-status' %>
+                            <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
+                                        class: 'btn btn-outline-secondary' %>
+                            <%= status_form.submit 'Update status', class: 'btn btn-primary' %>
+                          </div>
+                        <% end %>
+                      <% when 'assign' %>
+                        <%= form_with url: brand_ticket_assignments_path(ticket.brand, ticket),
+                                      model: ticket, method: :post do |status_form| %>
+                          <div class="input-group input-group-sm mb-3">
+                            <%= status_form.fields_for :assignment, ticket.assignment do |assignment_form| %>
+                              <%= assignment_form.collection_select :user_id, ticket.brand.users, :id, :name,
+                                                                    { prompt: true },
+                                                                    { required: true, class: 'custom-select form-control', id: 'ticket-assignment' } %>
+                              <%= link_to 'Cancel', brand_ticket_path(ticket.brand, ticket),
+                                          class: 'btn btn-outline-secondary' %>
+                              <%= status_form.submit 'Assign', class: 'btn btn-primary' %>
+                            <% end %>
+                          </div>
+                        <% end %>
+                      <% end %>
+                    <% else %>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col-lg-6 d-flex justify-content-start">
+                            <%= link_to bi_icon('reply-fill', 'text-primary fs-4'),
+                                        brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
+                                        class: 'card-link', id: "toggle-reply-#{ticket.id}", title: 'Reply' %>
+                          </div>
+                          <div class="col-lg-6 d-flex justify-content-end">
+                            <%= link_to bi_icon('bookmark', 'text-primary fs-5'),
+                                        brand_ticket_path(ticket.brand, ticket, action_form: 'tag'),
+                                        class: 'card-link', id: "toggle-tag-#{ticket.id}", title: 'Tag Ticket' %>
+                            <%= link_to bi_icon('journal-text', 'text-primary fs-5'),
+                                        brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
+                                        class: 'card-link', id: "toggle-internal-note-#{ticket.id}", title: 'Create Internal Note' %>
+                              <%= link_to bi_icon('check-square-fill', 'text-primary fs-5'),
+                                          brand_ticket_path(ticket.brand, ticket, action_form: 'status'),
+                                          class: 'card-link', id: "toggle-status-#{ticket.id}", title: 'Resolve Ticket' %>
+                          </div>
+                        </div>
+                      </div>
                     <% end %>
-                  </div>
-                <% end %>
-              <% end %>
-            <% else %>
-              <div class="col-12">
-                <div class="row">
-                  <div class="col-lg-6 d-flex justify-content-start">
-                    <% if policy(ticket).reply? %>
-                      <%= link_to bi_icon('reply-fill', 'text-primary fs-4'),
-                                  brand_ticket_path(ticket.brand, ticket, action_form: 'reply'),
-                                  class: 'card-link', id: "toggle-reply-#{ticket.id}", title: 'Reply' %>
-                    <% end %>
-                  </div>
-                  <div class="col-lg-6 d-flex justify-content-end">
-                    <% if policy(ticket).update? %>
-                      <%= link_to bi_icon('bookmark', 'text-primary fs-5'),
-                                  brand_ticket_path(ticket.brand, ticket, action_form: 'tag'),
-                                  class: 'card-link', id: "toggle-tag-#{ticket.id}", title: 'Tag Ticket' %>
-                    <% end %>
-                    <% if policy(ticket).internal_note? %>
-                      <%= link_to bi_icon('journal-text', 'text-primary fs-5'),
-                                  brand_ticket_path(ticket.brand, ticket, action_form: 'internal_note'),
-                                  class: 'card-link', id: "toggle-internal-note-#{ticket.id}", title: 'Create Internal Note' %>
-                    <% end %>
-                    <% if policy(ticket).update? %>
-                      <%= link_to bi_icon('check-square-fill', 'text-primary fs-5'),
-                                  brand_ticket_path(ticket.brand, ticket, action_form: 'status'),
-                                  class: 'card-link', id: "toggle-status-#{ticket.id}", title: 'Resolve Ticket' %>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-            <% end %>
           </div>
         <% end %>
       </div>

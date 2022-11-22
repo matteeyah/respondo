@@ -4,8 +4,6 @@ module Users
   class UserAccountsController < ApplicationController
     def destroy
       @account = account
-      authorize(@account)
-
       @success = @account.destroy
 
       respond_to do |format|
