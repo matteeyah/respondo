@@ -11,6 +11,7 @@
                                                     'data-turbo-method' => :post, 'data-turbo-frame' => :_top do %>
       <%= bi_icon('arrow-clockwise') %>
       <span>Reload</span>
+    <% end %>
     <%= form_with url: brand_tickets_path(@brand), local: true, method: :get,
                   class: 'flex-grow-1 ms-3', html: { autocomplete: 'off' } do |search_form| %>
       <%= search_form.hidden_field :status, value: request.parameters[:status] %>

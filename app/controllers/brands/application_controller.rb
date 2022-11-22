@@ -11,7 +11,7 @@ module Brands
     end
 
     def authorize_user!
-      return if current_user.brand != brand
+      return if current_user.brand == brand
 
       redirect_back fallback_location: root_path
     end

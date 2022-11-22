@@ -4,7 +4,7 @@ module Brands
   module Tickets
     class RepliesController < ApplicationController
       def create
-        raise Exception.new('Unauthorized') unless brand.subscribed?
+        raise StandardError, 'Unauthorized' unless brand.subscribed?
 
         @ticket_hash = ticket_hash!
 
