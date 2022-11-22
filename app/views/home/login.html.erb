@@ -37,13 +37,6 @@
                   <i class="bi bi-microsoft text-primary"></i>
                   <span>Sign in with Microsoft AD</span>
                 <% end %>
-                <% if Rails.env.development? %>
-                  <%= auth_provider_link('developer', 'user',
-                                         { class: 'btn form-control btn-danger' }, origin: '/') do %>
-                    <i class="bi bi-code-slash"></i>
-                    <span>Developer Sign In</span>
-                  <% end %>
-                <% end %>
               </div>
             </div>
           </div>

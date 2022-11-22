@@ -13,14 +13,11 @@ class ApplicationHelperTest < ActionView::TestCase
 
       assert_match expected_auth_link, auth_provider_link(account_provider, 'model') { 'test' }
     end
-  end
 
-  ((UserAccount.providers.keys + BrandAccount.providers.keys) - ['developer'])
-    .uniq.each do |account_provider|
-      test "#provider_human_name returns human name when provider is #{account_provider}" do
-        assert_instance_of String, provider_human_name(account_provider)
-      end
+    test "#provider_human_name returns human name when provider is #{account_provider}" do
+      assert_instance_of String, provider_human_name(account_provider)
     end
+  end
 
   test '#safe_blank_link_to returns a safe blank link' do
     expected_blank_link =

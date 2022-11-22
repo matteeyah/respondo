@@ -5,9 +5,7 @@ module ApplicationHelper
     'google_oauth2' => 'Google',
     'activedirectory' => 'Azure Active Directory',
     'twitter' => 'Twitter',
-    'disqus' => 'Disqus',
-    'developer' => 'Developer',
-    nil => 'Developer'
+    'disqus' => 'Disqus'
   }.freeze
 
   def auth_provider_link(provider, model, html_options = {}, origin: nil, &block)

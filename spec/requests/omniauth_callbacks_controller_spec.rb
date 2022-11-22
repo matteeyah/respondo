@@ -21,7 +21,7 @@ RSpec.describe OmniauthCallbacksController do
     context 'when model is user' do
       let(:model) { 'user' }
 
-      UserAccount.providers.except(:developer).each_key do |provider_param|
+      UserAccount.providers.each_key do |provider_param|
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 
@@ -77,7 +77,7 @@ RSpec.describe OmniauthCallbacksController do
 
           context 'when user is signed in' do
             let(:user) do
-              account_provider = UserAccount.providers.except(provider, :developer).keys.sample
+              account_provider = UserAccount.providers.except(provider).keys.sample
 
               create(:user).tap do |user|
                 create(:user_account, provider: account_provider, user:)
@@ -162,7 +162,7 @@ RSpec.describe OmniauthCallbacksController do
         stub_const(LoadNewTicketsJob.to_s, load_new_tickets_class_spy)
       end
 
-      BrandAccount.providers.except(:developer).each_key do |provider_param|
+      BrandAccount.providers.each_key do |provider_param|
         context "when provider is #{provider_param}" do
           let(:provider) { provider_param }
 

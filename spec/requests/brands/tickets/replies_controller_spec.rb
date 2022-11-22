@@ -64,7 +64,7 @@ RSpec.describe Brands::Tickets::RepliesController do
       end
 
       context 'when ticket is internal' do
-        BrandAccount.providers.except(:developer).each_key do |provider|
+        BrandAccount.providers.each_key do |provider|
           context "when ticket provider is #{provider}" do
             let(:ticket) do
               create(
