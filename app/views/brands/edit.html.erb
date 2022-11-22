@@ -75,8 +75,8 @@
                 <p>
                   Subscription status:
                   <span class="bg-<%= subscription_badge_class(subscription_status) %> badge">
-            <%= subscription_status || 'no subscription' %>
-          </span>
+                    <%= subscription_status || 'no subscription' %>
+                  </span>
                 </p>
                 <% if @brand.subscription %>
                   <%= button_tag 'Update Payment Details', class: 'btn btn-primary', id: 'update-subscription' %>
