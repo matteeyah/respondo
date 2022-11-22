@@ -83,7 +83,7 @@
               <% end %>
             </li>
             <% class_list = ['text-center', 'text-lg-start', 'collapse', 'list-group', 'list-group-flush', 'w-100',
-                             ('show' if show_settings_collapse?)] %>
+                             ('show' if show_settings_collapse?)].join(' ') %>
             <ul aria-labelledby="#settings-menu" class="<%= class_list %>" id="settings-menu">
               <% if current_user.brand %>
                 <li class="nav-item list-group-item list-group-item-action ps-0">
