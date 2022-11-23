@@ -18,12 +18,10 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test 'DELETE destroy when user is signed in redirects the user to login path' do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
-
     assert_changes -> { controller.send(:current_user) }, from: users(:john), to: nil do
       delete '/sign_out'
     end
   end
-
 
   test 'DELETE destroy when user is not signed in redirects the user to login path' do
     delete '/sign_out'
