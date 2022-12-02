@@ -4,7 +4,7 @@ require 'test_helper'
 
 require 'support/authentication_request_helper'
 
-class SessionsControllerTest < ActionDispatch::IntegrationTest
+class HomeControllerTest < ActionDispatch::IntegrationTest
   include AuthenticationRequestHelper
 
   test 'GET index when the user is signed in renders the home page' do
