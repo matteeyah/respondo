@@ -4,29 +4,31 @@ require 'test_helper'
 
 require 'support/authentication_request_helper'
 
-class DashboardControllerTest < ActionDispatch::IntegrationTest
-  include AuthenticationRequestHelper
+module Brands
+  class DashboardControllerTest < ActionDispatch::IntegrationTest
+    include AuthenticationRequestHelper
 
-  test 'GET index when the user is authorized renders the index page' do
-    sign_in(users(:john), user_accounts(:google_oauth2))
-    brands(:respondo).users << users(:john)
+    test 'GET index when the user is authorized renders the index page' do
+      sign_in(users(:john), user_accounts(:google_oauth2))
+      brands(:respondo).users << users(:john)
 
-    get "/brands/#{brands(:respondo).id}/dashboard"
+      get "/brands/#{brands(:respondo).id}/dashboard"
 
-    assert_select 'span.text-black', 'John Smith'
-  end
+      assert_select 'span.text-black', 'John Smith'
+    end
 
-  test 'GET index when the user is not authorized redirects the user to root path' do
-    sign_in(users(:john), user_accounts(:google_oauth2))
+    test 'GET index when the user is not authorized redirects the user to root path' do
+      sign_in(users(:john), user_accounts(:google_oauth2))
 
-    get "/brands/#{brands(:respondo).id}/dashboard"
+      get "/brands/#{brands(:respondo).id}/dashboard"
 
-    assert_redirected_to root_path
-  end
+      assert_redirected_to root_path
+    end
 
-  test 'GET index when the user is not signed in redirects the user to login path' do
-    get "/brands/#{brands(:respondo).id}/dashboard"
+    test 'GET index when the user is not signed in redirects the user to login path' do
+      get "/brands/#{brands(:respondo).id}/dashboard"
 
-    assert_redirected_to login_path
+      assert_redirected_to login_path
+    end
   end
 end
