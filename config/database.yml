@@ -57,7 +57,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  host: postgres
+  host: localhost
   username: respondo
   database: respondo_test
 
