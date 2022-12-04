@@ -11,9 +11,12 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "assignments", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "ticket_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "ticket_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["ticket_id"], name: "index_assignments_on_ticket_id", unique: true
@@ -36,7 +39,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.integer "provider", null: false
     t.string "token"
     t.string "secret"
-    t.integer "brand_id", null: false
+    t.bigint "brand_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["brand_id"], name: "index_brand_accounts_on_brand_id"
@@ -76,8 +79,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
 
   create_table "internal_notes", force: :cascade do |t|
     t.text "content", null: false
-    t.integer "creator_id", null: false
-    t.integer "ticket_id", null: false
+    t.bigint "creator_id", null: false
+    t.bigint "ticket_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["creator_id"], name: "index_internal_notes_on_creator_id"
@@ -85,7 +88,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
   end
 
   create_table "internal_tickets", force: :cascade do |t|
-    t.integer "source_id", null: false
+    t.bigint "source_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["source_id"], name: "index_internal_tickets_on_source_id"
@@ -94,7 +97,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
   create_table "personal_access_tokens", force: :cascade do |t|
     t.string "name", null: false
     t.string "token_digest", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_personal_access_tokens_on_name", unique: true
@@ -107,18 +110,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.string "email", null: false
     t.string "cancel_url", null: false
     t.string "update_url", null: false
-    t.integer "brand_id", null: false
+    t.bigint "brand_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["brand_id"], name: "index_subscriptions_on_brand_id"
   end
 
   create_table "taggings", force: :cascade do |t|
-    t.integer "tag_id"
+    t.bigint "tag_id"
     t.string "taggable_type"
-    t.integer "taggable_id"
+    t.bigint "taggable_id"
     t.string "tagger_type"
-    t.integer "tagger_id"
+    t.bigint "tagger_id"
     t.string "context", limit: 128
     t.datetime "created_at", precision: nil
     t.string "tenant", limit: 128
@@ -150,10 +153,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.integer "status", default: 0, null: false
     t.string "ticketable_type", null: false
     t.integer "ticketable_id", null: false
-    t.integer "brand_id", null: false
-    t.integer "author_id", null: false
-    t.integer "creator_id"
-    t.integer "parent_id"
+    t.bigint "brand_id", null: false
+    t.bigint "author_id", null: false
+    t.bigint "creator_id"
+    t.bigint "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_tickets_on_author_id"
@@ -167,7 +170,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.string "external_uid", null: false
     t.string "email"
     t.integer "provider", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id", "provider"], name: "index_user_accounts_on_user_id_and_provider", unique: true
@@ -178,7 +181,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "brand_id"
+    t.bigint "brand_id"
     t.index ["brand_id"], name: "index_users_on_brand_id"
   end
 
