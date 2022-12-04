@@ -16,7 +16,7 @@ module Brands
         post "/brands/#{brands(:respondo).id}/tickets/#{tickets(:internal_twitter).id}/tags",
              params: { acts_as_taggable_on_tag: { name: 'awesome' } }
 
-        assert_redirected_to brand_ticket_path(brands(:respondo), tickets(:internal_twitter))
+        assert_redirected_to brand_tickets_path(brands(:respondo))
       end
 
       test 'POST create when the user is not authorized redirects the user to root path' do
@@ -44,7 +44,7 @@ module Brands
           /brands/#{brands(:respondo).id}/tickets/#{tickets(:internal_twitter).id}/tags/#{tickets(:internal_twitter).tags.first.id}
         TAG_PATH
 
-        assert_redirected_to brand_ticket_path(brands(:respondo), tickets(:internal_twitter))
+        assert_redirected_to brand_tickets_path(brands(:respondo))
       end
 
       test 'DELETE destroy when the user is not authorized redirects the user to root path' do

@@ -34,7 +34,7 @@ module Brands
         post "/brands/#{brands(:respondo).id}/tickets/#{tickets(:internal_twitter).id}/replies",
              params: { ticket: { content: 'hello' } }
 
-        assert_redirected_to brand_ticket_path(brands(:respondo), tickets(:internal_twitter))
+        assert_redirected_to brand_tickets_path(brands(:respondo))
       end
 
       test 'POST create when the user is not authorized redirects the user to root path' do
