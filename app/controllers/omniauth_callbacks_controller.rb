@@ -9,7 +9,7 @@ class OmniauthCallbacksController < ApplicationController
 
     sign_in(account.user) if account.persisted? && current_user.nil?
 
-    redirect_to(auth_origin || login_path)
+    redirect_to(auth_origin || root_path)
   end
 
   def brand

@@ -10,7 +10,7 @@ module Brands
 
         respond_to do |format|
           format.turbo_stream
-          format.html { redirect_to brand_ticket_path(ticket.brand, ticket) }
+          format.html { redirect_to brand_tickets_path(ticket.brand) }
         end
       end
 
@@ -21,7 +21,7 @@ module Brands
 
         respond_to do |format|
           format.turbo_stream
-          format.html { redirect_to brand_ticket_path(ticket.brand, ticket), status: :see_other }
+          format.html { redirect_to brand_tickets_path(ticket.brand), status: :see_other }
         end
       end
 
