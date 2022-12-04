@@ -11,7 +11,7 @@ gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching;
 gem 'importmap-rails', '~> 1.1.0'
 gem 'puma', '~> 6.0.0' # Use Puma as the application server
 gem 'rails', '~> 7.0.3'
-gem 'stimulus-rails', '~> 1.1.0' # Hotwire Stimulus
+gem 'stimulus-rails', '~> 1.2.1' # Hotwire Stimulus
 gem 'turbo-rails', '~> 1.3.2' # Hotwire Turbo
 
 # Not used
@@ -44,12 +44,12 @@ gem 'twitter', '~> 7.0.0' # Twitter client
 
 group :development, :test do
   # Linters
-  gem 'license_finder', '~> 7.0.1' # license checking
+  gem 'license_finder', '~> 7.1.0' # license checking
   gem 'mdl', '~> 0.12.0', require: false
   ## Ruby linter
-  gem 'rubocop', '~> 1.38.0', require: false
+  gem 'rubocop', '~> 1.39.0', require: false
   gem 'rubocop-md', '~> 1.1.0', require: false
-  gem 'rubocop-minitest', '~> 0.23.2', require: false
+  gem 'rubocop-minitest', '~> 0.24.0', require: false
   gem 'rubocop-performance', '~> 1.15.0', require: false
   gem 'rubocop-rails', '~> 2.17.2', require: false
   ## ERB
