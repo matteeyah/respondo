@@ -38,6 +38,7 @@ gem 'flipper-active_record', '~> 0.25.0' # ActiveRecord adapter for flipper
 gem 'hashie', '~> 5.0.0' # Hash utilities
 gem 'json-schema', '~> 3.0.0' # JSON schema validation
 gem 'pagy', '~> 5.10.1' # Pagination
+gem 'pg', '~> 1.4.4' # AR database adapter
 gem 'propshaft', '~> 0.6.4' # Rails assets
 gem 'resque', '~> 2.4.0' # Background job processing
 gem 'twitter', '~> 7.0.0' # Twitter client
@@ -56,7 +57,6 @@ group :development, :test do
   gem 'erb_lint', '~> 0.3.1', require: false
   # Other
   gem 'debug', platforms: %i[mri mingw x64_mingw]
-  gem 'sqlite3', '~> 1.4' # AR database adapter # TODO
 end
 
 group :development do
@@ -71,10 +71,6 @@ group :test do
   gem 'webdrivers' # Easy installation and use of web drivers to run system tests with browsers
   # Other
   gem 'webmock', '~> 3.18.1' # Stubs and expectations for HTTP requests
-end
-
-group :production do
-  gem 'pg', '~> 1.4.4' # AR database adapter
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
