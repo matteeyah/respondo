@@ -5,6 +5,18 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: respondo
+          POSTGRES_DB: respondo_test
+          POSTGRES_PASSWORD: ""
+          options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
     steps:
       - uses: actions/checkout@v3
       - uses: ruby/setup-ruby@v1
@@ -18,6 +30,18 @@ jobs:
         run: bundle exec rails test
   test_system:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: respondo
+          POSTGRES_DB: respondo_test
+          POSTGRES_PASSWORD: ""
+          options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
     steps:
       - uses: browser-actions/setup-chrome@latest
         with:
