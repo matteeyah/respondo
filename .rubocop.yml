@@ -5,7 +5,6 @@ require:
   - rubocop-md
   - rubocop-minitest
   - rubocop-rails
-  - rubocop-rspec
 
 AllCops:
   Exclude:
