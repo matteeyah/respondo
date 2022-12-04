@@ -11,7 +11,7 @@ gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching;
 gem 'importmap-rails', '~> 1.1.0'
 gem 'puma', '~> 6.0.0' # Use Puma as the application server
 gem 'rails', '~> 7.0.3'
-gem 'stimulus-rails', '~> 1.1.0' # Hotwire Stimulus
+gem 'stimulus-rails', '~> 1.2.1' # Hotwire Stimulus
 gem 'turbo-rails', '~> 1.3.2' # Hotwire Turbo
 
 # Not used
@@ -44,23 +44,19 @@ gem 'twitter', '~> 7.0.0' # Twitter client
 
 group :development, :test do
   # Linters
+  gem 'license_finder', '~> 7.1.0' # license checking
   gem 'mdl', '~> 0.12.0', require: false
   ## Ruby linter
-  gem 'rubocop', '~> 1.38.0', require: false
+  gem 'rubocop', '~> 1.39.0', require: false
   gem 'rubocop-md', '~> 1.1.0', require: false
-  gem 'rubocop-minitest', '~> 0.23.2', require: false
+  gem 'rubocop-minitest', '~> 0.24.0', require: false
   gem 'rubocop-performance', '~> 1.15.0', require: false
   gem 'rubocop-rails', '~> 2.17.2', require: false
-  gem 'rubocop-rspec', '~> 2.15.0', require: false
   ## ERB
   gem 'erb_lint', '~> 0.3.1', require: false
   # Other
   gem 'debug', platforms: %i[mri mingw x64_mingw]
-  gem 'factory_bot_rails', '~> 6.2.0' # Use factory_bot
-  gem 'faker', '~> 3.0.0' # Sample data
-  gem 'license_finder', '~> 7.0.1' # license checking
-  gem 'rspec-rails', '~> 6.0.1' # rspec testing framework
-  gem 'sqlite3', '~> 1.4' # AR database adapter
+  gem 'sqlite3', '~> 1.4' # AR database adapter # TODO
 end
 
 group :development do
@@ -74,8 +70,6 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers' # Easy installation and use of web drivers to run system tests with browsers
   # Other
-  gem 'shoulda-matchers', '~> 5.2.0' # One-liner matchers
-  gem 'simplecov', '~> 0.21.1', require: false # Code coverage
   gem 'webmock', '~> 3.18.1' # Stubs and expectations for HTTP requests
 end
 

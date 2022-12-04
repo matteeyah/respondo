@@ -1,11 +1,8 @@
-inherit_from: .rubocop_todo.yml
-
 require:
   - rubocop-performance
   - rubocop-md
   - rubocop-minitest
   - rubocop-rails
-  - rubocop-rspec
 
 AllCops:
   Exclude:
@@ -43,24 +40,6 @@ Naming/InclusiveLanguage:
 
 Rails/I18nLocaleTexts:
   Enabled: false
-
-RSpec/ExampleLength:
-  Exclude:
-    - 'spec/system/**/*'
-    - 'spec/support/system/**/*'
-
-RSpec/MultipleExpectations:
-  Exclude:
-    - 'spec/system/**/*'
-    - 'spec/support/system/**/*'
-
-RSpec/RepeatedExample:
-  Exclude:
-    - 'spec/policies/**/*'
-
-RSpec/RepeatedDescription:
-  Exclude:
-    - 'spec/policies/**/*'
 
 Style/Documentation:
   Enabled: false
