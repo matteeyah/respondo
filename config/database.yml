@@ -57,10 +57,10 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  host: localhost
-  username: respondo
   database: respondo_test
-
+  host: <%= 'localhost' if ENV['CI'] %>
+  username: <%= 'respondo' if ENV['CI'] %>
+  password: <%= 'respondo_ci' if ENV['CI'] %>
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.

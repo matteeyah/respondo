@@ -9,14 +9,14 @@ jobs:
       postgres:
         image: postgres:15-alpine
         env:
-          POSTGRES_USER: respondo
           POSTGRES_DB: respondo_test
-          POSTGRES_PASSWORD: ""
-          options: >-
-            --health-cmd pg_isready
-            --health-interval 10s
-            --health-timeout 5s
-            --health-retries 5
+          POSTGRES_USER: respondo
+          POSTGRES_PASSWORD: respondo_ci
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
         ports:
           - 5432:5432
     steps:
@@ -29,21 +29,21 @@ jobs:
       - name: Run tests
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bundle exec rails test
+        run: RAILS_ENV=test bundle exec rails test
   test_system:
     runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres:15-alpine
         env:
-          POSTGRES_USER: respondo
           POSTGRES_DB: respondo_test
-          POSTGRES_PASSWORD: ""
-          options: >-
-            --health-cmd pg_isready
-            --health-interval 10s
-            --health-timeout 5s
-            --health-retries 5
+          POSTGRES_USER: respondo
+          POSTGRES_PASSWORD: respondo_ci
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
         ports:
           - 5432:5432
     steps:
