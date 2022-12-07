@@ -20,8 +20,8 @@ class DashboardTest < ApplicationSystemTestCase
   end
 
   test 'shows the newest tickets' do
-    assert has_text?(tickets(:internal_twitter).content)
-    assert has_text?(tickets(:internal_disqus).content)
+    assert has_text?(tickets(:twitter).content)
+    assert has_text?(tickets(:disqus).content)
   end
 
   test 'shows the tickets info widgets' do
@@ -32,7 +32,7 @@ class DashboardTest < ApplicationSystemTestCase
   test 'allows show all tickets with home widget' do
     click_link('New Tickets')
 
-    assert has_text?(tickets(:internal_twitter).content)
-    assert has_text?(tickets(:internal_disqus).content)
+    assert has_text?(tickets(:twitter).content)
+    assert has_text?(tickets(:disqus).content)
   end
 end

@@ -10,7 +10,7 @@ class TicketTest < ApplicationSystemTestCase
   def setup
     @user = users(:john)
     @brand = brands(:respondo)
-    @ticket = tickets(:internal_twitter)
+    @ticket = tickets(:twitter)
 
     Subscription.create!(external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', brand: @brand,
                          cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update')

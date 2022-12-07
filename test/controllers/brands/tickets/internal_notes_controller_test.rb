@@ -13,7 +13,7 @@ module Brands
         sign_in(users(:john), user_accounts(:google_oauth2))
         brands(:respondo).users << users(:john)
 
-        post "/brands/#{brands(:respondo).id}/tickets/#{tickets(:internal_twitter).id}/internal_notes",
+        post "/brands/#{brands(:respondo).id}/tickets/#{tickets(:twitter).id}/internal_notes",
              params: { internal_note: { content: 'hello' } }
 
         assert_redirected_to brand_tickets_path(brands(:respondo))
@@ -22,13 +22,13 @@ module Brands
       test 'POST create when the user is not authorized redirects the user to root path' do
         sign_in(users(:john), user_accounts(:google_oauth2))
 
-        post "/brands/#{brands(:respondo).id}/tickets/#{tickets(:internal_twitter).id}/internal_notes"
+        post "/brands/#{brands(:respondo).id}/tickets/#{tickets(:twitter).id}/internal_notes"
 
         assert_redirected_to root_path
       end
 
       test 'POST create when the user is not signed in redirects the user to login path' do
-        post "/brands/#{brands(:respondo).id}/tickets/#{tickets(:internal_twitter).id}/internal_notes"
+        post "/brands/#{brands(:respondo).id}/tickets/#{tickets(:twitter).id}/internal_notes"
 
         assert_redirected_to login_path
       end

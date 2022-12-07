@@ -1,4 +1,4 @@
-internal_twitter:
+twitter:
   external_uid: 'uid_1'
   status: open
   content: Internal twitter ticket content.
@@ -8,7 +8,7 @@ internal_twitter:
   creator:
   ticketable: twitter (InternalTicket)
 
-internal_disqus:
+disqus:
   external_uid: 'uid_2'
   status: open
   content: Internal disqus ticket content.

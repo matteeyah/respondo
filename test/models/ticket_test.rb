@@ -4,28 +4,28 @@ require 'test_helper'
 
 class TicketTest < ActiveSupport::TestCase
   test 'validates presence of external_uid' do
-    ticket = tickets(:internal_twitter)
+    ticket = tickets(:twitter)
     ticket.external_uid = nil
 
     assert_predicate ticket, :invalid?
   end
 
   test 'validates presence of content' do
-    ticket = tickets(:internal_twitter)
+    ticket = tickets(:twitter)
     ticket.content = nil
 
     assert_predicate ticket, :invalid?
   end
 
   test 'validates uniqueness of external_uid scoped to ticketable_type and brand_id' do
-    ticket = tickets(:internal_twitter).dup
+    ticket = tickets(:twitter).dup
 
     assert_predicate ticket, :invalid?
     ticket.errors.added?(:external_uid, :taken, value: 'uid_1')
   end
 
   test '.root returnes tickets without a parent' do
-    child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:internal_twitter), content: 'hello',
+    child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:twitter), content: 'hello',
                            author: authors(:james), brand: brands(:respondo), ticketable: internal_tickets(:twitter))
 
     assert_not_includes Ticket.root, child
@@ -49,7 +49,7 @@ class TicketTest < ActiveSupport::TestCase
         Struct.new(:id, :screen_name).new(123_456, 'doesnotmatter'),
         1, '2019-01-01T00:23:39.951Z'
       )
-    parent = tickets(:internal_twitter)
+    parent = tickets(:twitter)
     parent.update!(external_uid: 1)
 
     created_ticket = Ticket.from_client_response!('twitter', client_response, brand_accounts(:twitter), nil)
@@ -72,18 +72,18 @@ class TicketTest < ActiveSupport::TestCase
 
   test '.with_descendants_hash' do
     first_child = Ticket.create!(
-      external_uid: 'uid_10', parent: tickets(:internal_twitter), content: 'hello',
+      external_uid: 'uid_10', parent: tickets(:twitter), content: 'hello',
       author: authors(:james), brand: brands(:respondo), ticketable: internal_tickets(:twitter)
     )
 
     second_child = Ticket.create!(
-      external_uid: 'uid_11', parent: tickets(:internal_disqus), content: 'hello',
+      external_uid: 'uid_11', parent: tickets(:disqus), content: 'hello',
       author: authors(:james), brand: brands(:respondo), ticketable: internal_tickets(:disqus)
     )
 
     expected_structure = {
-      tickets(:internal_twitter) => { first_child => {} },
-      tickets(:internal_disqus) => { second_child => {} },
+      tickets(:twitter) => { first_child => {} },
+      tickets(:disqus) => { second_child => {} },
       tickets(:external) => {}
     }
 
@@ -91,18 +91,18 @@ class TicketTest < ActiveSupport::TestCase
   end
 
   test '#with_descendants_hash' do
-    child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:internal_twitter), content: 'hello',
+    child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:twitter), content: 'hello',
                            author: authors(:james), brand: brands(:respondo), ticketable: internal_tickets(:twitter))
 
     expected_structure = {
-      tickets(:internal_twitter) => { child => {} }
+      tickets(:twitter) => { child => {} }
     }
 
-    assert_equal expected_structure, tickets(:internal_twitter).with_descendants_hash
+    assert_equal expected_structure, tickets(:twitter).with_descendants_hash
   end
 
   test '#respond_as creates a response ticket' do
-    ticket = tickets(:internal_twitter)
+    ticket = tickets(:twitter)
     brand_accounts(:twitter).update!(token: 'hello', secret: 'world')
     ticket.update!(external_uid: '1')
 

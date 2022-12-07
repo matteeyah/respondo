@@ -19,7 +19,7 @@ class LoadNewTicketsJobTest < ActiveJob::TestCase
   private
 
   def stub_twitter
-    twitter_ticket = tickets(:internal_twitter)
+    twitter_ticket = tickets(:twitter)
 
     stub_request(:post, 'https://api.twitter.com/oauth2/token').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
@@ -32,7 +32,7 @@ class LoadNewTicketsJobTest < ActiveJob::TestCase
   end
 
   def stub_disqus
-    disqus_ticket = tickets(:internal_disqus)
+    disqus_ticket = tickets(:disqus)
 
     stub_request(:get, 'https://disqus.com/api/3.0/users/listForums.json?access_token&api_key&api_secret&order=asc').to_return(
       status: 200,
