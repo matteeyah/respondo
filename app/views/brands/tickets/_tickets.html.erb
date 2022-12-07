@@ -1,6 +1,6 @@
 <ul class="list-group">
   <% tickets.each do |ticket, replies| %>
-    <li class="list-group-item bg-transparent border-0">
+    <li class="list-group-item bg-transparent py-0 rounded-0 border-1 border-top-0 border-bottom-0 border-end-0">
       <%= turbo_frame_tag dom_id(ticket) do %>
         <%= render partial: 'brands/tickets/ticket', locals: { brand:, ticket: } %>
         <% if replies.any? %>
