@@ -25,7 +25,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="flex-column collapse navbar-collapse w-100 mt-5" id="main-nav">
-        <ul class="flex-column align-items-center align-items-lg-start navbar-nav w-100">
+        <ul class="flex-column align-items-start navbar-nav w-100">
           <% if current_user.brand %>
             <li class="nav-item">
               <%= active_link_to brand_dashboard_path(current_user.brand), { active: :exclusive,
@@ -73,7 +73,7 @@
               </li>
             </ul>
             </ul>
-        <ul class="flex-column align-items-center align-items-lg-start navbar-nav mt-auto w-100">
+        <ul class="flex-column align-items-start navbar-nav mt-auto w-100">
           <% if current_user %>
             <li class="nav-item">
               <%= link_to '#', class: 'nav-link d-flex align-items-center ps-4', id: 'settings', title: 'Settings',
@@ -82,7 +82,7 @@
                 <span>Settings</span>
               <% end %>
             </li>
-            <% class_list = ['text-center', 'text-lg-start', 'collapse', 'list-group', 'list-group-flush', 'w-100',
+            <% class_list = ['text-start', 'collapse', 'list-group', 'list-group-flush', 'w-100',
                              ('show' if show_settings_collapse?)].join(' ') %>
             <ul aria-labelledby="#settings-menu" class="<%= class_list %>" id="settings-menu">
               <% if current_user.brand %>

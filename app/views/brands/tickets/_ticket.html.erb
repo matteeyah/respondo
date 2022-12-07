@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-header">
       <div class="row">
-        <div class="col-2 d-flex align-items-center">
+        <div class="col-lg-2 d-flex align-items-center justify-content-start justify-content-lg-start mb-2 mb-lg-0">
           <% if ticket.parent_id.nil? %>
             <span class="badge text-bg-primary rounded fs-6 me-1">
               <%= bi_icon(ticket.provider) %>
@@ -10,9 +10,9 @@
             </span>
           <% end %>
         </div>
-        <div class="col-9">
-          <div class="d-flex" id="<%= dom_id(ticket) %>_tags">
-            <span class="d-flex align-items-center badge bg-info me-1">
+        <div class="col-lg-9 mb-2 mb-lg-0">
+          <div class="d-flex flex-wrap" id="<%= dom_id(ticket) %>_tags">
+            <span class="d-flex order-last align-items-center badge bg-info me-1">
               <%= form_with url: brand_ticket_tags_path(ticket.brand, ticket),
                             model: ActsAsTaggableOn::Tag.new, method: :post,
                             html: { 'data-controller' => 'reset-form', 'data-action' => 'turbo:submit-end->reset-form#reset' } do |tag_form| %>
@@ -31,7 +31,7 @@
             <%= render partial: 'brands/tickets/tag', collection: ticket.tags, as: :tag, locals: { ticket: } %>
           </div>
         </div>
-        <div class="col-1 d-flex justify-content-end align-items-center">
+        <div class="col-lg-1 d-flex justify-content-start justify-content-lg-end align-items-center">
           <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="actionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               <%= bi_icon('three-dots') %>
@@ -68,7 +68,7 @@
                                                                                                                                                   'data-turbo-frame' => '_top' %>
       </div>
       <div class="row my-3">
-        <div class="col-1">
+        <div class="col-lg-2 mb-2 mb-lg-0">
           <span class="fs-5 text-info">
             <%= bi_icon('chat') %>
             <%= ticket.replies.count %>
@@ -80,7 +80,7 @@
             <span><%= ticket.internal_notes.count %></span>
           <% end %>
         </div>
-        <div class="col-3">
+        <div class="col-lg-4 mb-2 mb-lg-0">
           <%= form_with url: brand_ticket_assignments_path(ticket.brand, ticket),
                         model: ticket, method: :post do |assignment_form| %>
             <div class="input-group">
@@ -93,7 +93,7 @@
             </div>
           <% end %>
         </div>
-        <div class="col-8 d-flex justify-content-end">
+        <div class="col-lg-6 d-flex justify-content-end">
           <%= form_with url: brand_ticket_path(ticket.brand, ticket),
                         model: ticket, method: :patch do |status_form| %>
             <div class="input-group">
@@ -105,8 +105,8 @@
         </div>
       </div>
       <div class="row collapse" id="<%= dom_id(ticket) %>_internal_notes_dropdown">
-        <ul class="list-group list-group-flush" id="<%= dom_id(ticket) %>_internal_notes">
-          <li class="list-group-item list-group-item-warning">
+        <ul class="list-group list-group-flush p-0" id="<%= dom_id(ticket) %>_internal_notes">
+          <li class="order-last list-group-item list-group-item-warning border-top">
             <span class="small">
             <%= bi_icon('sticky') %>
             </span>
@@ -135,11 +135,11 @@
                       model: ticket.replies.new, method: :post,
                       html: { autocomplete: 'off' } do |reply_form| %>
           <div class="row">
-            <div class="col-11 d-flex align-items-center">
+            <div class="col-10 d-flex align-items-center">
               <%= reply_form.text_field :content, required: true,
                                                   placeholder: 'Reply', class: 'form-control' %>
             </div>
-            <div class="col-1 d-flex justify-content-end align-items-center">
+            <div class="col-2 d-flex justify-content-end align-items-center">
               <%= reply_form.button class: 'border-0 bg-transparent btn btn-link rounded-circle' do %>
                 <%= bi_icon('telegram', 'fs-2') %>
               <% end %>
