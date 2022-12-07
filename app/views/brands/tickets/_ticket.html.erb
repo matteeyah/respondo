@@ -2,33 +2,36 @@
   <div class="card">
     <div class="card-header">
       <div class="row">
-        <div class="col-10">
+        <div class="col-2 d-flex align-items-center">
           <% if ticket.parent_id.nil? %>
-            <%= bi_icon(ticket.provider, 'd-inline') %>
+            <span class="badge text-bg-primary rounded fs-6 me-1">
+              <%= bi_icon(ticket.provider) %>
+              <%= ticket.source.screen_name %>
+            </span>
           <% end %>
-          <div class="d-inline" id="<%= dom_id(ticket) %>_tags">
+        </div>
+        <div class="col-9">
+          <div class="d-flex" id="<%= dom_id(ticket) %>_tags">
+            <span class="d-flex align-items-center badge bg-info me-1">
+              <%= form_with url: brand_ticket_tags_path(ticket.brand, ticket),
+                            model: ActsAsTaggableOn::Tag.new, method: :post,
+                            html: { 'data-controller' => 'reset-form', 'data-action' => 'turbo:submit-end->reset-form#reset' } do |tag_form| %>
+                <div class="row d-flex align-items-center">
+                  <div class="col-9">
+                    <%= tag_form.text_field :name, required: true, placeholder: 'add tag', class: 'form-control' %>
+                  </div>
+                  <div class="col-3">
+                    <%= tag_form.button class: 'btn btn-link' do %>
+                      <%= bi_icon('plus', 'fs-5 text-white') %>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </span>
             <%= render partial: 'brands/tickets/tag', collection: ticket.tags, as: :tag, locals: { ticket: } %>
           </div>
-          <span class="badge bg-info me-1">
-            <%= form_with url: brand_ticket_tags_path(ticket.brand, ticket),
-                            model: ActsAsTaggableOn::Tag.new, method: :post,
-                          html: { 'data-controller' => 'reset-form',
-                                  'data-action' => 'turbo:submit-end->reset-form#reset' } do |tag_form| %>
-              <div class="row">
-                <div class="col-10">
-                  <%= tag_form.text_field :name, required: true,
-                                                  placeholder: 'add tag', class: 'form-control' %>
-                </div>
-                <div class="col-2">
-                  <%= tag_form.button class: 'btn btn-link d-inline' do %>
-                    <%= bi_icon('plus') %>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-          </span>
         </div>
-        <div class="col-2">
+        <div class="col-1 d-flex justify-content-end align-items-center">
           <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="actionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               <%= bi_icon('three-dots') %>
@@ -36,15 +39,15 @@
             <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
               <% if ticket.parent_id.nil? %>
                 <li><%= link_to 'View', brand_ticket_path(ticket.brand, ticket), class: 'dropdown-item',
-                  'data-turbo-frame' => :_top %></li>
+                                                                                 'data-turbo-frame' => :_top %></li>
               <% end %>
               <li>
                 <%= link_to 'External View', brand_ticket_permalink_path(ticket.brand, ticket), 'data-turbo-frame' => :_top,
-                  id: "permalink-#{ticket.id}", class: 'dropdown-item' %>
+                                                                                                id: "permalink-#{ticket.id}", class: 'dropdown-item' %>
               </li>
               <li>
                 <%= link_to 'Delete', brand_ticket_path(ticket.brand, ticket), 'data-turbo-method' => :delete,
-                  id: "delete-#{ticket.id}", class: 'dropdown-item' %>
+                                                                               id: "delete-#{ticket.id}", class: 'dropdown-item' %>
               </li>
             </ul>
           </div>
@@ -55,74 +58,68 @@
       <div class="row">
         <span class="fw-bold">
           <span class="m-0"><%= raw(ticket_author_header(ticket)) %></span>
-          <% if ticket.parent_id.nil? %>
-            <span class="m-0">via</span>
-            <span class="badge rounded-pill list-group-item-primary me-1">
-              <%= bi_icon(ticket.provider) %>
-              <%= ticket.source.screen_name %>
-            </span>
-          <% end %>
         </span>
       </div>
-      <div class="row">
+      <div class="row my-2">
         <p><%= ticket.content %></span>
       </div>
       <div class="row">
-        <span><%= "#{time_ago_in_words(ticket.created_at)} ago at #{ticket.created_at.to_fs(:short)}" %></span>
+        <%= link_to "#{time_ago_in_words(ticket.created_at)} ago at #{ticket.created_at.to_fs(:short)}", brand_ticket_path(ticket.brand, ticket), class: 'link-secondary',
+                                                                                                                                                  'data-turbo-frame' => '_top' %>
       </div>
-      <div class="row">
-        <div class="col-2">
-          <span>
+      <div class="row my-3">
+        <div class="col-1">
+          <span class="fs-5 text-info">
             <%= bi_icon('chat') %>
             <%= ticket.replies.count %>
           </span>
-          <%= link_to "##{dom_id(ticket)}_internal_notes_dropdown", role: 'button', aria: { expanded: 'false', controls: "#{dom_id(ticket)}_internal_notes_dropdown" }, 'data-bs-toggle' => 'collapse' do %>
+          <%= link_to "##{dom_id(ticket)}_internal_notes_dropdown", role: 'button',
+                                                                    aria: { expanded: 'false', controls: "#{dom_id(ticket)}_internal_notes_dropdown" }, 'data-bs-toggle' => 'collapse',
+                                                                    class: 'fs-5 link-warning text-decoration-none' do %>
             <%= bi_icon('sticky') %>
             <span><%= ticket.internal_notes.count %></span>
           <% end %>
         </div>
-        <div class="col-4">
+        <div class="col-3">
           <%= form_with url: brand_ticket_assignments_path(ticket.brand, ticket),
-            model: ticket, method: :post do |status_form| %>
-            <div class="row">
-              <div class="col-8">
-              <%= status_form.fields_for :assignment, ticket.assignment do |assignment_form| %>
-                <%= assignment_form.collection_select :user_id, ticket.brand.users, :id, :name,
-                  { prompt: true },
-                  { required: true, class: 'custom-select form-control', id: 'ticket-assignment' } %>
+                        model: ticket, method: :post do |assignment_form| %>
+            <div class="input-group">
+              <%= assignment_form.fields_for :assignment, ticket.assignment do |assignee_field| %>
+                <%= assignee_field.collection_select :user_id, ticket.brand.users, :id, :name,
+                                                     { prompt: 'Unassigned' },
+                                                     { required: false, class: 'custom-select form-control', id: 'ticket-assignment' } %>
               <% end %>
-              </div>
-              <div class="col-4">
-                <%= status_form.submit 'Assign', class: 'btn btn-primary' %>
-              </div>
+              <%= assignment_form.submit 'Assign', class: 'btn btn-primary' %>
             </div>
           <% end %>
         </div>
-        <div class="col-2">
+        <div class="col-8 d-flex justify-content-end">
           <%= form_with url: brand_ticket_path(ticket.brand, ticket),
-            model: ticket, method: :patch do |status_form| %>
-            <% inverse_status = ticket.status == 'solved' ? 'open' : 'solved' %>
-            <%= status_form.hidden_field :status, value: inverse_status %>
-            <%= status_form.submit inverse_status, class: 'btn btn-primary' %>
+                        model: ticket, method: :patch do |status_form| %>
+            <div class="input-group">
+              <%= status_form.select :status, options_for_select(Ticket.statuses.keys, ticket.status),
+                                     { include_blank: 'Select status' }, { required: true, class: 'custom-select form-control' } %>
+              <%= status_form.submit 'Update', class: 'btn btn-primary' %>
+            </div>
           <% end %>
         </div>
       </div>
       <div class="row collapse" id="<%= dom_id(ticket) %>_internal_notes_dropdown">
         <ul class="list-group list-group-flush" id="<%= dom_id(ticket) %>_internal_notes">
-          <li class="list-group-item list-group-item-primary">
+          <li class="list-group-item list-group-item-warning">
             <span class="small">
             <%= bi_icon('sticky') %>
             </span>
             <span class="small me-1"><%= current_user.name %>:</span>
             <span class="small">
               <%= form_with url: brand_ticket_internal_notes_path(ticket.brand, ticket),
-                model: InternalNote.new, method: :post,
-                html: { autocomplete: 'off',
-                        'data-controller' => 'reset-form',
-                        'data-action' => 'turbo:submit-end->reset-form#reset' } do |internal_note_form| %>
+                            model: InternalNote.new, method: :post,
+                            html: { autocomplete: 'off',
+                                    'data-controller' => 'reset-form',
+                                    'data-action' => 'turbo:submit-end->reset-form#reset' } do |internal_note_form| %>
                         <div class="input-group input-group-sm mb-3">
                           <%= internal_note_form.text_field :content, required: true,
-                            placeholder: 'Write a note...', class: 'form-control' %>
+                                                                      placeholder: 'Write a note...', class: 'form-control' %>
                           <%= internal_note_form.submit 'Write a note...', class: 'btn btn-primary' %>
                         </div>
               <% end %>
@@ -135,12 +132,12 @@
     <div class="card-footer">
       <% if current_user.brand.subscribed? %>
         <%= form_with url: brand_ticket_replies_path(ticket.brand, ticket),
-          model: ticket.replies.new, method: :post,
-          html: { autocomplete: 'off' } do |reply_form| %>
+                      model: ticket.replies.new, method: :post,
+                      html: { autocomplete: 'off' } do |reply_form| %>
           <div class="row">
             <div class="col-11 d-flex align-items-center">
               <%= reply_form.text_field :content, required: true,
-                placeholder: 'Reply', class: 'form-control' %>
+                                                  placeholder: 'Reply', class: 'form-control' %>
             </div>
             <div class="col-1 d-flex justify-content-end align-items-center">
               <%= reply_form.button class: 'border-0 bg-transparent btn btn-link rounded-circle' do %>
