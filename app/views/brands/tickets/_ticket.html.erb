@@ -98,7 +98,7 @@
                         model: ticket, method: :patch do |status_form| %>
             <div class="input-group">
               <%= status_form.select :status, options_for_select(Ticket.statuses.keys, ticket.status),
-                                     { include_blank: 'Select status' }, { required: true, class: 'custom-select form-control' } %>
+                                     { include_blank: 'Select status' }, { id: 'ticket-status', required: true, class: 'custom-select form-control' } %>
               <%= status_form.submit 'Update', class: 'btn btn-primary' %>
             </div>
           <% end %>
@@ -120,7 +120,7 @@
                         <div class="input-group input-group-sm mb-3">
                           <%= internal_note_form.text_field :content, required: true,
                                                                       placeholder: 'Write a note...', class: 'form-control' %>
-                          <%= internal_note_form.submit 'Write a note...', class: 'btn btn-primary' %>
+                          <%= internal_note_form.submit 'Create Note', class: 'btn btn-primary' %>
                         </div>
               <% end %>
             </span>

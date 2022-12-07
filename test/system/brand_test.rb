@@ -32,7 +32,8 @@ class BrandTest < ApplicationSystemTestCase
     target_ticket = tickets(:twitter)
 
     within("#ticket_#{target_ticket.id}") do
-      page.find(:css, 'i.bi-bullseye').click
+      page.find(:css, 'i.bi-three-dots').click
+      click_link 'View'
     end
 
     assert has_text?(target_ticket.content)

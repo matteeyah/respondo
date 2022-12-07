@@ -42,12 +42,12 @@ class TicketTest < ApplicationSystemTestCase
       response_text
     )
 
-    click_link "toggle-reply-#{@ticket.id}"
+    within("#ticket_#{@ticket.id}") do
+      fill_in 'ticket[content]', with: response_text
+      page.find(:css, 'i.bi-telegram').click
+    end
 
-    fill_in 'ticket[content]', with: response_text
-    click_button 'Reply'
-
-    assert has_text?("#{@user.name} as #{@brand.screen_name}")
+    assert has_text?("#{@user.name} as @#{@brand.screen_name}")
     assert has_text?(response_text)
   end
 
@@ -66,12 +66,12 @@ class TicketTest < ApplicationSystemTestCase
     stub_request(:post, external_ticket.ticketable.response_url)
       .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
 
-    click_link "toggle-reply-#{external_ticket.id}"
+    within("#ticket_#{external_ticket.id}") do
+      fill_in 'ticket[content]', with: response_text
+      page.find(:css, 'i.bi-telegram').click
+    end
 
-    fill_in 'ticket[content]', with: response_text
-    click_button 'Reply'
-
-    assert has_text?("#{@user.name} as #{@brand.screen_name}")
+    assert has_text?("#{@user.name} as @#{@brand.screen_name}")
     assert has_text?(response_text)
   end
 
@@ -80,10 +80,12 @@ class TicketTest < ApplicationSystemTestCase
 
     internal_note_text = 'Internal note from Respondo system tests.'
 
-    click_link "toggle-internal-note-#{@ticket.id}"
+    within("#ticket_#{@ticket.id}") do
+      page.find(:css, 'i.bi-sticky').click
 
-    fill_in 'internal_note[content]', with: internal_note_text
-    click_button 'Create note'
+      fill_in 'internal_note[content]', with: internal_note_text
+      click_button 'Create Note'
+    end
 
     within("#ticket_#{@ticket.id}_internal_notes") do
       assert has_text?(@user.name)
@@ -95,7 +97,6 @@ class TicketTest < ApplicationSystemTestCase
     click_link('Tickets')
 
     within("#ticket_#{@ticket.id}") do
-      click_link "toggle-status-#{@ticket.id}"
       select 'solved', from: 'ticket-status'
       click_button 'Update'
     end
@@ -110,9 +111,8 @@ class TicketTest < ApplicationSystemTestCase
     click_link('Tickets')
 
     within("#ticket_#{@ticket.id}") do
-      click_link "toggle-tag-#{@ticket.id}"
       fill_in :'acts_as_taggable_on_tag[name]', with: 'hello'
-      click_button 'Tag ticket'
+      page.find(:css, 'i.bi-plus').click
     end
 
     within("#ticket_#{@ticket.id}") do
@@ -140,7 +140,6 @@ class TicketTest < ApplicationSystemTestCase
     click_link('Tickets')
 
     within("#ticket_#{@ticket.id}") do
-      click_link "toggle-assign-#{@ticket.id}"
       select @user.name, from: 'ticket-assignment'
       click_button 'Assign'
     end
@@ -157,7 +156,8 @@ class TicketTest < ApplicationSystemTestCase
       .to_return(status: 200, body: { id: 'world' }.to_json, headers: { content_type: 'application/json' })
 
     within("#ticket_#{@ticket.id}") do
-      page.find_link("delete-#{@ticket.id}").click
+      page.find(:css, 'i.bi-three-dots').click
+      click_link 'Delete'
     end
 
     assert has_no_text?(@ticket.content)
@@ -174,7 +174,8 @@ class TicketTest < ApplicationSystemTestCase
     )
 
     within("#ticket_#{@ticket.id}") do
-      click_link "permalink-#{@ticket.id}"
+      page.find(:css, 'i.bi-three-dots').click
+      click_link 'External View'
     end
 
     assert_current_path('https://twitter.com/hello/status/1')
