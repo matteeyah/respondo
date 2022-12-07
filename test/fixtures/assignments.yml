@@ -1,3 +1,3 @@
 default:
-  ticket: internal_twitter
+  ticket: twitter
   user: john

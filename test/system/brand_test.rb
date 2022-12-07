@@ -24,53 +24,54 @@ class BrandTest < ApplicationSystemTestCase
   end
 
   test 'shows the tickets' do
-    assert has_text?(tickets(:internal_twitter).content)
-    assert has_text?(tickets(:internal_disqus).content)
+    assert has_text?(tickets(:twitter).content)
+    assert has_text?(tickets(:disqus).content)
   end
 
   test 'allows navigating to tickets' do
-    target_ticket = tickets(:internal_twitter)
+    target_ticket = tickets(:twitter)
 
     within("#ticket_#{target_ticket.id}") do
-      page.find(:css, 'i.bi-bullseye').click
+      page.find(:css, 'i.bi-three-dots').click
+      click_link 'View'
     end
 
     assert has_text?(target_ticket.content)
   end
 
   test 'allows searching tickets by author name' do
-    fill_in 'query', with: tickets(:internal_twitter).author.username
+    fill_in 'query', with: tickets(:twitter).author.username
     click_button :search
 
-    assert has_text?(tickets(:internal_twitter).content)
-    assert has_no_text?(tickets(:internal_disqus).content)
+    assert has_text?(tickets(:twitter).content)
+    assert has_no_text?(tickets(:disqus).content)
   end
 
   test 'allows searching tickets by content' do
-    fill_in 'query', with: tickets(:internal_twitter).content
+    fill_in 'query', with: tickets(:twitter).content
     click_button :search
 
-    assert has_text?(tickets(:internal_twitter).content)
-    assert has_no_text?(tickets(:internal_disqus).content)
+    assert has_text?(tickets(:twitter).content)
+    assert has_no_text?(tickets(:disqus).content)
   end
 
   test 'keeps ticket status context when searching' do
-    tickets(:internal_disqus).update!(status: :solved)
+    tickets(:disqus).update!(status: :solved)
 
     click_link 'Solved'
 
     # This is a hack to make Capybara wait until the page is loaded after navigating
     find(:xpath, "//input[@type='hidden'][@value='solved']", visible: :hidden)
 
-    fill_in 'query', with: tickets(:internal_disqus).author.username
+    fill_in 'query', with: tickets(:disqus).author.username
     click_button :search
 
-    assert has_no_text?(tickets(:internal_twitter).author.username)
-    assert has_text?(tickets(:internal_disqus).author.username)
+    assert has_no_text?(tickets(:twitter).author.username)
+    assert has_text?(tickets(:disqus).author.username)
   end
 
   test 'allows searching by nested ticket content' do
-    parent = tickets(:internal_twitter)
+    parent = tickets(:twitter)
     nested_ticket = Ticket.create!(
       external_uid: 'nested_1', status: :open, content: 'Lorem', parent:,
       author: authors(:james), brand: @brand, creator: @user, ticketable: internal_tickets(:twitter)
