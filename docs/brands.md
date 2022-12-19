@@ -1,6 +1,6 @@
 ---
 title: Brands
-description: Documentation about managing brands.
+description: Documentation for managing brands.
 ---
 
 # Managing brands
