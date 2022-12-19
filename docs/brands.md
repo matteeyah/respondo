@@ -9,7 +9,7 @@ When you first sign in, you can click `Authorize` to connect your brand
 Twitter account.
 
 When signed in, you can load new tickets associated with your Brand by pressing
-the `Load Tickets` button.
+the `Reload` button in the tickets page.
 
 ## Brand accounts
 
