@@ -5,8 +5,17 @@ description: Documentation for working with tickets.
 
 # Working with tickets
 
-If someone leaves a public reply on a ticket that's closed, it's automatically
-reopened.
+The ticket view is composed of three sections - the header, the main area and
+the footer.
+
+The header shows you which social media account is the source of the
+ticket, the tags on a ticket and a dropdown for secondary actions.
+
+The main part houses information about the ticket author, the ticket content,
+the timestamp on a ticket and actions for showing the internal notes, assigning
+and updating the ticket status.
+
+The footer houses the ticket reply form.
 
 ## Filtering
 
