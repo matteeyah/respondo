@@ -15,14 +15,21 @@ name or content.
 
 ## Sign In
 
-Authentication is handled exclusively with OAuth. This allows users to easily
-sign in with just one click using one of their social accounts.
+Authentication is handled exclusively with Google or Microsoft AD. This allows
+users to easily sign in with just one click using one of their social accounts.
 
-## Basic navigation
+## Dashboard
 
-After navigating to the [Tickets page](https://docs.respondohub.com/tickets) of
-the authenticated brand, you can choose between `Open tickets` and
-`Solved tickets`.
+After you log in you will be presented with a dashboard for your brand. This
+dashboard shows basic information:
+
+- Number of open tickets
+- Number of solved tickets
+- Number of unassigned tickets
+- Number of new tickets
+- Feed of new tickets
+
+## Basic usage
 
 Every time somebody mentions the brand's handle on any social network that is
 currently integrated with that brand's Respondo, a new ticket is created under

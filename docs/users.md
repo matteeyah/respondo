@@ -1,6 +1,6 @@
 ---
 title: Users
-description: Documentation about managing users.
+description: Documentation for managing users.
 ---
 
 # Managing users
