@@ -113,7 +113,7 @@ jobs:
       - name: Install yarn dependencies
         run: yarn install --immutable
       - name: Run stylelint
-        run: yarn run stylelint '**/*.scss' 
+        run: yarn run stylelint 'app/assets/stylesheets/**/*.scss' 
   standard:
     runs-on: ubuntu-latest
     steps:
