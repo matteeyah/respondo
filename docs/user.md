@@ -1,14 +1,16 @@
 ---
-title: Users
+title: User profile
 description: Documentation for managing users.
 ---
 
-# Managing users
+# User profile
 
-## User accounts
+<https://app.respondohub.com/profile>
+
+## Accounts
 
 Respondo can automatically integrate your Twitter, Disqus, and Google Accounts.
-To do so, navigate to the `User Settings` page and you'll be able to authorize
+To do so, navigate to the `User profile` page and you'll be able to authorize
 or deauthorize these accounts.
 
 ## Personal Access Tokens

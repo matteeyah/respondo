@@ -1,9 +1,11 @@
 ---
-title: Brands
+title: Brand settings
 description: Documentation for managing brands.
 ---
 
-# Managing brands
+# Brand settings
+
+<https://app.respondohub.com/settings>
 
 When you first sign in, you can click `Authorize` to connect your brand
 Twitter account.

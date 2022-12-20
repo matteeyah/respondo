@@ -9,20 +9,20 @@
 </div>
 <div class="row">
   <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item" id="account-settings-tab" role="presentation">
+    <li class="nav-item" id="identity-tab" role="presentation">
       <%= button_tag 'Identity', class: 'nav-link active', role: 'tab',
-                                 'data-bs-toggle' => 'tab', 'data-bs-target' => '#account-settings-tab-pane',
+                                 'data-bs-toggle' => 'tab', 'data-bs-target' => '#identity-tab-pane',
                                  'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true %>
     </li>
-    <li class="nav-item" id="user-settings-tab" role="presentation">
+    <li class="nav-item" id="access-tab" role="presentation">
       <%= button_tag 'Access', class: 'nav-link', role: 'tab',
-                               'data-bs-toggle' => 'tab', 'data-bs-target' => '#user-settings-tab-pane',
+                               'data-bs-toggle' => 'tab', 'data-bs-target' => '#access-tab-pane',
                                'aria-controls' => 'user-settings-tab-pane', 'aria-selected' => false %>
     </li>
   </ul>
   <div class="tab-content mt-4">
-    <div aria-labelledby="account-settings-tab" class="tab-pane active"
-         id="account-settings-tab-pane" role="tabpanel" tabindex="0">
+    <div aria-labelledby="identity-tab" class="tab-pane active"
+         id="identity-tab-pane" role="tabpanel" tabindex="0">
       <div class="row">
         <div class="col-lg-6">
           <div class="card">
@@ -41,7 +41,7 @@
       </div>
       <%= render partial: 'shared/accounts', locals: { model: @user } %>
     </div>
-    <div aria-labelledby="user-settings-tab" class="tab-pane" id="user-settings-tab-pane" role="tabpanel" tabindex="0">
+    <div aria-labelledby="access-tab" class="tab-pane" id="access-tab-pane" role="tabpanel" tabindex="0">
       <div class="row">
         <div class="col-lg-6">
           <div class="card">

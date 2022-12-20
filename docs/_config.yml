@@ -4,6 +4,6 @@ exclude:
 theme: minima
 header_pages:
   - index.md
-  - users.md
-  - brands.md
+  - user.md
+  - brand.md
   - tickets.md
