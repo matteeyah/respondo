@@ -1,12 +1,23 @@
 ---
 title: Tickets
-description: Documentation about working with tickets.
+description: Documentation for working with tickets.
 ---
 
 # Working with tickets
 
-If someone leaves a public reply on a ticket that's closed, it's automatically
-reopened.
+<https://app.respondohub.com/tickets>
+
+The ticket view is composed of three sections - the header, the main area and
+the footer.
+
+The header shows you which social media account is the source of the
+ticket, the tags on a ticket and a dropdown for secondary actions.
+
+The main part houses information about the ticket author, the ticket content,
+the timestamp on a ticket and actions for showing the internal notes, assigning
+and updating the ticket status.
+
+The footer houses the ticket reply form.
 
 ## Filtering
 
@@ -29,37 +40,44 @@ Tickets" button to filter tickets.
 
 ### Replying
 
-You can reply to social media posts. To open the response form, click the reply
-(<i class="fas fa-reply"></i>) button below the ticket you want to respond to.
+You can reply to social media posts. To respond to a post, type out your reply
+in the reply form and click the send button (<i class="bi bi-telegram"></i>).
 
 ### Internal Notes
 
 You can leave internal notes, visible only to other brand members. To open the
-internal note form, click the note (<i class="fas fa-sticky-note"></i>) button
+internal notes, click the note (<i class="bi bi-sticky"></i>) button
 below the ticket you want to respond to.
 
 ### Solving / Re-Opening
 
-You can Solve open tickets and Re-Open solved tickets. Click the solve or reopen
-(<i class="fas fa-check"></i>/<i class="fas fa-folder-open"></i>) button below
-the ticket you want to change the status of. Only members of a brand can Solve
-or Reopen tickets that belong to that brand. If you solve a ticket that has
-replies, all of its descendants will automatically be solved as well. If you
-reopen a ticket that has replies, all of its ascendants will automatically be
-reopened as well.
+You can Solve open tickets and Re-Open solved tickets. Select the ticket status
+from the status dropdown and click Update.
 
-### Personal account
+### Tagging
 
-If you aren't a member of a certain brand, you can respond to related tickets
-only from your personal account.
+You can tag a ticket to easily group related tickets. Adding a tag is done by
+filling out the "add tag" field in the ticket header with the tag contents and
+clicking on the plus sign (<i class="bi bi-plus"></i>). To remove a tag, just
+click the x sign (<i class="bi bi-x"></i>) next to the tag that you want to
+remove.
 
-You can only respond on the social network that is currently authenticated in
-your `User settings`.
+### Assigning
 
-### Brand account
+You can assign a ticket to a specific member of your team. Assigning is done by
+selecting the team member from the assignment dropdown and clicking "Assign".
 
-If you are a member of a certain brand, you can respond to related tickets from
-the brand's social network account.
+### Deleting
+
+You can delete tickets by clicking the dropdown toggler
+(<i class="bi bi-three-dots"></i>) in the ticket header then clicking on
+"Delete".
+
+### Opening the social media post
+
+You can open the original social media post the ticket was created from by
+clicking the dropdown toggler (<i class="bi bi-three-dots"></i>) in the ticket
+header then clicking on "External View".
 
 ## Webhook Integrations
 

@@ -24,6 +24,6 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   test 'GET login renders the login page' do
     get '/login'
 
-    assert_select 'p', 'Sign in is only available with a Google or Microsoft AD account.'
+    assert_select 'small', 'Sign in is only available with a Google or Microsoft AD account.'
   end
 end

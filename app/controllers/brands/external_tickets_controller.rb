@@ -4,7 +4,6 @@ module Brands
   class ExternalTicketsController < ApplicationController
     skip_before_action :verify_authenticity_token
     skip_before_action :authenticate_user!
-    skip_before_action :authorize_user!
 
     before_action :authorize_token!
 
@@ -22,6 +21,10 @@ module Brands
     end
 
     private
+
+    def brand
+      @brand ||= Brand.find(params[:brand_id] || params[:id])
+    end
 
     def validate_json_payload
       schema = Rails.root.join('lib/external_ticket_json_schema.json').read

@@ -1,0 +1,114 @@
+<div class="row">
+  <div class="col-12">
+    <h3>Overview</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <p class="text-muted">
+      Welcome,
+      <span class="text-black">
+        <%= current_user.name %>
+      </span>
+      , you're all set! Feel free to hop into the brand tickets!
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-5 mb-5">
+    <div class="row gy-3">
+      <div class="col-lg-6">
+        <div class="card border border-2 rounded-5 border-info p-2">
+          <div class="card-body">
+            <%= link_to tickets_path, { class: 'text-decoration-none m-0 stretched-link' } do %>
+              <div class="card-title">
+                <%= bi_icon('magic', 'fs-5 bg-info bg-opacity-50 text-info p-3 rounded') %>
+                <div class="row">
+                  <small class="text-muted mt-3">New Tickets</small>
+                </div>
+              </div>
+              <span class="fs-2">
+                <%= @new_count %>
+              </span>
+              <hr>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card border border-2 rounded-5 border-primary p-2">
+          <div class="card-body">
+            <%= link_to tickets_path(status: 'open'),
+                        { class: 'text-decoration-none stretched-link' } do %>
+              <div class="card-title">
+                <%= bi_icon('folder2-open', 'fs-5 bg-primary bg-opacity-50 text-primary p-3 rounded') %>
+                <div class="row">
+                  <small class="text-muted mt-3">Total Open</small>
+                </div>
+              </div>
+              <span class="fs-2">
+                <%= @open_count %>
+              </span>
+              <hr>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row my-1 my-lg-2 gy-3">
+      <div class="col-lg-6">
+        <div class="card border border-2 rounded-5 border-warning p-2">
+          <div class="card-body">
+            <%= link_to tickets_path, { class: 'text-decoration-none stretched-link' } do %>
+              <div class="card-title">
+                <%= bi_icon('stopwatch-fill', 'fs-5 bg-warning bg-opacity-50 text-warning p-3 rounded') %>
+                <div class="row">
+                  <small class="text-muted mt-3">Unassigned Tickets</small>
+                </div>
+              </div>
+              <span class="fs-2">
+                <%= @unassigned_count %>
+              </span>
+              <hr>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card border border-2 rounded-5 border-danger p-2">
+          <div class="card-body">
+            <%= link_to tickets_path(status: 'solved'),
+                        { class: 'text-decoration-none stretched-link' } do %>
+              <div class="card-title">
+                <%= bi_icon('folder2', 'fs-5 bg-danger bg-opacity-50 text-danger p-3 rounded') %>
+                <div class="row">
+                  <small class="text-muted mt-3">Total Solved</small>
+                </div>
+              </div>
+              <span class="fs-2">
+                <%= @solved_count %>
+              </span>
+              <hr>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card bg-secondary p-2 rounded-5">
+      <div class="card-body">
+        <div class="card-title d-flex justify-content-between align-items-center mb-2 text-light">
+          <span class="fs-4">Newest</span>
+          <%= link_to tickets_path,
+                      { active: :exclusive, class: 'text-decoration-none', 'data-turbo-frame' => :_top } do %>
+            <%= bi_icon('box-arrow-up-right text-light') %>
+          <% end %>
+        </div>
+        <div class="list-group list-group-flush">
+          <%= render partial: 'ticket', collection: @newest_tickets %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

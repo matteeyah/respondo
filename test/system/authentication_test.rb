@@ -20,7 +20,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     click_button('Sign in with Google')
     find_by_id('settings').click
 
-    assert has_link?('User settings')
+    assert has_link?('User profile')
   end
 
   test 'adds the user to the brand' do

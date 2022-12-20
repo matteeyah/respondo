@@ -18,36 +18,43 @@ Rails.application.routes.draw do
   get 'auth/failure', to: redirect('/')
   delete :sign_out, to: 'sessions#destroy'
 
-  resources :users, only: [:edit] do
+  get :dashboard, to: 'dashboard#show'
+  get :settings, to: 'brands#edit'
+  get :profile, to: 'users#edit'
+
+  resources :tickets, only: %i[index show update destroy] do
+    get :permalink
+
+    collection do
+      post :refresh
+    end
+
+    scope module: :tickets do
+      resources :tags, only: %i[create destroy]
+      resources :internal_notes, only: :create
+      resources :replies, only: :create
+
+      resource :assignments, only: :create
+    end
+  end
+
+  resource :user, only: [] do
     scope module: :users do
       resources :user_accounts, only: [:destroy]
       resources :personal_access_tokens, only: %i[create destroy]
     end
   end
 
-  resources :brands, only: %i[edit update] do
+  resource :brand, only: %i[update] do
     scope module: :brands do
-      resources :tickets, only: %i[index show update destroy] do
-        get :permalink
-
-        collection do
-          post :refresh
-        end
-
-        scope module: :tickets do
-          resources :tags, only: %i[create destroy]
-          resources :internal_notes, only: :create
-          resources :replies, only: :create
-
-          resource :assignments, only: :create
-        end
-      end
-
       resources :brand_accounts, only: [:destroy]
-      resources :external_tickets, constraints: { format: 'json' }, only: [:create]
       resources :users, only: %i[create destroy]
+    end
+  end
 
-      get :dashboard, to: 'dashboard#index'
+  resources :brands, only: [] do
+    scope module: :brands do
+      resources :external_tickets, constraints: { format: 'json' }, only: [:create]
     end
   end
 

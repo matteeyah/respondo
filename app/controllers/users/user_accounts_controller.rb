@@ -8,14 +8,14 @@ module Users
 
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to edit_user_path(user), status: :see_other }
+        format.html { redirect_to profile_path, status: :see_other }
       end
     end
 
     private
 
     def account
-      @account ||= user.accounts.find(params[:user_account_id] || params[:id])
+      @account ||= current_user.accounts.find(params[:user_account_id] || params[:id])
     end
   end
 end

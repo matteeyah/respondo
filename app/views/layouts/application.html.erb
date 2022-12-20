@@ -28,17 +28,17 @@
         <ul class="flex-column align-items-start navbar-nav w-100">
           <% if current_user.brand %>
             <li class="nav-item">
-              <%= active_link_to brand_dashboard_path(current_user.brand), { active: :exclusive,
-                                                                             class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
-                                                                             :title => 'Dashboard' } do %>
+              <%= active_link_to dashboard_path, { active: :exclusive,
+                                                   class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
+                                                   :title => 'Dashboard' } do %>
                 <%= bi_icon('grid-1x2', 'fs-4 me-3') %>
                 <span>Dashboard</span>
               <% end %>
             </li>
             <li class="nav-item">
-              <%= active_link_to brand_tickets_path(current_user.brand), { active: :exclusive,
-                                                                           class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
-                                                                           :title => 'Tickets' } do %>
+              <%= active_link_to tickets_path, { active: :exclusive,
+                                                 class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
+                                                 :title => 'Tickets' } do %>
                 <%= bi_icon('ticket', 'fs-4 me-3') %>
                 <span>Tickets</span>
               <% end %>
@@ -87,13 +87,13 @@
             <ul aria-labelledby="#settings-menu" class="<%= class_list %>" id="settings-menu">
               <% if current_user.brand %>
                 <li class="nav-item list-group-item list-group-item-action ps-0">
-                  <%= active_link_to 'Brand settings', edit_brand_path(current_user.brand),
-                                     active: [{ brands: :edit }], class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
+                  <%= active_link_to 'Brand settings', settings_path,
+                                     class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
                 </li>
               <% end %>
               <li class="nav-item list-group-item list-group-item-action ps-0">
-                <%= active_link_to 'User settings', edit_user_path(current_user),
-                                   active: [{ users: :edit }], class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
+                <%= active_link_to 'User profile', profile_path,
+                                   class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
               </li>
             </ul>
             <li class="nav-item">
