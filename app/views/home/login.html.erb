@@ -1,65 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Respondo</title>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
-  <%= stylesheet_link_tag 'application', media: 'all' %>
-</head>
-<body>
-<div class="container-fluid d-flex flex-column">
-  <div class="row min-vh-100">
-    <div class="col-lg-6 d-flex align-items-center justify-content-center">
-      <div class="card shadow-warning px-3 px-lg-4 py-5" id="login-card">
-        <div class="card-body">
-          <div class="border border-2 rounded-circle mx-auto mb-4">
-            <%= image_tag('logo_circle_white.svg', class: 'img-fluid') %>
-          </div>
-          <div class="card-title text-center fs-3 fw-bold">
-            Sign in to
-            <span class="text-color-switch">Respondo</span>
-          </div>
-          <hr>
-          <div class="text-center">
-            <small class="card-text text-muted">
-              Sign in is only available with a Google or Microsoft AD account.
-            </small>
-          </div>
+  <head>
+    <title>Respondo</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+  </head>
+  <body>
+    <div class="container-fluid d-flex flex-column">
+      <div class="row min-vh-100">
+        <div class="col-lg-6 d-flex align-items-center justify-content-center">
+          <div class="card shadow-warning px-3 px-lg-4 py-5" id="login-card">
+            <div class="card-body">
+              <div class="border border-2 rounded-circle mx-auto mb-4">
+                <%= image_tag('logo_circle_white.svg', class: 'img-fluid') %>
+              </div>
+              <div class="card-title text-center fs-3 fw-bold">
+                Sign in to
+                <span class="text-color-switch">Respondo</span>
+              </div>
+              <hr>
+              <div class="text-center">
+                <small class="card-text text-muted">
+                  Sign in is only available with a Google or Microsoft AD account.
+                </small>
+              </div>
 
-          <div class="d-grid gap-3 mt-3">
-            <%= auth_provider_link('google_oauth2',
-                                   { class: 'btn form-control btn-outline-dark' }, origin: '/') do %>
-              <div class="row">
-                <div class="col-2 text-end">
-                  <i class="bi bi-google text-warning"></i>
-                </div>
-                <div class="col-10 text-start">
-                  <small>Sign in with Google</small>
-                </div>
+              <div class="d-grid gap-3 mt-3">
+                <%= auth_provider_link('google_oauth2',
+                                       { class: 'btn form-control btn-outline-dark' }, origin: '/') do %>
+                                       <div class="row">
+                                         <div class="col-2 text-end">
+                                           <i class="bi bi-google text-warning"></i>
+                                         </div>
+                                         <div class="col-10 text-start">
+                                           <small>Sign in with Google</small>
+                                         </div>
+                                       </div>
+                                     <% end %>
+                                     <%= auth_provider_link('activedirectory',
+                                                            { class: 'btn form-control btn-outline-dark' }, origin: '/') do %>
+                                                            <div class="row">
+                                                              <div class="col-2 text-end">
+                                                                <i class="bi bi-microsoft text-primary"></i>
+                                                              </div>
+                                                              <div class="col-10 text-start">
+                                                                <small>Sign in with Microsoft AD</small>
+                                                              </div>
+                                                            </div>
+                                                          <% end %>
               </div>
-            <% end %>
-            <%= auth_provider_link('activedirectory',
-                                   { class: 'btn form-control btn-outline-dark' }, origin: '/') do %>
-              <div class="row">
-                <div class="col-2 text-end">
-                  <i class="bi bi-microsoft text-primary"></i>
-                </div>
-                <div class="col-10 text-start">
-                  <small>Sign in with Microsoft AD</small>
-                </div>
-              </div>
-            <% end %>
+            </div>
           </div>
+        </div>
+        <div class="col-lg-6 d-lg-flex d-none justify-content-end pe-0">
+          <%= image_tag('login_shapes.svg', class: 'vw-50 vh-100') %>
         </div>
       </div>
     </div>
-    <div class="col-lg-6 d-lg-flex d-none justify-content-end pe-0">
-      <%= image_tag('login_shapes.svg', class: 'vw-50 vh-100') %>
-    </div>
-  </div>
-</div>
-</body>
+  </body>
 </html>
