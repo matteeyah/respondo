@@ -22,6 +22,10 @@ module Brands
 
     private
 
+    def brand
+      @brand ||= Brand.find(params[:brand_id] || params[:id])
+    end
+
     def validate_json_payload
       schema = Rails.root.join('lib/external_ticket_json_schema.json').read
       JSON::Validator.validate(schema, request.raw_post)

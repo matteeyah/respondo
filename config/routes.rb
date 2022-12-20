@@ -45,11 +45,16 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :brand, only: %i[update] do
+  resource :brand, only: %i[update] do
     scope module: :brand do
       resources :brand_accounts, only: [:destroy]
-      resources :external_tickets, constraints: { format: 'json' }, only: [:create]
       resources :users, only: %i[create destroy]
+    end
+  end
+
+  resources :brands, only: [] do
+    scope module: :brands do
+      resources :external_tickets, constraints: { format: 'json' }, only: [:create]
     end
   end
 

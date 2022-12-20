@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Tickets
-  class ApplicationController < ::Brands::ApplicationController
+  class ApplicationController < ::ApplicationController
     private
 
     def ticket
