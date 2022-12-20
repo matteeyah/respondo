@@ -19,7 +19,7 @@ class BrandsControllerTest < ActionDispatch::IntegrationTest
   test 'GET edit when the user is not authorized redirects the user to root path' do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
-    get "/brands/#{brands(:respondo).id}/edit"
+    get '/settings'
 
     assert_redirected_to root_path
   end

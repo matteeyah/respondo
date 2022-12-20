@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TicketsController < ApplicationController
+class TicketsController < ::Tickets::ApplicationController
   include Pagy::Backend
 
   TICKET_RENDER_PRELOADS = [

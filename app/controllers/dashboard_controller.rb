@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DashboardController < ApplicationController
+  include AuthorizesBrandMembership
+
   def show
     @newest_tickets = newest_tickets
     @new_count = new_tickets.count

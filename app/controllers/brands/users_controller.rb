@@ -2,6 +2,8 @@
 
 module Brands
   class UsersController < ApplicationController
+    include AuthorizesBrandMembership
+
     def create
       @user = external_user
       current_user.brand.users << @user

@@ -2,6 +2,8 @@
 
 module Tickets
   class ApplicationController < ::ApplicationController
+    include AuthorizesBrandMembership
+
     private
 
     def ticket

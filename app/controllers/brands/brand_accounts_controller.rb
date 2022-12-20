@@ -2,6 +2,8 @@
 
 module Brands
   class BrandAccountsController < ApplicationController
+    include AuthorizesBrandMembership
+
     def destroy
       @account = account
       @account.destroy
