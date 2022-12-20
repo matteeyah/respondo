@@ -13,7 +13,7 @@
         <div class="col-lg-9 mb-2 mb-lg-0">
           <div class="d-flex flex-wrap" id="<%= dom_id(ticket) %>_tags">
             <span class="d-flex order-last align-items-center badge bg-info me-1">
-              <%= form_with url: brand_ticket_tags_path(ticket.brand, ticket),
+              <%= form_with url: ticket_tags_path(ticket),
                             model: ActsAsTaggableOn::Tag.new, method: :post,
                             html: { 'data-controller' => 'reset-form', 'data-action' => 'turbo:submit-end->reset-form#reset' } do |tag_form| %>
                 <div class="row d-flex align-items-center">
@@ -28,7 +28,7 @@
                 </div>
               <% end %>
             </span>
-            <%= render partial: 'brands/tickets/tag', collection: ticket.tags, as: :tag, locals: { ticket: } %>
+            <%= render partial: 'tickets/tag', collection: ticket.tags, as: :tag, locals: { ticket: } %>
           </div>
         </div>
         <div class="col-lg-1 d-flex justify-content-start justify-content-lg-end align-items-center">
@@ -38,16 +38,16 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
               <% if ticket.parent_id.nil? %>
-                <li><%= link_to 'View', brand_ticket_path(ticket.brand, ticket), class: 'dropdown-item',
-                                                                                 'data-turbo-frame' => :_top %></li>
+                <li><%= link_to 'View', ticket_path(ticket), class: 'dropdown-item',
+                                                             'data-turbo-frame' => :_top %></li>
               <% end %>
               <li>
-                <%= link_to 'External View', brand_ticket_permalink_path(ticket.brand, ticket), 'data-turbo-frame' => :_top,
-                                                                                                id: "permalink-#{ticket.id}", class: 'dropdown-item' %>
+                <%= link_to 'External View', ticket_permalink_path(ticket), 'data-turbo-frame' => :_top,
+                                                                            id: "permalink-#{ticket.id}", class: 'dropdown-item' %>
               </li>
               <li>
-                <%= link_to 'Delete', brand_ticket_path(ticket.brand, ticket), 'data-turbo-method' => :delete,
-                                                                               id: "delete-#{ticket.id}", class: 'dropdown-item' %>
+                <%= link_to 'Delete', ticket_path(ticket), 'data-turbo-method' => :delete,
+                                                           id: "delete-#{ticket.id}", class: 'dropdown-item' %>
               </li>
             </ul>
           </div>
@@ -64,8 +64,8 @@
         <p><%= ticket.content %></span>
       </div>
       <div class="row">
-        <%= link_to "#{time_ago_in_words(ticket.created_at)} ago at #{ticket.created_at.to_fs(:short)}", brand_ticket_path(ticket.brand, ticket), class: 'link-secondary',
-                                                                                                                                                  'data-turbo-frame' => '_top' %>
+        <%= link_to "#{time_ago_in_words(ticket.created_at)} ago at #{ticket.created_at.to_fs(:short)}", ticket_path(ticket), class: 'link-secondary',
+                                                                                                                              'data-turbo-frame' => '_top' %>
       </div>
       <div class="row my-3">
         <div class="col-lg-2 mb-2 mb-lg-0">
@@ -81,7 +81,7 @@
           <% end %>
         </div>
         <div class="col-lg-4 mb-2 mb-lg-0">
-          <%= form_with url: brand_ticket_assignments_path(ticket.brand, ticket),
+          <%= form_with url: ticket_assignments_path(ticket),
                         model: ticket, method: :post do |assignment_form| %>
             <div class="input-group">
               <%= assignment_form.fields_for :assignment, ticket.assignment do |assignee_field| %>
@@ -94,7 +94,7 @@
           <% end %>
         </div>
         <div class="col-lg-6 d-flex justify-content-end">
-          <%= form_with url: brand_ticket_path(ticket.brand, ticket),
+          <%= form_with url: ticket_path(ticket),
                         model: ticket, method: :patch do |status_form| %>
             <div class="input-group">
               <%= status_form.select :status, options_for_select(Ticket.statuses.keys, ticket.status),
@@ -112,7 +112,7 @@
             </span>
             <span class="small me-1"><%= current_user.name %>:</span>
             <span class="small">
-              <%= form_with url: brand_ticket_internal_notes_path(ticket.brand, ticket),
+              <%= form_with url: ticket_internal_notes_path(ticket),
                             model: InternalNote.new, method: :post,
                             html: { autocomplete: 'off',
                                     'data-controller' => 'reset-form',
@@ -125,13 +125,13 @@
               <% end %>
             </span>
           </li>
-          <%= render partial: 'brands/tickets/internal_note', collection: ticket.internal_notes %>
+          <%= render partial: 'tickets/internal_note', collection: ticket.internal_notes %>
         </ul>
       </div>
     </div>
     <div class="card-footer">
       <% if current_user.brand.subscribed? %>
-        <%= form_with url: brand_ticket_replies_path(ticket.brand, ticket),
+        <%= form_with url: ticket_replies_path(ticket),
                       model: ticket.replies.new, method: :post,
                       html: { autocomplete: 'off' } do |reply_form| %>
           <div class="row">

@@ -18,6 +18,24 @@ Rails.application.routes.draw do
   get 'auth/failure', to: redirect('/')
   delete :sign_out, to: 'sessions#destroy'
 
+  get :dashboard, to: 'dashboard#index'
+
+  resources :tickets, only: %i[index show update destroy] do
+    get :permalink
+
+    collection do
+      post :refresh
+    end
+
+    scope module: :tickets do
+      resources :tags, only: %i[create destroy]
+      resources :internal_notes, only: :create
+      resources :replies, only: :create
+
+      resource :assignments, only: :create
+    end
+  end
+
   resources :users, only: [:edit] do
     scope module: :users do
       resources :user_accounts, only: [:destroy]
@@ -27,27 +45,9 @@ Rails.application.routes.draw do
 
   resources :brands, only: %i[edit update] do
     scope module: :brands do
-      resources :tickets, only: %i[index show update destroy] do
-        get :permalink
-
-        collection do
-          post :refresh
-        end
-
-        scope module: :tickets do
-          resources :tags, only: %i[create destroy]
-          resources :internal_notes, only: :create
-          resources :replies, only: :create
-
-          resource :assignments, only: :create
-        end
-      end
-
       resources :brand_accounts, only: [:destroy]
       resources :external_tickets, constraints: { format: 'json' }, only: [:create]
       resources :users, only: %i[create destroy]
-
-      get :dashboard, to: 'dashboard#index'
     end
   end
 
