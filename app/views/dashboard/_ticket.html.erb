@@ -12,9 +12,11 @@
             <%= ticket.author.username %>
           </small>
         </div>
-        <small class="mx-0 my-1 fs-6 text-light">
-          <%= ticket.content.first(100) %>
-        </small>
+        <div class="row">
+          <small class="mx-0 my-1 fs-6 text-light">
+            <%= ticket.content.first(100) %>
+          </small>
+        </div>
         <div class="row">
           <small class="m-0 text-white-50">
             <%= ticket.created_at.to_fs(:short) %>
@@ -22,9 +24,7 @@
         </div>
       </div>
       <div class="col-lg-2 d-none d-lg-flex flex-column justify-content-center align-items-center">
-        <div class="replies-icon">
-          <%= bi_icon('chat-dots-fill', 'text-white text-opacity-75 fs-4') %>
-        </div>
+        <%= bi_icon('chat-dots-fill', 'text-white text-opacity-75 fs-4') %>
         <small class="text-white text-opacity-50">
           <%= ticket.replies.count %> replies
         </small>
