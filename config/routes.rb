@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   get 'auth/failure', to: redirect('/')
   delete :sign_out, to: 'sessions#destroy'
 
-  get :dashboard, to: 'dashboard#index'
+  get :dashboard, to: 'dashboard#show'
   get :settings, to: 'brands#edit'
   get :profile, to: 'users#edit'
 

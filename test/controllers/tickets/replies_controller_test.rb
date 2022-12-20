@@ -31,9 +31,9 @@ module Tickets
         )
 
       post "/tickets/#{tickets(:twitter).id}/replies",
-        params: { ticket: { content: 'hello' } }
+           params: { ticket: { content: 'hello' } }
 
-        assert_redirected_to tickets_path
+      assert_redirected_to tickets_path
     end
 
     test 'POST create when the user is not authorized redirects the user to root path' do

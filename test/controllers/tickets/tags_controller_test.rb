@@ -13,9 +13,9 @@ module Tickets
       brands(:respondo).users << users(:john)
 
       post "/tickets/#{tickets(:twitter).id}/tags",
-        params: { acts_as_taggable_on_tag: { name: 'awesome' } }
+           params: { acts_as_taggable_on_tag: { name: 'awesome' } }
 
-        assert_redirected_to tickets_path
+      assert_redirected_to tickets_path
     end
 
     test 'POST create when the user is not authorized redirects the user to root path' do
@@ -40,7 +40,7 @@ module Tickets
       tickets(:twitter).save!
 
       delete <<~TAG_PATH.chomp
-          /tickets/#{tickets(:twitter).id}/tags/#{tickets(:twitter).tags.first.id}
+        /tickets/#{tickets(:twitter).id}/tags/#{tickets(:twitter).tags.first.id}
       TAG_PATH
 
       assert_redirected_to tickets_path
@@ -53,7 +53,7 @@ module Tickets
       tickets(:twitter).save!
 
       delete <<~TAG_PATH.chomp
-          /tickets/#{tickets(:twitter).id}/tags/#{tickets(:twitter).tags.first.id}
+        /tickets/#{tickets(:twitter).id}/tags/#{tickets(:twitter).tags.first.id}
       TAG_PATH
 
       assert_redirected_to root_path
@@ -64,7 +64,7 @@ module Tickets
       tickets(:twitter).save!
 
       delete <<~TAG_PATH.chomp
-          /tickets/#{tickets(:twitter).id}/tags/#{tickets(:twitter).tags.first.id}
+        /tickets/#{tickets(:twitter).id}/tags/#{tickets(:twitter).tags.first.id}
       TAG_PATH
 
       assert_redirected_to login_path

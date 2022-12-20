@@ -11,7 +11,7 @@ class BrandsControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:john), user_accounts(:google_oauth2))
     brands(:respondo).users << users(:john)
 
-    get "/settings"
+    get '/settings'
 
     assert_select 'span', brands(:respondo).screen_name
   end
@@ -25,7 +25,7 @@ class BrandsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET edit when the user is not signed in redirects the user to login path' do
-    get "/settings"
+    get '/settings'
 
     assert_redirected_to login_path
   end
@@ -35,7 +35,7 @@ class BrandsControllerTest < ActionDispatch::IntegrationTest
     brands(:respondo).users << users(:john)
 
     assert_changes -> { brands(:respondo).reload.domain }, from: nil, to: 'domain.com' do
-      patch "/brand", params: { brand: { domain: 'domain.com' } }
+      patch '/brand', params: { brand: { domain: 'domain.com' } }
     end
   end
 
@@ -43,7 +43,7 @@ class BrandsControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:john), user_accounts(:google_oauth2))
     brands(:respondo).users << users(:john)
 
-    patch "/brand", params: { brand: { domain: 'domain.com' } }
+    patch '/brand', params: { brand: { domain: 'domain.com' } }
 
     assert_redirected_to settings_path
   end
@@ -53,20 +53,20 @@ class BrandsControllerTest < ActionDispatch::IntegrationTest
     brands(:respondo).users << users(:john)
 
     assert_no_changes -> { brands(:respondo).domain }, from: nil do
-      patch "/brand", params: { brand: { domain: 'invalid!domain.com' } }
+      patch '/brand', params: { brand: { domain: 'invalid!domain.com' } }
     end
   end
 
   test 'PATCH update when the user is not authorzied redirects the user to root path' do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
-    patch "/brand"
+    patch '/brand'
 
     assert_redirected_to root_path
   end
 
   test 'PATCH update when the user is not signed in redirects the user to login path' do
-    patch "/brand"
+    patch '/brand'
 
     assert_redirected_to login_path
   end

@@ -12,7 +12,7 @@ module Brands
       sign_in(users(:john), user_accounts(:google_oauth2))
       brands(:respondo).users << users(:john)
 
-      post "/brand/users", params: { user_id: users(:other).id }
+      post '/brand/users', params: { user_id: users(:other).id }
 
       assert_redirected_to settings_path
     end
@@ -20,13 +20,13 @@ module Brands
     test 'POST create when the user is not authorized redirects the user to root path' do
       sign_in(users(:john), user_accounts(:google_oauth2))
 
-      post "/brand/users"
+      post '/brand/users'
 
       assert_redirected_to root_path
     end
 
     test 'POST create when the user is not signed in redirects the user to login path' do
-      post "/brand/users"
+      post '/brand/users'
 
       assert_redirected_to login_path
     end
