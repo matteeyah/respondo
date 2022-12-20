@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Users
+module User
   class UserAccountsController < ApplicationController
     def destroy
       @account = account
@@ -15,7 +15,7 @@ module Users
     private
 
     def account
-      @account ||= user.accounts.find(params[:user_account_id] || params[:id])
+      @account ||= current_user.accounts.find(params[:user_account_id] || params[:id])
     end
   end
 end

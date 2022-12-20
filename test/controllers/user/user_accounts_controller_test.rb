@@ -4,7 +4,7 @@ require 'test_helper'
 
 require 'support/authentication_request_helper'
 
-module Users
+module User
   class UserAccountsControllerTest < ActionDispatch::IntegrationTest
     include AuthenticationRequestHelper
 

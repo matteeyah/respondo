@@ -11,7 +11,7 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:john), user_accounts(:google_oauth2))
     brands(:respondo).users << users(:john)
 
-    get "/dashboard"
+    get '/dashboard'
 
     assert_select 'span.text-black', 'John Smith'
   end
@@ -19,13 +19,13 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
   test 'GET index when the user is not authorized redirects the user to root path' do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
-    get "/dashboard"
+    get '/dashboard'
 
     assert_redirected_to root_path
   end
 
   test 'GET index when the user is not signed in redirects the user to login path' do
-    get "/dashboard"
+    get '/dashboard'
 
     assert_redirected_to login_path
   end

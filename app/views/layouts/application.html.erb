@@ -88,12 +88,12 @@
               <% if current_user.brand %>
                 <li class="nav-item list-group-item list-group-item-action ps-0">
                   <%= active_link_to 'Brand settings', settings_path,
-                                     active: [{ brands: :edit }], class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
+                                     class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
                 </li>
               <% end %>
               <li class="nav-item list-group-item list-group-item-action ps-0">
                 <%= active_link_to 'User profile', profile_path,
-                                   active: [{ users: :edit }], class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
+                                   class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
               </li>
             </ul>
             <li class="nav-item">

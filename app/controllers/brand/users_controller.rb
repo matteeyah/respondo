@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Brands
+module Brand
   class UsersController < ApplicationController
     def create
       @user = external_user
@@ -29,12 +29,12 @@ module Brands
     end
 
     def brand_user
-      @brand_user ||= brand.users.find(params[:user_id] || params[:id])
+      @brand_user ||= current_user.brand.users.find(params[:user_id] || params[:id])
     end
 
     def remove_user!
-      if brand.users.count > 1
-        brand.users.delete(@user)
+      if current_user.brand.users.count > 1
+        current_user.brand.users.delete(@user)
       else
         false
       end

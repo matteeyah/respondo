@@ -4,53 +4,50 @@ require 'test_helper'
 
 require 'support/authentication_request_helper'
 
-module Brands
-  class UsersControllerTest < ActionDispatch::IntegrationTest
+module User
+  class PersonalAccessTokensControllerTest < ActionDispatch::IntegrationTest
     include AuthenticationRequestHelper
 
     test 'POST create when the user is authorized redirects the user to edit page' do
       sign_in(users(:john), user_accounts(:google_oauth2))
-      brands(:respondo).users << users(:john)
 
-      post "/brands/#{brands(:respondo).id}/users", params: { user_id: users(:other).id }
+      post "/users/#{users(:john).id}/personal_access_tokens"
 
-      assert_redirected_to settings_path
+      assert_redirected_to profile_path
     end
 
     test 'POST create when the user is not authorized redirects the user to root path' do
       sign_in(users(:john), user_accounts(:google_oauth2))
 
-      post "/brands/#{brands(:respondo).id}/users"
+      post "/users/#{users(:other).id}/personal_access_tokens"
 
       assert_redirected_to root_path
     end
 
     test 'POST create when the user is not signed in redirects the user to login path' do
-      post "/brands/#{brands(:respondo).id}/users"
+      post "/users/#{users(:john).id}/personal_access_tokens"
 
       assert_redirected_to login_path
     end
 
     test 'DELETE destroy when the user is authorized redirects the user to edit page' do
       sign_in(users(:john), user_accounts(:google_oauth2))
-      brands(:respondo).users << users(:john)
-      brands(:respondo).users << users(:other)
 
-      delete "/brands/#{brands(:respondo).id}/users/#{users(:other).id}"
+      delete "/users/#{users(:john).id}/personal_access_tokens/#{personal_access_tokens(:default).id}"
 
-      assert_redirected_to settings_path
+      assert_redirected_to profile_path
     end
 
     test 'DELETE destroy when the user is not authorized redirects the user to root path' do
       sign_in(users(:john), user_accounts(:google_oauth2))
 
-      delete "/brands/#{brands(:respondo).id}/users/#{users(:john).id}"
+      delete "/users/#{users(:other).id}/personal_access_tokens/#{personal_access_tokens(:default).id}"
 
       assert_redirected_to root_path
     end
 
     test 'DELETE destroy when the user is not signed in redirects the user to login path' do
-      delete "/brands/#{brands(:respondo).id}/users/#{users(:john).id}"
+      delete "/users/#{users(:john).id}/personal_access_tokens/#{personal_access_tokens(:default).id}"
 
       assert_redirected_to login_path
     end

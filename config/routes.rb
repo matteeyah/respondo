@@ -19,8 +19,8 @@ Rails.application.routes.draw do
   delete :sign_out, to: 'sessions#destroy'
 
   get :dashboard, to: 'dashboard#index'
-  get :settings, to: 'brands#edit'
-  get :profile, to: 'users#edit'
+  get :settings, to: 'brand#edit'
+  get :profile, to: 'user#edit'
 
   resources :tickets, only: %i[index show update destroy] do
     get :permalink
@@ -38,15 +38,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users, only: [] do
-    scope module: :users do
+  resource :user, only: [] do
+    scope module: :user do
       resources :user_accounts, only: [:destroy]
       resources :personal_access_tokens, only: %i[create destroy]
     end
   end
 
-  resources :brands, only: %i[update] do
-    scope module: :brands do
+  resources :brand, only: %i[update] do
+    scope module: :brand do
       resources :brand_accounts, only: [:destroy]
       resources :external_tickets, constraints: { format: 'json' }, only: [:create]
       resources :users, only: %i[create destroy]

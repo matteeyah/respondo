@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Users
+module User
   class PersonalAccessTokensController < ApplicationController
     def create
       @token = build_personal_access_token
@@ -25,11 +25,11 @@ module Users
     private
 
     def personal_access_token
-      @personal_access_token ||= user.personal_access_tokens.find(params[:personal_access_token] || params[:id])
+      @personal_access_token ||= current_user.personal_access_tokens.find(params[:personal_access_token] || params[:id])
     end
 
     def build_personal_access_token
-      user.personal_access_tokens.build(name: params[:name], token: SecureRandom.base64(10))
+      current_user.personal_access_tokens.build(name: params[:name], token: SecureRandom.base64(10))
     end
   end
 end

@@ -11,7 +11,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:john), user_accounts(:google_oauth2))
     brands(:respondo).users << users(:john)
 
-    get "/tickets"
+    get '/tickets'
 
     assert_response :success
   end
@@ -19,13 +19,13 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
   test 'GET index when the user is not authorized redirects the user to root path' do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
-    get "/tickets"
+    get '/tickets'
 
     assert_redirected_to root_path
   end
 
   test 'GET index when the user is not signed in redirects the user to login path' do
-    get "/tickets"
+    get '/tickets'
 
     assert_redirected_to login_path
   end
@@ -58,9 +58,9 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     brands(:respondo).users << users(:john)
 
     patch "/tickets/#{tickets(:twitter).id}",
-      params: { ticket: { content: 'hello' } }
+          params: { ticket: { content: 'hello' } }
 
-      assert_redirected_to brand_tickets_path(brands(:respondo), status: :open)
+    assert_redirected_to brand_tickets_path(brands(:respondo), status: :open)
   end
 
   test 'PATCH update when the user is not authorized redirects the user to root path' do
@@ -112,7 +112,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:john), user_accounts(:google_oauth2))
     brands(:respondo).users << users(:john)
 
-    post "/tickets/refresh"
+    post '/tickets/refresh'
 
     assert_redirected_to brand_tickets_path(brands(:respondo))
   end
@@ -120,13 +120,13 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
   test 'POST refresh when the user is not authorized redirects the user to root path' do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
-    post "/tickets/refresh"
+    post '/tickets/refresh'
 
     assert_redirected_to root_path
   end
 
   test 'POST refresh when the user is not signed in redirects the user to login path' do
-    post "/tickets/refresh"
+    post '/tickets/refresh'
 
     assert_redirected_to login_path
   end
