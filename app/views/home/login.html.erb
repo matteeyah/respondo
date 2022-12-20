@@ -23,35 +23,33 @@
                 <span class="text-color-switch">Respondo</span>
               </div>
               <hr>
-              <div class="text-center">
-                <small class="card-text text-muted">
-                  Sign in is only available with a Google or Microsoft AD account.
-                </small>
-              </div>
+              <p class="card-text text-center text-muted">
+                <small>Sign in is only available with a Google or Microsoft AD account.</small>
+              </p>
 
               <div class="d-grid gap-3 mt-3">
                 <%= auth_provider_link('google_oauth2',
                                        { class: 'btn form-control btn-outline-dark' }, origin: '/') do %>
-                                       <div class="row">
-                                         <div class="col-2 text-end">
-                                           <i class="bi bi-google text-warning"></i>
-                                         </div>
-                                         <div class="col-10 text-start">
-                                           <small>Sign in with Google</small>
-                                         </div>
-                                       </div>
-                                     <% end %>
-                                     <%= auth_provider_link('activedirectory',
-                                                            { class: 'btn form-control btn-outline-dark' }, origin: '/') do %>
-                                                            <div class="row">
-                                                              <div class="col-2 text-end">
-                                                                <i class="bi bi-microsoft text-primary"></i>
-                                                              </div>
-                                                              <div class="col-10 text-start">
-                                                                <small>Sign in with Microsoft AD</small>
-                                                              </div>
-                                                            </div>
-                                                          <% end %>
+                  <div class="row">
+                    <div class="col-2 text-end">
+                      <i class="bi bi-google text-warning"></i>
+                    </div>
+                    <div class="col-10 text-start">
+                      <small>Sign in with Google</small>
+                    </div>
+                  </div>
+                <% end %>
+                <%= auth_provider_link('activedirectory',
+                                       { class: 'btn form-control btn-outline-dark' }, origin: '/') do %>
+                  <div class="row">
+                    <div class="col-2 text-end">
+                      <i class="bi bi-microsoft text-primary"></i>
+                    </div>
+                    <div class="col-10 text-start">
+                      <small>Sign in with Microsoft AD</small>
+                    </div>
+                  </div>
+                <% end %>
               </div>
             </div>
           </div>
