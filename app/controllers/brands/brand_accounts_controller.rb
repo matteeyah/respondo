@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Brand
+module Brands
   class BrandAccountsController < ApplicationController
     def destroy
       @account = account

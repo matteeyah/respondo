@@ -39,14 +39,14 @@ Rails.application.routes.draw do
   end
 
   resource :user, only: [] do
-    scope module: :user do
+    scope module: :users do
       resources :user_accounts, only: [:destroy]
       resources :personal_access_tokens, only: %i[create destroy]
     end
   end
 
   resource :brand, only: %i[update] do
-    scope module: :brand do
+    scope module: :brands do
       resources :brand_accounts, only: [:destroy]
       resources :users, only: %i[create destroy]
     end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module User
+module Users
   class PersonalAccessTokensController < ApplicationController
     def create
       @token = build_personal_access_token

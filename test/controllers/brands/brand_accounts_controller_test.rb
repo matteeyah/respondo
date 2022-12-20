@@ -4,7 +4,7 @@ require 'test_helper'
 
 require 'support/authentication_request_helper'
 
-module Brand
+module Brands
   class BrandAccountsControllerTest < ActionDispatch::IntegrationTest
     include AuthenticationRequestHelper
 

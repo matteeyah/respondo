@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module User
+module Users
   class UserAccountsController < ApplicationController
     def destroy
       @account = account

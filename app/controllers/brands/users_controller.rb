@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Brand
+module Brands
   class UsersController < ApplicationController
     def create
       @user = external_user
