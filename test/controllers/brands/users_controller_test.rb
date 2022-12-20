@@ -14,7 +14,7 @@ module Brands
 
       post "/brands/#{brands(:respondo).id}/users", params: { user_id: users(:other).id }
 
-      assert_redirected_to edit_brand_path(brands(:respondo))
+      assert_redirected_to settings_path
     end
 
     test 'POST create when the user is not authorized redirects the user to root path' do
@@ -38,7 +38,7 @@ module Brands
 
       delete "/brands/#{brands(:respondo).id}/users/#{users(:other).id}"
 
-      assert_redirected_to edit_brand_path(brands(:respondo))
+      assert_redirected_to settings_path
     end
 
     test 'DELETE destroy when the user is not authorized redirects the user to root path' do

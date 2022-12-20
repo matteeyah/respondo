@@ -13,7 +13,7 @@ module Users
 
       delete "/users/#{users(:john).id}/user_accounts/#{user_accounts(:google_oauth2).id}"
 
-      assert_redirected_to edit_user_path(users(:john))
+      assert_redirected_to profile_path
     end
 
     test 'DELETE destroy when the user is not authorized redirects the user to root path' do

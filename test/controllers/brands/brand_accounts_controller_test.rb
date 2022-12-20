@@ -14,7 +14,7 @@ module Brands
 
       delete "/brands/#{brands(:respondo).id}/brand_accounts/#{brand_accounts(:twitter).id}"
 
-      assert_redirected_to edit_brand_path(brands(:respondo))
+      assert_redirected_to settings_path
     end
 
     test 'DELETE destroy when the user is not authorized redirects the user to root path' do

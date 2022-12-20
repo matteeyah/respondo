@@ -21,7 +21,7 @@ class UserSettingsTest < ApplicationSystemTestCase
 
   test 'allows the user to authorize an account' do
     user_accounts(:activedirectory).destroy
-    click_link 'User settings'
+    click_link 'User profile'
 
     account = Struct.new(:provider, :external_uid, :name, :email).new(:activedirectory, 'uid_20')
     add_oauth_mock_for_user(@user, account)
@@ -39,7 +39,7 @@ class UserSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to remove an account' do
-    click_link 'User settings'
+    click_link 'User profile'
 
     within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
@@ -53,8 +53,9 @@ class UserSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to create a personal access token' do
-    click_link 'User settings'
-    click_button 'User settings'
+    click_link 'User profile'
+
+    click_button 'Access'
 
     fill_in :name, with: 'something_nice'
     click_button 'Create'
@@ -66,9 +67,9 @@ class UserSettingsTest < ApplicationSystemTestCase
 
   test 'allows the user to remove a personal access token' do
     pat = personal_access_tokens(:default)
-    click_link 'User settings'
+    click_link 'User profile'
 
-    click_button 'User settings'
+    click_button 'Access'
 
     within(page.find('p', text: 'Personal Access Tokens').find(:xpath, '../..')) do
       page.find(:link, 'Remove').click

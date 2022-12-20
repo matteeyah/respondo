@@ -8,7 +8,7 @@ module Users
 
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to edit_user_path(user), status: :see_other }
+        format.html { redirect_to profile_path, status: :see_other }
       end
     end
 

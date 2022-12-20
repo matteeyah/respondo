@@ -13,7 +13,7 @@ class BrandsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to edit_brand_path(current_user.brand) }
+      format.html { redirect_to settings_path }
     end
   end
 

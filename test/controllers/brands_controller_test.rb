@@ -45,7 +45,7 @@ class BrandsControllerTest < ActionDispatch::IntegrationTest
 
     patch "/brands/#{brands(:respondo).id}", params: { brand: { domain: 'domain.com' } }
 
-    assert_redirected_to edit_brand_path(brands(:respondo))
+    assert_redirected_to settings_path
   end
 
   test 'PATCH update when the user is authorized when params are not valid does not update the brand' do

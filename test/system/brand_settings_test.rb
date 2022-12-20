@@ -57,12 +57,12 @@ class BrandSettingsTest < ApplicationSystemTestCase
     external_user = users(:other)
     click_link 'Brand settings'
 
-    click_button 'Team settings'
+    click_button 'Team'
 
     select external_user.name, from: 'add-user'
     click_button 'Add'
 
-    within(page.find('p', text: 'Brand team').find(:xpath, '../..')) do
+    within(page.find('p', text: 'Team').find(:xpath, '../..')) do
       within(page.find('span', text: external_user.name).find(:xpath, '../..')) do
         assert has_selector?(:link, 'Remove')
       end
@@ -74,15 +74,15 @@ class BrandSettingsTest < ApplicationSystemTestCase
     existing_user.update!(brand: @brand)
     click_link 'Brand settings'
 
-    click_button 'Team settings'
+    click_button 'Team'
 
-    within(page.find('p', text: 'Brand team').find(:xpath, '../..')) do
+    within(page.find('p', text: 'Team').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: existing_user.name)) do
         page.find(:link, 'Remove').click
       end
     end
 
-    within(page.find('p', text: 'Brand team').find(:xpath, '../..')) do
+    within(page.find('p', text: 'Team').find(:xpath, '../..')) do
       assert has_no_text?(existing_user.name)
     end
   end
@@ -90,7 +90,7 @@ class BrandSettingsTest < ApplicationSystemTestCase
   test 'allows the user to edit the brand domain' do
     click_link 'Brand settings'
 
-    click_button 'Team settings'
+    click_button 'Team'
 
     fill_in 'brand[domain]', with: 'example.com'
     click_button 'Update'
@@ -101,7 +101,7 @@ class BrandSettingsTest < ApplicationSystemTestCase
   test 'prevents the user to update the brand with an invalid domain' do
     click_link 'Brand settings'
 
-    click_button 'Team settings'
+    click_button 'Team'
 
     fill_in 'brand[domain]', with: 'invalid!domain.com'
     click_button 'Update'

@@ -8,7 +8,7 @@ module Brands
 
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to edit_brand_path(brand) }
+        format.html { redirect_to settings_path }
       end
     end
 
@@ -43,7 +43,7 @@ module Brands
     def redirect_path
       # If user is removing self from brand, redirecting back results in a
       # redirect loop.
-      brand_user == current_user ? root_path : edit_brand_path(brand)
+      brand_user == current_user ? root_path : settings_path
     end
   end
 end

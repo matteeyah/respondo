@@ -13,7 +13,7 @@ module Users
 
       post "/users/#{users(:john).id}/personal_access_tokens"
 
-      assert_redirected_to edit_user_path(users(:john))
+      assert_redirected_to profile_path
     end
 
     test 'POST create when the user is not authorized redirects the user to root path' do
@@ -35,7 +35,7 @@ module Users
 
       delete "/users/#{users(:john).id}/personal_access_tokens/#{personal_access_tokens(:default).id}"
 
-      assert_redirected_to edit_user_path(users(:john))
+      assert_redirected_to profile_path
     end
 
     test 'DELETE destroy when the user is not authorized redirects the user to root path' do

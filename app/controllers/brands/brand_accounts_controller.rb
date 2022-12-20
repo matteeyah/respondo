@@ -8,7 +8,7 @@ module Brands
 
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to edit_brand_path(brand), status: :see_other }
+        format.html { redirect_to settings_path, status: :see_other }
       end
     end
 
