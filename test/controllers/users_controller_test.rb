@@ -10,7 +10,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'GET edit when the user is authorized renders the edit page' do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
-    get "/users/#{users(:john).id}/edit"
+    get "/profile"
 
     assert_select 'span', users(:john).name
   end
@@ -24,7 +24,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET edit when the user is not signed in redirects the user to login path' do
-    get "/users/#{users(:john).id}/edit"
+    get "/profile"
 
     assert_redirected_to login_path
   end

@@ -3,7 +3,7 @@
 module Tickets
   class RepliesController < ApplicationController
     def create
-      raise StandardError, 'Unauthorized' unless brand.subscribed?
+      raise StandardError, 'Unauthorized' unless current_user.brand.subscribed?
 
       @ticket_hash = ticket_hash!
 
@@ -21,7 +21,7 @@ module Tickets
 
     def ticket_hash!
       ticket.respond_as(current_user, reply_params[:content])
-      ticket.with_descendants_hash(Brands::TicketsController::TICKET_RENDER_PRELOADS)
+      ticket.with_descendants_hash(::TicketsController::TICKET_RENDER_PRELOADS)
     end
   end
 end

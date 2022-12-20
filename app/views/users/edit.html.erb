@@ -51,7 +51,7 @@
                 <p class="text-muted">Create or delete personal access tokens used for API access.</p>
               </div>
               <div class="row">
-                <%= form_with url: user_personal_access_tokens_path(@user),
+                <%= form_with url: user_personal_access_tokens_path,
                               html: { autocomplete: 'off', 'data-controller' => 'reset-form',
                                       'data-action' => 'turbo:submit-end->reset-form#reset' } do |create_token_form| %>
                   <div class="row">
@@ -65,7 +65,7 @@
                   </div>
                 <% end %>
                 <div class="list-group list-group-flush" id="personal-access-tokens">
-                  <%= render partial: 'user/personal_access_token', collection: @user.personal_access_tokens %>
+                  <%= render partial: 'users/personal_access_token', collection: @user.personal_access_tokens %>
                 </div>
               </div>
             </div>

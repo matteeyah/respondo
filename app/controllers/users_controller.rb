@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UserController < ApplicationController
+class UsersController < ApplicationController
   def edit
     @user = current_user
   end

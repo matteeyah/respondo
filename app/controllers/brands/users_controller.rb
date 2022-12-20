@@ -4,7 +4,7 @@ module Brands
   class UsersController < ApplicationController
     def create
       @user = external_user
-      brand.users << @user
+      current_user.brand.users << @user
 
       respond_to do |format|
         format.turbo_stream

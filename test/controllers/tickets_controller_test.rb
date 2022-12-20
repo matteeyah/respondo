@@ -60,7 +60,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     patch "/tickets/#{tickets(:twitter).id}",
           params: { ticket: { content: 'hello' } }
 
-    assert_redirected_to brand_tickets_path(brands(:respondo), status: :open)
+    assert_redirected_to tickets_path(status: :open)
   end
 
   test 'PATCH update when the user is not authorized redirects the user to root path' do
@@ -91,7 +91,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
 
     delete "/tickets/#{tickets(:twitter).id}"
 
-    assert_redirected_to brand_tickets_path(brands(:respondo))
+    assert_redirected_to tickets_path
   end
 
   test 'DELETE destroy when the user is not authorized redirects the user to root path' do
@@ -114,7 +114,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
 
     post '/tickets/refresh'
 
-    assert_redirected_to brand_tickets_path(brands(:respondo))
+    assert_redirected_to tickets_path
   end
 
   test 'POST refresh when the user is not authorized redirects the user to root path' do

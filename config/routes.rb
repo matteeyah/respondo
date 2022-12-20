@@ -19,8 +19,8 @@ Rails.application.routes.draw do
   delete :sign_out, to: 'sessions#destroy'
 
   get :dashboard, to: 'dashboard#index'
-  get :settings, to: 'brand#edit'
-  get :profile, to: 'user#edit'
+  get :settings, to: 'brands#edit'
+  get :profile, to: 'users#edit'
 
   resources :tickets, only: %i[index show update destroy] do
     get :permalink

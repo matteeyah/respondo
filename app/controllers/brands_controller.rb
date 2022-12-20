@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BrandController < ApplicationController
+class BrandsController < ApplicationController
   include Pagy::Backend
 
   def edit
