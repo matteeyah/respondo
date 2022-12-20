@@ -1,0 +1,152 @@
+<div class="col-12">
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-lg-2 d-flex align-items-center justify-content-start justify-content-lg-start mb-2 mb-lg-0">
+          <% if ticket.parent_id.nil? %>
+            <span class="badge text-bg-primary rounded fs-6 me-1">
+              <%= bi_icon(ticket.provider) %>
+              <%= ticket.source.screen_name %>
+            </span>
+          <% end %>
+        </div>
+        <div class="col-lg-9 mb-2 mb-lg-0">
+          <div class="d-flex flex-wrap" id="<%= dom_id(ticket) %>_tags">
+            <span class="d-flex order-last align-items-center badge bg-info me-1">
+              <%= form_with url: ticket_tags_path(ticket),
+                            model: ActsAsTaggableOn::Tag.new, method: :post,
+                            html: { 'data-controller' => 'reset-form', 'data-action' => 'turbo:submit-end->reset-form#reset' } do |tag_form| %>
+                <div class="row d-flex align-items-center">
+                  <div class="col-9">
+                    <%= tag_form.text_field :name, required: true, placeholder: 'add tag', class: 'form-control' %>
+                  </div>
+                  <div class="col-3">
+                    <%= tag_form.button class: 'btn btn-link' do %>
+                      <%= bi_icon('plus', 'fs-5 text-white') %>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </span>
+            <%= render partial: 'tickets/tag', collection: ticket.tags, as: :tag, locals: { ticket: } %>
+          </div>
+        </div>
+        <div class="col-lg-1 d-flex justify-content-start justify-content-lg-end align-items-center">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="actionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <%= bi_icon('three-dots') %>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
+              <% if ticket.parent_id.nil? %>
+                <li><%= link_to 'View', ticket_path(ticket), class: 'dropdown-item',
+                                                             'data-turbo-frame' => :_top %></li>
+              <% end %>
+              <li>
+                <%= link_to 'External View', ticket_permalink_path(ticket), 'data-turbo-frame' => :_top,
+                                                                            id: "permalink-#{ticket.id}", class: 'dropdown-item' %>
+              </li>
+              <li>
+                <%= link_to 'Delete', ticket_path(ticket), 'data-turbo-method' => :delete,
+                                                           id: "delete-#{ticket.id}", class: 'dropdown-item' %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <span class="fw-bold">
+          <span class="m-0"><%= raw(ticket_author_header(ticket)) %></span>
+        </span>
+      </div>
+      <div class="row my-2">
+        <p><%= ticket.content %></span>
+      </div>
+      <div class="row">
+        <%= link_to "#{time_ago_in_words(ticket.created_at)} ago at #{ticket.created_at.to_fs(:short)}", ticket_path(ticket), class: 'link-secondary',
+                                                                                                                              'data-turbo-frame' => '_top' %>
+      </div>
+      <div class="row my-3">
+        <div class="col-lg-2 mb-2 mb-lg-0">
+          <span class="fs-5 text-info">
+            <%= bi_icon('chat') %>
+            <%= ticket.replies.count %>
+          </span>
+          <%= link_to "##{dom_id(ticket)}_internal_notes_dropdown", role: 'button',
+                                                                    aria: { expanded: 'false', controls: "#{dom_id(ticket)}_internal_notes_dropdown" }, 'data-bs-toggle' => 'collapse',
+                                                                    class: 'fs-5 link-warning text-decoration-none' do %>
+            <%= bi_icon('sticky') %>
+            <span><%= ticket.internal_notes.count %></span>
+          <% end %>
+        </div>
+        <div class="col-lg-4 mb-2 mb-lg-0">
+          <%= form_with url: ticket_assignments_path(ticket),
+                        model: ticket, method: :post do |assignment_form| %>
+            <div class="input-group">
+              <%= assignment_form.fields_for :assignment, ticket.assignment do |assignee_field| %>
+                <%= assignee_field.collection_select :user_id, ticket.brand.users, :id, :name,
+                                                     { prompt: 'Unassigned' },
+                                                     { required: false, class: 'custom-select form-control', id: 'ticket-assignment' } %>
+              <% end %>
+              <%= assignment_form.submit 'Assign', class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-lg-6 d-flex justify-content-end">
+          <%= form_with url: ticket_path(ticket),
+                        model: ticket, method: :patch do |status_form| %>
+            <div class="input-group">
+              <%= status_form.select :status, options_for_select(Ticket.statuses.keys, ticket.status),
+                                     { include_blank: 'Select status' }, { id: 'ticket-status', required: true, class: 'custom-select form-control' } %>
+              <%= status_form.submit 'Update', class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="row collapse" id="<%= dom_id(ticket) %>_internal_notes_dropdown">
+        <ul class="list-group list-group-flush p-0" id="<%= dom_id(ticket) %>_internal_notes">
+          <li class="order-last list-group-item list-group-item-warning border-top">
+            <span class="small">
+            <%= bi_icon('sticky') %>
+            </span>
+            <span class="small me-1"><%= current_user.name %>:</span>
+            <span class="small">
+              <%= form_with url: ticket_internal_notes_path(ticket),
+                            model: InternalNote.new, method: :post,
+                            html: { autocomplete: 'off',
+                                    'data-controller' => 'reset-form',
+                                    'data-action' => 'turbo:submit-end->reset-form#reset' } do |internal_note_form| %>
+                        <div class="input-group input-group-sm mb-3">
+                          <%= internal_note_form.text_field :content, required: true,
+                                                                      placeholder: 'Write a note...', class: 'form-control' %>
+                          <%= internal_note_form.submit 'Create Note', class: 'btn btn-primary' %>
+                        </div>
+              <% end %>
+            </span>
+          </li>
+          <%= render partial: 'tickets/internal_note', collection: ticket.internal_notes %>
+        </ul>
+      </div>
+    </div>
+    <div class="card-footer">
+      <% if current_user.brand.subscribed? %>
+        <%= form_with url: ticket_replies_path(ticket),
+                      model: ticket.replies.new, method: :post,
+                      html: { autocomplete: 'off' } do |reply_form| %>
+          <div class="row">
+            <div class="col-10 d-flex align-items-center">
+              <%= reply_form.text_field :content, required: true,
+                                                  placeholder: 'Reply', class: 'form-control' %>
+            </div>
+            <div class="col-2 d-flex justify-content-end align-items-center">
+              <%= reply_form.button class: 'border-0 bg-transparent btn btn-link rounded-circle' do %>
+                <%= bi_icon('telegram', 'fs-2') %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

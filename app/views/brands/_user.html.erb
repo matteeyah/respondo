@@ -6,7 +6,7 @@
       </span>
     </div>
     <div class="col-5 d-flex align-items-center justify-content-end">
-      <%= link_to brand_user_path(user.brand, user),
+      <%= link_to brand_user_path(user),
                   'data-turbo-method' => :delete, class: 'btn btn-outline-danger' do %>
         <span>Remove</span>
         <%= bi_icon('x-circle') %>

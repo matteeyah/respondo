@@ -5,6 +5,8 @@ description: Documentation for working with tickets.
 
 # Working with tickets
 
+<https://app.respondohub.com/tickets>
+
 The ticket view is composed of three sections - the header, the main area and
 the footer.
 

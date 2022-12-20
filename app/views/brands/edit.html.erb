@@ -11,19 +11,19 @@
 </div>
 <div class="row">
   <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item" id="account-settings-tab" role="presentation">
-      <%= button_tag 'Account settings', class: 'nav-link active', role: 'tab',
-                                         'data-bs-toggle' => 'tab', 'data-bs-target' => '#account-settings-tab-pane',
-                                         'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true %>
+    <li class="nav-item" id="identity-tab" role="presentation">
+      <%= button_tag 'Identity', class: 'nav-link active', role: 'tab',
+                                 'data-bs-toggle' => 'tab', 'data-bs-target' => '#identity-tab-pane',
+                                 'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true %>
     </li>
-    <li class="nav-item" id="team-settings-tab" role="presentation">
-      <%= button_tag 'Team settings', class: 'nav-link', role: 'tab',
-                                      'data-bs-toggle' => 'tab', 'data-bs-target' => '#team-settings-tab-pane',
-                                      'aria-controls' => 'team-settings-tab-pane', 'aria-selected' => false %>
+    <li class="nav-item" id="team-tab" role="presentation">
+      <%= button_tag 'Team', class: 'nav-link', role: 'tab',
+                             'data-bs-toggle' => 'tab', 'data-bs-target' => '#team-tab-pane',
+                             'aria-controls' => 'team-settings-tab-pane', 'aria-selected' => false %>
     </li>
   </ul>
   <div class="tab-content mt-4">
-    <div aria-labelledby="account-settings-tab" class="tab-pane active" id="account-settings-tab-pane" role="tabpanel" tabindex="0">
+    <div aria-labelledby="identity-tab" class="tab-pane active" id="identity-tab-pane" role="tabpanel" tabindex="0">
       <div class="row">
         <div class="col-lg-6">
           <div class="card">
@@ -41,13 +41,13 @@
       </div>
       <%= render partial: 'shared/accounts', locals: { model: @brand } %>
     </div>
-    <div aria-labelledby="team-settings-tab" class="tab-pane" id="team-settings-tab-pane" role="tabpanel" tabindex="0">
+    <div aria-labelledby="team-tab" class="tab-pane" id="team-tab-pane" role="tabpanel" tabindex="0">
       <div class="row">
         <div class="col-lg-6">
           <div class="card h-100">
             <div class="card-body">
               <div class="card-title">
-                <p class="fs-4 fw-bold">Brand Domain</p>
+                <p class="fs-4 fw-bold">Domain</p>
                 <p class="text-muted">Add users from your email domain automatially to your team.</p>
               </div>
               <hr class="border-2 border-top">
@@ -96,10 +96,10 @@
           <div class="card">
             <div class="card-body">
               <div class="card-title">
-                <p class="fs-4 fw-bold">Brand team</p>
+                <p class="fs-4 fw-bold">Team</p>
               </div>
               <div class="row">
-                <%= form_with url: brand_users_path(@brand), method: :post,
+                <%= form_with url: brand_users_path, method: :post,
                               html: { 'data-controller' => 'reset-form',
                                       'data-action' => 'turbo:submit-end->reset-form#reset' } do |add_user_form| %>
                   <div class="row">

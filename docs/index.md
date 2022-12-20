@@ -20,6 +20,8 @@ users to easily sign in with just one click using one of their social accounts.
 
 ## Dashboard
 
+<https://app.respondohub.com/dashboard>
+
 After you log in you will be presented with a dashboard for your brand. This
 dashboard shows basic information:
 

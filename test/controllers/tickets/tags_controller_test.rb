@@ -4,29 +4,30 @@ require 'test_helper'
 
 require 'support/authentication_request_helper'
 
-module Brands
-  class UsersControllerTest < ActionDispatch::IntegrationTest
+module Tickets
+  class TagsControllerTest < ActionDispatch::IntegrationTest
     include AuthenticationRequestHelper
 
     test 'POST create when the user is authorized redirects the user to edit page' do
       sign_in(users(:john), user_accounts(:google_oauth2))
       brands(:respondo).users << users(:john)
 
-      post '/brand/users', params: { user_id: users(:other).id }
+      post "/tickets/#{tickets(:twitter).id}/tags",
+           params: { acts_as_taggable_on_tag: { name: 'awesome' } }
 
-      assert_redirected_to settings_path
+      assert_redirected_to tickets_path
     end
 
     test 'POST create when the user is not authorized redirects the user to root path' do
       sign_in(users(:john), user_accounts(:google_oauth2))
 
-      post '/brand/users'
+      post "/tickets/#{tickets(:twitter).id}/tags"
 
       assert_redirected_to root_path
     end
 
     test 'POST create when the user is not signed in redirects the user to login path' do
-      post '/brand/users'
+      post "/tickets/#{tickets(:twitter).id}/tags"
 
       assert_redirected_to login_path
     end
@@ -34,23 +35,37 @@ module Brands
     test 'DELETE destroy when the user is authorized redirects the user to edit page' do
       sign_in(users(:john), user_accounts(:google_oauth2))
       brands(:respondo).users << users(:john)
-      brands(:respondo).users << users(:other)
 
-      delete "/brand/users/#{users(:other).id}"
+      tickets(:twitter).tag_list.add('awesome')
+      tickets(:twitter).save!
 
-      assert_redirected_to settings_path
+      delete <<~TAG_PATH.chomp
+        /tickets/#{tickets(:twitter).id}/tags/#{tickets(:twitter).tags.first.id}
+      TAG_PATH
+
+      assert_redirected_to tickets_path
     end
 
     test 'DELETE destroy when the user is not authorized redirects the user to root path' do
       sign_in(users(:john), user_accounts(:google_oauth2))
 
-      delete "/brand/users/#{users(:john).id}"
+      tickets(:twitter).tag_list.add('awesome')
+      tickets(:twitter).save!
+
+      delete <<~TAG_PATH.chomp
+        /tickets/#{tickets(:twitter).id}/tags/#{tickets(:twitter).tags.first.id}
+      TAG_PATH
 
       assert_redirected_to root_path
     end
 
     test 'DELETE destroy when the user is not signed in redirects the user to login path' do
-      delete "/brand/users/#{users(:john).id}"
+      tickets(:twitter).tag_list.add('awesome')
+      tickets(:twitter).save!
+
+      delete <<~TAG_PATH.chomp
+        /tickets/#{tickets(:twitter).id}/tags/#{tickets(:twitter).tags.first.id}
+      TAG_PATH
 
       assert_redirected_to login_path
     end

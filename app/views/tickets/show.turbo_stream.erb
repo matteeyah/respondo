@@ -1,0 +1,5 @@
+<% ticket = @ticket_hash.first.first %>
+<%= turbo_stream.replace(dom_id(ticket)) do %>
+  <%= render partial: 'tickets/ticket', locals: { ticket: } %>
+  <%= render partial: 'tickets/tickets', locals: { tickets: @ticket_hash.first.second } %>
+<% end %>
