@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-class BrandsController < Brands::ApplicationController
+class BrandsController < ApplicationController
   include Pagy::Backend
 
   def edit
-    @pagy, @brand_users = pagy(brand.users)
-    @brand = brand
+    @pagy, @brand_users = pagy(current_user.brand.users)
+    @brand = current_user.brand
   end
 
   def update
-    @success = brand.update(update_params)
+    @success = current_user.brand.update(update_params)
 
     respond_to do |format|
       format.turbo_stream
