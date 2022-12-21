@@ -1,4 +1,4 @@
-<span class="d-flex align-items-center badge bg-info me-1" id="<%= dom_id(tag, dom_id(ticket)) %>">
+<span class="d-flex align-items-center badge bg-info opacity-75 me-2" id="<%= dom_id(tag, dom_id(ticket)) %>">
   <%= tag.name %>
   <%= link_to ticket_tag_path(ticket, tag), 'data-turbo-method': :delete do %>
     <%= bi_icon('x', 'fs-5 text-white') %>
