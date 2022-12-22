@@ -7,15 +7,14 @@
         <%= provider_human_name(account.provider) %>
       </span>
     </div>
-    <div class="col-4 d-flex align-items-center justify-content-center">
+    <div class="col-lg-4 d-flex align-items-center justify-content-center">
       <span class="text-muted mx-2">
         <%= account.screen_name %>
       </span>
     </div>
-    <div class="col-4 d-flex justify-content-end">
-      <%= link_to [klass, account], 'data-turbo-method' => :delete, class: 'btn btn-outline-danger' do %>
+    <div class="col-lg-4 d-flex d-flex align-items-center justify-content-end">
+      <%= link_to [klass, account], 'data-turbo-method' => :delete, class: 'btn btn-sm btn-outline-danger' do %>
         <span>Remove</span>
-        <%= bi_icon('x-circle') %>
       <% end %>
     </div>
   </div>

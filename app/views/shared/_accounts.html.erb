@@ -1,9 +1,9 @@
 <div class="row mt-4">
   <div class="col-12">
-    <div class="card">
+    <div class="card rounded-4">
       <div class="card-body">
-        <div class="card-title">
-          <p class="fs-4 fw-bold">Accounts</p>
+        <div class="card-title mb-4">
+          <p class="fs-5 fw-bold">Existing accounts</p>
         </div>
         <div class="list-group list-group-flush" id="accounts">
           <%= render partial: 'shared/account', collection: model.accounts, locals: { model: } %>

@@ -2,7 +2,7 @@
 <% checkout_redirect_path = request.original_url %>
 <div class="row my-3">
   <div class="col d-flex align-items-center">
-    <span class="fs-2 me-2">Brand</span>
+    <span class="fs-2 me-2 fw-bold">Brand</span>
     <span class="rounded-pill text-white bg-danger opacity-75 py-1 px-3">
       <%= bi_icon('people-fill') %>
       <%= @brand.screen_name %>
@@ -26,10 +26,10 @@
     <div aria-labelledby="identity-tab" class="tab-pane active" id="identity-tab-pane" role="tabpanel" tabindex="0">
       <div class="row">
         <div class="col-lg-6">
-          <div class="card">
+          <div class="card rounded-4">
             <div class="card-body">
-              <div class="card-title">
-                <p class="fs-4 fw-bold">Add account</p>
+              <div class="card-title mb-4">
+                <p class="fs-5 fw-bold">Add account</p>
               </div>
               <div class="list-group list-group-flush" id="account-providers">
                 <%= render partial: 'shared/account_provider', collection: BrandAccount.providers.keys,
@@ -44,21 +44,20 @@
     <div aria-labelledby="team-tab" class="tab-pane" id="team-tab-pane" role="tabpanel" tabindex="0">
       <div class="row">
         <div class="col-lg-6">
-          <div class="card h-100">
+          <div class="card h-100 rounded-4">
             <div class="card-body">
-              <div class="card-title">
-                <p class="fs-4 fw-bold">Domain</p>
-                <p class="text-muted">Add users from your email domain automatially to your team.</p>
+              <div class="card-title mb-4">
+                <p class="fs-5 fw-bold">Domain</p>
+                <small class="text-muted">Add users from your email domain automatially to your team.</small>
               </div>
-              <hr class="border-2 border-top">
               <%= form_with model: @brand, method: :patch do |update_brand_form| %>
                 <div class="row">
-                  <div class="col-8 col-lg-8">
+                  <div class="col-8 col-lg-10">
                     <%= update_brand_form.text_field :domain, required: true, placeholder: 'domain.com',
-                                                              class: 'form-control' %>
+                                                              class: 'form-control form-control-sm' %>
                   </div>
-                  <div class="col-4 col-lg-4">
-                    <%= update_brand_form.submit 'Update', name: nil, class: 'btn form-control btn-primary' %>
+                  <div class="col-4 col-lg-2">
+                    <%= update_brand_form.submit 'Update', name: nil, class: 'btn btn-sm form-control btn-primary' %>
                   </div>
                 </div>
               <% end %>
@@ -66,18 +65,18 @@
           </div>
         </div>
         <div class="col-lg-6">
-          <div class="card h-100">
+          <div class="card h-100 rounded-4">
             <div class="card-body">
-              <div class="card-title">
-                <p class="fs-4 fw-bold">Subscription</p>
+              <div class="card-title mb-4">
+                <p class="fs-5 fw-bold">Subscription</p>
               </div>
               <% if Flipper.enabled?(:subscriptions) %>
-                <p>
+                <small>
                   Subscription status:
                   <span class="bg-<%= subscription_badge_class(subscription_status) %> badge">
                     <%= subscription_status || 'no subscription' %>
                   </span>
-                </p>
+                </small>
                 <% if @brand.subscription %>
                   <%= button_tag 'Update Payment Details', class: 'btn btn-primary', id: 'update-subscription' %>
                   <%= button_tag 'Cancel Subscription', class: 'btn btn-primary', id: 'cancel-subscription' %>
@@ -85,7 +84,7 @@
                   <%= button_tag 'Buy Subscription', class: 'btn btn-primary', id: 'buy-subscription' %>
                 <% end %>
               <% else %>
-                <p class="text-muted">Subscriptions are currently disabled.</p>
+                <small class="text-muted">Subscriptions are currently disabled.</small>
               <% end %>
             </div>
           </div>
@@ -93,10 +92,10 @@
       </div>
       <div class="row mt-4">
         <div class="col-12">
-          <div class="card">
+          <div class="card rounded-4">
             <div class="card-body">
-              <div class="card-title">
-                <p class="fs-4 fw-bold">Team</p>
+              <div class="card-title mb-4">
+                <p class="fs-5 fw-bold">Team</p>
               </div>
               <div class="row">
                 <%= form_with url: brand_users_path, method: :post,
@@ -105,7 +104,7 @@
                   <div class="row">
                     <div class="col-8 col-lg-4">
                       <%= add_user_form.select :user_id, nil, { include_blank: 'Select user' },
-                                               { required: true, class: 'custom-select form-control', id: 'add-user' } do %>
+                                               { required: true, class: 'custom-select form-control form-control-sm', id: 'add-user' } do %>
                         <% unless add_users_dropdown_options_for.empty? %>
                           <% add_users_dropdown_options_for.each do |id, name| %>
                             <option value="<%= id %>">
@@ -116,14 +115,13 @@
                       <% end %>
                     </div>
                     <div class="col-4 col-lg-1">
-                      <%= add_user_form.submit 'Add', class: 'btn form-control btn-primary' %>
+                      <%= add_user_form.submit 'Add', class: 'btn btn-sm form-control btn-primary' %>
                     </div>
                   </div>
                 <% end %>
               </div>
               <div class="row mt-3">
                 <div class="col-12">
-                  <span>Members</span>
                   <hr class="my-3">
                   <div class="list-group list-group-flush mw-100 flex-wrap" id="users-in-brand">
                     <%= render partial: 'brands/user', collection: @brand_users %>
