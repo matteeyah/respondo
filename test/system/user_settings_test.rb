@@ -31,7 +31,7 @@ class UserSettingsTest < ApplicationSystemTestCase
       end
     end
 
-    within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
+    within(page.find('p', text: 'Existing accounts').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
         assert has_selector?(:link, 'Remove')
       end
