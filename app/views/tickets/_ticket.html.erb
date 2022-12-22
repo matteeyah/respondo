@@ -31,16 +31,13 @@
             </div>
             <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
               <% if ticket.parent_id.nil? %>
-                <li><%= link_to 'View', ticket_path(ticket), class: 'dropdown-item',
-                                'data-turbo-frame' => :_top %></li>
+                <li><%= link_to 'View', ticket_path(ticket), class: 'dropdown-item', 'data-turbo-frame' => :_top %></li>
               <% end %>
               <li>
-                <%= link_to 'External View', ticket_permalink_path(ticket), 'data-turbo-frame' => :_top,
-                            id: "permalink-#{ticket.id}", class: 'dropdown-item' %>
+                <%= link_to 'External View', ticket_permalink_path(ticket), 'data-turbo-frame' => :_top, id: "permalink-#{ticket.id}", class: 'dropdown-item' %>
               </li>
               <li>
-                <%= link_to 'Delete', ticket_path(ticket), 'data-turbo-method' => :delete,
-                            id: "delete-#{ticket.id}", class: 'dropdown-item' %>
+                <%= link_to 'Delete', ticket_path(ticket), 'data-turbo-method' => :delete, id: "delete-#{ticket.id}", class: 'dropdown-item' %>
               </li>
             </ul>
           </div>
@@ -58,8 +55,7 @@
       </div>
       <div class="row my-1">
         <small>
-        <%= link_to "#{time_ago_in_words(ticket.created_at)} ago at #{ticket.created_at.to_fs(:short)}", ticket_path(ticket), class: 'link-secondary text-decoration-none',
-                    'data-turbo-frame' => '_top' %>
+        <%= link_to "#{time_ago_in_words(ticket.created_at)} ago at #{ticket.created_at.to_fs(:short)}", ticket_path(ticket), class: 'link-secondary text-decoration-none', 'data-turbo-frame' => '_top' %>
         </small>
       </div>
       <div class="row">
@@ -68,9 +64,7 @@
             <%= bi_icon('chat', 'text-info') %>
             <%= ticket.replies.count %>
           </span>
-          <%= link_to "##{dom_id(ticket)}_internal_notes_dropdown", role: 'button',
-                      aria: { expanded: 'false', controls: "#{dom_id(ticket)}_internal_notes_dropdown" }, 'data-bs-toggle' => 'collapse',
-                      class: 'text-muted text-decoration-none' do %>
+          <%= link_to "##{dom_id(ticket)}_internal_notes_dropdown", role: 'button', aria: { expanded: 'false', controls: "#{dom_id(ticket)}_internal_notes_dropdown" }, 'data-bs-toggle' => 'collapse', class: 'text-muted text-decoration-none' do %>
             <%= bi_icon('sticky', 'text-warning') %>
             <span><%= ticket.internal_notes.count %></span>
           <% end %>
@@ -109,8 +103,7 @@
                                     'data-controller' => 'reset-form',
                                     'data-action' => 'turbo:submit-end->reset-form#reset' } do |internal_note_form| %>
                         <div class="input-group input-group-sm mb-3">
-                          <%= internal_note_form.text_field :content, required: true,
-                                                            placeholder: 'Write a note...', class: 'form-control form-control-sm border-0 border-bottom' %>
+                          <%= internal_note_form.text_field :content, required: true, placeholder: 'Write a note...', class: 'form-control form-control-sm border-0 border-bottom' %>
                           <%= internal_note_form.submit 'Create Note', class: 'btn btn-sm btn-primary opacity-75' %>
                         </div>
               <% end %>
@@ -128,8 +121,7 @@
                         html: { autocomplete: 'off' } do |reply_form| %>
             <div class="row">
               <div class="col-10 d-flex align-items-center">
-                <%= reply_form.text_field :content, required: true,
-                                          placeholder: 'Reply', class: 'form-control border-0' %>
+                <%= reply_form.text_field :content, required: true, placeholder: 'Reply', class: 'form-control border-0' %>
               </div>
               <div class="col-2 d-flex justify-content-end align-items-center">
                 <%= reply_form.button class: 'border-0 bg-transparent btn btn-link rounded-circle text-muted' do %>
