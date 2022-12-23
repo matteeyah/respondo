@@ -74,7 +74,8 @@
               <%= assignment_form.fields_for :assignment, ticket.assignment do |assignee_field| %>
                 <%= assignee_field.collection_select :user_id, ticket.brand.users, :id, :name,
                                                      { include_blank: 'Unassigned' },
-                                                     { required: false, class: 'custom-select form-control form-control-sm text-muted', id: 'ticket-assignment', onchange: 'this.form.submit();' } %>
+                                                     { required: false, class: 'custom-select form-control form-control-sm text-muted', id: 'ticket-assignment',
+                                                       data: { controller: 'submit-form', action: 'change->submit-form#submit' } } %>
               <% end %>
             </div>
           <% end %>
@@ -84,7 +85,7 @@
                         model: ticket, method: :patch do |status_form| %>
             <div class="input-group input-group-sm">
               <%= status_form.select :status, options_for_select(Ticket.statuses.keys, ticket.status),
-                                     { include_blank: 'Select status' }, { id: 'ticket-status', required: true, class: 'custom-select form-control rounded', onchange: 'this.form.submit();' } %>
+                                     { include_blank: 'Select status' }, { id: 'ticket-status', required: true, class: 'custom-select form-control rounded', data: { controller: 'submit-form', action: 'change->submit-form#submit' } } %>
             </div>
           <% end %>
         </div>
