@@ -1,4 +1,4 @@
-<div class="list-group-item" id="<%= account_provider %>">
+<div class="list-group-item border-0" id="<%= account_provider %>">
   <div class="row">
     <div class="col-8 d-flex align-items-center">
       <%= bi_icon(account_provider, 'fs-4 me-2') %>
@@ -7,7 +7,7 @@
       </span>
     </div>
     <div class="col-4 d-flex justify-content-end">
-      <%= auth_provider_link(account_provider, { class: 'btn btn-outline-primary' }) do %>
+      <%= auth_provider_link(account_provider, { class: 'btn btn-sm btn-outline-primary' }) do %>
         Connect
       <% end %>
     </div>

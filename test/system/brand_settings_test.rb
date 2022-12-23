@@ -32,7 +32,7 @@ class BrandSettingsTest < ApplicationSystemTestCase
       end
     end
 
-    within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
+    within(page.find('p', text: 'Existing accounts').find(:xpath, '../..')) do
       assert has_selector?(:css, 'div.list-group-item', text: 'Disqus', count: 2)
     end
   end
@@ -40,7 +40,7 @@ class BrandSettingsTest < ApplicationSystemTestCase
   test 'allows the user to remove an account' do
     click_link 'Brand settings'
 
-    within(page.find('p', text: 'Accounts').find(:xpath, '../..')) do
+    within(page.find('p', text: 'Existing accounts').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
         page.find(:link, 'Remove').click
       end

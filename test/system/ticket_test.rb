@@ -98,7 +98,6 @@ class TicketTest < ApplicationSystemTestCase
 
     within("#ticket_#{@ticket.id}") do
       select 'solved', from: 'ticket-status'
-      click_button 'Update'
     end
 
     click_link 'Solved'
@@ -111,8 +110,7 @@ class TicketTest < ApplicationSystemTestCase
     click_link('Tickets')
 
     within("#ticket_#{@ticket.id}") do
-      fill_in :'acts_as_taggable_on_tag[name]', with: 'hello'
-      page.find(:css, 'i.bi-plus').click
+      fill_in :'acts_as_taggable_on_tag[name]', with: "hello\n"
     end
 
     within("#ticket_#{@ticket.id}") do
@@ -141,7 +139,6 @@ class TicketTest < ApplicationSystemTestCase
 
     within("#ticket_#{@ticket.id}") do
       select @user.name, from: 'ticket-assignment'
-      click_button 'Assign'
     end
 
     assert has_text?(@user.name)
