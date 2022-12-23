@@ -10,11 +10,11 @@
          title_text = 'Error'
        end %>
     <%= bi_icon(icon, "text-#{color_class} fs-4 me-2") %>
-  </div>
-  <strong class="text-<%= color_class %> fs-5 me-auto">
-    <%= title_text %>
-  </strong>
+    <strong class="text-<%= color_class %> fs-5 me-auto">
+      <%= title_text %>
+    </strong>
   <%= button_tag '', class: 'btn-close', 'data-bs-dismiss' => 'toast', 'aria-label' => 'Close' %>
+  </div>
   <div class="toast-body text-muted fs-6">
     <%= message %>
   </div>
