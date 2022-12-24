@@ -5,8 +5,7 @@ module Tickets
     def create
       @tag = new_tag
       @ticket = ticket
-      @ticket.tags << @tag
-
+      @ticket.tags << @tag unless @ticket.tags.include?(@tag)
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to tickets_path }
