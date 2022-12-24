@@ -151,6 +151,13 @@
     - 2.0.1
     :when: 2021-01-05 12:30:03.653866000 Z
 - - :approve
+  - rails-assets-bootstrap
+  - :who: matteeyah
+    :why:
+    :versions:
+    - 5.2.2
+    :when: 2022-12-24 17:27:03.653866000 Z
+- - :approve
   - fsevents
   - :who: matteeyah
     :why:
