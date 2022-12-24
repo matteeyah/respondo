@@ -4,5 +4,5 @@ class Assignment < ApplicationRecord
   validates :ticket_id, uniqueness: true
 
   belongs_to :ticket
-  belongs_to :user
+  belongs_to :user, optional: true
 end
