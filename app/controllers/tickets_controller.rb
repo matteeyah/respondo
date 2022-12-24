@@ -61,7 +61,7 @@ class TicketsController < Tickets::ApplicationController
   end
 
   def tickets
-    TicketsQuery.new(current_user.brand.tickets, params.slice(:status, :assignee, :query)).call
+    TicketsQuery.new(current_user.brand.tickets, params.slice(:status, :assignee, :tag, :query)).call
   end
 
   def update_params

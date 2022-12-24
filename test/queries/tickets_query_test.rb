@@ -34,4 +34,12 @@ class TicketsQueryTest < ActiveSupport::TestCase
 
     assert_equal [tickets(:twitter)], query.call
   end
+
+  test 'filters by tag' do
+    tickets(:twitter).tag_list.add('hello')
+    tickets(:twitter).save!
+    query = TicketsQuery.new(Ticket.all, tag: 'hello')
+
+    assert_equal [tickets(:twitter)], query.call
+  end
 end

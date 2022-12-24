@@ -8,6 +8,7 @@ class TicketsQuery < ApplicationQuery
 
     items = by_status(items, params[:status])
     items = by_assignee(items, params[:assignee])
+    items = by_tag(items, params[:tag])
     return items.root unless params[:query]
 
     by_content(items, params[:query]).or(by_author_username(items, params[:query]))
@@ -23,6 +24,12 @@ class TicketsQuery < ApplicationQuery
     return items_relation unless assignee
 
     items_relation.includes(:assignment).where(assignment: { user_id: assignee })
+  end
+
+  def by_tag(items_relation, tag)
+    return items_relation unless tag
+
+    items_relation.tagged_with(tag)
   end
 
   def by_content(items_relation, query)
