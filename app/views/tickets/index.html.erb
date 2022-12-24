@@ -40,6 +40,13 @@
         <% end %>
       </li>
     <% end %>
+    <li class="nav-item">
+      <%= active_link_to tickets_path(assignee: current_user.id), active: { assignee: current_user.id }, class: 'nav-link' do %>
+        <span>
+          Assigned to me
+        </span>
+      <% end %>
+    </li>
   </ul>
 </div>
 <div class="row my-2">

@@ -28,4 +28,10 @@ class TicketsQueryTest < ActiveSupport::TestCase
 
     assert_equal [tickets(:twitter)], query.call
   end
+
+  test 'filters by assignee' do
+    query = TicketsQuery.new(Ticket.all, assignee: users(:john).id)
+
+    assert_equal [tickets(:twitter)], query.call
+  end
 end
