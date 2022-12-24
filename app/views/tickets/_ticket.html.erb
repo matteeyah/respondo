@@ -62,11 +62,11 @@
         <div class="col-lg-6 d-flex align-items-center justify-content-start">
           <span class="text-muted me-3">
             <%= bi_icon('chat', 'text-info') %>
-            <%= ticket.replies.count %>
+            <%= ticket.replies.size %>
           </span>
           <%= link_to "##{dom_id(ticket)}_internal_notes_dropdown", role: 'button', aria: { expanded: 'false', controls: "#{dom_id(ticket)}_internal_notes_dropdown" }, 'data-bs-toggle' => 'collapse', class: 'text-muted text-decoration-none' do %>
             <%= bi_icon('sticky', 'text-warning') %>
-            <span><%= ticket.internal_notes.count %></span>
+            <span><%= ticket.internal_notes.size %></span>
           <% end %>
           <%= form_with url: ticket_assignments_path(ticket),
                         model: ticket, method: :post do |assignment_form| %>

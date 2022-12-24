@@ -3,7 +3,7 @@
 class TicketsQuery < ApplicationQuery
   DEFAULT_STATUS = 'open'
 
-  def call
+  def call # rubocop:todo Metrics/AbcSize
     items = initial_relation
 
     items = by_status(items, params[:status])

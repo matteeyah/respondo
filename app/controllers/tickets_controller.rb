@@ -4,7 +4,7 @@ class TicketsController < Tickets::ApplicationController
   include Pagy::Backend
 
   TICKET_RENDER_PRELOADS = [
-    :author, :creator, :tags, :assignment,
+    :author, :creator, :tags, :assignment, :replies,
     { brand: [:users], ticketable: %i[base_ticket source], internal_notes: [:creator] }
   ].freeze
 
