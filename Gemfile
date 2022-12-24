@@ -40,6 +40,7 @@ gem 'json-schema', '~> 3.0.0' # JSON schema validation
 gem 'pagy', '~> 6.0.0' # Pagination
 gem 'pg', '~> 1.4.4' # AR database adapter
 gem 'propshaft', '~> 0.6.4' # Rails assets
+gem 'rails-assets-bootstrap', source: 'https://rails-assets.org' # Bootstrap
 gem 'resque', '~> 2.4.0' # Background job processing
 gem 'twitter', '~> 7.0.0' # Twitter client
 

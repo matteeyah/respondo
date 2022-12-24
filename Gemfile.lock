@@ -1,4 +1,9 @@
 GEM
+  remote: https://rails-assets.org/
+  specs:
+    rails-assets-bootstrap (5.2.2)
+
+GEM
   remote: https://rubygems.org/
   specs:
     actioncable (7.0.4)
@@ -473,6 +478,7 @@ DEPENDENCIES
   propshaft (~> 0.6.4)
   puma (~> 6.0.0)
   rails (~> 7.0.3)
+  rails-assets-bootstrap!
   redis (~> 5.0.4)
   resque (~> 2.4.0)
   rubocop (~> 1.41.1)
