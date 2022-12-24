@@ -23,18 +23,28 @@ The footer houses the ticket reply form.
 
 ### Searching by content
 
-You can search tickets based on their content. Enter the search query then press
-the Search button.
+You can search tickets based on their content. Enter the search query to filter
+by content, e.g. `content:Respondo is awesome` then press the Search button.
 
 ### Searching by author name
 
-You can search tickets based on the author name. Enter the search query then
-press the Search button.
+You can search tickets based on the author name. Enter the search query to
+filter by author name, e.g. `author:matteeyah` then press the Search button.
 
 ### Filtering by status
 
 You can filter tickets based on ther status. Click the "Open Tickets" or "Solved
-Tickets" button to filter tickets.
+Tickets" button.
+
+### Filtering tickets assigned to you
+
+You can filter tickets that are assigned to you. Click the "Assigned to me"
+button.
+
+### Filtering tickets with a tag
+
+You can filter tickets that have a specific tag by clicking the tag name on any
+ticket.
 
 ## Responding to tickets
 

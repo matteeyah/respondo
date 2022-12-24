@@ -17,7 +17,7 @@
       <%= search_form.hidden_field :status, value: request.parameters[:status] %>
       <div class="input-group input-group-sm">
         <%= search_form.text_field :query, required: true, value: request.parameters[:query],
-                                           placeholder: 'Search by ticket content or author name', class: 'form-control' %>
+                                           placeholder: 'Search by author:author_name OR content:ticket_content', class: 'form-control' %>
         <%= link_to tickets_path(status: request.parameters[:status]),
                     class: 'btn btn-outline-secondary' do %>
           <%= bi_icon('x-lg') %>

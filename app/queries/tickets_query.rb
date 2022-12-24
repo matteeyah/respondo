@@ -9,9 +9,10 @@ class TicketsQuery < ApplicationQuery
     items = by_status(items, params[:status])
     items = by_assignee(items, params[:assignee])
     items = by_tag(items, params[:tag])
-    return items.root unless params[:query]
+    items = by_author(items, params[:author])
+    items = by_content(items, params[:content])
 
-    by_content(items, params[:query]).or(by_author_username(items, params[:query]))
+    items.root
   end
 
   private
@@ -32,18 +33,15 @@ class TicketsQuery < ApplicationQuery
     items_relation.tagged_with(tag)
   end
 
-  def by_content(items_relation, query)
-    return items_relation unless query
+  def by_author(items_relation, author)
+    return items_relation unless author
 
-    items_relation.where(Ticket.arel_table[:content].matches("%#{query}%"))
+    items_relation.includes(:author).where(author: { username: author })
   end
 
-  def by_author_username(items_relation, query)
-    return items_relation unless query
+  def by_content(items_relation, content)
+    return items_relation unless content
 
-    authors = Author.arel_table
-    items_relation.where(
-      Ticket.arel_table[:author_id].in(authors.project(authors[:id]).where(authors[:username].matches(query)))
-    )
+    items_relation.where(Ticket.arel_table[:content].matches("%#{content}%"))
   end
 end

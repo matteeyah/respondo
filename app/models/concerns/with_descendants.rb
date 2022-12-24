@@ -5,7 +5,7 @@ module WithDescendants
 
   class_methods do
     def with_descendants_hash(*included_relations)
-      ticket_ids = all.select(:id).to_a
+      ticket_ids = all.pluck(:id)
       tickets = unscoped.where(id: ticket_ids).with_descendants.includes(included_relations)
       convert_ticket_array_to_hash(tickets)
     end

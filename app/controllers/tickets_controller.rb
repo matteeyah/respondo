@@ -60,8 +60,17 @@ class TicketsController < Tickets::ApplicationController
     @ticket ||= current_user.brand.tickets.find(params[:ticket_id] || params[:id])
   end
 
+  def parsed_query
+    @parsed_query ||= begin
+      key, value = params[:query].split(':')
+      { key => value }
+    end
+  end
+
   def tickets
-    TicketsQuery.new(current_user.brand.tickets, params.slice(:status, :assignee, :tag, :query)).call
+    query = params.slice(:status, :assignee, :tag)
+    query = query.merge(parsed_query) if params[:query]
+    TicketsQuery.new(current_user.brand.tickets, query).call
   end
 
   def update_params

@@ -40,7 +40,7 @@ class BrandTest < ApplicationSystemTestCase
   end
 
   test 'allows searching tickets by author name' do
-    fill_in 'query', with: tickets(:twitter).author.username
+    fill_in 'query', with: "author:#{tickets(:twitter).author.username}"
     click_button :search
 
     assert has_text?(tickets(:twitter).content)
@@ -48,7 +48,7 @@ class BrandTest < ApplicationSystemTestCase
   end
 
   test 'allows searching tickets by content' do
-    fill_in 'query', with: tickets(:twitter).content
+    fill_in 'query', with: "content:#{tickets(:twitter).content}"
     click_button :search
 
     assert has_text?(tickets(:twitter).content)
@@ -68,24 +68,5 @@ class BrandTest < ApplicationSystemTestCase
 
     assert has_no_text?(tickets(:twitter).author.username)
     assert has_text?(tickets(:disqus).author.username)
-  end
-
-  test 'allows searching by nested ticket content' do
-    parent = tickets(:twitter)
-    nested_ticket = Ticket.create!(
-      external_uid: 'nested_1', status: :open, content: 'Lorem', parent:,
-      author: authors(:james), brand: @brand, creator: @user, ticketable: internal_tickets(:twitter)
-    )
-    nested_nested_ticket = Ticket.create!(
-      external_uid: 'nested_2', status: :open, content: 'Lorem', parent: nested_ticket,
-      author: authors(:james), brand: @brand, creator: @user, ticketable: internal_tickets(:twitter)
-    )
-
-    fill_in 'query', with: nested_ticket.content
-    click_button :search
-
-    assert has_text?(nested_ticket.content)
-    assert has_text?(nested_nested_ticket.content)
-    assert has_no_text?(parent.content)
   end
 end
