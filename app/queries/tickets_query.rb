@@ -3,13 +3,16 @@
 class TicketsQuery < ApplicationQuery
   DEFAULT_STATUS = 'open'
 
-  def call
+  def call # rubocop:todo Metrics/AbcSize
     items = initial_relation
 
     items = by_status(items, params[:status])
-    return items.root unless params[:query]
+    items = by_assignee(items, params[:assignee])
+    items = by_tag(items, params[:tag])
+    items = by_author(items, params[:author])
+    items = by_content(items, params[:content])
 
-    by_content(items, params[:query]).or(by_author_username(items, params[:query]))
+    items.root
   end
 
   private
@@ -18,18 +21,27 @@ class TicketsQuery < ApplicationQuery
     items_relation.where(status: status.presence || DEFAULT_STATUS)
   end
 
-  def by_content(items_relation, query)
-    return items_relation unless query
+  def by_assignee(items_relation, assignee)
+    return items_relation unless assignee
 
-    items_relation.where(Ticket.arel_table[:content].matches("%#{query}%"))
+    items_relation.includes(:assignment).where(assignment: { user_id: assignee })
   end
 
-  def by_author_username(items_relation, query)
-    return items_relation unless query
+  def by_tag(items_relation, tag)
+    return items_relation unless tag
 
-    authors = Author.arel_table
-    items_relation.where(
-      Ticket.arel_table[:author_id].in(authors.project(authors[:id]).where(authors[:username].matches(query)))
-    )
+    items_relation.tagged_with(tag)
+  end
+
+  def by_author(items_relation, author)
+    return items_relation unless author
+
+    items_relation.includes(:author).where(author: { username: author })
+  end
+
+  def by_content(items_relation, content)
+    return items_relation unless content
+
+    items_relation.where(Ticket.arel_table[:content].matches("%#{content}%"))
   end
 end

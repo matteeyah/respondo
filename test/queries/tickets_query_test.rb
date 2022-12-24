@@ -17,14 +17,28 @@ class TicketsQueryTest < ActiveSupport::TestCase
     assert_equal [tickets(:twitter), tickets(:external)], query.call
   end
 
+  test 'filters by assignee' do
+    query = TicketsQuery.new(Ticket.all, assignee: users(:john).id)
+
+    assert_equal [tickets(:twitter)], query.call
+  end
+
+  test 'filters by tag' do
+    tickets(:twitter).tag_list.add('hello')
+    tickets(:twitter).save!
+    query = TicketsQuery.new(Ticket.all, tag: 'hello')
+
+    assert_equal [tickets(:twitter)], query.call
+  end
+
   test 'filters by author' do
-    query = TicketsQuery.new(Ticket.all, query: 'robert_is_cool')
+    query = TicketsQuery.new(Ticket.all, author: 'robert_is_cool')
 
     assert_equal [tickets(:disqus)], query.call
   end
 
   test 'filters by content' do
-    query = TicketsQuery.new(Ticket.all, query: 'Internal twitter ticket content.')
+    query = TicketsQuery.new(Ticket.all, content: 'Internal twitter ticket content.')
 
     assert_equal [tickets(:twitter)], query.call
   end

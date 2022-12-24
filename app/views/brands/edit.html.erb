@@ -99,8 +99,8 @@
               </div>
               <div class="row">
                 <%= form_with url: brand_users_path, method: :post,
-                              html: { 'data-controller' => 'reset-form',
-                                      'data-action' => 'turbo:submit-end->reset-form#reset' } do |add_user_form| %>
+                              html: { 'data-controller' => 'form',
+                                      'data-action' => 'turbo:submit-end->form#reset' } do |add_user_form| %>
                   <div class="row">
                     <div class="col-8 col-lg-4">
                       <%= add_user_form.select :user_id, nil, { include_blank: 'Select user' },

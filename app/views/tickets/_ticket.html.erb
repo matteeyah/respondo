@@ -15,7 +15,7 @@
             <span class="d-flex order-last align-items-center me-1">
               <%= form_with url: ticket_tags_path(ticket),
                             model: ActsAsTaggableOn::Tag.new, method: :post,
-                            html: { 'data-controller' => 'reset-form', 'data-action' => 'turbo:submit-end->reset-form#reset' } do |tag_form| %>
+                            html: { 'data-controller' => 'form', 'data-action' => 'turbo:submit-end->form#reset' } do |tag_form| %>
                 <span class="d-flex align-items-center me-1 text-white">
                   <%= tag_form.text_field :name, required: true, placeholder: 'add tag', class: 'form-control form-control-sm border-0 text-info w-50 opacity-75' %>
                 </span>
@@ -62,11 +62,11 @@
         <div class="col-lg-6 d-flex align-items-center justify-content-start">
           <span class="text-muted me-3">
             <%= bi_icon('chat', 'text-info') %>
-            <%= ticket.replies.count %>
+            <%= ticket.replies.size %>
           </span>
           <%= link_to "##{dom_id(ticket)}_internal_notes_dropdown", role: 'button', aria: { expanded: 'false', controls: "#{dom_id(ticket)}_internal_notes_dropdown" }, 'data-bs-toggle' => 'collapse', class: 'text-muted text-decoration-none' do %>
             <%= bi_icon('sticky', 'text-warning') %>
-            <span><%= ticket.internal_notes.count %></span>
+            <span><%= ticket.internal_notes.size %></span>
           <% end %>
           <%= form_with url: ticket_assignments_path(ticket),
                         model: ticket, method: :post do |assignment_form| %>
@@ -75,7 +75,7 @@
                 <%= assignee_field.collection_select :user_id, ticket.brand.users, :id, :name,
                                                      { include_blank: 'Unassigned' },
                                                      { required: false, class: 'custom-select form-control form-control-sm text-muted', id: 'ticket-assignment',
-                                                       data: { controller: 'submit-form', action: 'change->submit-form#submit' } } %>
+                                                       data: { controller: 'form', action: 'change->form#submit' } } %>
               <% end %>
             </div>
           <% end %>
@@ -85,7 +85,7 @@
                         model: ticket, method: :patch do |status_form| %>
             <div class="input-group input-group-sm">
               <%= status_form.select :status, options_for_select(Ticket.statuses.keys, ticket.status),
-                                     { include_blank: 'Select status' }, { id: 'ticket-status', required: true, class: 'custom-select form-control rounded', data: { controller: 'submit-form', action: 'change->submit-form#submit' } } %>
+                                     { include_blank: 'Select status' }, { id: 'ticket-status', required: true, class: 'custom-select form-control rounded', data: { controller: 'form', action: 'change->form#submit' } } %>
             </div>
           <% end %>
         </div>
@@ -101,8 +101,8 @@
               <%= form_with url: ticket_internal_notes_path(ticket),
                             model: InternalNote.new, method: :post,
                             html: { autocomplete: 'off',
-                                    'data-controller' => 'reset-form',
-                                    'data-action' => 'turbo:submit-end->reset-form#reset' } do |internal_note_form| %>
+                                    'data-controller' => 'form',
+                                    'data-action' => 'turbo:submit-end->form#reset' } do |internal_note_form| %>
                         <div class="input-group input-group-sm mb-3">
                           <%= internal_note_form.text_field :content, required: true, placeholder: 'Write a note...', class: 'form-control form-control-sm border-0 border-bottom' %>
                           <%= internal_note_form.submit 'Create Note', class: 'btn btn-sm btn-primary opacity-75' %>

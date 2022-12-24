@@ -9,3 +9,9 @@ Flipper.configure do |config|
     Flipper.new(adapter)
   end
 end
+
+Rails.application.configure do
+  config.flipper.preload = false
+
+  # config.flipper.memoize = ->(request) { !request.path.start_with?('/assets') }
+end
