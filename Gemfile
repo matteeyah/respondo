@@ -59,7 +59,7 @@ group :development, :test do
   ## ERB
   gem 'erb_lint', require: false
   # Other
-  gem 'debug', platforms: %i[mri mingw x64_mingw]
+  gem 'debug', '>= 1.0.0'
 end
 
 group :development do
