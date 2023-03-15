@@ -75,15 +75,21 @@ jobs:
         run: yarn install --immutable
       - name: Run license_finder
         run: bundle exec license_finder --decisions_file dependency_decisions.yml
-  rubocop:
+
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Run rubocop
-        run: bundle exec rubocop
+      - uses: github/super-linter/slim@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: master
+          VALIDATE_RUBY: true
+          VALIDATE_CSS: true
+          VALIDATE_JAVASCRIPT_STANDARD: true
+          VALIDATE_MARKDOWN: true
+          RUBY_CONFIG_FILE: .rubocop.yml
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   erblint:
     runs-on: ubuntu-latest
     steps:
@@ -93,39 +99,6 @@ jobs:
           bundler-cache: true
       - name: Run erb-lint
         run: bundle exec erblint '**/*.erb'
-  markdownlint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Run mdl
-        run: bundle exec mdl docs --config .mdlrc
-  stylelint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
-          cache: 'yarn'
-      - name: Install yarn dependencies
-        run: yarn install --immutable
-      - name: Run stylelint
-        run: yarn run stylelint 'app/assets/stylesheets/**/*.scss' 
-  standard:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
-          cache: 'yarn'
-      - name: Install yarn dependencies
-        run: yarn install --immutable
-      - name: Run standard
-        run: yarn run standard
   vale:
     runs-on: ubuntu-latest
     container: jdkato/vale:v2.18.0
