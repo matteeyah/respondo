@@ -51,6 +51,7 @@ group :development, :test do
   gem 'mdl', require: false
   ## Ruby linter
   gem 'rubocop', require: false
+  gem 'rubocop-capybara', require: false
   gem 'rubocop-md', require: false
   gem 'rubocop-minitest', require: false
   gem 'rubocop-performance', require: false

@@ -359,6 +359,8 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.27.0)
       parser (>= 3.2.1.0)
+    rubocop-capybara (2.17.1)
+      rubocop (~> 1.41)
     rubocop-md (1.2.0)
       rubocop (>= 1.0)
     rubocop-minitest (0.29.0)
@@ -478,6 +480,7 @@ DEPENDENCIES
   redis
   resque
   rubocop
+  rubocop-capybara
   rubocop-md
   rubocop-minitest
   rubocop-performance
