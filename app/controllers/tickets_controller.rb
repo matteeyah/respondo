@@ -42,7 +42,7 @@ class TicketsController < Tickets::ApplicationController
   end
 
   def refresh
-    LoadNewTicketsJob.perform_later(current_user.organization.id)
+    LoadNewTicketsJob.perform_later(current_user.organization)
 
     respond_to do |format|
       format.turbo_stream
