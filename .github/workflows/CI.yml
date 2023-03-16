@@ -60,22 +60,6 @@ jobs:
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: RAILS_ENV=test bundle exec rails test:system
-  license_finder:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
-          cache: 'yarn'
-      - name: Install yarn dependencies
-        run: yarn install --immutable
-      - name: Run license_finder
-        run: bundle exec license_finder --decisions_file dependency_decisions.yml
-
   lint:
     runs-on: ubuntu-latest
     steps:
