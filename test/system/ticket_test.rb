@@ -9,16 +9,17 @@ class TicketTest < ApplicationSystemTestCase
 
   def setup
     @user = users(:john)
-    @brand = brands(:respondo)
+    @organization = organizations(:respondo)
     @ticket = tickets(:twitter)
 
-    Subscription.create!(external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', brand: @brand,
+    Subscription.create!(external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com',
+                         organization: @organization,
                          cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update')
 
     visit '/'
 
     sign_in_user(@user)
-    sign_in_brand(@brand)
+    sign_in_organization(@organization)
   end
 
   test 'shows the ticket' do
@@ -37,7 +38,7 @@ class TicketTest < ApplicationSystemTestCase
     response_text = 'Hello from Respondo system tests'
     stub_twitter_reply_response(
       account.external_uid,
-      @brand.screen_name,
+      @organization.screen_name,
       @ticket.external_uid,
       response_text
     )
@@ -47,7 +48,7 @@ class TicketTest < ApplicationSystemTestCase
       page.find(:css, 'i.bi-telegram').click
     end
 
-    assert has_text?("#{@user.name} as @#{@brand.screen_name}")
+    assert has_text?("#{@user.name} as @#{@organization.screen_name}")
     assert has_text?(response_text)
   end
 
@@ -58,7 +59,7 @@ class TicketTest < ApplicationSystemTestCase
     external_ticket = tickets(:external)
     response = {
       external_uid: 123_456,
-      author: { external_uid: '123', username: @brand.screen_name },
+      author: { external_uid: '123', username: @organization.screen_name },
       response_url: external_ticket.ticketable.response_url,
       parent_uid: external_ticket.external_uid,
       content: response_text
@@ -71,7 +72,7 @@ class TicketTest < ApplicationSystemTestCase
       page.find(:css, 'i.bi-telegram').click
     end
 
-    assert has_text?("#{@user.name} as @#{@brand.screen_name}")
+    assert has_text?("#{@user.name} as @#{@organization.screen_name}")
     assert has_text?(response_text)
   end
 

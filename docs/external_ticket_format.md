@@ -14,7 +14,7 @@ implement this.
 
 ## Inbound
 
-All requests are sent to the `Brands::TicketsController#create_external`
+All requests are sent to the `Organizations::TicketsController#create_external`
 endpoint in JSON format.
 
 <details>

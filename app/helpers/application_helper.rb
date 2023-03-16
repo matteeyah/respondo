@@ -26,6 +26,6 @@ module ApplicationHelper
   end
 
   def show_settings_collapse?
-    action_name == 'edit' && (controller_name == 'brands' || controller_name == 'users')
+    action_name == 'edit' && (controller_name == 'organizations' || controller_name == 'users')
   end
 end

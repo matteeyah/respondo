@@ -1,0 +1,3 @@
+<%= turbo_stream.append(:toasts, partial: 'shared/toast',
+                                 locals: { success: true, message: 'User was successfully added to the organization.' }) %>
+<%= turbo_stream.append('users-in-organization', partial: 'organizations/user', locals: { user: @user }) %>

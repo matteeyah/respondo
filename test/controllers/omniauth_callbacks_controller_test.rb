@@ -44,7 +44,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test 'POST brand when user is not logged in redirects to login' do
+  test 'POST organization when user is not logged in redirects to login' do
     OmniAuth.config.add_mock(:twitter, JSON.parse(file_fixture('twitter_oauth.json').read))
 
     post '/auth/twitter'
@@ -53,47 +53,47 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_path
   end
 
-  test 'POST brand creates Brand' do
+  test 'POST organization creates Organization' do
     sign_in(users(:john), user_accounts(:google_oauth2))
     OmniAuth.config.add_mock(:twitter, JSON.parse(file_fixture('twitter_oauth.json').read))
 
-    assert_changes -> { Brand.count }, from: 2, to: 3 do
+    assert_changes -> { Organization.count }, from: 2, to: 3 do
       post '/auth/twitter'
       follow_redirect!
     end
   end
 
-  test 'POST brand creates BrandAccount' do
+  test 'POST organization creates OrganizationAccount' do
     sign_in(users(:john), user_accounts(:google_oauth2))
     OmniAuth.config.add_mock(:twitter, JSON.parse(file_fixture('twitter_oauth.json').read))
 
-    assert_changes -> { BrandAccount.count }, from: 2, to: 3 do
+    assert_changes -> { OrganizationAccount.count }, from: 2, to: 3 do
       post '/auth/twitter'
       follow_redirect!
     end
   end
 
-  test 'POST brand when user and account exist does not create duplicates' do
+  test 'POST organization when user and account exist does not create duplicates' do
     sign_in(users(:john), user_accounts(:google_oauth2))
-    add_oauth_mock_for_brand(brands(:respondo), brand_accounts(:twitter))
+    add_oauth_mock_for_organization(organizations(:respondo), organization_accounts(:twitter))
 
-    assert_no_changes -> { "#{BrandAccount.count}#{Brand.count}" } do
+    assert_no_changes -> { "#{OrganizationAccount.count}#{Organization.count}" } do
       post '/auth/twitter'
       follow_redirect!
     end
   end
 
-  test 'POST brand associates brand with user' do
+  test 'POST organization associates organization with user' do
     sign_in(users(:john), user_accounts(:google_oauth2))
     OmniAuth.config.add_mock(:twitter, JSON.parse(file_fixture('twitter_oauth.json').read))
 
-    assert_changes -> { users(:john).reload.brand }, from: nil do
+    assert_changes -> { users(:john).reload.organization }, from: nil do
       post '/auth/twitter'
       follow_redirect!
     end
   end
 
-  test 'POST brand redirects to root' do
+  test 'POST organization redirects to root' do
     sign_in(users(:john), user_accounts(:google_oauth2))
     OmniAuth.config.add_mock(:twitter, JSON.parse(file_fixture('twitter_oauth.json').read))
 

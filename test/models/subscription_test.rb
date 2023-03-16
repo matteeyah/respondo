@@ -50,7 +50,7 @@ class SubscriptionTest < ActiveSupport::TestCase
       email: 'hello@respondohub.com',
       cancel_url: 'https://respondohub.com/cancel',
       update_url: 'https://respondohub.com/update',
-      brand: brands(:respondo)
+      organization: organizations(:respondo)
     )
   end
 end

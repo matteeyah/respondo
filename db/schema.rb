@@ -32,28 +32,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.index ["external_uid", "provider"], name: "index_authors_on_external_uid_and_provider", unique: true
   end
 
-  create_table "brand_accounts", force: :cascade do |t|
-    t.string "external_uid", null: false
-    t.string "email"
-    t.string "screen_name", null: false
-    t.integer "provider", null: false
-    t.string "token"
-    t.string "secret"
-    t.bigint "brand_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["brand_id"], name: "index_brand_accounts_on_brand_id"
-    t.index ["external_uid", "provider"], name: "index_brand_accounts_on_external_uid_and_provider", unique: true
-  end
-
-  create_table "brands", force: :cascade do |t|
-    t.string "screen_name", null: false
-    t.string "domain"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["domain"], name: "index_brands_on_domain", unique: true
-  end
-
   create_table "external_tickets", force: :cascade do |t|
     t.string "response_url", null: false
     t.string "custom_provider"
@@ -94,6 +72,28 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.index ["source_id"], name: "index_internal_tickets_on_source_id"
   end
 
+  create_table "organization_accounts", force: :cascade do |t|
+    t.string "external_uid", null: false
+    t.string "email"
+    t.string "screen_name", null: false
+    t.integer "provider", null: false
+    t.string "token"
+    t.string "secret"
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_uid", "provider"], name: "index_organization_accounts_on_external_uid_and_provider", unique: true
+    t.index ["organization_id"], name: "index_organization_accounts_on_organization_id"
+  end
+
+  create_table "organizations", force: :cascade do |t|
+    t.string "screen_name", null: false
+    t.string "domain"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["domain"], name: "index_organizations_on_domain", unique: true
+  end
+
   create_table "personal_access_tokens", force: :cascade do |t|
     t.string "name", null: false
     t.string "token_digest", null: false
@@ -110,10 +110,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.string "email", null: false
     t.string "cancel_url", null: false
     t.string "update_url", null: false
-    t.bigint "brand_id", null: false
+    t.bigint "organization_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["brand_id"], name: "index_subscriptions_on_brand_id"
+    t.index ["organization_id"], name: "index_subscriptions_on_organization_id"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -153,16 +153,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.integer "status", default: 0, null: false
     t.string "ticketable_type", null: false
     t.integer "ticketable_id", null: false
-    t.bigint "brand_id", null: false
+    t.bigint "organization_id", null: false
     t.bigint "author_id", null: false
     t.bigint "creator_id"
     t.bigint "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_tickets_on_author_id"
-    t.index ["brand_id"], name: "index_tickets_on_brand_id"
     t.index ["creator_id"], name: "index_tickets_on_creator_id"
-    t.index ["external_uid", "ticketable_type", "brand_id"], name: "index_tickets_on_external_uid_and_ticketable_type_and_brand_id", unique: true
+    t.index ["external_uid", "ticketable_type", "organization_id"], name: "index_tickets_on_uid_and_ticketable_type_and_organization", unique: true
+    t.index ["organization_id"], name: "index_tickets_on_organization_id"
     t.index ["parent_id"], name: "index_tickets_on_parent_id"
   end
 
@@ -181,8 +181,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_25_092130) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "brand_id"
-    t.index ["brand_id"], name: "index_users_on_brand_id"
+    t.bigint "organization_id"
+    t.index ["organization_id"], name: "index_users_on_organization_id"
   end
 
   add_foreign_key "taggings", "tags"

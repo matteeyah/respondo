@@ -10,7 +10,7 @@ class CreateTickets < ActiveRecord::Migration[7.0]
       t.string :ticketable_type, null: false
       t.integer :ticketable_id, null: false
 
-      t.references :brand, index: true, null: false
+      t.references :organization, index: true, null: false
       t.references :author, index: true, null: false
       t.references :creator, index: true, null: true
       t.references :parent, index: true, null: true
@@ -18,6 +18,7 @@ class CreateTickets < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_index :tickets, %i[external_uid ticketable_type brand_id], unique: true
+    add_index :tickets, %i[external_uid ticketable_type organization_id],
+              unique: true, name: 'index_tickets_on_uid_and_ticketable_type_and_organization'
   end
 end

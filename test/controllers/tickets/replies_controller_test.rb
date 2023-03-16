@@ -10,13 +10,13 @@ module Tickets
 
     test 'POST create when the user is authorized redirects the user to edit page' do
       sign_in(users(:john), user_accounts(:google_oauth2))
-      brands(:respondo).users << users(:john)
+      organizations(:respondo).users << users(:john)
 
       Subscription.create!(
-        external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', brand: brands(:respondo),
+        external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', organization: organizations(:respondo),
         cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update'
       )
-      brand_accounts(:twitter).update!(token: 'hello', secret: 'world')
+      organization_accounts(:twitter).update!(token: 'hello', secret: 'world')
 
       stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')
         .to_return(

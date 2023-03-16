@@ -12,12 +12,12 @@ class OmniauthCallbacksController < ApplicationController
     redirect_to(auth_origin || root_path)
   end
 
-  def brand
-    account = BrandAccount.from_omniauth(auth_hash, current_user.brand)
+  def organization
+    account = OrganizationAccount.from_omniauth(auth_hash, current_user.organization)
 
     # This checks if the account was just created.
-    LoadNewTicketsJob.perform_later(account.brand) if account.id_previously_changed?
-    current_user.update!(brand: account.brand) if account.persisted?
+    LoadNewTicketsJob.perform_later(account.organization) if account.id_previously_changed?
+    current_user.update!(organization: account.organization) if account.persisted?
 
     redirect_to(auth_origin || root_path)
   end

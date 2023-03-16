@@ -17,7 +17,7 @@ class TicketTest < ActiveSupport::TestCase
     assert_predicate ticket, :invalid?
   end
 
-  test 'validates uniqueness of external_uid scoped to ticketable_type and brand_id' do
+  test 'validates uniqueness of external_uid scoped to ticketable_type and organization_id' do
     ticket = tickets(:twitter).dup
 
     assert_predicate ticket, :invalid?
@@ -26,7 +26,8 @@ class TicketTest < ActiveSupport::TestCase
 
   test '.root returnes tickets without a parent' do
     child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:twitter), content: 'hello',
-                           author: authors(:james), brand: brands(:respondo), ticketable: internal_tickets(:twitter))
+                           author: authors(:james), organization: organizations(:respondo),
+                           ticketable: internal_tickets(:twitter))
 
     assert_not_includes Ticket.root, child
   end
@@ -39,7 +40,8 @@ class TicketTest < ActiveSupport::TestCase
         1, '2019-01-01T00:23:39.951Z'
       )
 
-    assert_instance_of Ticket, Ticket.from_client_response!('twitter', client_response, brand_accounts(:twitter), nil)
+    assert_instance_of Ticket,
+                       Ticket.from_client_response!('twitter', client_response, organization_accounts(:twitter), nil)
   end
 
   test '.from_client_response! assigns parent to ticket' do
@@ -52,7 +54,7 @@ class TicketTest < ActiveSupport::TestCase
     parent = tickets(:twitter)
     parent.update!(external_uid: 1)
 
-    created_ticket = Ticket.from_client_response!('twitter', client_response, brand_accounts(:twitter), nil)
+    created_ticket = Ticket.from_client_response!('twitter', client_response, organization_accounts(:twitter), nil)
 
     assert_includes parent.replies, created_ticket
   end
@@ -65,7 +67,8 @@ class TicketTest < ActiveSupport::TestCase
         1, '2019-01-01T00:23:39.951Z'
       )
 
-    created_ticket = Ticket.from_client_response!('twitter', client_response, brand_accounts(:twitter), users(:john))
+    created_ticket = Ticket.from_client_response!('twitter', client_response, organization_accounts(:twitter),
+                                                  users(:john))
 
     assert_equal users(:john), created_ticket.creator
   end
@@ -73,12 +76,12 @@ class TicketTest < ActiveSupport::TestCase
   test '.with_descendants_hash' do
     first_child = Ticket.create!(
       external_uid: 'uid_10', parent: tickets(:twitter), content: 'hello',
-      author: authors(:james), brand: brands(:respondo), ticketable: internal_tickets(:twitter)
+      author: authors(:james), organization: organizations(:respondo), ticketable: internal_tickets(:twitter)
     )
 
     second_child = Ticket.create!(
       external_uid: 'uid_11', parent: tickets(:disqus), content: 'hello',
-      author: authors(:james), brand: brands(:respondo), ticketable: internal_tickets(:disqus)
+      author: authors(:james), organization: organizations(:respondo), ticketable: internal_tickets(:disqus)
     )
 
     expected_structure = {
@@ -92,7 +95,8 @@ class TicketTest < ActiveSupport::TestCase
 
   test '#with_descendants_hash' do
     child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:twitter), content: 'hello',
-                           author: authors(:james), brand: brands(:respondo), ticketable: internal_tickets(:twitter))
+                           author: authors(:james), organization: organizations(:respondo),
+                           ticketable: internal_tickets(:twitter))
 
     expected_structure = {
       tickets(:twitter) => { child => {} }
@@ -103,7 +107,7 @@ class TicketTest < ActiveSupport::TestCase
 
   test '#respond_as creates a response ticket' do
     ticket = tickets(:twitter)
-    brand_accounts(:twitter).update!(token: 'hello', secret: 'world')
+    organization_accounts(:twitter).update!(token: 'hello', secret: 'world')
     ticket.update!(external_uid: '1')
 
     stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json').with(

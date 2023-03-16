@@ -72,7 +72,7 @@
                         model: ticket, method: :post do |assignment_form| %>
             <div class="input-group input-group-sm ms-3">
               <%= assignment_form.fields_for :assignment, ticket.assignment do |assignee_field| %>
-                <%= assignee_field.collection_select :user_id, ticket.brand.users, :id, :name,
+                <%= assignee_field.collection_select :user_id, ticket.organization.users, :id, :name,
                                                      { include_blank: 'Unassigned' },
                                                      { required: false, class: 'custom-select form-control form-control-sm text-muted text-center', id: 'ticket-assignment',
                                                        data: { controller: 'form', action: 'change->form#submit' } } %>
@@ -116,7 +116,7 @@
     </div>
     <% if ticket.status == 'open' %>
       <div class="card-footer border-0">
-        <% if current_user.brand.subscribed? %>
+        <% if current_user.organization.subscribed? %>
           <%= form_with url: ticket_replies_path(ticket),
                         model: ticket.replies.new, method: :post,
                         html: { autocomplete: 'off' } do |reply_form| %>
