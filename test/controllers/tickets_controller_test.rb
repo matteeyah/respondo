@@ -9,7 +9,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET index when the user is authorized renders the index page' do
     sign_in(users(:john), user_accounts(:google_oauth2))
-    brands(:respondo).users << users(:john)
+    organizations(:respondo).users << users(:john)
 
     get '/tickets'
 
@@ -32,7 +32,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET show when the user is authorized renders the show page' do
     sign_in(users(:john), user_accounts(:google_oauth2))
-    brands(:respondo).users << users(:john)
+    organizations(:respondo).users << users(:john)
 
     get "/tickets/#{tickets(:twitter).id}"
 
@@ -55,7 +55,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
 
   test 'PATCH update when the user is authorized redirects to external ticket' do
     sign_in(users(:john), user_accounts(:google_oauth2))
-    brands(:respondo).users << users(:john)
+    organizations(:respondo).users << users(:john)
 
     patch "/tickets/#{tickets(:twitter).id}",
           params: { ticket: { content: 'hello' } }
@@ -77,11 +77,11 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_path
   end
 
-  test 'DELETE destroy when the user is authorized redirects to brand tickets' do
+  test 'DELETE destroy when the user is authorized redirects to organization tickets' do
     sign_in(users(:john), user_accounts(:google_oauth2))
-    brands(:respondo).users << users(:john)
+    organizations(:respondo).users << users(:john)
 
-    brand_accounts(:twitter).update!(token: 'hello', secret: 'world')
+    organization_accounts(:twitter).update!(token: 'hello', secret: 'world')
 
     stub_request(:post, 'https://api.twitter.com/1.1/statuses/destroy/0.json')
       .and_return(
@@ -108,9 +108,9 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_path
   end
 
-  test 'POST refresh when the user is authorized redirects the user to brand tickets' do
+  test 'POST refresh when the user is authorized redirects the user to organization tickets' do
     sign_in(users(:john), user_accounts(:google_oauth2))
-    brands(:respondo).users << users(:john)
+    organizations(:respondo).users << users(:john)
 
     post '/tickets/refresh'
 
@@ -133,9 +133,9 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET permalink when the user is authorized redirects to external ticket' do
     sign_in(users(:john), user_accounts(:google_oauth2))
-    brands(:respondo).users << users(:john)
+    organizations(:respondo).users << users(:john)
 
-    brand_accounts(:twitter).update!(token: 'hello', secret: 'world')
+    organization_accounts(:twitter).update!(token: 'hello', secret: 'world')
     stub_request(:get, 'https://api.twitter.com/1.1/statuses/show/0.json')
       .and_return(
         status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },

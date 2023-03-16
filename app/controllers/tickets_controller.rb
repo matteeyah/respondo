@@ -5,7 +5,7 @@ class TicketsController < Tickets::ApplicationController
 
   TICKET_RENDER_PRELOADS = [
     :author, :creator, :tags, :assignment, :replies,
-    { brand: [:users], ticketable: %i[base_ticket source], internal_notes: [:creator] }
+    { organization: [:users], ticketable: %i[base_ticket source], internal_notes: [:creator] }
   ].freeze
 
   def index
@@ -42,7 +42,7 @@ class TicketsController < Tickets::ApplicationController
   end
 
   def refresh
-    LoadNewTicketsJob.perform_later(current_user.brand.id)
+    LoadNewTicketsJob.perform_later(current_user.organization.id)
 
     respond_to do |format|
       format.turbo_stream
@@ -57,7 +57,7 @@ class TicketsController < Tickets::ApplicationController
   private
 
   def ticket
-    @ticket ||= current_user.brand.tickets.find(params[:ticket_id] || params[:id])
+    @ticket ||= current_user.organization.tickets.find(params[:ticket_id] || params[:id])
   end
 
   def parsed_query
@@ -70,7 +70,7 @@ class TicketsController < Tickets::ApplicationController
   def tickets
     query = params.slice(:status, :assignee, :tag)
     query = query.merge(parsed_query) if params[:query]
-    TicketsQuery.new(current_user.brand.tickets, query).call
+    TicketsQuery.new(current_user.organization.tickets, query).call
   end
 
   def update_params

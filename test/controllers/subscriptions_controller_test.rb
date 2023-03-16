@@ -13,7 +13,7 @@ class SubscriptionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'POST create when subscription is being updated' do
     subscription = Subscription.create!(
-      external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', brand: brands(:respondo),
+      external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', organization: organizations(:respondo),
       cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update'
     )
 
@@ -29,7 +29,7 @@ class SubscriptionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'POST create when subscription is being cancelled' do
     subscription = Subscription.create!(
-      external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', brand: brands(:respondo),
+      external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', organization: organizations(:respondo),
       cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update'
     )
 
@@ -58,7 +58,7 @@ class SubscriptionsControllerTest < ActionDispatch::IntegrationTest
       email: 'test@respondohub.com',
       update_url: 'https://respondohub.com/update',
       cancel_url: 'https://respondohub.com/cancel',
-      passthrough: "{ \"brand_id\": #{brands(:respondo).id} }"
+      passthrough: "{ \"organization_id\": #{organizations(:respondo).id} }"
     }
   end
 end

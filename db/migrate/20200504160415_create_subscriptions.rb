@@ -8,7 +8,7 @@ class CreateSubscriptions < ActiveRecord::Migration[7.0]
       t.string :email, null: false
       t.string :cancel_url, null: false
       t.string :update_url, null: false
-      t.references :brand, index: true, unique: true, null: false
+      t.references :organization, index: true, unique: true, null: false
 
       t.timestamps
     end

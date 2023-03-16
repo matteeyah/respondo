@@ -9,12 +9,12 @@ class DashboardTest < ApplicationSystemTestCase
 
   def setup
     @user = users(:john)
-    @brand = brands(:respondo)
+    @organization = organizations(:respondo)
 
     visit '/'
 
     sign_in_user(@user)
-    sign_in_brand(@brand)
+    sign_in_organization(@organization)
 
     click_link('Dashboard')
   end

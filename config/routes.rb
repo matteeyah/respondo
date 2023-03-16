@@ -14,12 +14,12 @@ Rails.application.routes.draw do
   # OmniAuth routing
   get 'auth/:provider/callback', to: 'omniauth_callbacks#user',
                                  constraints: { provider: /google_oauth2|activedirectory/ }
-  get 'auth/:provider/callback', to: 'omniauth_callbacks#brand', constraints: { provider: /twitter|disqus/ }
+  get 'auth/:provider/callback', to: 'omniauth_callbacks#organization', constraints: { provider: /twitter|disqus/ }
   get 'auth/failure', to: redirect('/')
   delete :sign_out, to: 'sessions#destroy'
 
   get :dashboard, to: 'dashboard#show'
-  get :settings, to: 'brands#edit'
+  get :settings, to: 'organizations#edit'
   get :profile, to: 'users#edit'
 
   resources :tickets, only: %i[index show update destroy] do
@@ -45,15 +45,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :brand, only: %i[update] do
-    scope module: :brands do
-      resources :brand_accounts, only: [:destroy]
+  resource :organization, only: %i[update] do
+    scope module: :organizations do
+      resources :organization_accounts, only: [:destroy]
       resources :users, only: %i[create destroy]
     end
   end
 
-  resources :brands, only: [] do
-    scope module: :brands do
+  resources :organizations, only: [] do
+    scope module: :organizations do
       resources :external_tickets, constraints: { format: 'json' }, only: [:create]
     end
   end

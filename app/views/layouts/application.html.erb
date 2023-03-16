@@ -15,7 +15,7 @@
 <div class="d-flex flex-column flex-lg-row vh-100 bg-light">
   <div class="navbar navbar-expand-lg overflow-auto m-3 rounded-4 bg-white">
     <div class="container-fluid ps-0 pe-0 d-flex flex-lg-column flex-grow-1 h-100">
-      <div class="navbar-brand">
+      <div class="navbar-organization">
         <%= link_to root_path, class: 'nav-link text-primary fs-3 fw-bold' do %>
           <%= image_tag('logo_circle_white.svg', class: 'img-fluid') %>
           <span>Respondo</span>
@@ -26,7 +26,7 @@
       </button>
       <div class="flex-column collapse navbar-collapse w-100 mt-5" id="main-nav">
         <ul class="flex-column align-items-start navbar-nav w-100">
-          <% if current_user.brand %>
+          <% if current_user.organization %>
             <li class="nav-item">
               <%= active_link_to dashboard_path, { active: :exclusive,
                                                    class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
@@ -85,9 +85,9 @@
             <% class_list = ['text-start', 'collapse', 'list-group', 'list-group-flush', 'w-100',
                              ('show' if show_settings_collapse?)].join(' ') %>
             <ul aria-labelledby="#settings-menu" class="<%= class_list %>" id="settings-menu">
-              <% if current_user.brand %>
+              <% if current_user.organization %>
                 <li class="nav-item list-group-item list-group-item-action ps-0">
-                  <%= active_link_to 'Brand settings', settings_path,
+                  <%= active_link_to 'Organization settings', settings_path,
                                      class: 'nav-link ps-4', 'data-turbo-frame' => :_top %>
                 </li>
               <% end %>

@@ -2,7 +2,7 @@
 
 module Tickets
   class ApplicationController < ::ApplicationController
-    include AuthorizesBrandMembership
+    include AuthorizesOrganizationMembership
 
     private
 

@@ -10,7 +10,7 @@ module Tickets
 
     test 'POST create when the user is authorized redirects the user to edit page' do
       sign_in(users(:john), user_accounts(:google_oauth2))
-      brands(:respondo).users << users(:john)
+      organizations(:respondo).users << users(:john)
 
       post "/tickets/#{tickets(:twitter).id}/tags",
            params: { acts_as_taggable_on_tag: { name: 'awesome' } }
@@ -34,7 +34,7 @@ module Tickets
 
     test 'DELETE destroy when the user is authorized redirects the user to edit page' do
       sign_in(users(:john), user_accounts(:google_oauth2))
-      brands(:respondo).users << users(:john)
+      organizations(:respondo).users << users(:john)
 
       tickets(:twitter).tag_list.add('awesome')
       tickets(:twitter).save!
@@ -72,7 +72,7 @@ module Tickets
 
     test 'POST create with duplicate tag name does not create a duplicate tag' do
       sign_in(users(:john), user_accounts(:google_oauth2))
-      brands(:respondo).users << users(:john)
+      organizations(:respondo).users << users(:john)
       tickets(:twitter).tag_list.add('awesome')
       tickets(:twitter).save!
 

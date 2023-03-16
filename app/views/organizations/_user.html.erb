@@ -1,0 +1,15 @@
+<div class="list-group-item col-lg-4" id="<%= dom_id(user) %>">
+  <div class="row">
+    <div class="col-7 d-flex align-content-center">
+      <span class="my-2 fw-bold">
+        <%= user.name %>
+      </span>
+    </div>
+    <div class="col-5 d-flex align-items-center justify-content-end">
+      <%= link_to organization_user_path(user),
+                  'data-turbo-method' => :delete, class: 'btn btn-sm btn-outline-danger' do %>
+        <span>Remove</span>
+      <% end %>
+    </div>
+  </div>
+</div>

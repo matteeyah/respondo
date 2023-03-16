@@ -19,7 +19,7 @@ class Ticket
       def from_tweet!(tweet, source, user)
         Ticket.create!(
           external_uid: tweet.id, content: tweet.attrs[:full_text], created_at: tweet.created_at,
-          parent: source.tickets.find_by(external_uid: tweet.in_reply_to_tweet_id.presence), brand: source.brand,
+          parent: source.tickets.find_by(external_uid: tweet.in_reply_to_tweet_id.presence), organization: source.organization,
           creator: user, author: Author.from_twitter_user!(tweet.user), ticketable: InternalTicket.new(source:)
         )
       end
@@ -27,15 +27,15 @@ class Ticket
       def from_disqus_post!(post, source, user)
         Ticket.create!(
           external_uid: post[:id], content: post[:raw_message], created_at: post[:createdAt],
-          parent: source.tickets.find_by(external_uid: post[:parent]), creator: user, brand: source.brand,
+          parent: source.tickets.find_by(external_uid: post[:parent]), creator: user, organization: source.organization,
           author: Author.from_disqus_user!(post[:author]), ticketable: InternalTicket.new(source:)
         )
       end
 
-      def from_external_ticket!(external_ticket_json, brand, user)
-        parent = brand.tickets.find_by(ticketable_type: 'ExternalTicket',
+      def from_external_ticket!(external_ticket_json, organization, user)
+        parent = organization.tickets.find_by(ticketable_type: 'ExternalTicket',
                                        external_uid: external_ticket_json[:parent_uid])
-        brand.tickets.create!(
+        organization.tickets.create!(
           external_uid: external_ticket_json[:external_uid], content: external_ticket_json[:content],
           created_at: external_ticket_json[:created_at], parent:, creator: user,
           author: Author.from_external_author!(external_ticket_json[:author]),

@@ -9,7 +9,7 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET show when the user is authorized renders the index page' do
     sign_in(users(:john), user_accounts(:google_oauth2))
-    brands(:respondo).users << users(:john)
+    organizations(:respondo).users << users(:john)
 
     get '/dashboard'
 

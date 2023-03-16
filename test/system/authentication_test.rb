@@ -23,8 +23,8 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert has_link?('User profile')
   end
 
-  test 'adds the user to the brand' do
-    brands(:respondo).update!(domain: 'example.com')
+  test 'adds the user to the organization' do
+    organizations(:respondo).update!(domain: 'example.com')
 
     visit '/'
 
@@ -34,17 +34,17 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert has_link?('Tickets')
   end
 
-  test 'allows brand creation' do
+  test 'allows organization creation' do
     sign_in_user(users(:john))
 
-    add_oauth_mock(:twitter, '123', { nickname: 'test_brand' }, {})
+    add_oauth_mock(:twitter, '123', { nickname: 'test_organization' }, {})
     click_button('Authorize')
 
     assert_enqueued_with(job: LoadNewTicketsJob)
 
     find_by_id('settings').click
 
-    assert has_link?('Brand settings')
+    assert has_link?('Organization settings')
   end
 
   test 'allows signing out' do

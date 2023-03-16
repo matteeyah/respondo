@@ -11,8 +11,8 @@ module AuthenticationHelper
     click_button('Sign in with Google')
   end
 
-  def sign_in_brand(brand)
-    AuthenticationHelper.add_oauth_mock_for_brand(brand, brand_accounts(:twitter))
+  def sign_in_organization(organization)
+    AuthenticationHelper.add_oauth_mock_for_organization(organization, organization_accounts(:twitter))
     click_button('Authorize')
   end
 end

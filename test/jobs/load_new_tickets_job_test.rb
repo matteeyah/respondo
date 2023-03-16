@@ -12,7 +12,7 @@ class LoadNewTicketsJobTest < ActiveJob::TestCase
 
   test 'creates tickets' do
     assert_difference -> { Ticket.count }, 2 do
-      LoadNewTicketsJob.perform_now(brands(:respondo))
+      LoadNewTicketsJob.perform_now(organizations(:respondo))
     end
   end
 

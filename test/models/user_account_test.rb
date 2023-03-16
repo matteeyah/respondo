@@ -38,15 +38,15 @@ class UserAccountTest < ActiveSupport::TestCase
     assert_instance_of UserAccount, UserAccount.from_omniauth(auth_hash, nil)
   end
 
-  test '.from_omniniauth adds user to brand when account belongs to brand domain' do
+  test '.from_omniniauth adds user to organization when account belongs to organization domain' do
     oauth_response = JSON.parse(file_fixture('google_oauth.json').read)
     auth_hash = OmniAuth::AuthHash.new(oauth_response)
     auth_hash.info.email = 'hello@respondohub.com'
-    brand = brands(:respondo)
-    brand.update!(domain: 'respondohub.com')
+    organization = organizations(:respondo)
+    organization.update!(domain: 'respondohub.com')
     account = user_accounts(:google_oauth2)
 
-    assert_changes -> { account.user.reload.brand }, from: nil, to: brand do
+    assert_changes -> { account.user.reload.organization }, from: nil, to: organization do
       UserAccount.from_omniauth(auth_hash, users(:john))
     end
   end

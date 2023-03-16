@@ -22,11 +22,11 @@ class SubscriptionsController < ApplicationController
     JSON.parse(params[:passthrough]).with_indifferent_access
   end
 
-  def brand
-    Brand.find(passthrough[:brand_id])
+  def organization
+    Organization.find(passthrough[:organization_id])
   end
 
   def subscription
-    brand.subscription || brand.build_subscription(external_uid: params[:subscription_id])
+    organization.subscription || organization.build_subscription(external_uid: params[:subscription_id])
   end
 end

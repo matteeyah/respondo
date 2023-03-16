@@ -17,7 +17,7 @@ class UserAccount < ApplicationRecord
         account.email = auth.info.email
 
         account.user = current_user || account.user || User.new(name: auth.info.name)
-        account.user.brand ||= find_brand(account.email)
+        account.user.organization ||= find_organization(account.email)
 
         account.user.save
         account.save
@@ -26,11 +26,11 @@ class UserAccount < ApplicationRecord
 
     private
 
-    def find_brand(user_email)
+    def find_organization(user_email)
       return unless user_email
 
       user_domain = user_email.split('@').last
-      Brand.find_by(domain: user_domain)
+      Organization.find_by(domain: user_domain)
     end
   end
 

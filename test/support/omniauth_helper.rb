@@ -42,9 +42,9 @@ module OmniauthHelper
     )
   end
 
-  def add_oauth_mock_for_brand(brand, account)
+  def add_oauth_mock_for_organization(organization, account)
     add_oauth_mock(
-      account.provider.to_sym, account.external_uid, { nickname: brand.screen_name },
+      account.provider.to_sym, account.external_uid, { nickname: organization.screen_name },
       token: account.token, secret: account.secret
     )
   end

@@ -3,7 +3,7 @@
 module Tickets
   class RepliesController < ApplicationController
     def create
-      raise StandardError, 'Unauthorized' unless current_user.brand.subscribed?
+      raise StandardError, 'Unauthorized' unless current_user.organization.subscribed?
 
       @ticket_hash = ticket_hash!
 

@@ -4,7 +4,7 @@ class Ticket < ApplicationRecord
   include FromOmniauth
   include WithDescendants
 
-  validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[ticketable_type brand_id] }
+  validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[ticketable_type organization_id] }
   validates :content, presence: { allow_blank: false }
 
   enum status: { open: 0, solved: 1 }
@@ -18,7 +18,7 @@ class Ticket < ApplicationRecord
 
   belongs_to :creator, class_name: 'User', optional: true
   belongs_to :author
-  belongs_to :brand
+  belongs_to :organization
   belongs_to :parent, class_name: 'Ticket', optional: true
 
   has_one :assignment, dependent: :destroy

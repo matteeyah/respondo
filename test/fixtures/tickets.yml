@@ -4,7 +4,7 @@ twitter:
   content: Internal twitter ticket content.
   parent:
   author: james
-  brand: respondo
+  organization: respondo
   creator:
   ticketable: twitter (InternalTicket)
 
@@ -14,7 +14,7 @@ disqus:
   content: Internal disqus ticket content.
   parent:
   author: robert
-  brand: respondo
+  organization: respondo
   creator:
   ticketable: disqus (InternalTicket)
 
@@ -24,6 +24,6 @@ external:
   content: External ticket content.
   parent:
   author: external
-  brand: respondo
+  organization: respondo
   creator:
   ticketable: default (ExternalTicket)

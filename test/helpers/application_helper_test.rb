@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class ApplicationHelperTest < ActionView::TestCase
-  (UserAccount.providers.keys + BrandAccount.providers.keys).uniq.each do |account_provider|
+  (UserAccount.providers.keys + OrganizationAccount.providers.keys).uniq.each do |account_provider|
     test "#auth_provider_link returns auth link when provider is #{account_provider}" do
       expected_auth_link = %r{
       <form\ class="button_to"\ method="post"\ action="/auth/.*">
