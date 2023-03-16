@@ -13,10 +13,6 @@ class ApplicationController < ActionController::Base
     session[:user_id] = user.id
   end
 
-  def sign_out
-    session[:user_id] = nil
-  end
-
   def current_user
     return unless session[:user_id]
 

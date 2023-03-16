@@ -17,7 +17,7 @@ class OmniauthCallbacksController < ApplicationController
 
     # This checks if the account was just created.
     LoadNewTicketsJob.perform_later(account.brand) if account.id_previously_changed?
-    current_user.update(brand: account.brand) if account.persisted?
+    current_user.update!(brand: account.brand) if account.persisted?
 
     redirect_to(auth_origin || root_path)
   end

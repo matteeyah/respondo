@@ -1,3 +1,0 @@
-web: bin/rails server -p 3000
-worker: QUEUE=* bundle exec rake resque:work
-css: bin/rails dartsass:watch
