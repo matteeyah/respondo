@@ -60,7 +60,7 @@ class OrganizationTest < ActiveSupport::TestCase
   OrganizationAccount.providers.each_key do |provider_name|
     test "#account_for_provider? returns true when there is an #{provider_name} account" do
       OrganizationAccount.create!(screen_name: 'respondo', external_uid: 'hello_world', provider: provider_name,
-                           organization: organizations(:other))
+                                  organization: organizations(:other))
 
       assert organizations(:other).account_for_provider?(provider_name)
     end

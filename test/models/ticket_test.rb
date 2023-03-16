@@ -26,7 +26,8 @@ class TicketTest < ActiveSupport::TestCase
 
   test '.root returnes tickets without a parent' do
     child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:twitter), content: 'hello',
-                           author: authors(:james), organization: organizations(:respondo), ticketable: internal_tickets(:twitter))
+                           author: authors(:james), organization: organizations(:respondo),
+                           ticketable: internal_tickets(:twitter))
 
     assert_not_includes Ticket.root, child
   end
@@ -39,7 +40,8 @@ class TicketTest < ActiveSupport::TestCase
         1, '2019-01-01T00:23:39.951Z'
       )
 
-    assert_instance_of Ticket, Ticket.from_client_response!('twitter', client_response, organization_accounts(:twitter), nil)
+    assert_instance_of Ticket,
+                       Ticket.from_client_response!('twitter', client_response, organization_accounts(:twitter), nil)
   end
 
   test '.from_client_response! assigns parent to ticket' do
@@ -65,7 +67,8 @@ class TicketTest < ActiveSupport::TestCase
         1, '2019-01-01T00:23:39.951Z'
       )
 
-    created_ticket = Ticket.from_client_response!('twitter', client_response, organization_accounts(:twitter), users(:john))
+    created_ticket = Ticket.from_client_response!('twitter', client_response, organization_accounts(:twitter),
+                                                  users(:john))
 
     assert_equal users(:john), created_ticket.creator
   end
@@ -92,7 +95,8 @@ class TicketTest < ActiveSupport::TestCase
 
   test '#with_descendants_hash' do
     child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:twitter), content: 'hello',
-                           author: authors(:james), organization: organizations(:respondo), ticketable: internal_tickets(:twitter))
+                           author: authors(:james), organization: organizations(:respondo),
+                           ticketable: internal_tickets(:twitter))
 
     expected_structure = {
       tickets(:twitter) => { child => {} }

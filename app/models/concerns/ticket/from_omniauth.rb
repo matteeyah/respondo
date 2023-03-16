@@ -19,8 +19,9 @@ class Ticket
       def from_tweet!(tweet, source, user)
         Ticket.create!(
           external_uid: tweet.id, content: tweet.attrs[:full_text], created_at: tweet.created_at,
-          parent: source.tickets.find_by(external_uid: tweet.in_reply_to_tweet_id.presence), organization: source.organization,
-          creator: user, author: Author.from_twitter_user!(tweet.user), ticketable: InternalTicket.new(source:)
+          parent: source.tickets.find_by(external_uid: tweet.in_reply_to_tweet_id.presence),
+          organization: source.organization, creator: user, author: Author.from_twitter_user!(tweet.user),
+          ticketable: InternalTicket.new(source:)
         )
       end
 
@@ -34,7 +35,7 @@ class Ticket
 
       def from_external_ticket!(external_ticket_json, organization, user)
         parent = organization.tickets.find_by(ticketable_type: 'ExternalTicket',
-                                       external_uid: external_ticket_json[:parent_uid])
+                                              external_uid: external_ticket_json[:parent_uid])
         organization.tickets.create!(
           external_uid: external_ticket_json[:external_uid], content: external_ticket_json[:content],
           created_at: external_ticket_json[:created_at], parent:, creator: user,

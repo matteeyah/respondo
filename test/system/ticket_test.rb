@@ -12,7 +12,8 @@ class TicketTest < ApplicationSystemTestCase
     @organization = organizations(:respondo)
     @ticket = tickets(:twitter)
 
-    Subscription.create!(external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', organization: @organization,
+    Subscription.create!(external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com',
+                         organization: @organization,
                          cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update')
 
     visit '/'

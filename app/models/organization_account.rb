@@ -25,7 +25,8 @@ class OrganizationAccount < ApplicationRecord
       account.token = auth.credentials.token
       account.secret = auth.credentials.secret
 
-      account.organization = current_organization || account.organization || Organization.new(screen_name: auth.info.nickname)
+      account.organization = current_organization || account.organization ||
+                             Organization.new(screen_name: auth.info.nickname)
 
       account.save
     end
