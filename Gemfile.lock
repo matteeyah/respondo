@@ -108,8 +108,6 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
-    dartsass-rails (0.4.1)
-      railties (>= 6.0.0)
     date (3.3.3)
     debug (1.7.0)
       irb (>= 1.5.0)
@@ -457,7 +455,6 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.2)
   capybara (>= 2.15)
-  dartsass-rails
   debug (= 1.7.0)
   disqus_api
   erb_lint

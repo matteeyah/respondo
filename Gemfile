@@ -32,7 +32,6 @@ gem 'omniauth-twitter'
 # Other
 gem 'active_link_to' # View helper for adding active class
 gem 'acts-as-taggable-on' # Tags mechanism
-gem 'dartsass-rails' # SASS processor for Rails
 gem 'disqus_api' # Disqus client
 gem 'flipper' # Feature flags
 gem 'flipper-active_record' # ActiveRecord adapter for flipper
