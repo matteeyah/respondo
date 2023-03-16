@@ -55,9 +55,9 @@ in the reply form and click the send button (<i class="bi bi-telegram"></i>).
 
 ### Internal Notes
 
-You can leave internal notes, visible only to other brand members. To open the
-internal notes, click the note (<i class="bi bi-sticky"></i>) button
-below the ticket you want to respond to.
+You can leave internal notes, visible only to other organization members. To open
+the internal notes, click the note (<i class="bi bi-sticky"></i>) button below
+the ticket you want to respond to.
 
 ### Solving / Re-Opening
 
@@ -92,8 +92,8 @@ header then clicking on "External View".
 ## Webhook Integrations
 
 If you want to create a ticket manually, just submit a POST request to
-`https://app.respondohub.com/brands/{BRAND_ID}/external_tickets.json` using
-[this format](https://docs.respondohub.com/external_ticket_format).
+`https://app.respondohub.com/organizations/{BRAND_ID}/external_tickets.json`
+using [this format](https://docs.respondohub.com/external_ticket_format).
 
 You need a `Personal Access Token` for creating external tickets. Please see the
 documentation for [managing personal access tokens](../users#personal-access-tokens).

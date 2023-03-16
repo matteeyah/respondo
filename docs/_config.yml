@@ -5,5 +5,5 @@ theme: minima
 header_pages:
   - index.md
   - user.md
-  - brand.md
+  - organization.md
   - tickets.md

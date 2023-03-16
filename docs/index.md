@@ -22,8 +22,8 @@ users to easily sign in with just one click using one of their social accounts.
 
 <https://app.respondohub.com/dashboard>
 
-After you log in you will be presented with a dashboard for your brand. This
-dashboard shows basic information:
+After you log in you will be presented with a dashboard for your organization.
+This dashboard shows basic information:
 
 - Number of open tickets
 - Number of solved tickets
@@ -33,6 +33,6 @@ dashboard shows basic information:
 
 ## Basic usage
 
-Every time somebody mentions the brand's handle on any social network that is
-currently integrated with that brand's Respondo, a new ticket is created under
-`Open tickets`.
+Every time somebody mentions the organizations's handle on any social network
+that is currently integrated with that organization's Respondo, a new ticket is
+created under `Open tickets`.
