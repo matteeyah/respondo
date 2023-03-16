@@ -1,6 +1,5 @@
 require:
   - rubocop-performance
-  - rubocop-md
   - rubocop-minitest
   - rubocop-rails
 
