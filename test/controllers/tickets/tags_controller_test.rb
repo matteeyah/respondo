@@ -69,5 +69,17 @@ module Tickets
 
       assert_redirected_to login_path
     end
+
+    test 'POST create with duplicate tag name does not create a duplicate tag' do
+      sign_in(users(:john), user_accounts(:google_oauth2))
+      brands(:respondo).users << users(:john)
+      tickets(:twitter).tag_list.add('awesome')
+      tickets(:twitter).save!
+
+      assert_no_changes -> { tickets(:twitter).reload.tag_list.size } do
+        post "/tickets/#{tickets(:twitter).id}/tags",
+             params: { acts_as_taggable_on_tag: { name: 'awesome' } }
+      end
+    end
   end
 end

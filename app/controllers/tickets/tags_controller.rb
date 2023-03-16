@@ -3,10 +3,10 @@
 module Tickets
   class TagsController < ApplicationController
     def create
-      @tag = new_tag
       @ticket = ticket
-      @ticket.tags << @tag
-
+      @ticket.tag_list.add(tag_params[:name])
+      @ticket.save!
+      @tag = new_tag
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to tickets_path }
@@ -31,7 +31,7 @@ module Tickets
     end
 
     def new_tag
-      ActsAsTaggableOn::Tag.find_or_create_by(name: tag_params[:name])
+      ActsAsTaggableOn::Tag.find_by(name: tag_params[:name])
     end
 
     def tag
