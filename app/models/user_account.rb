@@ -17,7 +17,7 @@ class UserAccount < ApplicationRecord
         account.email = auth.info.email
 
         account.user = current_user || account.user || User.new(name: auth.info.name)
-        account.user.brand = find_brand(account.email)
+        account.user.brand ||= find_brand(account.email)
 
         account.user.save
         account.save
