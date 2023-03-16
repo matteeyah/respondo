@@ -45,9 +45,6 @@ gem 'resque' # Background job processing
 gem 'twitter' # Twitter client
 
 group :development, :test do
-  # Linters
-  gem 'license_finder' # license checking
-  gem 'mdl', require: false
   ## Ruby linter
   gem 'rubocop', require: false
   gem 'rubocop-capybara', require: false
