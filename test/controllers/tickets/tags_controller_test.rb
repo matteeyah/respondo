@@ -78,7 +78,7 @@ module Tickets
 
       assert_no_changes -> { tickets(:twitter).reload.tag_list.size } do
         post "/tickets/#{tickets(:twitter).id}/tags",
-          params: { acts_as_taggable_on_tag: { name: 'awesome' } }
+             params: { acts_as_taggable_on_tag: { name: 'awesome' } }
       end
     end
   end
