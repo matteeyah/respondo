@@ -72,6 +72,7 @@ jobs:
           VALIDATE_CSS: true
           VALIDATE_JAVASCRIPT_STANDARD: true
           VALIDATE_MARKDOWN: true
+          LINTER_RULES_PATH: ./
           RUBY_CONFIG_FILE: .rubocop.yml
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   erblint:
