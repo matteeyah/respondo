@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateBrandAccounts < ActiveRecord::Migration[7.0]
+class CreateOrganizationAccounts < ActiveRecord::Migration[7.0]
   def change
     create_table :organization_accounts do |t|
       t.string :external_uid, null: false

@@ -6,4 +6,4 @@
 
 ### Disqus
 
-- Brand Disqus account has to be owner of the Disqus forum
+- Organization Disqus account has to be owner of the Disqus forum
