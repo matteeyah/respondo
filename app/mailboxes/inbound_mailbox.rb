@@ -25,11 +25,11 @@ class InboundMailbox < ApplicationMailbox
 
   def plain_body # rubocop:disable Metrics/AbcSize
     if mail.multipart?
-      mail.text_part || ActionView::Base.full_sanitizer.sanitize(mail.html_part).strip
+      mail.text_part.body.decoded || ActionView::Base.full_sanitizer.sanitize(mail.html_part.body.decoded).strip
     elsif mail.content_type.starts_with?('text/plain')
-      mail.body.to_s
+      mail.body.decoded
     elsif mail.content_type.starts_with?('text/html')
-      ActionView::Base.full_sanitizer.sanitize(mail.body.to_s).strip
+      ActionView::Base.full_sanitizer.sanitize(mail.body.decoded).strip
     end
   end
 end
