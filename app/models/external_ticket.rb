@@ -14,6 +14,6 @@ class ExternalTicket < ApplicationRecord
   end
 
   def client
-    Clients::Mail.new(response_url)
+    Clients::External.new(response_url)
   end
 end
