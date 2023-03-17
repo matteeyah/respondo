@@ -43,6 +43,7 @@ gem 'pagy' # Pagination
 gem 'pg' # AR database adapter
 gem 'propshaft' # Rails assets
 gem 'resque' # Background job processing
+gem 'resque-scheduler' # Delayed and timed Resque jobs
 gem 'twitter' # Twitter client
 
 group :development, :test do
