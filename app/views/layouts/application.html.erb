@@ -15,7 +15,7 @@
 <div class="d-flex flex-column flex-lg-row vh-100 bg-light">
   <div class="navbar navbar-expand-lg overflow-auto m-3 rounded-4 bg-white">
     <div class="container-fluid ps-0 pe-0 d-flex flex-lg-column flex-grow-1 h-100">
-      <div class="navbar-organization">
+      <div class="navbar-brand">
         <%= link_to root_path, class: 'nav-link text-primary fs-3 fw-bold' do %>
           <%= image_tag('logo_circle_white.svg', class: 'img-fluid') %>
           <span>Respondo</span>
@@ -55,9 +55,6 @@
                 id="help-menu">
               <li class="list-group-item list-group-item-action border-0">
                 <%= safe_blank_link_to 'Documentation', 'https://docs.respondohub.com', class: 'nav-link' %>
-              </li>
-              <li class="list-group-item list-group-item-action border-0">
-                <%= safe_blank_link_to 'Feedback', 'https://respondohub.com/features#feedback', class: 'nav-link' %>
               </li>
               <li class="list-group-item list-group-item-action border-0">
                 <%= safe_blank_link_to 'Support', 'mailto:support@respondohub.com', class: 'nav-link' %>
