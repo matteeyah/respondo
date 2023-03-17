@@ -7,7 +7,7 @@ class InboundMailbox < ApplicationMailbox
   def process
     Ticket.from_email({
                         from: mail.from.first, reply_to:, message_id: mail.message_id, subject: mail.subject,
-                        response: mail.body.to_s, created_at: mail.date
+                        response: plain_body, created_at: mail.date
                       }, organization, nil)
   end
 
@@ -21,5 +21,15 @@ class InboundMailbox < ApplicationMailbox
 
   def reply_to
     mail.reply_to || mail.from.first
+  end
+
+  def plain_body # rubocop:disable Metrics/AbcSize
+    if mail.multipart?
+      mail.text_part || ActionView::Base.full_sanitizer.sanitize(mail.html_part).strip
+    elsif mail.content_type.starts_with?('text/plain')
+      mail.body.to_s
+    elsif mail.content_type.starts_with?('text/html')
+      ActionView::Base.full_sanitizer.sanitize(mail.body.to_s).strip
+    end
   end
 end

@@ -51,7 +51,7 @@ class Ticket
         parent = organization.tickets.find_by(ticketable_type: 'EmailTicket', external_uid: body[:in_reply_to])
 
         organization.tickets.create!(
-          external_uid: body[:message_id], content: ActionView::Base.full_sanitizer.sanitize(body[:response]).strip,
+          external_uid: body[:message_id], content: body[:response],
           created_at: body[:created_at], parent:, creator: user,
           author: Author.from_email_author!(body[:from]),
           ticketable: EmailTicket.new(reply_to: body[:reply_to], subject: body[:subject])
