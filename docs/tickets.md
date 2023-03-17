@@ -92,13 +92,13 @@ header then clicking on "External View".
 ## Email Tickets
 
 You can create tickets by sending an email. Just send an email to
-`inbound+{BRAND_ID}@mail.respondohub.com`. Your `BRAND_ID` is located in your
-organization settings page.
+`inbound+{ORGANIZATION_ID}@mail.respondohub.com`. Your `ORGANIZATION_ID` is
+located in your organization settings page.
 
 ## Webhook Integrations
 
 You can create tickets manually, just submit a POST request to
-`https://app.respondohub.com/organizations/{BRAND_ID}/external_tickets.json`
+`https://app.respondohub.com/organizations/{ORGANIZATION_ID}/external_tickets.json`
 using [this format](https://docs.respondohub.com/external_ticket_format).
 
 You need a `Personal Access Token` for creating external tickets. Please see the
