@@ -16,7 +16,7 @@ class InboundMailbox < ApplicationMailbox
   def organization
     @organization ||= Organization.find(mail.to.first.match(INBOUND_REGEX).captures.first)
   rescue StandardError
-    bounce_with BounceMailer.no_organization(inbound_email, sender)
+    bounce_with BounceMailer.no_organization(inbound_email, reply_to)
   end
 
   def reply_to
