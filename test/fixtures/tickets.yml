@@ -27,3 +27,13 @@ external:
   organization: respondo
   creator:
   ticketable: default (ExternalTicket)
+
+email:
+  external_uid: 'uid_4'
+  status: open
+  content: Email ticket content.
+  parent:
+  author: email
+  organization: respondo
+  creator:
+  ticketable: default (EmailTicket)

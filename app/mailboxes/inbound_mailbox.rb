@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
+# Send emails at http://localhost:3000/rails/conductor/action_mailbox/inbound_emails
 class InboundMailbox < ApplicationMailbox
   before_processing :organization
 
   def process
-    Ticket.create!(
-      external_uid: mail.message_id, content: mail.body.to_s, created_at: mail.date,
-      parent:, organization:, creator: nil, author: sender,
-      ticketable: EmailTicket.new
-    )
+    Ticket.from_email({
+                        from: mail.from.first, reply_to:, message_id: mail.message_id, subject: mail.subject,
+                        response: mail.body.to_s, created_at: mail.date
+                      }, organization, nil)
   end
 
   private
@@ -19,11 +19,7 @@ class InboundMailbox < ApplicationMailbox
     bounce_with BounceMailer.no_organization(inbound_email, sender)
   end
 
-  def parent
-    @parent ||= organization.tickets.find_by(external_uid: mail.headers['In-Reply-To'])
-  end
-
-  def sender
-    @sender ||= Author.find_or_create_by(external_uid: mail.from.first, username: mail.from.first, provider: :email)
+  def reply_to
+    mail.reply_to || mail.from.first
   end
 end

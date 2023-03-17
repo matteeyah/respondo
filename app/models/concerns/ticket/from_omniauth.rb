@@ -13,6 +13,8 @@ class Ticket
           Ticket.from_disqus_post!(body, source, user)
         when 'external'
           Ticket.from_external_ticket!(body, source, user)
+        when 'email'
+          Ticket.from_email(body, source, user)
         end
       end
 
@@ -42,6 +44,17 @@ class Ticket
           author: Author.from_external_author!(external_ticket_json[:author]),
           ticketable: ExternalTicket.new(response_url: external_ticket_json[:response_url],
                                          custom_provider: external_ticket_json[:custom_provider])
+        )
+      end
+
+      def from_email(body, organization, user)
+        parent = organization.tickets.find_by(ticketable_type: 'EmailTicket', external_uid: body[:in_reply_to])
+
+        organization.tickets.create!(
+          external_uid: body[:message_id], content: ActionView::Base.full_sanitizer.sanitize(body[:response]).strip,
+          created_at: body[:created_at], parent:, creator: user,
+          author: Author.from_email_author!(body[:from]),
+          ticketable: EmailTicket.new(reply_to: body[:reply_to], subject: body[:subject])
         )
       end
     end

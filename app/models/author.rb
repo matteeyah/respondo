@@ -33,6 +33,14 @@ class Author < ApplicationRecord
         author.save!
       end
     end
+
+    def from_email_author!(author_email)
+      find_or_initialize_by(external_uid: author_email, provider: 'email').tap do |author|
+        author.username = author_email
+
+        author.save!
+      end
+    end
   end
 
   def external_link
