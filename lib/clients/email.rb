@@ -14,7 +14,7 @@ module Clients
       mail = ReplyMailer.respond(@reply_to, external_uid, @subject, @organization_id, response_text).deliver_now
       {
         from: mail.from.first, reply_to: mail.reply_to.first, message_id: mail.message_id,
-        subject: mail.subject, response: mail.body.to_s, created_at: mail.date,
+        subject: mail.subject, response: response_text, created_at: mail.date,
         in_reply_to: mail.in_reply_to
       }
     end

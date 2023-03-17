@@ -6,7 +6,7 @@ class ReplyMailer < ApplicationMailer
 
     headers['In-Reply-To'] = in_reply_to
     headers['References'] = in_reply_to
-    mail(to: address, reply_to: reply_to(organization_id), subject: "RE: #{subject}")
+    mail(to: address, reply_to: reply_to(organization_id), subject: "Re: #{subject}")
   end
 
   private
