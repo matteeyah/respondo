@@ -35,6 +35,7 @@ gem 'acts-as-taggable-on' # Tags mechanism
 gem 'disqus_api' # Disqus client
 gem 'flipper' # Feature flags
 gem 'flipper-active_record' # ActiveRecord adapter for flipper
+gem 'google-cloud-storage', require: false
 gem 'hashie' # Hash utilities
 gem 'json-schema' # JSON schema validation
 gem 'mailgun-ruby' # Mailgun backend for ActionMailer
