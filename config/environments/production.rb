@@ -56,7 +56,7 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
-  # config.active_job.queue_adapter     = :resque
+  config.active_job.queue_adapter = :resque
   # config.active_job.queue_name_prefix = "respondo_production"
 
   config.action_mailer.perform_caching = false
@@ -90,4 +90,11 @@ Rails.application.configure do
 
   # --- CUSTOM CONFIG ---
   config.action_mailbox.ingress = :mailgun
+
+  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.mailgun_settings = {
+    api_key: Rails.application.credentials.mailgun.api_key,
+    domain: 'mail.respondohub.com',
+    # api_host: 'api.eu.mailgun.net'  # Uncomment this line for EU region domains
+  }
 end
