@@ -39,6 +39,9 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
   # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
+  # Store uploaded files on the local file system (see config/storage.yml for options).
+  config.active_storage.service = :local
+
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
 
@@ -55,6 +58,12 @@ Rails.application.configure do
   # Use a real queuing backend for Active Job (and separate queues per environment).
   config.active_job.queue_adapter = :resque
   # config.active_job.queue_name_prefix = "respondo_production"
+
+  config.action_mailer.perform_caching = false
+
+  # Ignore bad email addresses and do not raise email delivery errors.
+  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
+  # config.action_mailer.raise_delivery_errors = false
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -80,4 +89,12 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # --- CUSTOM CONFIG ---
+  config.action_mailbox.ingress = :mailgun
+
+  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.mailgun_settings = {
+    api_key: Rails.application.credentials.mailgun.api_key,
+    domain: 'mail.respondohub.com'
+    # api_host: 'api.eu.mailgun.net'  # Uncomment this line for EU region domains
+  }
 end

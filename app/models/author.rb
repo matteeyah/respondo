@@ -5,7 +5,7 @@ class Author < ApplicationRecord
   validates :username, presence: { allow_blank: false }
   validates :provider, presence: true
 
-  enum provider: { external: 0, twitter: 1, disqus: 2 }
+  enum provider: { external: 0, twitter: 1, disqus: 2, email: 3 }
 
   has_many :tickets, dependent: :restrict_with_error
 
@@ -29,6 +29,14 @@ class Author < ApplicationRecord
     def from_external_author!(external_author_json)
       find_or_initialize_by(external_uid: external_author_json[:external_uid], provider: 'external').tap do |author|
         author.username = external_author_json[:username]
+
+        author.save!
+      end
+    end
+
+    def from_email_author!(author_email)
+      find_or_initialize_by(external_uid: author_email, provider: 'email').tap do |author|
+        author.username = author_email
 
         author.save!
       end

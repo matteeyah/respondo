@@ -87,7 +87,8 @@ class TicketTest < ActiveSupport::TestCase
     expected_structure = {
       tickets(:twitter) => { first_child => {} },
       tickets(:disqus) => { second_child => {} },
-      tickets(:external) => {}
+      tickets(:external) => {},
+      tickets(:email) => {}
     }
 
     assert_equal expected_structure, Ticket.root.with_descendants_hash

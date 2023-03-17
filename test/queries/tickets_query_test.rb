@@ -14,7 +14,7 @@ class TicketsQueryTest < ActiveSupport::TestCase
     query = TicketsQuery.new(Ticket.all, status: '')
     tickets(:disqus).update!(status: 'solved')
 
-    assert_equal [tickets(:twitter), tickets(:external)], query.call
+    assert_equal [tickets(:twitter), tickets(:external), tickets(:email)], query.call
   end
 
   test 'filters by assignee' do

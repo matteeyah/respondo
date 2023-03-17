@@ -12,3 +12,8 @@ external:
   external_uid: 'uid_3'
   username: matt_is_cool
   provider: external
+
+email:
+  external_uid: hello@example.com
+  username: hello@example.com
+  provider: email

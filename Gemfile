@@ -37,6 +37,7 @@ gem 'flipper' # Feature flags
 gem 'flipper-active_record' # ActiveRecord adapter for flipper
 gem 'hashie' # Hash utilities
 gem 'json-schema' # JSON schema validation
+gem 'mailgun-ruby' # Mailgun backend for ActionMailer
 gem 'pagy' # Pagination
 gem 'pg' # AR database adapter
 gem 'propshaft' # Rails assets

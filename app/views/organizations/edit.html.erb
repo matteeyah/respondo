@@ -38,6 +38,19 @@
             </div>
           </div>
         </div>
+        <div class="col-lg-6">
+          <div class="card rounded-4">
+            <div class="card-body">
+              <div class="card-title mb-4">
+                <p class="fs-5 fw-bold">Alternative ticket sources</p>
+              </div>
+              <p>Organization ID: <span class="badge text-bg-primary fs-4"><%= @organization.id %></span></p>
+              <p>Inbound email: <span class="badge text-bg-primary"><%= "https://app.respondohub.com/organizations/#{@organization.id}/external_tickets.json
+" %></span></p>
+              <p>Webhook target: <span class="badge text-bg-primary"><%= "inbound+#{@organization.id}@mail.respondohub.com" %></span></p>
+            </div>
+          </div>
+        </div>
       </div>
       <%= render partial: 'shared/accounts', locals: { model: @organization } %>
     </div>
