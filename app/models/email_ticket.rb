@@ -1,19 +1,13 @@
 # frozen_string_literal: true
 
-class ExternalTicket < ApplicationRecord
+class EmailTicket < ApplicationRecord
   has_one :base_ticket, class_name: 'Ticket', as: :ticketable, touch: true, dependent: :destroy
-
-  validates :response_url, presence: true
 
   def source
     base_ticket.organization
   end
 
-  def provider
-    self[:custom_provider] || 'external'
-  end
-
   def client
-    Clients::Mail.new(response_url)
+    Clients::External.new(response_url)
   end
 end

@@ -69,6 +69,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_162425) do
     t.index ["external_uid", "provider"], name: "index_authors_on_external_uid_and_provider", unique: true
   end
 
+  create_table "email_tickets", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "external_tickets", force: :cascade do |t|
     t.string "response_url", null: false
     t.string "custom_provider"
