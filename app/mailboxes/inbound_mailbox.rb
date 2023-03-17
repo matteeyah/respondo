@@ -5,10 +5,13 @@ class InboundMailbox < ApplicationMailbox
   before_processing :organization
 
   def process
-    Ticket.from_email({
-                        from: mail.from.first, reply_to:, message_id: mail.message_id, subject: mail.subject,
-                        response: plain_body, created_at: mail.date, in_reply_to: mail.in_reply_to
-                      }, organization, nil)
+    Ticket.from_email(
+      {
+        from: mail.from.first, reply_to:, message_id: mail.message_id, subject: mail.subject,
+        response: EmailReplyParser.parse_reply(plain_body), created_at: mail.date, in_reply_to: mail.in_reply_to
+      },
+      organization, nil
+    )
   end
 
   private

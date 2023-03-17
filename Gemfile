@@ -33,6 +33,7 @@ gem 'omniauth-twitter'
 gem 'active_link_to' # View helper for adding active class
 gem 'acts-as-taggable-on' # Tags mechanism
 gem 'disqus_api' # Disqus client
+gem 'email_reply_parser'
 gem 'flipper' # Feature flags
 gem 'flipper-active_record' # ActiveRecord adapter for flipper
 gem 'google-cloud-storage', require: false
