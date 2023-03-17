@@ -444,7 +444,7 @@ DEPENDENCIES
   hiredis
   importmap-rails
   json-schema
-  mailgun-ruby (~> 1.2)
+  mailgun-ruby
   omniauth-activedirectory
   omniauth-disqus
   omniauth-google-oauth2
