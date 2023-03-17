@@ -42,7 +42,6 @@ gem 'mailgun-ruby' # Mailgun backend for ActionMailer
 gem 'pagy' # Pagination
 gem 'pg' # AR database adapter
 gem 'propshaft' # Rails assets
-gem 'rails-assets-bootstrap', source: 'https://rails-assets.org' # Bootstrap
 gem 'resque' # Background job processing
 gem 'twitter' # Twitter client
 
