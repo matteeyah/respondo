@@ -83,4 +83,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # --- CUSTOM CONFIG ---
+  config.active_storage.service = :local
 end
