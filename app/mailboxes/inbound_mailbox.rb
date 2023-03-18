@@ -4,13 +4,13 @@
 class InboundMailbox < ApplicationMailbox
   before_processing :organization
 
-  def process
-    Ticket.from_email(
-      {
-        from: mail.from.first, reply_to:, message_id: mail.message_id, subject: mail.subject,
-        response: EmailReplyParser.parse_reply(plain_body), created_at: mail.date, in_reply_to: mail.in_reply_to
-      },
-      organization, nil
+  def process # rubocop:disable Metrics/AbcSize
+    organization.tickets.create!(
+      external_uid: mail.message_id, content: plain_body, created_at: mail.date,
+      ticketable_attributes: { reply_to:, subject: mail.subject },
+      ticketable_type: 'EmailTicket',
+      parent: organization.tickets.find_by(ticketable_type: 'EmailTicket', external_uid: mail.in_reply_to),
+      author: Author.from_client!({ external_uid: mail.from.first, username: mail.from.first }, :email)
     )
   end
 

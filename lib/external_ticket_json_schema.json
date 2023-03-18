@@ -3,9 +3,9 @@
   "required": [
     "external_uid",
     "content",
-    "response_url",
     "author",
     "created_at",
+    "ticketable_attributes",
     "personal_access_token"
   ],
   "properties": {
@@ -19,18 +19,6 @@
       "type": "string",
       "examples": [
         "This is content from an example external ticket."
-      ]
-    },
-    "response_url": {
-      "type": "string",
-      "examples": [
-        "https://response_url.com"
-      ]
-    },
-    "custom_provider": {
-      "type": "string",
-      "examples": [
-        "hacker_news"
       ]
     },
     "parent_uid": {
@@ -65,6 +53,25 @@
       "examples": [
         "2020-04-04 23:35:27.632879 UTC"
       ]
+    },
+    "ticketable_attributes": {
+      "type": "object",
+      "required": ["response_url"],
+      "properties": {
+        "response_url": {
+          "type": "string",
+          "examples": [
+            "https://response_url.com"
+          ]
+        },
+        "custom_provider": {
+          "type": "string",
+          "examples": [
+            "hacker_news"
+          ]
+        },
+        "additionalProperties": false
+      }
     },
     "personal_access_token": {
       "type": "object",

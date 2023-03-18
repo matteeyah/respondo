@@ -2,7 +2,7 @@
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :google_oauth2, Rails.application.credentials.dig(:google, :oauth2, :client_id),
-           Rails.application.credentials.dig(:google, :ouath2, :client_secret)
+           Rails.application.credentials.dig(:google, :oauth2, :client_secret)
   provider :activedirectory, Rails.application.credentials.dig(:azure_active_directory, :client_id),
            Rails.application.credentials.dig(:azure_active_directory, :tenant)
   provider :twitter, Rails.application.credentials.dig(:twitter, :api_key),

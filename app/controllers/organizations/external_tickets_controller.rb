@@ -11,7 +11,7 @@ module Organizations
       respond_to do |format|
         format.json do
           if validate_json_payload
-            new_ticket = Ticket.from_external_ticket!(create_params, organization, nil)
+            new_ticket = organization.tickets.create!(create_params)
             render json: new_ticket
           else
             render json: { error: 'Invalid payload schema.' }
@@ -31,15 +31,20 @@ module Organizations
       JSON::Validator.validate(schema, request.raw_post)
     end
 
-    def create_params
+    def ticket_params
       params.permit(
-        :external_uid, :content, :parent_uid, :response_url, :custom_provider,
-        author: %i[external_uid username]
+        :external_uid, :content,
+        author: %i[external_uid username],
+        ticketable_attributes: %i[response_url custom_provider]
       )
     end
 
     def token_params
       params.require(:personal_access_token).permit(:name, :token)
+    end
+
+    def author_params
+      params.require(:author).permit(:external_uid, :username)
     end
 
     def token
@@ -50,6 +55,18 @@ module Organizations
       return if token&.authenticate_token(token_params[:token]) && token.user.organization == organization
 
       render status: :forbidden, json: { error: 'not authorized' }
+    end
+
+    def parent
+      organization.tickets.find_by(ticketable_type: 'ExternalTicket', external_uid: params[:parent_uid])
+    end
+
+    def author
+      Author.from_client!(author_params, :external)
+    end
+
+    def create_params
+      ticket_params.merge(author:, parent:, ticketable_type: 'ExternalTicket')
     end
   end
 end
