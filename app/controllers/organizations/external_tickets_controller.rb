@@ -62,7 +62,7 @@ module Organizations
     end
 
     def author
-      Author.from_client!(author_params)
+      Author.from_client!(author_params, :external)
     end
 
     def create_params

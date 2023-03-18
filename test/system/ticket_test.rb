@@ -60,7 +60,7 @@ class TicketTest < ApplicationSystemTestCase
     response = {
       external_uid: 123_456,
       author: { external_uid: '123', username: @organization.screen_name },
-      response_url: external_ticket.ticketable.response_url,
+      ticketable_attributes: { response_url: external_ticket.ticketable.response_url },
       parent_uid: external_ticket.external_uid,
       content: response_text
     }
