@@ -12,10 +12,12 @@ module Clients
 
     def reply(response_text, external_uid)
       mail = ReplyMailer.respond(@reply_to, external_uid, @subject, @organization_id, response_text).deliver_now
+
       {
-        from: mail.from.first, reply_to: mail.reply_to.first, message_id: mail.message_id,
-        subject: mail.subject, response: response_text, created_at: mail.date,
-        in_reply_to: mail.in_reply_to
+        external_uid: mail.message_id, content: response_text, created_at: mail.date,
+        author: { external_uid: mail.from.first, username: mail.from.first },
+        ticketable_attributes: { reply_to: mail.reply_to.first, subject: mail.subject },
+        parent_uid: mail.in_reply_to
       }
     end
 

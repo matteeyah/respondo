@@ -31,33 +31,33 @@ class AuthorTest < ActiveSupport::TestCase
     assert author.errors.added?(:external_uid, :taken, value: 'uid_1')
   end
 
-  test '.from_twitter_user! returns an author' do
-    twitter_user = Struct.new(:id, :screen_name).new('1', 'helloworld')
+  test '.from_client! returns an author' do
+    author_hash = { external_uid: '1', username: 'hello' }
 
-    assert_instance_of Author, Author.from_twitter_user!(twitter_user)
+    assert_instance_of Author, Author.from_client!(author_hash, :twitter)
   end
 
-  test '.from_twitter_user! creates an author when it does not exist' do
-    twitter_user = Struct.new(:id, :screen_name).new('1', 'helloworld')
+  test '.from_client! creates an author when it does not exist' do
+    author_hash = { external_uid: '1', username: 'hello' }
 
     assert_difference -> { Author.count }, 1 do
-      Author.from_twitter_user!(twitter_user)
+      Author.from_client!(author_hash, :twitter)
     end
   end
 
-  test '.from_twitter_user! finds an author when it exists' do
-    twitter_user = Struct.new(:id, :screen_name).new('uid_1', 'helloworld')
+  test '.from_client! finds an author when it exists' do
+    author_hash = { external_uid: 'uid_1', username: 'helloworld' }
 
     assert_no_difference -> { Author.count } do
-      Author.from_twitter_user!(twitter_user)
+      Author.from_client!(author_hash, :twitter)
     end
   end
 
-  test '.from_twitter_user! updates username' do
-    twitter_user = Struct.new(:id, :screen_name).new('uid_1', 'helloworld')
+  test '.from_client! updates username' do
+    author_hash = { external_uid: 'uid_1', username: 'helloworld' }
 
     assert_changes -> { authors(:james).reload.username }, from: 'james_is_cool', to: 'helloworld' do
-      Author.from_twitter_user!(twitter_user)
+      Author.from_client!(author_hash, :twitter)
     end
   end
 

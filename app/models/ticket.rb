@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Ticket < ApplicationRecord
-  include FromOmniauth
   include WithDescendants
 
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[ticketable_type organization_id] }
@@ -26,9 +25,18 @@ class Ticket < ApplicationRecord
   has_many :replies, class_name: 'Ticket', foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
   has_many :internal_notes, dependent: :destroy
 
-  def respond_as(user, reply)
+  accepts_nested_attributes_for :ticketable
+
+  def respond_as(user, reply) # rubocop:disable Metrics/AbcSize
     client_response = client.reply(reply, external_uid)
-    Ticket.from_client_response!(provider, client_response, source, user)
+
+    organization.tickets.create!(
+      **client_response.except(:parent_uid, :author),
+      creator: user, ticketable_type:,
+      parent: source.tickets.find_by(ticketable_type:, external_uid: client_response[:parent_uid]),
+      author: Author.from_client!(client_response[:author], provider),
+      ticketable_attributes: client_response[:ticketable_attributes] || { source: }
+    )
   rescue Twitter::Error
     false
   end
