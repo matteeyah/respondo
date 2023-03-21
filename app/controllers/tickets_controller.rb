@@ -79,7 +79,7 @@ class TicketsController < Tickets::ApplicationController
     params.require(:ticket).permit(:status)
   end
 
-  def generate_ai_response(ticket)
+  def generate_ai_response(ticket) # rubocop:disable Metrics/MethodLength
     OpenAI::Client.new.chat(
       parameters: {
         model: 'gpt-3.5-turbo',
