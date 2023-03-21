@@ -79,26 +79,37 @@ class TicketsController < Tickets::ApplicationController
     params.require(:ticket).permit(:status)
   end
 
-  def generate_ai_response(ticket) # rubocop:disable Metrics/MethodLength
+  def ai_messages # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    [
+      {
+        role: 'system', content: <<~AI_WORKPLACE
+          You work at a company called #{ticket.organization.screen_name}.
+          #{ticket.organization.ai_guidelines}
+        AI_WORKPLACE
+      },
+      {
+        role: 'system', content: <<~AI_POSITION
+          You are a social media manager and a support representative.
+          Messages from the user are social media posts where someone mentions the company that you work for.
+          You respond to those posts with a message.
+        AI_POSITION
+      },
+      { role: 'user', content: "#{ticket.author.username}: #{ticket.content}" }
+    ].tap do |messages|
+      if params[:ai] != 'true'
+        messages.insert(
+          2,
+          { role: 'system', content: "Generate a response using this prompt: #{params[:ai]}" }
+        )
+      end
+    end
+  end
+
+  def generate_ai_response(_ticket)
     OpenAI::Client.new.chat(
       parameters: {
         model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'system', content: <<~AI_WORKPLACE
-              You work at a company called #{ticket.organization.screen_name}.
-              #{ticket.organization.ai_guidelines}
-            AI_WORKPLACE
-          },
-          {
-            role: 'system', content: <<~AI_POSITION
-              You are a social media manager and a support representative.
-              Messages from the user are social media posts where someone mentions the company that you work for.
-              You respond to those posts with a message.
-            AI_POSITION
-          },
-          { role: 'user', content: "#{ticket.author.username}: #{ticket.content}" }
-        ], temperature: 0.7
+        messages: ai_messages, temperature: 0.7
       }
     ).dig('choices', 0, 'message', 'content').chomp.strip
   end
