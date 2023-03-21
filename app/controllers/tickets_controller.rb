@@ -84,8 +84,19 @@ class TicketsController < Tickets::ApplicationController
       parameters: {
         model: 'gpt-3.5-turbo',
         messages: [
-          { role: 'system', content: "You work at a company called #{ticket.organization.screen_name}." },
-          { role: 'system', content: 'You are a social media manager and a support representative. Messages from the user are social media posts where someone mentions the company that you work for. You respond to those posts with a message.' }, # rubocop:disable Metrics/LineLength
+          {
+            role: 'system', content: <<~AI_WORKPLACE
+              You work at a company called #{ticket.organization.screen_name}.
+              #{ticket.organization.ai_guidelines}
+            AI_WORKPLACE
+          },
+          {
+            role: 'system', content: <<~AI_POSITION
+              You are a social media manager and a support representative.
+              Messages from the user are social media posts where someone mentions the company that you work for.
+              You respond to those posts with a message.
+            AI_POSITION
+          },
           { role: 'user', content: "#{ticket.author.username}: #{ticket.content}" }
         ], temperature: 0.7
       }
