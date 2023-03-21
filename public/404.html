@@ -3,65 +3,66 @@
 <head>
   <title>The page you were looking for doesn't exist (404)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <style>
-  .rails-default-error-page {
-    background-color: #EFEFEF;
-    color: #2E2F30;
-    text-align: center;
-    font-family: arial, sans-serif;
-    margin: 0;
+  .number {
+    position: relative;
+    font-size: 30vmin;
+    font-weight: 900;
+    letter-spacing: 5vmin;
+    text-shadow: 2px -1px 0 #000, 4px -2px 0 #0a0a0a, 6px -3px 0 #0f0f0f, 8px -4px 0 #141414, 10px -5px 0 #1a1a1a, 12px -6px 0 #1f1f1f, 14px -7px 0 #242424, 16px -8px 0 #292929;
   }
-
-  .rails-default-error-page div.dialog {
-    width: 95%;
-    max-width: 33em;
-    margin: 4em auto 0;
+  .number::before {
+    background-color: #673ab7;
+    background-image: radial-gradient(closest-side at 50% 50%, #ffc107 100%, rgba(0, 0, 0, 0)), radial-gradient(closest-side at 50% 50%, #e91e63 100%, rgba(0, 0, 0, 0));
+    background-repeat: repeat-x;
+    background-size: 40vmin 40vmin;
+    background-position: -100vmin 20vmin, 100vmin -25vmin;
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: screen;
+    -webkit-animation: moving 10s linear infinite both;
+            animation: moving 10s linear infinite both;
+    display: block;
+    position: absolute;
+    content: "";
   }
-
-  .rails-default-error-page div.dialog > div {
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #BBB;
-    border-top: #B00100 solid 4px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-    background-color: white;
-    padding: 7px 12% 0;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
+  @-webkit-keyframes moving {
+    to {
+      background-position: 100vmin 20vmin, -100vmin -25vmin;
+    }
   }
-
-  .rails-default-error-page h1 {
-    font-size: 100%;
-    color: #730E15;
-    line-height: 1.5em;
-  }
-
-  .rails-default-error-page div.dialog > p {
-    margin: 0 0 1em;
-    padding: 1em;
-    background-color: #F7F7F7;
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #999;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top-color: #DADADA;
-    color: #666;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
+  @keyframes moving {
+    to {
+      background-position: 100vmin 20vmin, -100vmin -25vmin;
+    }
   }
   </style>
 </head>
 
-<body class="rails-default-error-page">
-  <!-- This file lives in public/404.html -->
-  <div class="dialog">
-    <div>
-      <h1>The page you were looking for doesn't exist.</h1>
-      <p>You may have mistyped the address or the page may have moved.</p>
+<body class="vh-100 d-flex flex-column justify-content-center" translate="no">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center">
+        <span class="number">404</span>
+      </div>
     </div>
-    <p>If you are the application owner check the logs for more information.</p>
+    <div class="row">
+      <p class="lead text-center"><span>Ooops...</span>Page not found.</p>
+    </div>
+    <div class="row">
+      <p class="lead text-center"><a href="#" onclick="goBack()">Go Back</a></p>
+    </div>
   </div>
+
+  <script>
+    function goBack () {
+      if (window.history.length === 1) {
+        window.location.href = window.location.hostname
+      } else {
+        window.history.back()
+      }
+    }
+  </script>
 </body>
 </html>

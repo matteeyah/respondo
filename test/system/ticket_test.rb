@@ -76,6 +76,39 @@ class TicketTest < ApplicationSystemTestCase
     assert has_text?(response_text)
   end
 
+  test 'allows asking the AI to answer' do
+    click_link('Tickets')
+
+    stub_request(:post, 'https://api.openai.com/v1/chat/completions')
+      .to_return(
+        status: 200, body: file_fixture('openai_chat.json'),
+        headers: { 'Content-Type' => 'application/json' }
+      )
+
+    within("#ticket_#{@ticket.id}") do
+      page.find(:css, 'i.bi-lightning').click
+
+      assert has_text?('You are amazing!')
+    end
+  end
+
+  test 'allows asking the AI to answer with a prompt' do
+    click_link('Tickets')
+
+    stub_request(:post, 'https://api.openai.com/v1/chat/completions')
+      .to_return(
+        status: 200, body: file_fixture('openai_chat.json'),
+        headers: { 'Content-Type' => 'application/json' }
+      )
+
+    within("#ticket_#{@ticket.id}") do
+      fill_in 'ticket[content]', with: 'I am amazing!'
+      page.find(:css, 'i.bi-lightning').click
+
+      assert has_text?('You are amazing!')
+    end
+  end
+
   test 'allows leaving internal notes on tickets' do
     click_link('Tickets')
 

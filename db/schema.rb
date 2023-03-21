@@ -133,6 +133,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_164108) do
   create_table "organizations", force: :cascade do |t|
     t.string "screen_name", null: false
     t.string "domain"
+    t.text "ai_guidelines"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["domain"], name: "index_organizations_on_domain", unique: true

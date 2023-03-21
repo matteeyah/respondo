@@ -3,15 +3,13 @@ title: Home
 description: Welcome to Respondo's documentation!
 ---
 
-# Respondo docs
-
-> Ticketing system for social media posts
+> AI powered ticketing system for social media posts
 
 ## Overview
 
-[Respondo](https://respondohub.com/) uses a ticket approach (similar to Zendesk)
-to social media. You can filter tickets by status and search them by author
-name or content.
+[Respondo](https://respondohub.com/) is a tool that uses a ticketing approach
+(similar to Zendesk) for responding to social media posts. It's supercharged by
+AI to make responding effortless.
 
 ## Sign In
 

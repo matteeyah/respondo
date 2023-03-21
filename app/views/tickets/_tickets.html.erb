@@ -2,7 +2,7 @@
   <% tickets.each do |ticket, replies| %>
     <li class="list-group-item bg-transparent py-0 rounded-0 border-0">
       <%= turbo_frame_tag dom_id(ticket) do %>
-        <%= render partial: 'tickets/ticket', locals: { ticket: } %>
+        <%= render partial: 'tickets/ticket', locals: { ticket:, reply_model: Ticket.new(parent: ticket) } %>
         <% if replies.any? %>
           <%= render partial: 'tickets/tickets', locals: { tickets: replies } %>
         <% end %>

@@ -108,4 +108,13 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
 
     assert has_field?('organization[domain]', with: 'invalid!domain.com')
   end
+
+  test 'allows the user to edit the organization ai guidelines' do
+    click_link 'Organization settings'
+
+    fill_in 'organization[ai_guidelines]', with: 'Respondo is nice'
+    click_button 'Update'
+
+    assert has_field?('organization[ai_guidelines]', with: 'Respondo is nice')
+  end
 end

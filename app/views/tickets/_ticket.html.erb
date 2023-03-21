@@ -104,7 +104,7 @@
                                     'data-controller' => 'form',
                                     'data-action' => 'turbo:submit-end->form#reset' } do |internal_note_form| %>
                         <div class="input-group input-group-sm mb-3">
-                          <%= internal_note_form.text_field :content, required: true, placeholder: 'Write a note...', class: 'form-control form-control-sm border-0 border-bottom' %>
+                          <%= internal_note_form.text_area :content, required: true, placeholder: 'Write a note...', class: 'form-control form-control-sm border-0 border-bottom' %>
                           <%= internal_note_form.submit 'Create Note', class: 'btn btn-sm btn-primary opacity-75' %>
                         </div>
               <% end %>
@@ -118,14 +118,18 @@
       <div class="card-footer border-0">
         <% if current_user.organization.subscribed? %>
           <%= form_with url: ticket_replies_path(ticket),
-                        model: ticket.replies.new, method: :post,
-                        html: { autocomplete: 'off' } do |reply_form| %>
+                        model: reply_model, method: :post,
+                        html: { autocomplete: 'off', data: { controller: 'loading ai-response', ai_response_ticket_path_value: ticket_path(ticket) } } do |reply_form| %>
             <div class="row">
               <div class="col-10 d-flex align-items-center">
-                <%= reply_form.text_field :content, required: true, placeholder: 'Reply', class: 'form-control border-0' %>
+                <%= reply_form.text_area :content, required: true, placeholder: 'Reply', class: 'form-control border-0',
+                                                   data: { loading_target: 'spinner', ai_response_target: 'parameter' } %>
               </div>
               <div class="col-2 d-flex justify-content-end align-items-center">
-                <%= reply_form.button class: 'border-0 bg-transparent btn btn-link rounded-circle text-muted' do %>
+                <%= link_to '#', class: 'btn btn-link', data: { action: 'click->ai-response#addParam click->loading#start' } do %>
+                  <%= bi_icon('lightning', 'fs-2') %>
+                <% end %>
+                <%= reply_form.button class: 'border-0 bg-transparent btn btn-link rounded-circle' do %>
                   <%= bi_icon('telegram', 'fs-2') %>
                 <% end %>
               </div>
