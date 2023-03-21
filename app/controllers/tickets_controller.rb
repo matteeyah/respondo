@@ -15,6 +15,8 @@ class TicketsController < Tickets::ApplicationController
 
   def show
     @ticket_hash = ticket.with_descendants_hash(TICKET_RENDER_PRELOADS)
+    @reply_model = Ticket.new(parent: ticket)
+    @reply_model.content = generate_ai_response(ticket) if params[:ai]
 
     respond_to do |format|
       format.turbo_stream
@@ -75,5 +77,18 @@ class TicketsController < Tickets::ApplicationController
 
   def update_params
     params.require(:ticket).permit(:status)
+  end
+
+  def generate_ai_response(ticket)
+    OpenAI::Client.new.chat(
+      parameters: {
+        model: 'gpt-3.5-turbo',
+        messages: [
+          { role: 'system', content: "You work at a company called #{ticket.organization.screen_name}." },
+          { role: 'system', content: 'You are a social media manager and a support representative. Messages from the user are social media posts where someone mentions the company that you work for. You respond to those posts with a message.' }, # rubocop:disable Metrics/LineLength
+          { role: 'user', content: "#{ticket.author.username}: #{ticket.content}" }
+        ], temperature: 0.7
+      }
+    ).dig('choices', 0, 'message', 'content').chomp.strip
   end
 end
