@@ -86,33 +86,6 @@
   box-shadow: 10px 10px 0 var(--bs-warning);
 }
 
-.dual-ring-spinner {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
-}
-
-.dual-ring-spinner:after {
-  content: " ";
-  display: block;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border-radius: 50%;
-  border: 6px solid var(--bs-primary);
-  border-color: var(--bs-primary) transparent var(--bs-primary) transparent;
-  animation: dual-ring-spinner 1.2s linear infinite;
-}
-
-@keyframes dual-ring-spinner {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes color-switch {
   0% {
     background-color: var(--bs-primary);

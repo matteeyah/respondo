@@ -5,7 +5,7 @@ export default class extends Controller {
 
   start () {
     const spinner = document.createElement('div')
-    spinner.classList.add('dual-ring-spinner')
+    spinner.classList.add('spinner-grow', 'text-primary')
 
     this.spinnerTarget.replaceWith(spinner)
   }
