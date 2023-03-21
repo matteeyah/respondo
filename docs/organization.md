@@ -30,3 +30,9 @@ Organization account on that social network.
 You can define a organization domain. All users who authenticate with an email
 address on this domain are automatically added to the associated organization
 after registration.
+
+## Organization AI guidelines
+
+You can explain what your product or organization does and what is your
+communication style. This is used by the AI to generate responses to social
+media posts, just like an employee would.

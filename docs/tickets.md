@@ -53,6 +53,11 @@ ticket.
 You can reply to social media posts. To respond to a post, type out your reply
 in the reply form and click the send button (<i class="bi bi-telegram"></i>).
 
+### Generating a response with AI
+
+You can prompt the AI to generate a response. To generate a response, click the
+lightning (<i class="bi bi-lightning"></i>) button.
+
 ### Internal Notes
 
 You can leave internal notes, visible only to other organization members. To open
