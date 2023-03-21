@@ -3,8 +3,6 @@ title: Tickets
 description: Documentation for working with tickets.
 ---
 
-# Working with tickets
-
 <https://app.respondohub.com/tickets>
 
 The ticket view is composed of three sections - the header, the main area and
@@ -55,8 +53,37 @@ in the reply form and click the send button (<i class="bi bi-telegram"></i>).
 
 ### Generating a response with AI
 
-You can prompt the AI to generate a response. To generate a response, click the
+You can prompt the AI to generate a response.
+
+If you want the AI to come up with a response completely on its own, click the
 lightning (<i class="bi bi-lightning"></i>) button.
+
+Example output:
+
+```plain
+Hello @twitter, thank you for reaching out to us at Respondo. How may I assist
+you today?
+```
+
+If you want to give the AI guidelines for generating the response, enter a short
+guideline in the response field then click the lightning
+(<i class="bi bi-lightning"></i>) button.
+
+Example guideline:
+
+```plain
+offer an amazon gift card for troubles
+```
+
+Example output:
+
+```plain
+Hello @twitter, thank you for reaching out to us. We apologize for any
+inconvenience that you may have experienced. We would like to make it up to you
+by offering you an Amazon gift card for the troubles. Please send us a private
+message with your email address so we can send the gift card to you. Thank you
+for your patience and understanding.
+```
 
 ### Internal Notes
 

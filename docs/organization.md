@@ -3,8 +3,6 @@ title: Organization settings
 description: Documentation for managing organization.
 ---
 
-# Organization settings
-
 <https://app.respondohub.com/settings>
 
 When you first sign in, you can click `Authorize` to connect your organization
@@ -36,3 +34,11 @@ after registration.
 You can explain what your product or organization does and what is your
 communication style. This is used by the AI to generate responses to social
 media posts, just like an employee would.
+
+Example:
+
+```plain
+Respondo is an AI social media ticketing tool.
+
+You always respond in a friendly tone.
+```

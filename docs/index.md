@@ -3,8 +3,6 @@ title: Home
 description: Welcome to Respondo's documentation!
 ---
 
-# Respondo docs
-
 > AI powered ticketing system for social media posts
 
 ## Overview

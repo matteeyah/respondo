@@ -3,8 +3,6 @@ title: User profile
 description: Documentation for managing users.
 ---
 
-# User profile
-
 <https://app.respondohub.com/profile>
 
 ## Accounts
