@@ -25,6 +25,6 @@ class OrganizationsController < ApplicationController
   end
 
   def update_params
-    params.require(:organization).permit(:domain)
+    params.require(:organization).permit(:domain, :ai_guidelines)
   end
 end

@@ -6,6 +6,8 @@ class CreateOrganizations < ActiveRecord::Migration[7.0]
       t.string :screen_name, null: false
       t.string :domain, null: true, index: { unique: true }
 
+      t.text :ai_guidelines, null: true
+
       t.timestamps
     end
 

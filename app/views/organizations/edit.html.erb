@@ -41,18 +41,41 @@
         <div class="col-lg-6">
           <div class="card rounded-4">
             <div class="card-body">
-              <div class="card-title mb-4">
-                <p class="fs-5 fw-bold">Alternative ticket sources</p>
+              <div class="card-title">
+                <p class="fs-5 fw-bold">AI Guidelines</p>
               </div>
-              <p>Organization ID: <span class="badge text-bg-primary fs-4"><%= @organization.id %></span></p>
-              <p>Inbound email: <span class="badge text-bg-primary"><%= "https://app.respondohub.com/organizations/#{@organization.id}/external_tickets.json
-" %></span></p>
-              <p>Webhook target: <span class="badge text-bg-primary"><%= "inbound+#{@organization.id}@mail.respondohub.com" %></span></p>
+              <p class="card-text">Explain what your company does and the tone you want the AI to respond with.</p>
+              <%= form_with model: @organization, method: :patch do |update_organization_form| %>
+                <div class="row">
+                  <div class="col-8 col-lg-9">
+                    <%= update_organization_form.text_area :ai_guidelines, required: true, class: 'form-control',
+                                                                           placeholder: 'Respondo is an AI social media ticketing system. You should respond in a friendly tone.' %>
+                  </div>
+                  <div class="col-4 col-lg-3">
+                    <%= update_organization_form.submit 'Update', name: nil, class: 'btn form-control btn-primary' %>
+                  </div>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
       </div>
       <%= render partial: 'shared/accounts', locals: { model: @organization } %>
+      <div class="row mt-4">
+        <div class="col-lg-8">
+          <div class="card rounded-4">
+            <div class="card-body">
+              <div class="card-title mb-4">
+                <p class="fs-5 fw-bold">Alternative ticket sources</p>
+              </div>
+              <p>Organization ID: <span class="badge text-bg-primary fs-4"><%= @organization.id %></span></p>
+              <p>Webhook target: <span class="badge text-bg-primary"><%= "https://app.respondohub.com/organizations/#{@organization.id}/external_tickets.json
+" %></span></p>
+              <p>Inbound email: <span class="badge text-bg-primary"><%= "inbound+#{@organization.id}@mail.respondohub.com" %></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div aria-labelledby="team-tab" class="tab-pane" id="team-tab-pane" role="tabpanel" tabindex="0">
       <div class="row">
