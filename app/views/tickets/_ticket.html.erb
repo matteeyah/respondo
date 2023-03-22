@@ -36,9 +36,11 @@
               <li>
                 <%= link_to 'External View', ticket_permalink_path(ticket), 'data-turbo-frame' => :_top, id: "permalink-#{ticket.id}", class: 'dropdown-item' %>
               </li>
-              <li>
-                <%= link_to 'Delete', ticket_path(ticket), 'data-turbo-method' => :delete, id: "delete-#{ticket.id}", class: 'dropdown-item' %>
-              </li>
+              <% if ticket.creator.present? %>
+                <li>
+                  <%= link_to 'Delete', ticket_path(ticket), 'data-turbo-method' => :delete, id: "delete-#{ticket.id}", class: 'dropdown-item' %>
+                </li>
+              <% end %>
             </ul>
           </div>
         </div>
