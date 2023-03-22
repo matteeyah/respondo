@@ -58,7 +58,7 @@
         <%= link_to "#{time_ago_in_words(ticket.created_at)} ago at #{ticket.created_at.to_fs(:short)}", ticket_path(ticket), class: 'link-secondary text-decoration-none', 'data-turbo-frame' => '_top' %>
         </small>
       </div>
-      <div class="row">
+      <div class="row mb-2">
         <div class="col-lg-6 d-flex align-items-center justify-content-start">
           <span class="text-muted me-3">
             <%= bi_icon('chat', 'text-info') %>
