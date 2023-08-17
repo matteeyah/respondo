@@ -4,14 +4,14 @@ require 'test_helper'
 
 class DisqusTest < ActiveSupport::TestCase
   test '#new_mentions makes a disqus api request for all posts when a ticket identifier is not provided' do
-    client = Clients::Disqus.new('api_key', 'api_secret', 'token')
+    client = Clients::Disqus.new('test', 'test', 'token')
 
-    disqus_list_forums_request = stub_request(:get, 'https://disqus.com/api/3.0/users/listForums.json?access_token=token&api_key=api_key&api_secret=api_secret&order=asc')
+    disqus_list_forums_request = stub_request(:get, 'https://disqus.com/api/3.0/users/listForums.json?access_token=token&api_key=test&api_secret=test&order=asc')
       .and_return(
         status: 200, body: file_fixture('disqus_list_forums.json').read
       )
 
-    disqus_list_posts_request = stub_request(:get, 'https://disqus.com/api/3.0/posts/list.json?access_token=token&api_key=api_key&api_secret=api_secret&forum=bobross&order=asc')
+    disqus_list_posts_request = stub_request(:get, 'https://disqus.com/api/3.0/posts/list.json?access_token=token&api_key=test&api_secret=test&forum=bobross&order=asc')
       .and_return(status: 200, body: file_fixture('disqus_posts_list.json').read)
 
     client.new_mentions(nil)
@@ -21,14 +21,14 @@ class DisqusTest < ActiveSupport::TestCase
   end
 
   test '#new_mentions makes a disqus api request with the since parameter when provided' do
-    client = Clients::Disqus.new('api_key', 'api_secret', 'token')
+    client = Clients::Disqus.new('test', 'test', 'token')
 
-    disqus_list_forums_request = stub_request(:get, 'https://disqus.com/api/3.0/users/listForums.json?access_token=token&api_key=api_key&api_secret=api_secret&order=asc')
+    disqus_list_forums_request = stub_request(:get, 'https://disqus.com/api/3.0/users/listForums.json?access_token=token&api_key=test&api_secret=test&order=asc')
       .and_return(
         status: 200, body: file_fixture('disqus_list_forums.json').read
       )
 
-    disqus_list_posts_request = stub_request(:get, 'https://disqus.com/api/3.0/posts/list.json?access_token=token&api_key=api_key&api_secret=api_secret&forum=bobross&order=asc&since=disqus_uid')
+    disqus_list_posts_request = stub_request(:get, 'https://disqus.com/api/3.0/posts/list.json?access_token=token&api_key=test&api_secret=test&forum=bobross&order=asc&since=disqus_uid')
       .and_return(status: 200, body: file_fixture('disqus_posts_list.json').read)
 
     client.new_mentions('disqus_uid')
@@ -38,11 +38,11 @@ class DisqusTest < ActiveSupport::TestCase
   end
 
   test '#reply makes a disqus api request' do
-    client = Clients::Disqus.new('api_key', 'api_secret', 'token')
+    client = Clients::Disqus.new('test', 'test', 'token')
 
     disqus_create_request = stub_request(:post, 'https://disqus.com/api/3.0/posts/create.json')
       .with(
-        body: { 'access_token' => 'token', 'api_key' => 'api_key', 'api_secret' => 'api_secret',
+        body: { 'access_token' => 'token', 'api_key' => 'test', 'api_secret' => 'test',
                 'message' => 'response', 'parent' => 'disqus_uid' }
       ).and_return(status: 200, body: file_fixture('disqus_post.json').read)
 
@@ -52,11 +52,11 @@ class DisqusTest < ActiveSupport::TestCase
   end
 
   test '#delete makes a disqus api request' do
-    client = Clients::Disqus.new('api_key', 'api_secret', 'token')
+    client = Clients::Disqus.new('test', 'test', 'token')
 
     disqus_remove_request = stub_request(:post, 'https://disqus.com/api/3.0/posts/remove.json')
       .with(
-        body: { 'access_token' => 'token', 'api_key' => 'api_key', 'api_secret' => 'api_secret',
+        body: { 'access_token' => 'token', 'api_key' => 'test', 'api_secret' => 'test',
                 'post' => 'disqus_uid' }
       ).and_return(status: 200, body: file_fixture('disqus_remove_post.json').read)
 
@@ -66,9 +66,9 @@ class DisqusTest < ActiveSupport::TestCase
   end
 
   test '#permalink makes a disqus api request' do
-    client = Clients::Disqus.new('api_key', 'api_secret', 'token')
+    client = Clients::Disqus.new('test', 'test', 'token')
 
-    disqus_permalink_request = stub_request(:get, 'https://disqus.com/api/3.0/posts/details.json?access_token=token&api_key=api_key&api_secret=api_secret&post=disqus_uid&related=thread').and_return(
+    disqus_permalink_request = stub_request(:get, 'https://disqus.com/api/3.0/posts/details.json?access_token=token&api_key=test&api_secret=test&post=disqus_uid&related=thread').and_return(
       status: 200, body: file_fixture('disqus_post.json').read
     )
 

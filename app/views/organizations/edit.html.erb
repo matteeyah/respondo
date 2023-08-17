@@ -178,11 +178,11 @@
   </div>
 </div>
 <%= content_for :custom_javascript do %>
-  <% if Rails.application.credentials.dig(:paddle, :vendor_id) %>
+  <% if Rails.application.credentials.paddle.vendor_id %>
     <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
     <script>
 
-        Paddle.Setup({vendor: <%= Rails.application.credentials.dig(:paddle, :vendor_id) %>})
+        Paddle.Setup({vendor: <%= Rails.application.credentials.paddle.vendor_id %>})
 
     </script>
     <% if @organization.subscribed? %>

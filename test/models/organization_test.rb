@@ -33,8 +33,9 @@ class OrganizationTest < ActiveSupport::TestCase
       cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update'
     )
     stubbed_paddle_request = stub_request(:post, 'https://vendors.paddle.com/api/2.0/subscription/users/update')
-      .with(body: { 'quantity' => '1', 'subscription_id' => '123', 'vendor_auth_code' => nil, 'vendor_id' => nil })
-      .and_return(status: 200)
+      .with(
+        body: { 'quantity' => '1', 'subscription_id' => '123', 'vendor_auth_code' => 'test', 'vendor_id' => 'test' }
+      ).and_return(status: 200)
 
     organization.users << users(:john)
 

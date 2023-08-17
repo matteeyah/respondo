@@ -34,11 +34,11 @@ class LoadNewTicketsJobTest < ActiveJob::TestCase
   def stub_disqus
     disqus_ticket = tickets(:disqus)
 
-    stub_request(:get, 'https://disqus.com/api/3.0/users/listForums.json?access_token&api_key&api_secret&order=asc').to_return(
+    stub_request(:get, 'https://disqus.com/api/3.0/users/listForums.json?access_token&api_key=test&api_secret=test&order=asc').to_return(
       status: 200,
       body: file_fixture('disqus_list_forums.json').read
     )
-    stub_request(:get, "https://disqus.com/api/3.0/posts/list.json?access_token&api_key&api_secret&forum=bobross&order=asc&since=#{disqus_ticket.created_at.utc.iso8601}").to_return(
+    stub_request(:get, "https://disqus.com/api/3.0/posts/list.json?access_token&api_key=test&api_secret=test&forum=bobross&order=asc&since=#{disqus_ticket.created_at.utc.iso8601}").to_return(
       status: 200,
       body: file_fixture('disqus_posts_list.json').read
     )
