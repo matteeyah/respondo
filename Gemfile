@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.2.1'
+ruby '3.2.2'
 
 # Core
 gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
@@ -57,7 +57,7 @@ group :development, :test do
   ## ERB
   gem 'erb_lint', require: false
   # Other
-  gem 'debug', '1.7.0'
+  gem 'debug'
 end
 
 group :development do
