@@ -11,11 +11,9 @@ class AuthenticationTest < ApplicationSystemTestCase
   include OmniauthHelper
   include AuthenticationHelper
 
-  def setup
-    visit '/'
-  end
-
   test 'allows user creation' do
+    visit login_path
+
     add_oauth_mock(:google_oauth2, '123', { name: 'Test User', email: 'test@example.com' }, {})
     click_button('Sign in with Google')
     find_by_id('settings').click
@@ -26,7 +24,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   test 'adds the user to the organization' do
     organizations(:respondo).update!(domain: 'example.com')
 
-    visit '/'
+    visit login_path
 
     add_oauth_mock(:google_oauth2, '123', { name: 'Test User', email: 'test@example.com' }, {})
     click_button('Sign in with Google')
@@ -35,9 +33,10 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'allows organization creation' do
-    sign_in_user(users(:john))
+    sign_in(users(:john))
 
     add_oauth_mock(:twitter, '123', { nickname: 'test_organization' }, {})
+    visit root_path
     click_button('Authorize')
 
     assert_enqueued_with(job: LoadNewTicketsJob)
@@ -48,9 +47,9 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'allows signing out' do
-    visit '/'
+    sign_in(users(:john))
+    visit root_path
 
-    sign_in_user(users(:john))
     find_by_id('settings').click
     click_button 'Sign Out'
 

@@ -19,10 +19,10 @@ module ActiveSupport
 end
 
 # Disable external requests
-# https://github.com/titusfortner/webdrivers/wiki/Using-with-VCR-or-WebMock
-driver_urls = (ObjectSpace.each_object(Webdrivers::Common.singleton_class).to_a - [Webdrivers::Common])
-  .map(&:base_url)
-WebMock.disable_net_connect!(allow_localhost: true, allow: driver_urls)
+WebMock.disable_net_connect!(
+  allow_localhost: true,
+  allow: ['https://googlechromelabs.github.io', 'https://edgedl.me.gvt1.com']
+)
 
 # Use OmniAuth in test mode
 OmniAuth.config.test_mode = true

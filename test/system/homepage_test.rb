@@ -8,7 +8,7 @@ class HomepageTest < ApplicationSystemTestCase
   include OmniauthHelper
 
   test 'guides user through the set-up process' do
-    visit '/'
+    visit login_path
 
     assert has_button?('Sign in with Google')
 

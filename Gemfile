@@ -10,7 +10,7 @@ gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
 gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
 gem 'importmap-rails'
 gem 'puma' # Use Puma as the application server
-gem 'rails', '~> 7.0.4'
+gem 'rails', '~> 7.0.7'
 gem 'stimulus-rails' # Hotwire Stimulus
 gem 'turbo-rails' # Hotwire Turbo
 
@@ -69,7 +69,6 @@ group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
-  gem 'webdrivers' # Easy installation and use of web drivers to run system tests with browsers
   # Other
   gem 'webmock', '~> 3.18' # Stubs and expectations for HTTP requests
 end

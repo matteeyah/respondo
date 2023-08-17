@@ -7,15 +7,14 @@ require 'support/authentication_helper'
 class OrganizationTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
-  def setup
+  setup do
     @user = users(:john)
     @organization = organizations(:respondo)
 
-    visit '/'
+    @user.update!(organization: @organization)
+    sign_in(@user)
 
-    sign_in_user(@user)
-    sign_in_organization(@organization)
-    click_link('Tickets')
+    visit tickets_path
   end
 
   test 'shows the tickets' do

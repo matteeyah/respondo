@@ -5,7 +5,7 @@ require 'test_helper'
 require 'minitest/mock'
 
 class LoadNewTicketsJobTest < ActiveJob::TestCase
-  def setup
+  setup do
     stub_twitter
     stub_disqus
   end

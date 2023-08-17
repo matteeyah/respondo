@@ -9,19 +9,15 @@ class UserSettingsTest < ApplicationSystemTestCase
   include OmniauthHelper
   include AuthenticationHelper
 
-  def setup
+  setup do
     @user = users(:john)
 
-    visit '/'
-
-    sign_in_user(@user)
-
-    find_by_id('settings').click
+    sign_in(@user)
   end
 
   test 'allows the user to authorize an account' do
     user_accounts(:activedirectory).destroy
-    click_link 'User profile'
+    visit profile_path
 
     account = Struct.new(:provider, :external_uid, :name, :email).new(:activedirectory, 'uid_20')
     add_oauth_mock_for_user(@user, account)
@@ -39,7 +35,7 @@ class UserSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to remove an account' do
-    click_link 'User profile'
+    visit profile_path
 
     within(page.find('p', text: 'Existing accounts').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
@@ -53,8 +49,7 @@ class UserSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to create a personal access token' do
-    click_link 'User profile'
-
+    visit profile_path
     click_button 'Access'
 
     fill_in :name, with: 'something_nice'
@@ -66,8 +61,8 @@ class UserSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to remove a personal access token' do
+    visit profile_path
     pat = personal_access_tokens(:default)
-    click_link 'User profile'
 
     click_button 'Access'
 
