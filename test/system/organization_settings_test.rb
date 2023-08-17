@@ -9,7 +9,7 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
   include OmniauthHelper
   include AuthenticationHelper
 
-  def setup
+  setup do
     @user = users(:john)
     @organization = organizations(:respondo)
 

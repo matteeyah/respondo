@@ -9,7 +9,7 @@ class UserSettingsTest < ApplicationSystemTestCase
   include OmniauthHelper
   include AuthenticationHelper
 
-  def setup
+  setup do
     @user = users(:john)
 
     visit '/'

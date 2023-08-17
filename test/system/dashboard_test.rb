@@ -7,7 +7,7 @@ require 'support/authentication_helper'
 class DashboardTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
-  def setup
+  setup do
     @user = users(:john)
     @organization = organizations(:respondo)
 

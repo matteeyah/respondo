@@ -11,7 +11,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   include OmniauthHelper
   include AuthenticationHelper
 
-  def setup
+  setup do
     visit '/'
   end
 
