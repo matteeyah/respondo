@@ -149,18 +149,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_164108) do
     t.index ["user_id"], name: "index_personal_access_tokens_on_user_id"
   end
 
-  create_table "subscriptions", force: :cascade do |t|
-    t.string "external_uid", null: false
-    t.integer "status", null: false
-    t.string "email", null: false
-    t.string "cancel_url", null: false
-    t.string "update_url", null: false
-    t.bigint "organization_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["organization_id"], name: "index_subscriptions_on_organization_id"
-  end
-
   create_table "taggings", force: :cascade do |t|
     t.bigint "tag_id"
     t.string "taggable_type"
