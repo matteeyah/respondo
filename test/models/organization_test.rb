@@ -26,38 +26,6 @@ class OrganizationTest < ActiveSupport::TestCase
     assert organization.errors.added?(:domain, :taken, value: 'respondohub.com')
   end
 
-  test 'increases subscription quantity when adding a user to the team' do
-    organization = organizations(:respondo)
-    Subscription.create!(
-      external_uid: '123', email: 'billing@respondohub.com', status: :active, organization:,
-      cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update'
-    )
-    stubbed_paddle_request = stub_request(:post, 'https://vendors.paddle.com/api/2.0/subscription/users/update')
-      .with(
-        body: { 'quantity' => '1', 'subscription_id' => '123', 'vendor_auth_code' => 'test', 'vendor_id' => 'test' }
-      ).and_return(status: 200)
-
-    organization.users << users(:john)
-
-    assert_requested(stubbed_paddle_request)
-  end
-
-  test 'decreases subscription quantity when removing a user from the team' do
-    organization = organizations(:respondo)
-    users(:john).update!(organization:)
-    Subscription.create!(
-      external_uid: '123', email: 'billing@respondohub.com', status: :active, organization:,
-      cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update'
-    )
-    stubbed_paddle_request = stub_request(:post, 'https://vendors.paddle.com/api/2.0/subscription/users/update')
-      .with(body: { 'quantity' => '0', 'subscription_id' => '123', 'vendor_auth_code' => nil, 'vendor_id' => nil })
-      .and_return(status: 200)
-
-    organization.users.delete(users(:john))
-
-    assert_requested(stubbed_paddle_request)
-  end
-
   OrganizationAccount.providers.each_key do |provider_name|
     test "#account_for_provider? returns true when there is an #{provider_name} account" do
       OrganizationAccount.create!(screen_name: 'respondo', external_uid: 'hello_world', provider: provider_name,

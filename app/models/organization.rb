@@ -6,32 +6,10 @@ class Organization < ApplicationRecord
                      uniqueness: true
 
   has_many :accounts, class_name: 'OrganizationAccount', inverse_of: :organization, dependent: :destroy
-  has_many :users, dependent: :nullify, before_add: :increment_subscription_quantity,
-                   before_remove: :decrement_subscription_quantity
+  has_many :users, dependent: :nullify
   has_many :tickets, dependent: :restrict_with_error
-
-  has_one :subscription, dependent: :restrict_with_error
 
   def account_for_provider?(provider)
     accounts.exists?(provider:)
-  end
-
-  def subscribed?
-    !Flipper.enabled?(:subscriptions) ||
-      subscription&.running?
-  end
-
-  private
-
-  def increment_subscription_quantity(_)
-    return unless subscription
-
-    subscription.change_quantity(users.count + 1)
-  end
-
-  def decrement_subscription_quantity(_)
-    return unless subscription
-
-    subscription.change_quantity(users.count - 1)
   end
 end
