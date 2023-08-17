@@ -1,5 +1,3 @@
-<% subscription_status = @organization.subscription&.status %>
-<% checkout_redirect_path = request.original_url %>
 <div class="row my-3">
   <div class="col d-flex align-items-center">
     <span class="fs-2 me-2 fw-bold">Organization</span>
@@ -100,31 +98,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-6">
-          <div class="card h-100 rounded-4">
-            <div class="card-body">
-              <div class="card-title mb-4">
-                <p class="fs-5 fw-bold">Subscription</p>
-              </div>
-              <% if Flipper.enabled?(:subscriptions) %>
-                <small>
-                  Subscription status:
-                  <span class="bg-<%= subscription_badge_class(subscription_status) %> badge">
-                    <%= subscription_status || 'no subscription' %>
-                  </span>
-                </small>
-                <% if @organization.subscription %>
-                  <%= button_tag 'Update Payment Details', class: 'btn btn-primary', id: 'update-subscription' %>
-                  <%= button_tag 'Cancel Subscription', class: 'btn btn-primary', id: 'cancel-subscription' %>
-                <% else %>
-                  <%= button_tag 'Buy Subscription', class: 'btn btn-primary', id: 'buy-subscription' %>
-                <% end %>
-              <% else %>
-                <small class="text-muted">Subscriptions are currently disabled.</small>
-              <% end %>
-            </div>
-          </div>
-        </div>
+        <div class="col-lg-6"></div>
       </div>
       <div class="row mt-4">
         <div class="col-12">
@@ -177,46 +151,3 @@
     </div>
   </div>
 </div>
-<%= content_for :custom_javascript do %>
-  <% if Rails.application.credentials.paddle.vendor_id %>
-    <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
-    <script>
-
-        Paddle.Setup({vendor: <%= Rails.application.credentials.paddle.vendor_id %>})
-
-    </script>
-    <% if @organization.subscribed? %>
-      <script>
-
-          function cancelSubscription() {
-              Paddle.Checkout.open({
-                  override: "<%= @organization.subscription.cancel_url %>", success: "<%= checkout_redirect_path %>"
-              })
-          }
-
-          function updateSubscription() {
-              Paddle.Checkout.open({
-                  override: "<%= @organization.subscription.update_url %>", success: "<%= checkout_redirect_path %>"
-              })
-          }
-
-          document.getElementById('cancel-subscription').addEventListener('click', cancelSubscription, false)
-          document.getElementById('update-subscription').addEventListener('click', updateSubscription, false)
-
-      </script>
-    <% else %>
-      <script>
-
-          function buySubscription() {
-              Paddle.Checkout.open({
-                  product: 592438, allowQuantity: false, quantity: "<%= @organization.users.count %>",
-                  passthrough: "{\"organization_id\": <%= @organization.id %>}", success: "<%= checkout_redirect_path %>"
-              })
-          }
-
-          document.getElementById('buy-subscription').addEventListener('click', buySubscription, false)
-
-      </script>
-    <% end %>
-  <% end %>
-<% end %>

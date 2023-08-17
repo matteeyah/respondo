@@ -12,10 +12,6 @@ module Tickets
       sign_in(users(:john), user_accounts(:google_oauth2))
       organizations(:respondo).users << users(:john)
 
-      Subscription.create!(
-        external_uid: 'uid_1', status: 'active', email: 'hello@respondohub.com', organization: organizations(:respondo),
-        cancel_url: 'https://respondohub.com/cancel', update_url: 'https://respondohub.com/update'
-      )
       organization_accounts(:twitter).update!(token: 'hello', secret: 'world')
 
       stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')
