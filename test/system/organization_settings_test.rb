@@ -13,12 +13,10 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
     @user = users(:john)
     @organization = organizations(:respondo)
 
-    visit '/'
+    @user.update!(organization: @organization)
+    sign_in(@user)
 
-    sign_in_user(@user)
-    sign_in_organization(@organization)
-
-    find_by_id('settings').click
+    visit settings_path
   end
 
   test 'allows the user to authorize an account' do

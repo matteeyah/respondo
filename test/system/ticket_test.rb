@@ -12,21 +12,19 @@ class TicketTest < ApplicationSystemTestCase
     @organization = organizations(:respondo)
     @ticket = tickets(:twitter)
 
-    visit '/'
-
-    sign_in_user(@user)
-    sign_in_organization(@organization)
+    @user.update!(organization: @organization)
+    sign_in(@user)
   end
 
   test 'shows the ticket' do
-    click_link('Tickets')
+    visit tickets_path
 
     assert has_text?(@ticket.content)
     assert has_text?(@ticket.author.username)
   end
 
   test 'allows replying to ticket' do
-    click_link('Tickets')
+    visit tickets_path
 
     account = @ticket.source
     account.update!(token: 'hello', secret: 'world')
@@ -49,7 +47,7 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows replying to external tickets' do
-    click_link('Tickets')
+    visit tickets_path
 
     response_text = 'Hello from Respondo system tests'
     external_ticket = tickets(:external)
@@ -73,7 +71,7 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows asking the AI to answer' do
-    click_link('Tickets')
+    visit tickets_path
 
     stub_request(:post, 'https://api.openai.com/v1/chat/completions')
       .to_return(
@@ -89,7 +87,7 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows asking the AI to answer with a prompt' do
-    click_link('Tickets')
+    visit tickets_path
 
     stub_request(:post, 'https://api.openai.com/v1/chat/completions')
       .to_return(
@@ -106,7 +104,7 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows leaving internal notes on tickets' do
-    click_link('Tickets')
+    visit tickets_path
 
     internal_note_text = 'Internal note from Respondo system tests.'
 
@@ -124,7 +122,7 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows solving tickets' do
-    click_link('Tickets')
+    visit tickets_path
 
     within("#ticket_#{@ticket.id}") do
       select 'solved', from: 'ticket-status'
@@ -137,7 +135,7 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows adding ticket tags' do
-    click_link('Tickets')
+    visit tickets_path
 
     within("#ticket_#{@ticket.id}") do
       fill_in :'acts_as_taggable_on_tag[name]', with: "hello\n"
@@ -150,7 +148,7 @@ class TicketTest < ApplicationSystemTestCase
 
   test 'allows removing ticket tags' do
     @ticket.update(tag_list: 'first_tag, second_tag')
-    click_link('Tickets')
+    visit tickets_path
 
     within("#ticket_#{@ticket.id}") do
       within('span', text: 'first_tag') do
@@ -165,7 +163,7 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows updating ticket assignment' do
-    click_link('Tickets')
+    visit tickets_path
 
     within("#ticket_#{@ticket.id}") do
       select @user.name, from: 'ticket-assignment'
@@ -177,7 +175,7 @@ class TicketTest < ApplicationSystemTestCase
   test 'allows deleting tickets' do
     @ticket.update!(creator: @user)
     @ticket.source.update!(token: 'hello', secret: 'world')
-    click_link('Tickets')
+    visit tickets_path
 
     stub_request(:post, 'https://api.twitter.com/1.1/statuses/destroy/0.json')
       .to_return(status: 200, body: { id: 'world' }.to_json, headers: { content_type: 'application/json' })
@@ -192,7 +190,7 @@ class TicketTest < ApplicationSystemTestCase
 
   test 'allows navigating to tickets externally' do
     @ticket.source.update!(token: 'hello', secret: 'world')
-    click_link('Tickets')
+    visit tickets_path
 
     stub_request(:get, 'https://api.twitter.com/1.1/statuses/show/0.json').to_return(
       status: 200,

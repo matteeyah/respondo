@@ -1,18 +1,30 @@
 # frozen_string_literal: true
 
-require 'support/omniauth_helper'
-
-# This is an abstraction on top of OmniauthHelpers for system type specs.
 module AuthenticationHelper
-  extend OmniauthHelper
+  def sign_in(user)
+    visit login_path
 
-  def sign_in_user(user)
-    AuthenticationHelper.add_oauth_mock_for_user(user, user_accounts(:google_oauth2))
-    click_button('Sign in with Google')
+    session = { session_id: SecureRandom.hex(32), user_id: user.id }
+    page.driver.browser.manage.add_cookie(
+      name: Rails.application.config.session_options[:key], value: encrypt_and_sign_cookie(session),
+      sameSite: :Lax, httpOnly: true
+    )
   end
 
-  def sign_in_organization(organization)
-    AuthenticationHelper.add_oauth_mock_for_organization(organization, organization_accounts(:twitter))
-    click_button('Authorize')
+  private
+
+  def encrypt_and_sign_cookie(cookie) # rubocop:disable Metrics/AbcSize
+    salt = Rails.application.config.action_dispatch.authenticated_encrypted_cookie_salt
+    encrypted_cookie_cipher = Rails.application.config.action_dispatch.encrypted_cookie_cipher || 'aes-256-gcm'
+
+    key_generator = ActiveSupport::KeyGenerator.new(Rails.application.secret_key_base, iterations: 1000)
+    secret = key_generator.generate_key(salt, ActiveSupport::MessageEncryptor.key_len(encrypted_cookie_cipher))
+    encryptor = ActiveSupport::MessageEncryptor.new(
+      secret, cipher: encrypted_cookie_cipher, serializer: ActionDispatch::Cookies::JsonSerializer
+    )
+
+    session_key = Rails.application.config.session_options[:key].freeze
+    signed_cookie = encryptor.encrypt_and_sign(cookie, purpose: "cookie.#{session_key}")
+    CGI.escape(signed_cookie)
   end
 end

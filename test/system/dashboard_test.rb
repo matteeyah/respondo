@@ -11,12 +11,10 @@ class DashboardTest < ApplicationSystemTestCase
     @user = users(:john)
     @organization = organizations(:respondo)
 
-    visit '/'
+    @user.update!(organization: @organization)
+    sign_in(@user)
 
-    sign_in_user(@user)
-    sign_in_organization(@organization)
-
-    click_link('Dashboard')
+    visit dashboard_path
   end
 
   test 'shows the newest tickets' do
