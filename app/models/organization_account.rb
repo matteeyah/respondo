@@ -71,18 +71,18 @@ class OrganizationAccount < ApplicationRecord
   end
 
   def twitter_api_key
-    @twitter_api_key ||= Rails.application.credentials.dig(:twitter, :api_key)
+    @twitter_api_key ||= Rails.application.credentials.twitter.api_key
   end
 
   def twitter_api_secret
-    @twitter_api_secret ||= Rails.application.credentials.dig(:twitter, :api_secret)
+    @twitter_api_secret ||= Rails.application.credentials.twitter.api_secret
   end
 
   def disqus_public_key
-    @disqus_public_key ||= Rails.application.credentials.dig(:disuqs, :public_key)
+    @disqus_public_key ||= Rails.application.credentials.disqus.public_key
   end
 
   def disqus_secret_key
-    @disqus_secret_key ||= Rails.application.credentials.dig(:disqus, :secret_key)
+    @disqus_secret_key ||= Rails.application.credentials.disqus.secret_key
   end
 end
