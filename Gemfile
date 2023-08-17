@@ -57,7 +57,7 @@ group :development, :test do
   ## ERB
   gem 'erb_lint', require: false
   # Other
-  gem 'debug', '1.7.0'
+  gem 'debug'
 end
 
 group :development do
