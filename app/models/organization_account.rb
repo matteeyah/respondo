@@ -43,9 +43,10 @@ class OrganizationAccount < ApplicationRecord
     client.new_mentions(last_ticket_identifier)
   end
 
+  # TODO: add linkedin client
   def client
     case provider
-    when 'twitter'
+    when 'twitter', 'linkedin'
       twitter_client
     when 'disqus'
       disqus_client
