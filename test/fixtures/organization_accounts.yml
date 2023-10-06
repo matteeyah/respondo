@@ -10,8 +10,8 @@ disqus:
   screen_name: respondo
   organization: respondo
 
-  linkedin:
-    external_uid: uid_3
-    provider: linkedin
-    screen_name: respondo
-    organization: respondo
+linkedin:
+  external_uid: uid_3
+  provider: linkedin
+  screen_name: respondo
+  organization: respondo
