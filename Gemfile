@@ -24,9 +24,10 @@ gem 'redis'
 # gem 'image_processing', '~> 1.2'
 
 # Omniauth
-gem 'omniauth-activedirectory'
+gem 'omniauth-azure-activedirectory-v2'
 gem 'omniauth-disqus'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-linkedin-openid'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-twitter'
 # Other

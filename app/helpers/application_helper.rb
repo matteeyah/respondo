@@ -3,9 +3,10 @@
 module ApplicationHelper
   PROVIDER_HUMAN_NAMES = {
     'google_oauth2' => 'Google',
-    'activedirectory' => 'Azure Active Directory',
+    'azure_activedirectory_v2' => 'Azure Active Directory',
     'twitter' => 'Twitter',
-    'disqus' => 'Disqus'
+    'disqus' => 'Disqus',
+    'linkedin' => 'Linkedin'
   }.freeze
 
   def auth_provider_link(provider, html_options = {}, origin: nil, &block)

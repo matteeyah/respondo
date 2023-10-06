@@ -6,7 +6,7 @@ class OrganizationAccount < ApplicationRecord
   validates :email, presence: { allow_blank: false, allow_nil: true }
   validates :screen_name, presence: { allow_blank: false, allow_nil: true }
 
-  enum provider: { twitter: 0, disqus: 1 }
+  enum provider: { twitter: 0, disqus: 1, linkedin: 2 }
 
   belongs_to :organization
 
@@ -20,7 +20,7 @@ class OrganizationAccount < ApplicationRecord
   def self.from_omniauth(auth, current_organization) # rubocop:disable Metrics/AbcSize
     find_or_initialize_by(external_uid: auth.uid, provider: auth.provider).tap do |account|
       account.email = auth.info.email
-      account.screen_name = auth.info.nickname
+      account.screen_name = auth.info.nickname || auth.info.first_name
 
       account.token = auth.credentials.token
       account.secret = auth.credentials.secret
