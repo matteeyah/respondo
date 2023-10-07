@@ -97,6 +97,6 @@ class OrganizationAccount < ApplicationRecord
   end
 
   def linkedin_client_secret
-    @linkedin_client_id ||= Rails.application.credentials.linkedin.client_secret
+    @linkedin_client_secret ||= Rails.application.credentials.linkedin.client_secret
   end
 end
