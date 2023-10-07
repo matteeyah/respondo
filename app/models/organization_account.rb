@@ -43,13 +43,14 @@ class OrganizationAccount < ApplicationRecord
     client.new_mentions(last_ticket_identifier)
   end
 
-  # TODO: add linkedin client
   def client
     case provider
-    when 'twitter', 'linkedin'
+    when 'twitter'
       twitter_client
     when 'disqus'
       disqus_client
+    when 'linkedin'
+      linkedin_client
     end
   end
 
@@ -71,6 +72,10 @@ class OrganizationAccount < ApplicationRecord
     @disqus_client ||= Clients::Disqus.new(disqus_public_key, disqus_secret_key, token)
   end
 
+  def linkedin_client
+    @linkedin_client ||= Clients::Linkedin.new(linkedin_client_id, linkedin_client_secret)
+  end
+
   def twitter_api_key
     @twitter_api_key ||= Rails.application.credentials.twitter.api_key
   end
@@ -85,5 +90,13 @@ class OrganizationAccount < ApplicationRecord
 
   def disqus_secret_key
     @disqus_secret_key ||= Rails.application.credentials.disqus.secret_key
+  end
+
+  def linkedin_client_id
+    @linkedin_client_id ||= Rails.application.credentials.linkedin.client_id
+  end
+
+  def linkedin_client_secret
+    @linkedin_client_id ||= Rails.application.credentials.linkedin.client_secret
   end
 end
