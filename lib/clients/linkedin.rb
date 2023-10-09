@@ -11,16 +11,7 @@ module Clients
 
     # TODO: Connect to real linkedin client and replace dummy data with real data
     def new_mentions(_last_ticket_identifier)
-      mentions = [{
-        id: '1',
-        content: 'test',
-        created_at: 1_696_689_738,
-        parent_uid: '1',
-        author: { id: 1, username: 'test@respondo.com' }
-      }]
-      mentions.map do |mention|
-        parse_response(mention)
-      end
+      []
     end
 
     private
