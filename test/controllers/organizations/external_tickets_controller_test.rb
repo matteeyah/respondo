@@ -7,7 +7,7 @@ module Organizations
     test 'POST create.json when token is authorized when payload is valid' do
       organizations(:respondo).users << users(:john)
 
-      assert_changes -> { Ticket.count }, from: 4, to: 5 do
+      assert_changes -> { Ticket.count }, from: 3, to: 4 do
         post "/organizations/#{organizations(:respondo).id}/external_tickets.json",
              params: external_ticket_payload.merge(
                personal_access_token: {
@@ -25,7 +25,7 @@ module Organizations
     test 'POST create.json when token is authorized when payload is invalid' do
       organizations(:respondo).users << users(:john)
 
-      assert_no_changes -> { Ticket.count }, from: 4 do
+      assert_no_changes -> { Ticket.count }, from: 3 do
         post "/organizations/#{organizations(:respondo).id}/external_tickets.json",
              params: external_ticket_payload.merge(
                personal_access_token: {

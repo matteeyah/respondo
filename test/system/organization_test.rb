@@ -19,7 +19,6 @@ class OrganizationTest < ApplicationSystemTestCase
 
   test 'shows the tickets' do
     assert has_text?(tickets(:twitter).content)
-    assert has_text?(tickets(:disqus).content)
   end
 
   test 'allows navigating to tickets' do
@@ -38,7 +37,7 @@ class OrganizationTest < ApplicationSystemTestCase
     click_button :search
 
     assert has_text?(tickets(:twitter).content)
-    assert has_no_text?(tickets(:disqus).content)
+    assert has_no_text?(tickets(:external).content)
   end
 
   test 'allows searching tickets by content' do
@@ -46,21 +45,21 @@ class OrganizationTest < ApplicationSystemTestCase
     click_button :search
 
     assert has_text?(tickets(:twitter).content)
-    assert has_no_text?(tickets(:disqus).content)
+    assert has_no_text?(tickets(:external).content)
   end
 
   test 'keeps ticket status context when searching' do
-    tickets(:disqus).update!(status: :solved)
+    tickets(:external).update!(status: :solved)
 
     click_link 'Solved'
 
     # This is a hack to make Capybara wait until the page is loaded after navigating
     find(:xpath, "//input[@type='hidden'][@value='solved']", visible: :hidden)
 
-    fill_in 'query', with: tickets(:disqus).author.username
+    fill_in 'query', with: tickets(:external).author.username
     click_button :search
 
     assert has_no_text?(tickets(:twitter).author.username)
-    assert has_text?(tickets(:disqus).author.username)
+    assert has_text?(tickets(:external).author.username)
   end
 end

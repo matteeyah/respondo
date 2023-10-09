@@ -22,16 +22,16 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
   test 'allows the user to authorize an account' do
     click_link 'Organization settings'
 
-    account = Struct.new(:provider, :external_uid, :token, :secret).new(:disqus, 'uid_20')
+    account = Struct.new(:provider, :external_uid, :token, :secret).new(:linkedin, 'uid_20')
     add_oauth_mock_for_organization(@organization, account)
     within(page.find('p', text: 'Add account').find(:xpath, '../..')) do
-      within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
+      within(page.find(:css, 'div.list-group-item', text: 'LinkedIn')) do
         page.find(:button, 'Connect').click
       end
     end
 
     within(page.find('p', text: 'Existing accounts').find(:xpath, '../..')) do
-      assert has_selector?(:css, 'div.list-group-item', text: 'Disqus', count: 2)
+      assert has_selector?(:css, 'div.list-group-item', text: 'LinkedIn', count: 2)
     end
   end
 
@@ -39,13 +39,13 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
     click_link 'Organization settings'
 
     within(page.find('p', text: 'Existing accounts').find(:xpath, '../..')) do
-      within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
+      within(page.find(:css, 'div.list-group-item', text: 'LinkedIn')) do
         page.find(:link, 'Remove').click
       end
     end
 
     within(page.find('p', text: 'Add account').find(:xpath, '../..')) do
-      within(page.find(:css, 'div.list-group-item', text: 'Disqus')) do
+      within(page.find(:css, 'div.list-group-item', text: 'LinkedIn')) do
         assert has_selector?(:button, 'Connect')
       end
     end

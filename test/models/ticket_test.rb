@@ -39,14 +39,13 @@ class TicketTest < ActiveSupport::TestCase
     )
 
     second_child = Ticket.create!(
-      external_uid: 'uid_11', parent: tickets(:disqus), content: 'hello',
-      author: authors(:james), organization: organizations(:respondo), ticketable: internal_tickets(:disqus)
+      external_uid: 'uid_11', parent: tickets(:external), content: 'hello',
+      author: authors(:james), organization: organizations(:respondo), ticketable: external_tickets(:default)
     )
 
     expected_structure = {
       tickets(:twitter) => { first_child => {} },
-      tickets(:disqus) => { second_child => {} },
-      tickets(:external) => {},
+      tickets(:external) => { second_child => {} },
       tickets(:email) => {}
     }
 

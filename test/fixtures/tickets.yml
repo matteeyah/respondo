@@ -8,18 +8,8 @@ twitter:
   creator:
   ticketable: twitter (InternalTicket)
 
-disqus:
-  external_uid: 'uid_2'
-  status: open
-  content: Internal disqus ticket content.
-  parent:
-  author: robert
-  organization: respondo
-  creator:
-  ticketable: disqus (InternalTicket)
-
 external:
-  external_uid: 'uid_3'
+  external_uid: 'uid_2'
   status: open
   content: External ticket content.
   parent:
@@ -29,7 +19,7 @@ external:
   ticketable: default (ExternalTicket)
 
 email:
-  external_uid: 'uid_4'
+  external_uid: 'uid_3'
   status: open
   content: Email ticket content.
   parent:
