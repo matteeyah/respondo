@@ -25,7 +25,6 @@ gem 'redis'
 
 # Omniauth
 gem 'omniauth-azure-activedirectory-v2'
-gem 'omniauth-disqus'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-linkedin-openid'
 gem 'omniauth-rails_csrf_protection'
@@ -33,7 +32,6 @@ gem 'omniauth-twitter'
 # Other
 gem 'active_link_to' # View helper for adding active class
 gem 'acts-as-taggable-on' # Tags mechanism
-gem 'disqus_api' # Disqus client
 gem 'email_reply_parser'
 gem 'flipper' # Feature flags
 gem 'flipper-active_record' # ActiveRecord adapter for flipper

@@ -109,10 +109,6 @@ GEM
     declarative (0.0.20)
     digest-crc (0.6.5)
       rake (>= 12.0.0, < 14.0.0)
-    disqus_api (0.0.8)
-      activesupport
-      faraday (>= 0.9, < 2.0)
-      faraday_middleware (>= 0.10, < 2.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     email_reply_parser (0.5.11)
@@ -150,8 +146,6 @@ GEM
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
-    faraday_middleware (1.2.0)
-      faraday (~> 1.0)
     ffi (1.15.5)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
@@ -292,8 +286,6 @@ GEM
       rack-protection
     omniauth-azure-activedirectory-v2 (2.1.0)
       omniauth-oauth2 (~> 1.8)
-    omniauth-disqus (1.0.1)
-      omniauth-oauth2 (~> 1.1)
     omniauth-google-oauth2 (1.1.1)
       jwt (>= 2.0)
       oauth2 (~> 2.0.6)
@@ -505,7 +497,6 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   capybara (>= 2.15)
   debug
-  disqus_api
   email_reply_parser
   erb_lint
   flipper
@@ -517,7 +508,6 @@ DEPENDENCIES
   json-schema
   mailgun-ruby
   omniauth-azure-activedirectory-v2
-  omniauth-disqus
   omniauth-google-oauth2
   omniauth-linkedin-openid
   omniauth-rails_csrf_protection
