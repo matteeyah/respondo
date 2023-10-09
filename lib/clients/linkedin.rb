@@ -13,19 +13,5 @@ module Clients
     def new_mentions(_last_ticket_identifier)
       []
     end
-
-    private
-
-    def linkedin_client
-      @linkedin_client ||= Linkedin.new(@client_id, @client_secret)
-    end
-
-    def parse_response(api_response)
-      {
-        external_uid: api_response[:id], content: api_response[:content],
-        created_at: api_response[:created_at], parent_uid: api_response[:parent_uid],
-        author: { external_uid: api_response[:author][:id], username: api_response[:author][:username] }
-      }
-    end
   end
 end
