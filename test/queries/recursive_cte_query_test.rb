@@ -14,7 +14,7 @@ class RecursiveCteQueryTest < ActiveSupport::TestCase
     )
     query = RecursiveCteQuery.new(Ticket.all, model_column: :parent_id, recursive_cte_column: :id)
 
-    assert_equal [tickets(:twitter), tickets(:disqus), tickets(:external), tickets(:email), child, nested_child],
+    assert_equal [tickets(:twitter), tickets(:external), tickets(:email), child, nested_child],
                  query.call
   end
 end

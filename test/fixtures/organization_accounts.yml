@@ -4,14 +4,8 @@ twitter:
   screen_name: respondo
   organization: respondo
 
-disqus:
-  external_uid: uid_2
-  provider: disqus
-  screen_name: respondo
-  organization: respondo
-
 linkedin:
-  external_uid: uid_3
+  external_uid: uid_2
   provider: linkedin
   screen_name: respondo
   organization: respondo

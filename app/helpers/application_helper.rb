@@ -5,7 +5,6 @@ module ApplicationHelper
     'google_oauth2' => 'Google',
     'azure_activedirectory_v2' => 'Azure Active Directory',
     'twitter' => 'Twitter',
-    'disqus' => 'Disqus',
     'linkedin' => 'Linkedin'
   }.freeze
 

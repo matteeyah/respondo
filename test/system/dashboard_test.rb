@@ -19,7 +19,6 @@ class DashboardTest < ApplicationSystemTestCase
 
   test 'shows the newest tickets' do
     assert has_text?(tickets(:twitter).content)
-    assert has_text?(tickets(:disqus).content)
   end
 
   test 'shows the tickets info widgets' do
@@ -31,6 +30,5 @@ class DashboardTest < ApplicationSystemTestCase
     click_link('New Tickets')
 
     assert has_text?(tickets(:twitter).content)
-    assert has_text?(tickets(:disqus).content)
   end
 end

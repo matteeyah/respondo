@@ -6,7 +6,7 @@ class OrganizationAccount < ApplicationRecord
   validates :email, presence: { allow_blank: false, allow_nil: true }
   validates :screen_name, presence: { allow_blank: false, allow_nil: true }
 
-  enum provider: { twitter: 0, disqus: 1, linkedin: 2 }
+  enum provider: { twitter: 0, linkedin: 2 }
 
   belongs_to :organization
 
@@ -36,8 +36,6 @@ class OrganizationAccount < ApplicationRecord
     last_ticket_identifier = case provider
                              when 'twitter'
                                last_twitter_ticket_identifier
-                             when 'disqus'
-                               last_disqus_ticket_identifier
                              end
 
     client.new_mentions(last_ticket_identifier)
@@ -47,8 +45,6 @@ class OrganizationAccount < ApplicationRecord
     case provider
     when 'twitter'
       twitter_client
-    when 'disqus'
-      disqus_client
     when 'linkedin'
       linkedin_client
     end
@@ -60,16 +56,8 @@ class OrganizationAccount < ApplicationRecord
     tickets.last&.external_uid
   end
 
-  def last_disqus_ticket_identifier
-    tickets.last&.created_at&.utc&.iso8601
-  end
-
   def twitter_client
     @twitter_client ||= Clients::Twitter.new(twitter_api_key, twitter_api_secret, token, secret)
-  end
-
-  def disqus_client
-    @disqus_client ||= Clients::Disqus.new(disqus_public_key, disqus_secret_key, token)
   end
 
   def linkedin_client
@@ -82,14 +70,6 @@ class OrganizationAccount < ApplicationRecord
 
   def twitter_api_secret
     @twitter_api_secret ||= Rails.application.credentials.twitter.api_secret
-  end
-
-  def disqus_public_key
-    @disqus_public_key ||= Rails.application.credentials.disqus.public_key
-  end
-
-  def disqus_secret_key
-    @disqus_secret_key ||= Rails.application.credentials.disqus.secret_key
   end
 
   def linkedin_client_id

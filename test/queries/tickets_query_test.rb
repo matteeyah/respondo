@@ -5,16 +5,16 @@ require 'test_helper'
 class TicketsQueryTest < ActiveSupport::TestCase
   test 'filters by status' do
     query = TicketsQuery.new(Ticket.all, status: 'solved')
-    tickets(:disqus).update!(status: 'solved')
+    tickets(:external).update!(status: 'solved')
 
-    assert_equal [tickets(:disqus)], query.call
+    assert_equal [tickets(:external)], query.call
   end
 
   test 'defaults to open status by default' do
     query = TicketsQuery.new(Ticket.all, status: '')
-    tickets(:disqus).update!(status: 'solved')
+    tickets(:external).update!(status: 'solved')
 
-    assert_equal [tickets(:twitter), tickets(:external), tickets(:email)], query.call
+    assert_equal [tickets(:twitter), tickets(:email)], query.call
   end
 
   test 'filters by assignee' do
@@ -32,9 +32,9 @@ class TicketsQueryTest < ActiveSupport::TestCase
   end
 
   test 'filters by author' do
-    query = TicketsQuery.new(Ticket.all, author: 'robert_is_cool')
+    query = TicketsQuery.new(Ticket.all, author: 'matt_is_cool')
 
-    assert_equal [tickets(:disqus)], query.call
+    assert_equal [tickets(:external)], query.call
   end
 
   test 'filters by content' do

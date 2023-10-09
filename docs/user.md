@@ -7,7 +7,7 @@ description: Documentation for managing users.
 
 ## Accounts
 
-Respondo can automatically integrate your Twitter, Disqus, and Google Accounts.
+Respondo can automatically integrate your Twitter, LinkedIn, and Google Accounts.
 To do so, navigate to the `User profile` page and you'll be able to authorize
 or deauthorize these accounts.
 
