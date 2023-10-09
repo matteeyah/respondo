@@ -3,7 +3,7 @@ google_oauth2:
   provider: google_oauth2
   user: john
 
-activedirectory:
+azure_activedirectory_v2:
   external_uid: uid_1
-  provider: activedirectory
+  provider: azure_activedirectory_v2
   user: john

@@ -67,7 +67,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:john), user_accounts(:google_oauth2))
     OmniAuth.config.add_mock(:twitter, JSON.parse(file_fixture('twitter_oauth.json').read))
 
-    assert_changes -> { OrganizationAccount.count }, from: 2, to: 3 do
+    assert_changes -> { OrganizationAccount.count }, from: 3, to: 4 do
       post '/auth/twitter'
       follow_redirect!
     end

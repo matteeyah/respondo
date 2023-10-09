@@ -16,10 +16,10 @@ class UserSettingsTest < ApplicationSystemTestCase
   end
 
   test 'allows the user to authorize an account' do
-    user_accounts(:activedirectory).destroy
+    user_accounts(:azure_activedirectory_v2).destroy
     visit profile_path
 
-    account = Struct.new(:provider, :external_uid, :name, :email).new(:activedirectory, 'uid_20')
+    account = Struct.new(:provider, :external_uid, :name, :email).new(:azure_activedirectory_v2, 'uid_20')
     add_oauth_mock_for_user(@user, account)
     within(page.find('p', text: 'Add account').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do

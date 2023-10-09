@@ -13,8 +13,10 @@ Rails.application.routes.draw do
 
   # OmniAuth routing
   get 'auth/:provider/callback', to: 'omniauth_callbacks#user',
-                                 constraints: { provider: /google_oauth2|activedirectory/ }
-  get 'auth/:provider/callback', to: 'omniauth_callbacks#organization', constraints: { provider: /twitter|disqus/ }
+                                 constraints: { provider: /google_oauth2|azure_activedirectory_v2/ }
+  get 'auth/:provider/callback', to: 'omniauth_callbacks#organization',
+                                 constraints: { provider: /twitter|disqus|linkedin/ }
+
   get 'auth/failure', to: redirect('/')
   delete :sign_out, to: 'sessions#destroy'
 

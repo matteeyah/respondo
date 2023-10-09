@@ -5,7 +5,7 @@ class Author < ApplicationRecord
   validates :username, presence: { allow_blank: false }
   validates :provider, presence: true
 
-  enum provider: { external: 0, twitter: 1, disqus: 2, email: 3 }
+  enum provider: { external: 0, twitter: 1, disqus: 2, email: 3, linkedin: 4 }
 
   has_many :tickets, dependent: :restrict_with_error
 
