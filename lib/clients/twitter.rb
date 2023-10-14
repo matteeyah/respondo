@@ -12,49 +12,54 @@ module Clients
     end
 
     def new_mentions(last_ticket_identifier)
-      options_hash = { tweet_mode: 'extended' }
-      options_hash[:since_id] = last_ticket_identifier if last_ticket_identifier
-      twitter_client.mentions_timeline(options_hash).reverse.map do |mention|
-        parse_response(mention)
-      end
+      id = twitter_client.get('users/me')['data']['id']
+      query_string = <<~QUERY_STRING
+        users/#{id}/mentions?tweet.fields=created_at&expansions=author_id,referenced_tweets.id&user.fields=created_at&max_results=5
+      QUERY_STRING
+      query_string += "&since_id=#{last_ticket_identifier}" if last_ticket_identifier
+      api_response = twitter_client.get(query_string)
+      api_response['data'].map do |mention|
+        parse_response(mention, api_response['includes']['users'])
+      end.reverse
     end
 
     def reply(response_text, tweet_id)
-      parse_response(
-        twitter_client.update(
-          response_text,
-          in_reply_to_status_id: tweet_id,
-          auto_populate_reply_metadata: true,
-          tweet_mode: 'extended'
-        )
+      new_reply = twitter_client.post(
+        'tweets', { text: response_text, reply: { in_reply_to_tweet_id: tweet_id } }.to_json
       )
+      api_response = twitter_client.get(<<~QUERY_STRING)
+        tweets/#{new_reply['data']['id']}?tweet.fields=created_at&expansions=author_id,referenced_tweets.id&user.fields=created_at
+      QUERY_STRING
+      parse_response(api_response['data'], api_response['includes']['users'])
     end
 
     def delete(tweet_id)
-      twitter_client.destroy_status(tweet_id)
+      twitter_client.delete("tweets/#{tweet_id}")
     end
 
     def permalink(tweet_id)
-      twitter_client.status(tweet_id).uri
+      "https://x.com/twitter/status/#{tweet_id}"
     end
 
     private
 
     def twitter_client
       @twitter_client ||=
-        ::Twitter::REST::Client.new do |config|
-          config.consumer_key = @api_key
-          config.consumer_secret = @api_secret
-          config.access_token = @token
-          config.access_token_secret = @secret
-        end
+        ::X::Client.new(
+          api_key: @api_key,
+          api_key_secret: @api_secret,
+          access_token: @token,
+          access_token_secret: @secret
+        )
     end
 
-    def parse_response(api_response)
+    def parse_response(api_response, user_includes)
       {
-        external_uid: api_response.id, content: api_response.attrs[:full_text], created_at: api_response.created_at,
-        parent_uid: api_response.in_reply_to_tweet_id.presence,
-        author: { external_uid: api_response.user.id, username: api_response.user.screen_name }
+        external_uid: api_response['id'], content: api_response['text'], created_at: api_response['created_at'],
+        parent_uid: api_response['referenced_tweets']&.find { |ref| ref['type'] == 'replied_to' }&.dig('id'),
+        author: { external_uid: api_response['author_id'], username: user_includes.find do |ui|
+                                                                       ui['id'] == api_response['author_id']
+                                                                     end['username'] }
       }
     end
   end

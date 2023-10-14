@@ -45,7 +45,7 @@ gem 'propshaft' # Rails assets
 gem 'resque' # Background job processing
 gem 'resque-scheduler' # Delayed and timed Resque jobs
 gem 'ruby-openai'
-gem 'twitter' # Twitter client
+gem 'x' # Twitter client
 
 group :development, :test do
   ## Ruby linter
