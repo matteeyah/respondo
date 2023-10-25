@@ -21,11 +21,14 @@ module Clients
       activities_urns = basic_org_data['elements'].pluck('generatedActivity')
       fetched_posts = posts_with_content(activities_urns)
       # go through all fetched mentions and find URNs of all authors
-      author_urn = fetched_posts[0]['author'] # TODO: implement for multiple posts and authors
-      author = author_by_urn(author_urn)
+      author_urns = fetched_posts.pluck('author')
+      authors = author_by_urn(author_urns)
       # parse all fetched posts to tickets
       fetched_posts.map do |mention|
-        mentions_to_tickets(mention, author)
+        mention_author = authors.find do |author|
+          mention['author'].include? author['id']
+        end
+        mentions_to_tickets(mention, mention_author)
       end
     end
 
@@ -70,9 +73,9 @@ module Clients
     # convert a post to a ticket
     def mentions_to_tickets(post_from_api, author)
       # cuts off the urn part: @[Test 1337](urn:li:organization:100702332)
-      regex = /@\[(.*)]\(.*\)/
-      organization_name = post_from_api['commentary'].match(regex)[0] # "Test 1337"
-      parsed_content =  post_from_api['commentary'].gsub(regex, organization_name)
+      regex = /@\[(.*)\]\(.*\)/
+      organization_name = post_from_api['commentary'].match(regex)[1] # "Test 1337"
+      parsed_content =  post_from_api['commentary'].gsub(regex, "@#{organization_name}")
       {
         external_uid: post_from_api['id'], content: parsed_content, created_at: post_from_api['createdAt'],
         author: { external_uid: author['id'], username: author['vanityName'] }
@@ -80,9 +83,21 @@ module Clients
     end
 
     # get author by URN
-    def author_by_urn(author_urn)
-      author_id = author_urn.split(':').last
-      http_get("https://api.linkedin.com/v2/people/(id:#{author_id})", RESTLI_V2)
+    def author_by_urn(author_urns)
+      if author_urns.length == 1
+        author_id = author_urns[0].split(':').last
+        [http_get("https://api.linkedin.com/v2/people/(id:#{author_id})", RESTLI_V2)]
+      else
+        author_ids_hash = author_urns.map do |urn|
+          urn.split(':').last
+        end
+        url = 'https://api.linkedin.com/v2/people?ids=List('
+        author_ids_hash.each do |id|
+          url += "(id: #{id})"
+        end
+        url += ')'
+        http_get(url, RESTLI_V2)
+      end
     end
   end
 end
