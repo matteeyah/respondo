@@ -18,6 +18,16 @@ class OrganizationsController < ApplicationController
     end
   end
 
+  def linkedin
+    @organization_account = OrganizationAccount.find_by(provider: 1)
+
+    li = Clients::Linkedin.new(Rails.application.credentials.linkedin.client_id,
+                               Rails.application.credentials.linkedin.client_secret,
+                               @organization_account.token,
+                               @organization_account)
+    li.new_mentions(0)
+  end
+
   private
 
   def organizations

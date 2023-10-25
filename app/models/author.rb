@@ -21,6 +21,8 @@ class Author < ApplicationRecord
     prefix = case provider
              when 'twitter'
                'https://twitter.com'
+             when 'linkedin'
+               'https://linkedin.com/in'
              end
     return unless prefix
 
