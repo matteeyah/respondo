@@ -265,6 +265,8 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.15.4-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.15.4-x64-mingw-ucrt)
+      racc (~> 1.4)
     nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
     oauth (1.1.0)
@@ -313,6 +315,7 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
+    pg (1.5.4-x64-mingw-ucrt)
     propshaft (0.7.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -462,6 +465,8 @@ GEM
       simple_oauth (~> 0.3.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2023.3)
+      tzinfo (>= 1.0.0)
     uber (0.1.0)
     unf (0.1.4)
       unf_ext
@@ -488,6 +493,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x64-mingw-ucrt
   x86_64-linux
 
 DEPENDENCIES

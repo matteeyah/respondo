@@ -12,8 +12,8 @@ module Clients
     end
 
     # TODO: add logic for last ticket identifier to avoid fetching tickets that were already fetched
-    def new_mentions(_last_ticket_identifier)
-      organizations = admin_organizations
+    def new_mentions(last_ticket_identifier)
+      organizations = admin_organizations(last_ticket_identifier)
       # get urns for fetching notifications
       admin_organizations_urns = organizations['elements'].pluck('organizationalTarget')
       basic_org_data = organization_notifications(admin_organizations_urns)
@@ -48,8 +48,8 @@ module Clients
     end
 
     # find all organizations where user is admin
-    def admin_organizations
-      http_get('https://api.linkedin.com/v2/organizationalEntityAcls?q=roleAssignee&role=ADMINISTRATOR&projection=(elements*(organizationalTarget~(id)))')
+    def admin_organizations(time_range_start)
+      http_get("https://api.linkedin.com/v2/organizationalEntityAcls?q=roleAssignee&role=ADMINISTRATOR&projection=(elements*(organizationalTarget~(id)))&timeRange.start=#{time_range_start}")
     end
 
     # get basic organizations data

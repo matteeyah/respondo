@@ -37,7 +37,7 @@ class OrganizationAccount < ApplicationRecord
                              when 'twitter'
                                last_twitter_ticket_identifier
                              when 'linkedin'
-                               last_linkedin_ticket_identifier
+                               last_li_ticket_identifier
                              end
 
     client.new_mentions(last_ticket_identifier)
@@ -58,10 +58,10 @@ class OrganizationAccount < ApplicationRecord
     tickets.last&.external_uid
   end
 
-  def last_linkedin_ticket_identifier
-    a = 0
-    puts 'TEEEEEEEEEEEEEEEEREREREREREREEERERERERERER'
-    a
+  def last_li_ticket_identifier
+    a = tickets.last&.updated_at
+    puts a.to_i
+    a.to_i
   end
 
   def twitter_client
