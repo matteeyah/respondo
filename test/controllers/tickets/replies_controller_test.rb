@@ -18,7 +18,7 @@ module Tickets
         status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
         body: file_fixture('twitter_get_tweet.json').read
       )
-      twitter_reply_request = stub_request(:post, 'https://api.twitter.com/2/tweets')
+      stub_request(:post, 'https://api.twitter.com/2/tweets')
         .with(body: { text: 'hello', reply: { in_reply_to_tweet_id: 'uid_1' } }.to_json)
         .to_return(
           body: file_fixture('twitter_create_tweet.json').read,
