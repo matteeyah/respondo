@@ -2,9 +2,9 @@
 
 require 'test_helper'
 
-class TwitterTest < ActiveSupport::TestCase
+class XTest < ActiveSupport::TestCase
   test '#new_mentions makes a twitter api request for all posts when a ticket identifier is not provided' do
-    client = Clients::Twitter.new('api_key', 'api_secret', 'token', 'secret')
+    client = Clients::X.new('api_key', 'api_secret', 'token', 'secret')
 
     stub_request(:get, 'https://api.twitter.com/2/users/me').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
@@ -22,7 +22,7 @@ class TwitterTest < ActiveSupport::TestCase
   end
 
   test '#new_mentions makes a twitter api request with the since parameter when provided' do
-    client = Clients::Twitter.new('api_key', 'api_secret', 'token', 'secret')
+    client = Clients::X.new('api_key', 'api_secret', 'token', 'secret')
 
     stub_request(:get, 'https://api.twitter.com/2/users/me').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
@@ -40,7 +40,7 @@ class TwitterTest < ActiveSupport::TestCase
   end
 
   test '#reply makes a twitter api request' do
-    client = Clients::Twitter.new('api_key', 'api_secret', 'token', 'secret')
+    client = Clients::X.new('api_key', 'api_secret', 'token', 'secret')
 
     stub_request(:get, 'https://api.twitter.com/2/tweets/1445880548472328192?expansions=author_id,referenced_tweets.id&tweet.fields=created_at&user.fields=created_at').and_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
@@ -59,7 +59,7 @@ class TwitterTest < ActiveSupport::TestCase
   end
 
   test '#delete makes a twitter api request' do
-    client = Clients::Twitter.new('api_key', 'api_secret', 'token', 'secret')
+    client = Clients::X.new('api_key', 'api_secret', 'token', 'secret')
 
     twitter_delete_request = stub_request(:delete, 'https://api.twitter.com/2/tweets/1')
       .and_return(
@@ -73,7 +73,7 @@ class TwitterTest < ActiveSupport::TestCase
   end
 
   test '#permalink generates a twitter url' do
-    client = Clients::Twitter.new('api_key', 'api_secret', 'token', 'secret')
+    client = Clients::X.new('api_key', 'api_secret', 'token', 'secret')
 
     assert_equal 'https://x.com/twitter/status/1', client.permalink(1)
   end

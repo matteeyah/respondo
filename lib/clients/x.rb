@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Clients
-  class Twitter < Clients::ProviderClient
+  class X < Clients::ProviderClient
     def initialize(api_key, api_secret, token, secret)
       super()
 

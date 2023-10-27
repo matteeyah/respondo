@@ -57,7 +57,7 @@ class OrganizationAccount < ApplicationRecord
   end
 
   def twitter_client
-    @twitter_client ||= Clients::Twitter.new(twitter_api_key, twitter_api_secret, token, secret)
+    @twitter_client ||= Clients::X.new(twitter_api_key, twitter_api_secret, token, secret)
   end
 
   def linkedin_client

@@ -6,14 +6,14 @@ description: Documentation for managing organization.
 <https://app.respondohub.com/settings>
 
 When you first sign in, you can click `Authorize` to connect your organization
-Twitter account.
+X account.
 
 When signed in, you can load new tickets associated with your Organization by
 pressing the `Reload` button in the tickets page.
 
 ## Organization accounts
 
-Respondo can automatically integrate your Twitter and LinkedIn accounts. To do so,
+Respondo can automatically integrate your X and LinkedIn accounts. To do so,
 navigate to the `Organization Settings` page and you'll be able to authorize or
 deauthorize these accounts.
 
