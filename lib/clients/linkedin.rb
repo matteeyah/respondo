@@ -13,12 +13,17 @@ module Clients
 
     # TODO: add logic for last ticket identifier to avoid fetching tickets that were already fetched
     def new_mentions(last_ticket_identifier)
-      organizations = admin_organizations(last_ticket_identifier)
+      organizations = admin_organizations
       # get urns for fetching notifications
       admin_organizations_urns = organizations['elements'].pluck('organizationalTarget')
-      basic_org_data = organization_notifications(admin_organizations_urns)
+      # since linkedin api startRange is inclusive (greater or equals), add +1 to exclude fetching last existing mention
+      basic_org_data = organization_notifications(admin_organizations_urns,
+                                                  last_ticket_identifier.nil? ? nil : last_ticket_identifier + 1)
+      elements = basic_org_data['elements'] || []
+      return elements unless elements.length.positive?
+
       # find all activities URNs
-      activities_urns = basic_org_data['elements'].pluck('generatedActivity')
+      activities_urns = elements.pluck('generatedActivity')
       fetched_posts = posts_with_content(activities_urns)
       # go through all fetched mentions and find URNs of all authors
       author_urns = fetched_posts.pluck('author')
@@ -48,16 +53,18 @@ module Clients
     end
 
     # find all organizations where user is admin
-    def admin_organizations(time_range_start)
-      http_get("https://api.linkedin.com/v2/organizationalEntityAcls?q=roleAssignee&role=ADMINISTRATOR&projection=(elements*(organizationalTarget~(id)))&timeRange.start=#{time_range_start}")
+    def admin_organizations
+      http_get('https://api.linkedin.com/v2/organizationalEntityAcls?q=roleAssignee&role=ADMINISTRATOR&projection=(elements*(organizationalTarget~(id)))')
     end
 
     # get basic organizations data
-    def organization_notifications(admin_org_urns)
-      http_get(
-        "https://api.linkedin.com/rest/organizationalEntityNotifications?q=criteria&actions=List(SHARE_MENTION)&organizationalEntity=#{URI.encode_www_form(admin_org_urns)}",
-        RESTLI_V2
-      )
+    def organization_notifications(admin_org_urns, time_range_start)
+      url = if time_range_start
+              "https://api.linkedin.com/rest/organizationalEntityNotifications?q=criteria&actions=List(SHARE_MENTION)&organizationalEntity=#{URI.encode_www_form(admin_org_urns)}&timeRange=(start:#{time_range_start},end:#{Time.new.to_i}000)"
+            else
+              "https://api.linkedin.com/rest/organizationalEntityNotifications?q=criteria&actions=List(SHARE_MENTION)&organizationalEntity=#{URI.encode_www_form(admin_org_urns)}"
+            end
+      http_get(url, RESTLI_V2)
     end
 
     # fetch posts with full content based on URNs
@@ -77,7 +84,8 @@ module Clients
       organization_name = post_from_api['commentary'].match(regex)[1] # "Test 1337"
       parsed_content =  post_from_api['commentary'].gsub(regex, "@#{organization_name}")
       {
-        external_uid: post_from_api['id'], content: parsed_content, created_at: post_from_api['createdAt'],
+        external_uid: post_from_api['id'], content: parsed_content,
+        external_modified_at: post_from_api['lastModifiedAt'],
         author: { external_uid: author['id'], username: author['vanityName'] }
       }
     end
