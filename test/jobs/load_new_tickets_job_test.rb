@@ -10,7 +10,7 @@ class LoadNewTicketsJobTest < ActiveJob::TestCase
   end
 
   test 'creates tickets' do
-    assert_difference -> { Ticket.count }, 1 do
+    assert_difference -> { Ticket.count }, 5 do
       LoadNewTicketsJob.perform_now(organizations(:respondo))
     end
   end
@@ -20,13 +20,13 @@ class LoadNewTicketsJobTest < ActiveJob::TestCase
   def stub_twitter
     twitter_ticket = tickets(:twitter)
 
-    stub_request(:post, 'https://api.twitter.com/oauth2/token').to_return(
+    stub_request(:get, 'https://api.twitter.com/2/users/me').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-      body: { token_type: 'bearer', access_token: 'HELLO' }.to_json
+      body: file_fixture('twitter_users_me.json')
     )
-    stub_request(:get, "https://api.twitter.com/1.1/statuses/mentions_timeline.json?since_id=#{twitter_ticket.external_uid}&tweet_mode=extended").to_return(
+    stub_request(:get, "https://api.twitter.com/2/users/2244994945/mentions?expansions=author_id,referenced_tweets.id&max_results=5&since_id=#{twitter_ticket.external_uid}&tweet.fields=created_at&user.fields=created_at").to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-      body: file_fixture('twitter_mentions_timeline.json').read
+      body: file_fixture('twitter_mentions.json').read
     )
   end
 end

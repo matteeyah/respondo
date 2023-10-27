@@ -123,9 +123,13 @@ class OrganizationAccountTest < ActiveSupport::TestCase
     account.update!(token: 'hello', secret: 'world')
     account.internal_tickets.destroy_all
 
-    stubbed_twitter_request = stub_request(:get, 'https://api.twitter.com/1.1/statuses/mentions_timeline.json?tweet_mode=extended').to_return(
+    stub_request(:get, 'https://api.twitter.com/2/users/me').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-      body: file_fixture('twitter_mentions_timeline.json').read
+      body: file_fixture('twitter_users_me.json')
+    )
+    stubbed_twitter_request = stub_request(:get, 'https://api.twitter.com/2/users/2244994945/mentions?expansions=author_id,referenced_tweets.id&max_results=5&tweet.fields=created_at&user.fields=created_at').to_return(
+      status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
+      body: file_fixture('twitter_mentions.json').read
     )
     account.new_mentions
 
@@ -136,9 +140,13 @@ class OrganizationAccountTest < ActiveSupport::TestCase
     account = organization_accounts(:twitter)
     account.update!(token: 'hello', secret: 'world')
 
-    stubbed_twitter_request = stub_request(:get, 'https://api.twitter.com/1.1/statuses/mentions_timeline.json?since_id=uid_1&tweet_mode=extended').to_return(
+    stub_request(:get, 'https://api.twitter.com/2/users/me').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-      body: file_fixture('twitter_mentions_timeline.json').read
+      body: file_fixture('twitter_users_me.json')
+    )
+    stubbed_twitter_request = stub_request(:get, 'https://api.twitter.com/2/users/2244994945/mentions?expansions=author_id,referenced_tweets.id&max_results=5&since_id=uid_1&tweet.fields=created_at&user.fields=created_at').to_return(
+      status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
+      body: file_fixture('twitter_mentions.json').read
     )
     account.new_mentions
 

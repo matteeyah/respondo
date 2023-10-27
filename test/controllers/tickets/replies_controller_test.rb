@@ -14,15 +14,14 @@ module Tickets
 
       organization_accounts(:twitter).update!(token: 'hello', secret: 'world')
 
-      stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')
+      stub_request(:get, 'https://api.twitter.com/2/tweets/1445880548472328192?expansions=author_id,referenced_tweets.id&tweet.fields=created_at&user.fields=created_at').and_return(
+        status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
+        body: file_fixture('twitter_get_tweet.json').read
+      )
+      twitter_reply_request = stub_request(:post, 'https://api.twitter.com/2/tweets')
+        .with(body: { text: 'hello', reply: { in_reply_to_tweet_id: 'uid_1' } }.to_json)
         .to_return(
-          status: 200,
-          body: {
-            id: 123_456,
-            user: { id: 1, screen_name: 'matteeyah' },
-            in_reply_to_status_id: nil,
-            full_text: 'hello back'
-          }.to_json,
+          body: file_fixture('twitter_create_tweet.json').read,
           headers: { 'Content-Type' => 'application/json' }
         )
 

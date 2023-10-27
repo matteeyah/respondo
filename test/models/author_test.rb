@@ -64,7 +64,7 @@ class AuthorTest < ActiveSupport::TestCase
   test '#external_link creates link for twitter author' do
     author = authors(:james)
 
-    assert_equal 'https://twitter.com/james_is_cool', author.external_link
+    assert_equal 'https://x.com/james_is_cool', author.external_link
   end
 
   test '#external_link returns nil for unsupported providers' do

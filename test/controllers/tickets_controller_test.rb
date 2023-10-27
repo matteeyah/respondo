@@ -83,10 +83,10 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
 
     organization_accounts(:twitter).update!(token: 'hello', secret: 'world')
 
-    stub_request(:post, 'https://api.twitter.com/1.1/statuses/destroy/0.json')
+    stub_request(:delete, 'https://api.twitter.com/2/tweets/uid_1')
       .and_return(
         status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-        body: file_fixture('twitter_post.json').read
+        body: file_fixture('twitter_delete_tweet.json').read
       )
 
     delete "/tickets/#{tickets(:twitter).id}"
@@ -135,16 +135,9 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:john), user_accounts(:google_oauth2))
     organizations(:respondo).users << users(:john)
 
-    organization_accounts(:twitter).update!(token: 'hello', secret: 'world')
-    stub_request(:get, 'https://api.twitter.com/1.1/statuses/show/0.json')
-      .and_return(
-        status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-        body: file_fixture('twitter_post.json').read
-      )
-
     get "/tickets/#{tickets(:twitter).id}/permalink"
 
-    assert_redirected_to 'https://twitter.com/doesnotmatter/status/2'
+    assert_redirected_to 'https://x.com/twitter/status/uid_1'
   end
 
   test 'GET permalink when the user is not authorized redirects the user to root path' do

@@ -69,14 +69,15 @@ class TicketTest < ActiveSupport::TestCase
     organization_accounts(:twitter).update!(token: 'hello', secret: 'world')
     ticket.update!(external_uid: '1')
 
-    stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json').with(
-      body: {
-        'auto_populate_reply_metadata' => 'true', 'in_reply_to_status_id' => '1',
-        'status' => 'response', 'tweet_mode' => 'extended'
-      }
+    stub_request(:get, 'https://api.twitter.com/2/tweets/1445880548472328192?expansions=author_id,referenced_tweets.id&tweet.fields=created_at&user.fields=created_at').and_return(
+      status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
+      body: file_fixture('twitter_get_tweet.json').read
+    )
+    stub_request(:post, 'https://api.twitter.com/2/tweets').with(
+      body: { text: 'response', reply: { in_reply_to_tweet_id: '1' } }.to_json
     ).and_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-      body: file_fixture('twitter_post.json').read
+      body: file_fixture('twitter_create_tweet.json').read
     )
 
     assert_difference -> { Ticket.count }, 1 do
