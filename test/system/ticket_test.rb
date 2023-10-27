@@ -10,7 +10,7 @@ class TicketTest < ApplicationSystemTestCase
   setup do
     @user = users(:john)
     @organization = organizations(:respondo)
-    @ticket = tickets(:twitter)
+    @ticket = tickets(:x)
 
     @user.update!(organization: @organization)
     sign_in(@user)
@@ -30,7 +30,7 @@ class TicketTest < ApplicationSystemTestCase
     account.update!(token: 'hello', secret: 'world')
 
     response_text = 'Hello from Respondo system tests'
-    stub_twitter_reply_response(
+    stub_x_reply_response(
       account.external_uid,
       @organization.screen_name,
       @ticket.external_uid,
@@ -180,7 +180,7 @@ class TicketTest < ApplicationSystemTestCase
     stub_request(:delete, 'https://api.twitter.com/2/tweets/uid_1')
       .and_return(
         status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-        body: file_fixture('twitter_delete_tweet.json').read
+        body: file_fixture('x_delete_tweet.json').read
       )
 
     within("#ticket_#{@ticket.id}") do
@@ -204,7 +204,7 @@ class TicketTest < ApplicationSystemTestCase
 
   private
 
-  def stub_twitter_reply_response(user_external_uid, user_screen_name, in_reply_to_status_id, response_text) # rubocop:disable Metrics/MethodLength
+  def stub_x_reply_response(user_external_uid, user_screen_name, in_reply_to_status_id, response_text) # rubocop:disable Metrics/MethodLength
     stub_request(:get, 'https://api.twitter.com/2/tweets/1445880548472328192?expansions=author_id,referenced_tweets.id&tweet.fields=created_at&user.fields=created_at').and_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: {
@@ -219,7 +219,7 @@ class TicketTest < ApplicationSystemTestCase
       .with(body: { text: response_text, reply: { in_reply_to_tweet_id: in_reply_to_status_id } }.to_json)
       .and_return(
         status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-        body: file_fixture('twitter_create_tweet.json').read
+        body: file_fixture('x_create_tweet.json').read
       )
   end
 end

@@ -18,11 +18,11 @@ class OrganizationTest < ApplicationSystemTestCase
   end
 
   test 'shows the tickets' do
-    assert has_text?(tickets(:twitter).content)
+    assert has_text?(tickets(:x).content)
   end
 
   test 'allows navigating to tickets' do
-    target_ticket = tickets(:twitter)
+    target_ticket = tickets(:x)
 
     within("#ticket_#{target_ticket.id}") do
       page.find(:css, 'i.bi-three-dots').click
@@ -33,18 +33,18 @@ class OrganizationTest < ApplicationSystemTestCase
   end
 
   test 'allows searching tickets by author name' do
-    fill_in 'query', with: "author:#{tickets(:twitter).author.username}"
+    fill_in 'query', with: "author:#{tickets(:x).author.username}"
     click_button :search
 
-    assert has_text?(tickets(:twitter).content)
+    assert has_text?(tickets(:x).content)
     assert has_no_text?(tickets(:external).content)
   end
 
   test 'allows searching tickets by content' do
-    fill_in 'query', with: "content:#{tickets(:twitter).content}"
+    fill_in 'query', with: "content:#{tickets(:x).content}"
     click_button :search
 
-    assert has_text?(tickets(:twitter).content)
+    assert has_text?(tickets(:x).content)
     assert has_no_text?(tickets(:external).content)
   end
 
@@ -59,7 +59,7 @@ class OrganizationTest < ApplicationSystemTestCase
     fill_in 'query', with: tickets(:external).author.username
     click_button :search
 
-    assert has_no_text?(tickets(:twitter).author.username)
+    assert has_no_text?(tickets(:x).author.username)
     assert has_text?(tickets(:external).author.username)
   end
 end

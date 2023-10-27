@@ -4,7 +4,7 @@ require 'test_helper'
 
 class InternalTicketTest < ActiveSupport::TestCase
   test '#provider returns source provider' do
-    ticket = internal_tickets(:twitter)
+    ticket = internal_tickets(:x)
 
     assert_equal ticket.source.provider, ticket.provider
   end

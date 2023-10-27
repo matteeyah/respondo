@@ -6,7 +6,7 @@ require 'minitest/mock'
 
 class LoadNewTicketsJobTest < ActiveJob::TestCase
   setup do
-    stub_twitter
+    stub_x
   end
 
   test 'creates tickets' do
@@ -17,16 +17,16 @@ class LoadNewTicketsJobTest < ActiveJob::TestCase
 
   private
 
-  def stub_twitter
-    twitter_ticket = tickets(:twitter)
+  def stub_x
+    x_ticket = tickets(:x)
 
     stub_request(:get, 'https://api.twitter.com/2/users/me').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-      body: file_fixture('twitter_users_me.json')
+      body: file_fixture('x_users_me.json')
     )
-    stub_request(:get, "https://api.twitter.com/2/users/2244994945/mentions?expansions=author_id,referenced_tweets.id&max_results=5&since_id=#{twitter_ticket.external_uid}&tweet.fields=created_at&user.fields=created_at").to_return(
+    stub_request(:get, "https://api.twitter.com/2/users/2244994945/mentions?expansions=author_id,referenced_tweets.id&max_results=5&since_id=#{x_ticket.external_uid}&tweet.fields=created_at&user.fields=created_at").to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-      body: file_fixture('twitter_mentions.json').read
+      body: file_fixture('x_mentions.json').read
     )
   end
 end

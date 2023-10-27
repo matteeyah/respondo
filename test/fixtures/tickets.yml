@@ -1,12 +1,12 @@
-twitter:
+x:
   external_uid: 'uid_1'
   status: open
-  content: Internal twitter ticket content.
+  content: Internal x ticket content.
   parent:
   author: james
   organization: respondo
   creator:
-  ticketable: twitter (InternalTicket)
+  ticketable: x (InternalTicket)
 
 external:
   external_uid: 'uid_2'
