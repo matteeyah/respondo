@@ -205,7 +205,7 @@ class TicketTest < ApplicationSystemTestCase
   private
 
   def stub_x_reply_response(user_external_uid, user_screen_name, in_reply_to_status_id, response_text) # rubocop:disable Metrics/MethodLength
-    stub_request(:get, 'https://api.twitter.com/2/tweets/1445880548472328192?expansions=author_id,referenced_tweets.id&tweet.fields=created_at&user.fields=created_at').and_return(
+    stub_request(:get, 'https://api.twitter.com/2/tweets/1445880548472328192?expansions=author_id,referenced_tweets.id&tweet.fields=created_at').and_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: {
         data: {

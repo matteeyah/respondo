@@ -69,7 +69,7 @@ class TicketTest < ActiveSupport::TestCase
     organization_accounts(:x).update!(token: 'hello', secret: 'world')
     ticket.update!(external_uid: '1')
 
-    stub_request(:get, 'https://api.twitter.com/2/tweets/1445880548472328192?expansions=author_id,referenced_tweets.id&tweet.fields=created_at&user.fields=created_at').and_return(
+    stub_request(:get, 'https://api.twitter.com/2/tweets/1445880548472328192?expansions=author_id,referenced_tweets.id&tweet.fields=created_at').and_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: file_fixture('x_get_tweet.json').read
     )

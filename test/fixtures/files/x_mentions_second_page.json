@@ -1,0 +1,47 @@
+{
+  "data": [
+    {
+      "author_id": "199566737",
+      "text": "Apparently I'm not the only one (of my test accounts) that loves @TwitterDev nn@LeStaache @LeGuud",
+      "lang": "en",
+      "conversation_id": "1375152449594523649",
+      "edit_history_tweet_ids": [
+        "1375152449594523649"
+      ],
+      "id": "1375152449594523649"
+    }
+  ],
+  "includes": {
+    "users": [
+      {
+        "name": "dan dale",
+        "id": "199566737",
+        "entities": {
+          "description": {
+            "hashtags": [
+              {
+                "start": 30,
+                "end": 37,
+                "tag": "devrel"
+              }
+            ],
+            "mentions": [
+              {
+                "start": 18,
+                "end": 29,
+                "username": "twitterdev"
+              }
+            ]
+          }
+        },
+        "username": "LeBraat",
+        "created_at": "2010-10-07T05:36:28.000Z"
+      }
+    ]
+  },
+  "meta": {
+    "oldest_id": "199566737",
+    "newest_id": "199566737",
+    "result_count": 1
+  }
+}

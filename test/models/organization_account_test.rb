@@ -127,7 +127,7 @@ class OrganizationAccountTest < ActiveSupport::TestCase
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: file_fixture('x_users_me.json')
     )
-    stubbed_x_request = stub_request(:get, 'https://api.twitter.com/2/users/2244994945/mentions?expansions=author_id,referenced_tweets.id&max_results=5&tweet.fields=created_at&user.fields=created_at').to_return(
+    stubbed_x_request = stub_request(:get, 'https://api.twitter.com/2/users/2244994945/mentions?expansions=author_id,referenced_tweets.id&tweet.fields=created_at').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: file_fixture('x_mentions.json').read
     )
@@ -144,7 +144,7 @@ class OrganizationAccountTest < ActiveSupport::TestCase
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: file_fixture('x_users_me.json')
     )
-    stubbed_x_request = stub_request(:get, 'https://api.twitter.com/2/users/2244994945/mentions?expansions=author_id,referenced_tweets.id&max_results=5&since_id=uid_1&tweet.fields=created_at&user.fields=created_at').to_return(
+    stubbed_x_request = stub_request(:get, 'https://api.twitter.com/2/users/2244994945/mentions?expansions=author_id,referenced_tweets.id&since_id=uid_1&tweet.fields=created_at').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: file_fixture('x_mentions.json').read
     )
