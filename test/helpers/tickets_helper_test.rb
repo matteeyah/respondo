@@ -4,11 +4,11 @@ require 'test_helper'
 
 class TicketsHelperTest < ActionView::TestCase
   test '#ticket_author_header shows provider when ticket is root' do
-    parent_ticket = tickets(:twitter)
+    parent_ticket = tickets(:x)
     ticket = Ticket.create!(
       external_uid: 'hello_world', status: :open, content: 'Lorem ipsum dolor sit amet',
       parent: parent_ticket, author: authors(:james), organization: organizations(:respondo),
-      ticketable: internal_tickets(:twitter)
+      ticketable: internal_tickets(:x)
     )
     author_link = link_to("@#{ticket.author.username}", ticket.author.external_link, class: 'text-decoration-none')
 
@@ -16,7 +16,7 @@ class TicketsHelperTest < ActionView::TestCase
   end
 
   test '#ticket_author_header shows local author when ticket is from respondo' do
-    ticket = tickets(:twitter)
+    ticket = tickets(:x)
     ticket.update!(creator: users(:john))
     author_link = link_to("@#{ticket.author.username}", ticket.author.external_link, class: 'text-decoration-none')
 

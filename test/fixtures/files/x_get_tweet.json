@@ -1,0 +1,120 @@
+{
+  "data": {
+    "attachments": {
+      "media_keys": [
+        "7_1460322142680072196"
+      ]
+    },
+    "id": "1460323737035677698",
+    "text": "Introducing a new era for the Twitter Developer Platform! nn📣The Twitter API v2 is now the primary API and full of new featuresn⏱Immediate access for most use cases, or apply to get more access for freen📖Removed certain restrictions in the Policynhttps://t.co/Hrm15bkBWJ https://t.co/YFfCDErHsg",
+    "edit_history_tweet_ids": [
+      "1460323737035677698"
+    ],
+    "author_id": "1034147061711679488"
+  },
+  "includes": {
+    "media": [
+      {
+        "duration_ms": 11093,
+        "media_key": "7_1460322142680072196",
+        "type": "video"
+      }
+    ],
+    "users": [
+      {
+        "name": "LeStache",
+        "id": "1034147061711679488",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/7IDoW8iFLm",
+                "expanded_url": "https://twitter.com",
+                "display_url": "twitter.com"
+              }
+            ]
+          },
+          "description": {
+            "urls": [
+              {
+                "start": 21,
+                "end": 44,
+                "url": "https://t.co/v6nxjDjZR3",
+                "expanded_url": "https://google.com",
+                "display_url": "google.com"
+              }
+            ],
+            "hashtags": [
+              {
+                "start": 15,
+                "end": 20,
+                "tag": "test"
+              }
+            ],
+            "mentions": [
+              {
+                "start": 0,
+                "end": 8,
+                "username": "lebraat"
+              }
+            ],
+            "cashtags": [
+              {
+                "start": 9,
+                "end": 14,
+                "tag": "twtr"
+              }
+            ]
+          }
+        },
+        "username": "LeStaache",
+        "created_at": "2018-08-27T18:34:07.000Z"
+      },
+      {
+        "name": "dan dale",
+        "id": "199566737",
+        "entities": {
+          "description": {
+            "hashtags": [
+              {
+                "start": 30,
+                "end": 37,
+                "tag": "devrel"
+              }
+            ],
+            "mentions": [
+              {
+                "start": 18,
+                "end": 29,
+                "username": "twitterdev"
+              }
+            ]
+          }
+        },
+        "username": "LeBraat",
+        "created_at": "2010-10-07T05:36:28.000Z"
+      },
+      {
+        "name": "LeGuud",
+        "id": "930524282358325248",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/8IkCzClPCz",
+                "expanded_url": "https://developer.twitter.com",
+                "display_url": "developer.twitter.com"
+              }
+            ]
+          }
+        },
+        "username": "LeGuud",
+        "created_at": "2017-11-14T19:54:12.000Z"
+      }
+    ]
+  }
+}
