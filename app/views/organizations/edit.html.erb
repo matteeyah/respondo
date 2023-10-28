@@ -43,7 +43,7 @@
                 <p class="fs-5 fw-bold">AI Guidelines</p>
               </div>
               <p class="card-text">Explain what your company does and the tone you want the AI to respond with.</p>
-              <%= form_with model: @organization, method: :patch do |update_organization_form| %>
+              <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
                 <div class="row">
                   <div class="col-8 col-lg-9">
                     <%= update_organization_form.text_area :ai_guidelines, required: true, class: 'form-control',
@@ -84,7 +84,7 @@
                 <p class="fs-5 fw-bold">Domain</p>
                 <small class="text-muted">Add users from your email domain automatially to your team.</small>
               </div>
-              <%= form_with model: @organization, method: :patch do |update_organization_form| %>
+              <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
                 <div class="row">
                   <div class="col-8 col-lg-10">
                     <%= update_organization_form.text_field :domain, required: true, placeholder: 'domain.com',
