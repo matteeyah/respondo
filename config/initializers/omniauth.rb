@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-LI_SCOPES = 'openid profile r_ads_reporting r_organization_social rw_organization_admin r_ads rw_ads r_basicprofile r_organization_admin email'
+LI_SCOPES = 'openid profile r_ads_reporting r_organization_social rw_organization_admin r_ads rw_ads r_basicprofile ' \
+            'r_organization_admin email'
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :google_oauth2, Rails.application.credentials.google.oauth2.client_id,

@@ -37,6 +37,18 @@ module Clients
       end
     end
 
+    def reply(_response_text, external_uid)
+      organizations = admin_organizations
+      # get urns for fetching notifications
+      admin_organizations_urns = organizations['elements'].pluck('organizationalTarget')
+
+      url = "https://api.linkedin.com/rest/socialActions/#{external_uid}/comments"
+    end
+
+    def delete(urn)
+      http_delete(urn)
+    end
+
     def permalink(urn)
       "https://www.linkedin.com/feed/update/#{urn}"
     end
@@ -53,6 +65,28 @@ module Clients
         JSON.parse(Net::HTTP.get(URI(url),
                                  'Authorization' => "Bearer #{@token}",
                                  'Linkedin-Version' => Time.zone.today.strftime('%Y%m').to_s))
+      end
+    end
+
+    def http_post(url, body)
+      Net::HTTP.post(URI(url), body.to_json, {
+                       'Authorization' => "Bearer #{@token}",
+                       'Linkedin-Version' => Time.zone.today.strftime('%Y%m').to_s,
+                       **RESTLI_V2
+                     })
+    end
+
+    def http_delete(url) # rubocop:disable Metrics/MethodLength
+      uri = URI(url)
+      hostname = uri.hostname # => "example.com"
+      req = Net::HTTP::Delete.new(uri, {
+                                    'Authorization' => "Bearer #{@token}",
+                                    'Linkedin-Version' => Time.zone.today.strftime('%Y%m').to_s,
+                                    'X-RestLi-Method' => 'DELETE',
+                                    **RESTLI_V2
+                                  }) # => #<Net::HTTP::Delete DELETE>
+      Net::HTTP.start(hostname, uri.port, use_ssl: true) do |http|
+        http.request(req)
       end
     end
 
