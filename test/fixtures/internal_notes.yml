@@ -1,4 +1,4 @@
 default:
   content: This is an internal note.
-  ticket: twitter
+  ticket: x
   creator: john

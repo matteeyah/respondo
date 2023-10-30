@@ -1,0 +1,157 @@
+{
+  "data": [
+    {
+      "author_id": "1034147061711679488",
+      "text": "@LeBraat @TwitterDev @LeGuud There's enough @twitterdev love to go around, @LeBraat",
+      "lang": "en",
+      "conversation_id": "1375152449594523649",
+      "edit_history_tweet_ids": [
+        "1375152598945312768"
+      ],
+      "id": "1375152598945312768"
+    },
+    {
+      "author_id": "199566737",
+      "text": "Apparently I'm not the only one (of my test accounts) that loves @TwitterDev nn@LeStaache @LeGuud",
+      "lang": "en",
+      "conversation_id": "1375152449594523649",
+      "edit_history_tweet_ids": [
+        "1375152449594523649"
+      ],
+      "id": "1375152449594523649"
+    },
+    {
+      "author_id": "930524282358325248",
+      "text": "Can I join this @twitterdev love party?!",
+      "lang": "en",
+      "conversation_id": "1375152043455873027",
+      "edit_history_tweet_ids": [
+        "1375152043455873027"
+      ],
+      "id": "1375152043455873027"
+    },
+    {
+      "author_id": "1034147061711679488",
+      "text": "I love me some @twitterdev too!",
+      "lang": "en",
+      "conversation_id": "1375151947360174082",
+      "edit_history_tweet_ids": [
+        "1375151947360174082"
+      ],
+      "id": "1375151947360174082"
+    },
+    {
+      "author_id": "199566737",
+      "text": "This is a test, but also a good excuse to express my love for @TwitterDev 😍",
+      "lang": "en",
+      "conversation_id": "1375151827189137412",
+      "edit_history_tweet_ids": [
+        "1375151827189137412"
+      ],
+      "id": "1375151827189137412"
+    }
+  ],
+  "includes": {
+    "users": [
+      {
+        "name": "LeStache",
+        "id": "1034147061711679488",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/7IDoW8iFLm",
+                "expanded_url": "https://twitter.com",
+                "display_url": "twitter.com"
+              }
+            ]
+          },
+          "description": {
+            "urls": [
+              {
+                "start": 21,
+                "end": 44,
+                "url": "https://t.co/v6nxjDjZR3",
+                "expanded_url": "https://google.com",
+                "display_url": "google.com"
+              }
+            ],
+            "hashtags": [
+              {
+                "start": 15,
+                "end": 20,
+                "tag": "test"
+              }
+            ],
+            "mentions": [
+              {
+                "start": 0,
+                "end": 8,
+                "username": "lebraat"
+              }
+            ],
+            "cashtags": [
+              {
+                "start": 9,
+                "end": 14,
+                "tag": "twtr"
+              }
+            ]
+          }
+        },
+        "username": "LeStaache",
+        "created_at": "2018-08-27T18:34:07.000Z"
+      },
+      {
+        "name": "dan dale",
+        "id": "199566737",
+        "entities": {
+          "description": {
+            "hashtags": [
+              {
+                "start": 30,
+                "end": 37,
+                "tag": "devrel"
+              }
+            ],
+            "mentions": [
+              {
+                "start": 18,
+                "end": 29,
+                "username": "twitterdev"
+              }
+            ]
+          }
+        },
+        "username": "LeBraat",
+        "created_at": "2010-10-07T05:36:28.000Z"
+      },
+      {
+        "name": "LeGuud",
+        "id": "930524282358325248",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/8IkCzClPCz",
+                "expanded_url": "https://developer.twitter.com",
+                "display_url": "developer.twitter.com"
+              }
+            ]
+          }
+        },
+        "username": "LeGuud",
+        "created_at": "2017-11-14T19:54:12.000Z"
+      }
+    ]
+  },
+  "meta": {
+    "oldest_id": "1375151827189137412",
+    "newest_id": "1375152598945312768",
+    "result_count": 5
+  }
+}

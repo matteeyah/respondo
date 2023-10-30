@@ -37,7 +37,7 @@ class Ticket < ApplicationRecord
       author: Author.from_client!(client_response[:author], provider),
       ticketable_attributes: client_response[:ticketable_attributes] || { source: }
     )
-  rescue Twitter::Error
+  rescue X::Error
     false
   end
 end

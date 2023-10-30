@@ -1,0 +1,41 @@
+{
+  "data": [
+    {
+      "author_id": "1034147061711679488",
+      "text": "@LeBraat @TwitterDev @LeGuud There's enough @twitterdev love to go around, @LeBraat",
+      "lang": "en",
+      "conversation_id": "1375152449594523649",
+      "edit_history_tweet_ids": [
+        "1375152598945312768"
+      ],
+      "id": "1375152598945312768"
+    }
+  ],
+  "includes": {
+    "users": [
+      {
+        "name": "LeStache",
+        "id": "1034147061711679488",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/7IDoW8iFLm",
+                "expanded_url": "https://twitter.com",
+                "display_url": "twitter.com"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "meta": {
+    "oldest_id": "1375151827189137412",
+    "newest_id": "1375151827189137412",
+    "result_count": 1,
+    "next_token": "7140dibdnow9c7btw3w3y5b6jqjnk3k4g5zkmfkvqwa42"
+  }
+}

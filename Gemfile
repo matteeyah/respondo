@@ -10,7 +10,7 @@ gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
 gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
 gem 'importmap-rails'
 gem 'puma' # Use Puma as the application server
-gem 'rails', '~> 7.0.7'
+gem 'rails', '~> 7.1.1'
 gem 'stimulus-rails' # Hotwire Stimulus
 gem 'turbo-rails' # Hotwire Turbo
 
@@ -45,7 +45,7 @@ gem 'propshaft' # Rails assets
 gem 'resque' # Background job processing
 gem 'resque-scheduler' # Delayed and timed Resque jobs
 gem 'ruby-openai'
-gem 'twitter' # Twitter client
+gem 'x' # Twitter client
 
 group :development, :test do
   ## Ruby linter
@@ -60,6 +60,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'ruby-lsp-rails'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
 end

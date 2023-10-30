@@ -6,7 +6,7 @@ class OrganizationAccount < ApplicationRecord
   validates :email, presence: { allow_blank: false, allow_nil: true }
   validates :screen_name, presence: { allow_blank: false, allow_nil: true }
 
-  enum provider: { twitter: 0, linkedin: 2 }
+  enum provider: { twitter: 0, linkedin: 1 }
 
   belongs_to :organization
 
@@ -35,7 +35,7 @@ class OrganizationAccount < ApplicationRecord
   def new_mentions
     last_ticket_identifier = case provider
                              when 'twitter'
-                               last_twitter_ticket_identifier
+                              last_x_ticket_identifier
                              when 'linkedin'
                                last_li_ticket_identifier
                              end
@@ -46,7 +46,7 @@ class OrganizationAccount < ApplicationRecord
   def client
     case provider
     when 'twitter'
-      twitter_client
+      x_client
     when 'linkedin'
       linkedin_client
     end
@@ -54,7 +54,7 @@ class OrganizationAccount < ApplicationRecord
 
   private
 
-  def last_twitter_ticket_identifier
+  def last_x_ticket_identifier
     tickets.last&.external_uid
   end
 
@@ -62,20 +62,20 @@ class OrganizationAccount < ApplicationRecord
     tickets.last&.created_at
   end
 
-  def twitter_client
-    @twitter_client ||= Clients::Twitter.new(twitter_api_key, twitter_api_secret, token, secret)
+  def x_client
+    @x_client ||= Clients::X.new(x_api_key, x_api_secret, token, secret)
   end
 
   def linkedin_client
     @linkedin_client ||= Clients::Linkedin.new(linkedin_client_id, linkedin_client_secret, token, organization)
   end
 
-  def twitter_api_key
-    @twitter_api_key ||= Rails.application.credentials.twitter.api_key
+  def x_api_key
+    @x_api_key ||= Rails.application.credentials.x.api_key
   end
 
-  def twitter_api_secret
-    @twitter_api_secret ||= Rails.application.credentials.twitter.api_secret
+  def x_api_secret
+    @x_api_secret ||= Rails.application.credentials.x.api_secret
   end
 
   def linkedin_client_id

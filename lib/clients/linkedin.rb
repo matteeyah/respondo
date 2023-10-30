@@ -1,7 +1,7 @@
 module Clients
-  RESTLI_V2 = { 'X-Restli-Protocol-Version' => '2.0.0' }.freeze
-
   class Linkedin < Clients::ProviderClient
+    RESTLI_V2 = { 'X-Restli-Protocol-Version' => '2.0.0' }.freeze
+
     def initialize(client_id, client_secret, token, organization_account)
       super()
 
@@ -35,6 +35,10 @@ module Clients
         end
         mentions_to_tickets(mention, mention_author)
       end
+    end
+
+    def permalink(urn)
+      "https://www.linkedin.com/feed/update/#{urn}"
     end
 
     private

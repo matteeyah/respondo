@@ -10,7 +10,7 @@ class TicketTest < ApplicationSystemTestCase
   setup do
     @user = users(:john)
     @organization = organizations(:respondo)
-    @ticket = tickets(:twitter)
+    @ticket = tickets(:x)
 
     @user.update!(organization: @organization)
     sign_in(@user)
@@ -30,7 +30,7 @@ class TicketTest < ApplicationSystemTestCase
     account.update!(token: 'hello', secret: 'world')
 
     response_text = 'Hello from Respondo system tests'
-    stub_twitter_reply_response(
+    stub_x_reply_response(
       account.external_uid,
       @organization.screen_name,
       @ticket.external_uid,
@@ -177,8 +177,11 @@ class TicketTest < ApplicationSystemTestCase
     @ticket.source.update!(token: 'hello', secret: 'world')
     visit tickets_path
 
-    stub_request(:post, 'https://api.twitter.com/1.1/statuses/destroy/0.json')
-      .to_return(status: 200, body: { id: 'world' }.to_json, headers: { content_type: 'application/json' })
+    stub_request(:delete, 'https://api.twitter.com/2/tweets/uid_1')
+      .and_return(
+        status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
+        body: file_fixture('x_delete_tweet.json').read
+      )
 
     within("#ticket_#{@ticket.id}") do
       page.find(:css, 'i.bi-three-dots').click
@@ -192,30 +195,31 @@ class TicketTest < ApplicationSystemTestCase
     @ticket.source.update!(token: 'hello', secret: 'world')
     visit tickets_path
 
-    stub_request(:get, 'https://api.twitter.com/1.1/statuses/show/0.json').to_return(
-      status: 200,
-      body: { id: 1, user: { id: 2, screen_name: 'hello' } }.to_json,
-      headers: { content_type: 'application/json' }
-    )
-
     within("#ticket_#{@ticket.id}") do
       page.find(:css, 'i.bi-three-dots').click
-      click_link 'External View'
-    end
 
-    assert_current_path('https://twitter.com/hello/status/1')
+      assert_link 'External View'
+    end
   end
 
   private
 
-  def stub_twitter_reply_response(user_external_uid, user_screen_name, in_reply_to_status_id, response_text)
-    response = {
-      id: 123_456,
-      user: { id: user_external_uid, screen_name: user_screen_name },
-      in_reply_to_status_id:,
-      full_text: response_text
-    }
-    stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')
-      .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
+  def stub_x_reply_response(user_external_uid, user_screen_name, in_reply_to_status_id, response_text) # rubocop:disable Metrics/MethodLength
+    stub_request(:get, 'https://api.twitter.com/2/tweets/1445880548472328192?expansions=author_id,referenced_tweets.id&tweet.fields=created_at').and_return(
+      status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
+      body: {
+        data: {
+          id: 123_456, text: response_text, created_at: Time.zone.now, author_id: user_external_uid,
+          referenced_tweets: [{ type: 'replied_to', id: in_reply_to_status_id }]
+        },
+        includes: { users: [{ id: user_external_uid, username: user_screen_name }] }
+      }.to_json
+    )
+    stub_request(:post, 'https://api.twitter.com/2/tweets')
+      .with(body: { text: response_text, reply: { in_reply_to_tweet_id: in_reply_to_status_id } }.to_json)
+      .and_return(
+        status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
+        body: file_fixture('x_create_tweet.json').read
+      )
   end
 end

@@ -34,7 +34,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:john), user_accounts(:google_oauth2))
     organizations(:respondo).users << users(:john)
 
-    get "/tickets/#{tickets(:twitter).id}"
+    get "/tickets/#{tickets(:x).id}"
 
     assert_response :success
   end
@@ -42,13 +42,13 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
   test 'GET show when the user is not authorized redirects the user to root path' do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
-    get "/tickets/#{tickets(:twitter).id}"
+    get "/tickets/#{tickets(:x).id}"
 
     assert_redirected_to root_path
   end
 
   test 'GET show when the user is not signed in redirects the user to login path' do
-    get "/tickets/#{tickets(:twitter).id}"
+    get "/tickets/#{tickets(:x).id}"
 
     assert_redirected_to login_path
   end
@@ -57,7 +57,7 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:john), user_accounts(:google_oauth2))
     organizations(:respondo).users << users(:john)
 
-    patch "/tickets/#{tickets(:twitter).id}",
+    patch "/tickets/#{tickets(:x).id}",
           params: { ticket: { content: 'hello' } }
 
     assert_redirected_to tickets_path(status: :open)
@@ -66,13 +66,13 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
   test 'PATCH update when the user is not authorized redirects the user to root path' do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
-    patch "/tickets/#{tickets(:twitter).id}"
+    patch "/tickets/#{tickets(:x).id}"
 
     assert_redirected_to root_path
   end
 
   test 'PATCH update when the user is not signed in redirects the user to login path' do
-    patch "/tickets/#{tickets(:twitter).id}"
+    patch "/tickets/#{tickets(:x).id}"
 
     assert_redirected_to login_path
   end
@@ -81,15 +81,15 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:john), user_accounts(:google_oauth2))
     organizations(:respondo).users << users(:john)
 
-    organization_accounts(:twitter).update!(token: 'hello', secret: 'world')
+    organization_accounts(:x).update!(token: 'hello', secret: 'world')
 
-    stub_request(:post, 'https://api.twitter.com/1.1/statuses/destroy/0.json')
+    stub_request(:delete, 'https://api.twitter.com/2/tweets/uid_1')
       .and_return(
         status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-        body: file_fixture('twitter_post.json').read
+        body: file_fixture('x_delete_tweet.json').read
       )
 
-    delete "/tickets/#{tickets(:twitter).id}"
+    delete "/tickets/#{tickets(:x).id}"
 
     assert_redirected_to tickets_path
   end
@@ -97,13 +97,13 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
   test 'DELETE destroy when the user is not authorized redirects the user to root path' do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
-    delete "/tickets/#{tickets(:twitter).id}"
+    delete "/tickets/#{tickets(:x).id}"
 
     assert_redirected_to root_path
   end
 
   test 'DELETE destroy when the user is not signed in redirects the user to login path' do
-    delete "/tickets/#{tickets(:twitter).id}"
+    delete "/tickets/#{tickets(:x).id}"
 
     assert_redirected_to login_path
   end
@@ -135,28 +135,21 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     sign_in(users(:john), user_accounts(:google_oauth2))
     organizations(:respondo).users << users(:john)
 
-    organization_accounts(:twitter).update!(token: 'hello', secret: 'world')
-    stub_request(:get, 'https://api.twitter.com/1.1/statuses/show/0.json')
-      .and_return(
-        status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-        body: file_fixture('twitter_post.json').read
-      )
+    get "/tickets/#{tickets(:x).id}/permalink"
 
-    get "/tickets/#{tickets(:twitter).id}/permalink"
-
-    assert_redirected_to 'https://twitter.com/doesnotmatter/status/2'
+    assert_redirected_to 'https://x.com/twitter/status/uid_1'
   end
 
   test 'GET permalink when the user is not authorized redirects the user to root path' do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
-    get "/tickets/#{tickets(:twitter).id}/permalink"
+    get "/tickets/#{tickets(:x).id}/permalink"
 
     assert_redirected_to root_path
   end
 
   test 'GET permalink when the user is not signed in redirects the user to login path' do
-    get "/tickets/#{tickets(:twitter).id}/permalink"
+    get "/tickets/#{tickets(:x).id}/permalink"
 
     assert_redirected_to login_path
   end

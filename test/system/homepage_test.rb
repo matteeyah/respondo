@@ -15,7 +15,7 @@ class HomepageTest < ApplicationSystemTestCase
     add_oauth_mock_for_user(users(:john), user_accounts(:google_oauth2))
     click_button('Sign in with Google')
 
-    add_oauth_mock_for_organization(organizations(:respondo), organization_accounts(:twitter))
+    add_oauth_mock_for_organization(organizations(:respondo), organization_accounts(:x))
     click_button('Authorize', class: 'btn btn-primary')
 
     find_by_id('settings').click

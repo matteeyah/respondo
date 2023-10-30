@@ -20,7 +20,7 @@ module AuthenticationHelper
     key_generator = ActiveSupport::KeyGenerator.new(Rails.application.secret_key_base, iterations: 1000)
     secret = key_generator.generate_key(salt, ActiveSupport::MessageEncryptor.key_len(encrypted_cookie_cipher))
     encryptor = ActiveSupport::MessageEncryptor.new(
-      secret, cipher: encrypted_cookie_cipher, serializer: ActionDispatch::Cookies::JsonSerializer
+      secret, cipher: encrypted_cookie_cipher, serializer: ActiveSupport::Messages::SerializerWithFallback[:json]
     )
 
     session_key = Rails.application.config.session_options[:key].freeze

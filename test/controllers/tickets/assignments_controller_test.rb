@@ -12,7 +12,7 @@ module Tickets
       sign_in(users(:john), user_accounts(:google_oauth2))
       organizations(:respondo).users << users(:john)
 
-      post "/tickets/#{tickets(:twitter).id}/assignments",
+      post "/tickets/#{tickets(:x).id}/assignments",
            params: { ticket: { assignment: { user_id: users(:john).id } } }
 
       assert_redirected_to tickets_path
@@ -21,13 +21,13 @@ module Tickets
     test 'POST create when the user is not authorized redirects the user to root path' do
       sign_in(users(:john), user_accounts(:google_oauth2))
 
-      post "/tickets/#{tickets(:twitter).id}/assignments"
+      post "/tickets/#{tickets(:x).id}/assignments"
 
       assert_redirected_to root_path
     end
 
     test 'POST create when the user is not signed in redirects the user to login path' do
-      post "/tickets/#{tickets(:twitter).id}/assignments"
+      post "/tickets/#{tickets(:x).id}/assignments"
 
       assert_redirected_to login_path
     end
