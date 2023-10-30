@@ -35,7 +35,7 @@ class OrganizationAccount < ApplicationRecord
   def new_mentions
     last_ticket_identifier = case provider
                              when 'twitter'
-                              last_x_ticket_identifier
+                               last_x_ticket_identifier
                              when 'linkedin'
                                last_li_ticket_identifier
                              end
