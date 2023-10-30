@@ -11,7 +11,7 @@ class LoadNewTicketsJob < ApplicationJob
           ticketable_type: 'InternalTicket', ticketable_attributes: { source: account },
           author: Author.from_client!(mention[:author], account.provider),
           parent: account.tickets.find_by(ticketable_type: 'InternalTicket', external_uid: mention[:parent_uid]),
-          external_modified_at: mention[:external_modified_at]
+          created_at: mention[:created_at]
         )
       end
     end

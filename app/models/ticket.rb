@@ -5,7 +5,6 @@ class Ticket < ApplicationRecord
 
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[ticketable_type organization_id] }
   validates :content, presence: { allow_blank: false }
-  validates :external_modified_at, presence: { allow_blank: true }
 
   enum status: { open: 0, solved: 1 }
 

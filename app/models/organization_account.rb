@@ -59,7 +59,7 @@ class OrganizationAccount < ApplicationRecord
   end
 
   def last_li_ticket_identifier
-    tickets.last&.external_modified_at
+    tickets.last&.created_at
   end
 
   def twitter_client

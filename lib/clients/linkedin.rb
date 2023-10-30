@@ -1,6 +1,6 @@
-RESTLI_V2 = { 'X-Restli-Protocol-Version' => '2.0.0' }.freeze
-
 module Clients
+  RESTLI_V2 = { 'X-Restli-Protocol-Version' => '2.0.0' }.freeze
+
   class Linkedin < Clients::ProviderClient
     def initialize(client_id, client_secret, token, organization_account)
       super()
@@ -11,14 +11,14 @@ module Clients
       @organization_account = organization_account
     end
 
-    # TODO: add logic for last ticket identifier to avoid fetching tickets that were already fetched
-    def new_mentions(last_ticket_identifier)
+    def new_mentions(last_ticket_id) # rubocop:disable Metrics/MethodLength, Metric/AbcSize
+      unix_timestamp_id = formatted_timestamp(last_ticket_id)
       organizations = admin_organizations
       # get urns for fetching notifications
       admin_organizations_urns = organizations['elements'].pluck('organizationalTarget')
       # since linkedin api startRange is inclusive (greater or equals), add +1 to exclude fetching last existing mention
       basic_org_data = organization_notifications(admin_organizations_urns,
-                                                  last_ticket_identifier.nil? ? nil : last_ticket_identifier + 1)
+                                                  unix_timestamp_id.nil? ? nil : unix_timestamp_id.to_i)
       elements = basic_org_data['elements'] || []
       return elements unless elements.length.positive?
 
@@ -85,13 +85,13 @@ module Clients
       parsed_content =  post_from_api['commentary'].gsub(regex, "@#{organization_name}")
       {
         external_uid: post_from_api['id'], content: parsed_content,
-        external_modified_at: post_from_api['lastModifiedAt'],
+        created_at: DateTime.strptime((post_from_api['lastModifiedAt']).to_s, '%Q'),
         author: { external_uid: author['id'], username: author['vanityName'] }
       }
     end
 
     # get author by URN
-    def author_by_urn(author_urns)
+    def author_by_urn(author_urns) # rubocop:disable Metrics/MethodLength
       if author_urns.length == 1
         author_id = author_urns[0].split(':').last
         [http_get("https://api.linkedin.com/v2/people/(id:#{author_id})", RESTLI_V2)]
@@ -106,6 +106,18 @@ module Clients
         url += ')'
         http_get(url, RESTLI_V2)
       end
+    end
+
+    # get time stamp in linkedin format with 1 second added
+    def formatted_timestamp(datetime) # rubocop:disable Metrics/Metric/AbcSize
+      return nil if datetime.nil?
+
+      split_date = datetime.to_s.split
+      date = split_date[0].split('-')
+      time = split_date[1].split(':')
+      zone = split_date[2]
+      adjusted_timestamp = Time.new(date[0], date[1], date[2], time[0], time[1], time[2], zone).to_i + 1.second
+      date ? "#{adjusted_timestamp}000" : nil
     end
   end
 end
