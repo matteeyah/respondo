@@ -24,8 +24,6 @@ Rails.application.routes.draw do
   get :settings, to: 'organizations#edit'
   get :profile, to: 'users#edit'
 
-  get :linkedin, to: 'organizations#linkedin'
-
   resources :tickets, only: %i[index show update destroy] do
     member do
       get :permalink
