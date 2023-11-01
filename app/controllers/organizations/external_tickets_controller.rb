@@ -5,13 +5,14 @@ module Organizations
     skip_before_action :verify_authenticity_token
     skip_before_action :authenticate_user!
 
+    before_action :set_organization, only: :create
     before_action :authorize_token!
 
     def create
       respond_to do |format|
         format.json do
           if validate_json_payload
-            new_ticket = organization.tickets.create!(create_params)
+            new_ticket = @organization.tickets.create!(create_params)
             render json: new_ticket
           else
             render json: { error: 'Invalid payload schema.' }
@@ -22,8 +23,8 @@ module Organizations
 
     private
 
-    def organization
-      @organization ||= Organization.find(params[:organization_id] || params[:id])
+    def set_organization
+      @organization = Organization.find(params[:organization_id] || params[:id])
     end
 
     def validate_json_payload
@@ -52,13 +53,13 @@ module Organizations
     end
 
     def authorize_token!
-      return if token&.authenticate_token(token_params[:token]) && token.user.organization == organization
+      return if token&.authenticate_token(token_params[:token]) && token.user.organization == @organization
 
       render status: :forbidden, json: { error: 'not authorized' }
     end
 
     def parent
-      organization.tickets.find_by(ticketable_type: 'ExternalTicket', external_uid: params[:parent_uid])
+      @organization.tickets.find_by(ticketable_type: 'ExternalTicket', external_uid: params[:parent_uid])
     end
 
     def author

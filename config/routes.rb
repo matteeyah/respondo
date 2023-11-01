@@ -25,7 +25,9 @@ Rails.application.routes.draw do
   get :profile, to: 'users#edit'
 
   resources :tickets, only: %i[index show update destroy] do
-    get :permalink
+    member do
+      get :permalink
+    end
 
     collection do
       post :refresh

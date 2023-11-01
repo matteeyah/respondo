@@ -2,11 +2,14 @@
 
 class TicketsController < Tickets::ApplicationController
   include Pagy::Backend
+  include AuthorizesOrganizationMembership
 
   TICKET_RENDER_PRELOADS = [
     :author, :creator, :tags, :assignment, :replies,
     { organization: [:users], ticketable: %i[base_ticket source], internal_notes: [:creator] }
   ].freeze
+
+  before_action :set_ticket, only: %i[show update destroy permalink]
 
   def index
     @pagy, tickets_relation = pagy(tickets)
@@ -14,9 +17,9 @@ class TicketsController < Tickets::ApplicationController
   end
 
   def show
-    @ticket_hash = ticket.with_descendants_hash(TICKET_RENDER_PRELOADS)
-    @reply_model = Ticket.new(parent: ticket)
-    @reply_model.content = generate_ai_response(ticket) if params[:ai]
+    @ticket_hash = @ticket.with_descendants_hash(TICKET_RENDER_PRELOADS)
+    @reply_model = Ticket.new(parent: @ticket)
+    @reply_model.content = generate_ai_response(@ticket) if params[:ai]
 
     respond_to do |format|
       format.turbo_stream
@@ -25,17 +28,17 @@ class TicketsController < Tickets::ApplicationController
   end
 
   def update
-    ticket.update(update_params)
+    @ticket.update(update_params)
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to tickets_path(status: ticket.status_before_last_save) }
+      format.html { redirect_to tickets_path(status: @ticket.status_before_last_save) }
     end
   end
 
   def destroy
-    ticket.client.delete(ticket.external_uid)
-    ticket.destroy
+    @ticket.client.delete(@ticket.external_uid)
+    @ticket.destroy
 
     respond_to do |format|
       format.turbo_stream
@@ -53,25 +56,23 @@ class TicketsController < Tickets::ApplicationController
   end
 
   def permalink
-    redirect_to ticket.client.permalink(ticket.external_uid), allow_other_host: true
+    redirect_to @ticket.client.permalink(@ticket.external_uid), allow_other_host: true
   end
 
   private
 
-  def ticket
-    @ticket ||= current_user.organization.tickets.find(params[:ticket_id] || params[:id])
-  end
-
-  def parsed_query
-    @parsed_query ||= begin
-      key, value = params[:query].split(':')
-      { key => value }
-    end
+  def set_ticket
+    @ticket = Ticket.find(params[:id])
   end
 
   def tickets
     query = params.slice(:status, :assignee, :tag)
-    query = query.merge(parsed_query) if params[:query]
+
+    if params[:query]
+      key, value = params[:query].split(':')
+      query.merge(key => value)
+    end
+
     TicketsQuery.new(current_user.organization.tickets, query).call
   end
 
@@ -79,7 +80,7 @@ class TicketsController < Tickets::ApplicationController
     params.require(:ticket).permit(:status)
   end
 
-  def ai_messages # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  def ai_messages(ticket) # rubocop:disable Metrics/MethodLength
     [
       {
         role: 'system', content: <<~AI_WORKPLACE
@@ -105,11 +106,11 @@ class TicketsController < Tickets::ApplicationController
     end
   end
 
-  def generate_ai_response(_ticket)
+  def generate_ai_response(ticket)
     OpenAI::Client.new.chat(
       parameters: {
         model: 'gpt-3.5-turbo',
-        messages: ai_messages, temperature: 0.7
+        messages: ai_messages(ticket), temperature: 0.7
       }
     ).dig('choices', 0, 'message', 'content').chomp.strip
   end

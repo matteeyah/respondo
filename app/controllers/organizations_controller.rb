@@ -20,10 +20,6 @@ class OrganizationsController < ApplicationController
 
   private
 
-  def organizations
-    OrganizationsQuery.new(Organization.all, params.slice(:query)).call
-  end
-
   def update_params
     params.require(:organization).permit(:domain, :ai_guidelines)
   end

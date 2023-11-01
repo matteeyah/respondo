@@ -14,7 +14,7 @@ module Tickets
     private
 
     def update_assignment!
-      Assignment.find_or_initialize_by(ticket_id: ticket.id).tap do |assignment|
+      Assignment.find_or_initialize_by(ticket_id: @ticket.id).tap do |assignment|
         user_id = assignment_params[:assignment][:user_id]
         if user_id.empty?
           Assignment.destroy(assignment.id)
