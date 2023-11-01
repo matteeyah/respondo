@@ -27,7 +27,9 @@ Rails.application.routes.draw do
   get :linkedin, to: 'organizations#linkedin'
 
   resources :tickets, only: %i[index show update destroy] do
-    get :permalink
+    member do
+      get :permalink
+    end
 
     collection do
       post :refresh

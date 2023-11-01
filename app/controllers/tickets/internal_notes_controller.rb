@@ -3,7 +3,7 @@
 module Tickets
   class InternalNotesController < ApplicationController
     def create
-      @internal_note = create_note!
+      @internal_note = @ticket.internal_notes.create(creator: current_user, **note_params)
 
       respond_to do |format|
         format.turbo_stream
@@ -15,10 +15,6 @@ module Tickets
 
     def note_params
       params.require(:internal_note).permit(:content)
-    end
-
-    def create_note!
-      ticket.internal_notes.create(creator: current_user, **note_params)
     end
   end
 end

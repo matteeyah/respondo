@@ -4,10 +4,12 @@ module Tickets
   class ApplicationController < ::ApplicationController
     include AuthorizesOrganizationMembership
 
+    before_action :set_ticket
+
     private
 
-    def ticket
-      @ticket ||= Ticket.find(params[:ticket_id] || params[:id])
+    def set_ticket
+      @ticket = Ticket.find(params[:ticket_id])
     end
   end
 end

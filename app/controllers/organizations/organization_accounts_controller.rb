@@ -4,8 +4,9 @@ module Organizations
   class OrganizationAccountsController < ApplicationController
     include AuthorizesOrganizationMembership
 
+    before_action :set_account, only: :destroy
+
     def destroy
-      @account = account
       @account.destroy
 
       respond_to do |format|
@@ -16,8 +17,8 @@ module Organizations
 
     private
 
-    def account
-      @account ||= current_user.organization.accounts.find(params[:organization_account_id] || params[:id])
+    def set_account
+      @account = current_user.organization.accounts.find(params[:id])
     end
   end
 end

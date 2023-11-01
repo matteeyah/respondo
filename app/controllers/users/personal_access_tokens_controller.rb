@@ -2,6 +2,8 @@
 
 module Users
   class PersonalAccessTokensController < ApplicationController
+    before_action :set_token, only: :destroy
+
     def create
       @token = build_personal_access_token
       @success = @token.save
@@ -13,7 +15,6 @@ module Users
     end
 
     def destroy
-      @token = personal_access_token
       @token.destroy
 
       respond_to do |format|
@@ -24,8 +25,8 @@ module Users
 
     private
 
-    def personal_access_token
-      @personal_access_token ||= current_user.personal_access_tokens.find(params[:personal_access_token] || params[:id])
+    def set_token
+      @token = current_user.personal_access_tokens.find(params[:id])
     end
 
     def build_personal_access_token

@@ -40,4 +40,41 @@ class Ticket < ApplicationRecord
   rescue X::Error
     false
   end
+
+  def generate_ai_response(prompt = nil)
+    OpenAI::Client.new.chat(
+      parameters: {
+        model: 'gpt-3.5-turbo',
+        messages: ai_messages(prompt), temperature: 0.7
+      }
+    ).dig('choices', 0, 'message', 'content').chomp.strip
+  end
+
+  private
+
+  def ai_messages(prompt) # rubocop:disable Metrics/MethodLength
+    [
+      {
+        role: 'system', content: <<~AI_WORKPLACE
+          You work at a company called #{organization.screen_name}.
+          #{organization.ai_guidelines}
+        AI_WORKPLACE
+      },
+      {
+        role: 'system', content: <<~AI_POSITION
+          You are a social media manager and a support representative.
+          Messages from the user are social media posts where someone mentions the company that you work for.
+          You respond to those posts with a message.
+        AI_POSITION
+      },
+      { role: 'user', content: "#{author.username}: #{content}" }
+    ].tap do |messages|
+      if prompt != 'true'
+        messages.insert(
+          2,
+          { role: 'system', content: "Generate a response using this prompt: #{prompt}" }
+        )
+      end
+    end
+  end
 end

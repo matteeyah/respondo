@@ -4,8 +4,10 @@ module Organizations
   class UsersController < ApplicationController
     include AuthorizesOrganizationMembership
 
+    before_action :set_external_user, only: :create
+    before_action :set_organization_user, only: :destroy
+
     def create
-      @user = external_user
       current_user.organization.users << @user
 
       respond_to do |format|
@@ -15,7 +17,6 @@ module Organizations
     end
 
     def destroy
-      @user = organization_user
       @success = remove_user!
 
       respond_to do |format|
@@ -26,12 +27,12 @@ module Organizations
 
     private
 
-    def external_user
-      @external_user ||= User.find(params[:user_id] || params[:id])
+    def set_external_user
+      @user = User.find(params[:user_id])
     end
 
-    def organization_user
-      @organization_user ||= current_user.organization.users.find(params[:user_id] || params[:id])
+    def set_organization_user
+      @user = current_user.organization.users.find(params[:id])
     end
 
     def remove_user!
@@ -45,7 +46,7 @@ module Organizations
     def redirect_path
       # If user is removing self from organization, redirecting back results in
       # a redirect loop.
-      organization_user == current_user ? root_path : settings_path
+      @user == current_user ? root_path : settings_path
     end
   end
 end

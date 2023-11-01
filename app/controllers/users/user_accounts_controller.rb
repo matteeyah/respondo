@@ -2,8 +2,9 @@
 
 module Users
   class UserAccountsController < ApplicationController
+    before_action :set_account, only: :destroy
+
     def destroy
-      @account = account
       @success = @account.destroy
 
       respond_to do |format|
@@ -14,8 +15,8 @@ module Users
 
     private
 
-    def account
-      @account ||= current_user.accounts.find(params[:user_account_id] || params[:id])
+    def set_account
+      @account = current_user.accounts.find(params[:id])
     end
   end
 end
