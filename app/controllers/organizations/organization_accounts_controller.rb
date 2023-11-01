@@ -18,7 +18,7 @@ module Organizations
     private
 
     def set_account
-      @account = current_user.organization.accounts.find(params[:organization_account_id] || params[:id])
+      @account = current_user.organization.accounts.find(params[:id])
     end
   end
 end

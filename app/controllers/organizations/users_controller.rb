@@ -28,11 +28,11 @@ module Organizations
     private
 
     def set_external_user
-      @user = User.find(params[:user_id] || params[:id])
+      @user = User.find(params[:user_id])
     end
 
     def set_organization_user
-      @user = current_user.organization.users.find(params[:user_id] || params[:id])
+      @user = current_user.organization.users.find(params[:id])
     end
 
     def remove_user!

@@ -16,7 +16,7 @@ module Users
     private
 
     def set_account
-      @account = current_user.accounts.find(params[:user_account_id] || params[:id])
+      @account = current_user.accounts.find(params[:id])
     end
   end
 end

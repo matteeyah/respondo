@@ -26,7 +26,7 @@ module Users
     private
 
     def set_token
-      @token = current_user.personal_access_tokens.find(params[:personal_access_token] || params[:id])
+      @token = current_user.personal_access_tokens.find(params[:id])
     end
 
     def build_personal_access_token

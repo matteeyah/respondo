@@ -24,7 +24,7 @@ module Organizations
     private
 
     def set_organization
-      @organization = Organization.find(params[:organization_id] || params[:id])
+      @organization = Organization.find(params[:organization_id])
     end
 
     def validate_json_payload
