@@ -56,8 +56,8 @@ class Ticket < ApplicationRecord
     [
       {
         role: 'system', content: <<~AI_WORKPLACE
-          You work at a company called #{ticket.organization.screen_name}.
-          #{ticket.organization.ai_guidelines}
+          You work at a company called #{organization.screen_name}.
+          #{organization.ai_guidelines}
         AI_WORKPLACE
       },
       {
@@ -67,7 +67,7 @@ class Ticket < ApplicationRecord
           You respond to those posts with a message.
         AI_POSITION
       },
-      { role: 'user', content: "#{ticket.author.username}: #{ticket.content}" }
+      { role: 'user', content: "#{author.username}: #{content}" }
     ].tap do |messages|
       if prompt != 'true'
         messages.insert(

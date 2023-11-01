@@ -70,7 +70,7 @@ class TicketsController < Tickets::ApplicationController
 
     if params[:query]
       key, value = params[:query].split(':')
-      query.merge(key => value)
+      query = query.merge(key => value)
     end
 
     TicketsQuery.new(current_user.organization.tickets, query).call
