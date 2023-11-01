@@ -2,11 +2,13 @@
 
 module Tickets
   class TagsController < ApplicationController
+    before_action :set_tag, only: :destroy
+
     def create
-      @ticket = ticket
       @ticket.tag_list.add(tag_params[:name])
       @ticket.save!
       @tag = new_tag
+
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to tickets_path }
@@ -14,8 +16,6 @@ module Tickets
     end
 
     def destroy
-      @ticket = ticket
-      @tag = tag
       @ticket.tags.delete(@tag)
 
       respond_to do |format|
@@ -34,8 +34,8 @@ module Tickets
       ActsAsTaggableOn::Tag.find_by(name: tag_params[:name])
     end
 
-    def tag
-      @tag ||= ticket.tags.find(params[:id])
+    def set_tag
+      @tag = @ticket.tags.find(params[:id])
     end
   end
 end

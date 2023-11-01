@@ -3,7 +3,8 @@
 module Tickets
   class RepliesController < ApplicationController
     def create
-      @ticket_hash = ticket_hash!
+      @ticket.respond_as(current_user, reply_params[:content])
+      @ticket_hash = @ticket.with_descendants_hash(::TicketsController::TICKET_RENDER_PRELOADS)
 
       respond_to do |format|
         format.turbo_stream { render 'tickets/show' }
@@ -15,11 +16,6 @@ module Tickets
 
     def reply_params
       params.require(:ticket).permit(:content)
-    end
-
-    def ticket_hash!
-      ticket.respond_as(current_user, reply_params[:content])
-      ticket.with_descendants_hash(::TicketsController::TICKET_RENDER_PRELOADS)
     end
   end
 end

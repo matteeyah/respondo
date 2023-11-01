@@ -34,7 +34,7 @@
                 <li><%= link_to 'View', ticket_path(ticket), class: 'dropdown-item', 'data-turbo-frame' => :_top %></li>
               <% end %>
               <li>
-                <%= link_to 'External View', ticket_permalink_path(ticket), 'data-turbo-frame' => :_top, id: "permalink-#{ticket.id}", class: 'dropdown-item', target: :_blank, rel: 'noopener' %>
+                <%= link_to 'External View', permalink_ticket_path(ticket), 'data-turbo-frame' => :_top, id: "permalink-#{ticket.id}", class: 'dropdown-item', target: :_blank, rel: 'noopener' %>
               </li>
               <% if ticket.creator.present? %>
                 <li>
