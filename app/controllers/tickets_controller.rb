@@ -53,7 +53,8 @@ class TicketsController < Tickets::ApplicationController
   end
 
   def permalink
-    redirect_to ticket.client.permalink(ticket.external_uid), allow_other_host: true
+    # TODO: use only external_link once x.com tickets are migrated
+    redirect_to ticket.client.permalink(ticket.external_link || ticket.external_uid), allow_other_host: true
   end
 
   private

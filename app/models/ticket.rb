@@ -4,6 +4,7 @@ class Ticket < ApplicationRecord
   include WithDescendants
 
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[ticketable_type organization_id] }
+  validates :external_link, presence: { allow_blank: true }
   validates :content, presence: { allow_blank: false }
 
   enum status: { open: 0, solved: 1 }
@@ -29,10 +30,9 @@ class Ticket < ApplicationRecord
 
   def respond_as(user, reply) # rubocop:disable Metrics/AbcSize
     client_response = client.reply(reply, external_uid)
-
     organization.tickets.create!(
       **client_response.except(:parent_uid, :author),
-      creator: user, ticketable_type:,
+      creator: user, ticketable_type:, external_link: client_response[:external_link],
       parent: source.tickets.find_by(ticketable_type:, external_uid: client_response[:parent_uid]),
       author: Author.from_client!(client_response[:author], provider),
       ticketable_attributes: client_response[:ticketable_attributes] || { source: }

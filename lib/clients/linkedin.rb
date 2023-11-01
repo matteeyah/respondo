@@ -13,9 +13,7 @@ module Clients
 
     def new_mentions(last_ticket_id) # rubocop:disable Metrics/MethodLength, Metric/AbcSize
       unix_timestamp_id = formatted_timestamp(last_ticket_id)
-      organizations = admin_organizations
-      # get urns for fetching notifications
-      admin_organizations_urns = organizations['elements'].pluck('organizationalTarget')
+      admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
       # since linkedin api startRange is inclusive (greater or equals), add +1 to exclude fetching last existing mention
       basic_org_data = organization_notifications(admin_organizations_urns,
                                                   unix_timestamp_id.nil? ? nil : unix_timestamp_id.to_i)
@@ -27,7 +25,7 @@ module Clients
       fetched_posts = posts_with_content(activities_urns)
       # go through all fetched mentions and find URNs of all authors
       author_urns = fetched_posts.pluck('author')
-      authors = author_by_urn(author_urns)
+      authors = authors_by_urn(author_urns)
       # parse all fetched posts to tickets
       fetched_posts.map do |mention|
         mention_author = authors.find do |author|
@@ -37,56 +35,57 @@ module Clients
       end
     end
 
-    def reply(_response_text, external_uid)
-      organizations = admin_organizations
-      # get urns for fetching notifications
-      admin_organizations_urns = organizations['elements'].pluck('organizationalTarget')
-
-      url = "https://api.linkedin.com/rest/socialActions/#{external_uid}/comments"
+    def reply(response_text, external_uid) # rubocop:disable Metrics/MethodLength, Metric/AbcSize
+      admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
+      body = { actor: admin_organizations_urns, object: external_uid, message: { text: response_text } }
+      result = http_post("https://api.linkedin.com/v2/socialActions/#{id_to_urn(external_uid, 'share')}/comments",
+                         body)
+      comment = JSON.parse(result.body)
+      organization_id = urn_to_id(comment['actor'])
+      organization = organization_by_id(organization_id)
+      encoded_comment_urn = URI.encode_uri_component(comment['$URN'])
+      {
+        external_uid: comment['id'], content: comment['message']['text'], parent_uid: external_uid,
+        created_at: DateTime.strptime((comment['lastModified']['time']).to_s, '%Q'),
+        author: { external_uid: organization_id, username: organization['vanityName'] },
+        external_link: "#{comment['object']}/?commentUrn=#{encoded_comment_urn}"
+      }
     end
 
-    def delete(urn)
-      http_delete(urn)
+    def delete(id)
+      parent_ticket_link = @organization_account.tickets.find_by(external_uid: id).parent[:external_link]
+      admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
+      http_delete("https://api.linkedin.com/v2/socialActions/#{parent_ticket_link}/comments/#{id}?actor=#{admin_organizations_urns}")
     end
 
-    def permalink(urn)
-      "https://www.linkedin.com/feed/update/#{urn}"
+    def permalink(link)
+      "https://www.linkedin.com/feed/update/#{link}"
     end
 
     private
 
+    def authorization_headers
+      { 'Authorization' => "Bearer #{@token}", 'LinkedIn-Version' => Time.zone.today.strftime('%Y%m').to_s }
+    end
+
     def http_get(url, headers = nil)
-      if headers
-        JSON.parse(Net::HTTP.get(URI(url),
-                                 'Authorization' => "Bearer #{@token}",
-                                 'Linkedin-Version' => Time.zone.today.strftime('%Y%m').to_s,
-                                 **headers))
-      else
-        JSON.parse(Net::HTTP.get(URI(url),
-                                 'Authorization' => "Bearer #{@token}",
-                                 'Linkedin-Version' => Time.zone.today.strftime('%Y%m').to_s))
-      end
+      request_headers = headers ? { **authorization_headers, **headers } : authorization_headers
+      JSON.parse(Net::HTTP.get(URI(url), request_headers))
     end
 
-    def http_post(url, body)
-      Net::HTTP.post(URI(url), body.to_json, {
-                       'Authorization' => "Bearer #{@token}",
-                       'Linkedin-Version' => Time.zone.today.strftime('%Y%m').to_s,
-                       **RESTLI_V2
-                     })
+    def http_post(url, body, headers = nil)
+      default_headers = { **authorization_headers, 'Content-Type' => 'application/json' }
+      request_headers = headers ? { **default_headers, **headers } : default_headers
+      Net::HTTP.post(URI(url), body.to_json, request_headers)
     end
 
-    def http_delete(url) # rubocop:disable Metrics/MethodLength
+    def http_delete(url, headers = nil)
       uri = URI(url)
-      hostname = uri.hostname # => "example.com"
-      req = Net::HTTP::Delete.new(uri, {
-                                    'Authorization' => "Bearer #{@token}",
-                                    'Linkedin-Version' => Time.zone.today.strftime('%Y%m').to_s,
-                                    'X-RestLi-Method' => 'DELETE',
-                                    **RESTLI_V2
-                                  }) # => #<Net::HTTP::Delete DELETE>
-      Net::HTTP.start(hostname, uri.port, use_ssl: true) do |http|
-        http.request(req)
+      default_headers = { **authorization_headers, 'X-RestLi-Method' => 'DELETE' }
+      request_headers = headers ? { **default_headers, **headers } : default_headers
+      req = Net::HTTP::Delete.new(uri, request_headers)
+      Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+        http.request req
       end
     end
 
@@ -95,47 +94,67 @@ module Clients
       http_get('https://api.linkedin.com/v2/organizationalEntityAcls?q=roleAssignee&role=ADMINISTRATOR&projection=(elements*(organizationalTarget~(id)))')
     end
 
+    # get urns for fetching notifications
+    def admin_orgs_urns
+      organizations = admin_organizations
+      organizations['elements'].map do |element| # rubocop:disable Rails/Pluck
+        element['organizationalTarget']
+      end
+    end
+
     # get basic organizations data
     def organization_notifications(admin_org_urns, time_range_start)
       url = if time_range_start
-              "https://api.linkedin.com/rest/organizationalEntityNotifications?q=criteria&actions=List(SHARE_MENTION)&organizationalEntity=#{URI.encode_www_form(admin_org_urns)}&timeRange=(start:#{time_range_start},end:#{Time.new.to_i}000)"
+              "https://api.linkedin.com/v2/organizationalEntityNotifications?q=criteria&actions=List(SHARE_MENTION)&organizationalEntity=#{URI.encode_uri_component(admin_org_urns)}&timeRange=(start:#{time_range_start},end:#{Time.new.to_i}000)"
             else
-              "https://api.linkedin.com/rest/organizationalEntityNotifications?q=criteria&actions=List(SHARE_MENTION)&organizationalEntity=#{URI.encode_www_form(admin_org_urns)}"
+              "https://api.linkedin.com/v2/organizationalEntityNotifications?q=criteria&actions=List(SHARE_MENTION)&organizationalEntity=#{URI.encode_uri_component(admin_org_urns)}"
             end
       http_get(url, RESTLI_V2)
+    end
+
+    def organization_by_id(id)
+      http_get("https://api.linkedin.com/v2/organizations/#{id}", RESTLI_V2)
     end
 
     # fetch posts with full content based on URNs
     def posts_with_content(activities_urns)
       # linkedin's Get Posts by URN API does not accept list of 1 items, so it has to be manually checked
       if activities_urns.length == 1
-        [http_get("https://api.linkedin.com/rest/posts/#{activities_urns[0]}")]
+        [http_get("https://api.linkedin.com/v2/posts/#{activities_urns[0]}")]
       else
-        http_get("https://api.linkedin.com/rest/posts?ids=List(#{activities_urns.join(',')})")
+        http_get("https://api.linkedin.com/v2/posts?ids=List(#{activities_urns.join(',')})")
       end
     end
 
     # convert a post to a ticket
-    def mentions_to_tickets(post_from_api, author)
+    def mentions_to_tickets(post_from_api, author, parent_uid = nil)
       # cuts off the urn part: @[Test 1337](urn:li:organization:100702332)
       regex = /@\[(.*)\]\(.*\)/
       organization_name = post_from_api['commentary'].match(regex)[1] # "Test 1337"
       parsed_content =  post_from_api['commentary'].gsub(regex, "@#{organization_name}")
       {
-        external_uid: post_from_api['id'], content: parsed_content,
+        external_uid: urn_to_id(post_from_api['id']), content: parsed_content, parent_uid:,
         created_at: DateTime.strptime((post_from_api['lastModifiedAt']).to_s, '%Q'),
-        author: { external_uid: author['id'], username: author['vanityName'] }
+        author: { external_uid: author['id'], username: author['vanityName'] }, external_link: post_from_api['id']
       }
     end
 
+    def urn_to_id(urn)
+      urn.split(':').last
+    end
+
+    def id_to_urn(id, type)
+      "urn:li:#{type}:#{id}"
+    end
+
     # get author by URN
-    def author_by_urn(author_urns) # rubocop:disable Metrics/MethodLength
+    def authors_by_urn(author_urns) # rubocop:disable Metrics/MethodLength
       if author_urns.length == 1
-        author_id = author_urns[0].split(':').last
+        author_id = urn_to_id(author_urns[0])
         [http_get("https://api.linkedin.com/v2/people/(id:#{author_id})", RESTLI_V2)]
       else
         author_ids_hash = author_urns.map do |urn|
-          urn.split(':').last
+          urn_to_id(urn)
         end
         url = 'https://api.linkedin.com/v2/people?ids=List('
         author_ids_hash.each do |id|

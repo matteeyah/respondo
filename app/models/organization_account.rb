@@ -67,7 +67,7 @@ class OrganizationAccount < ApplicationRecord
   end
 
   def linkedin_client
-    @linkedin_client ||= Clients::Linkedin.new(linkedin_client_id, linkedin_client_secret, token, organization)
+    @linkedin_client ||= Clients::Linkedin.new(linkedin_client_id, linkedin_client_secret, token, self)
   end
 
   def x_api_key

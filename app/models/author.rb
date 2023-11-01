@@ -20,9 +20,9 @@ class Author < ApplicationRecord
   def external_link
     prefix = case provider
              when 'twitter'
-              'https://x.com'
+               'https://x.com'
              when 'linkedin'
-               'https://linkedin.com/in'
+               'https://linkedin.com/company'
              end
     return unless prefix
 
