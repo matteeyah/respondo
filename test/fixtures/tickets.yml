@@ -7,6 +7,7 @@ x:
   organization: respondo
   creator:
   ticketable: x (InternalTicket)
+  external_link: 'https://x.com/twitter/status/uid_1'
 
 external:
   external_uid: 'uid_2'

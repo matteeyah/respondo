@@ -1,0 +1,17 @@
+{
+  "paging": {
+    "start": 0,
+    "count": 10,
+    "links": []
+  },
+  "elements": [
+    {
+      "action": "SHARE_MENTION",
+      "notificationId": -746895290,
+      "lastModifiedAt": 1698174153847,
+      "sourcePost": "urn:li:activity:7122658646135619584",
+      "organizationalEntity": "urn:li:organization:100702332",
+      "generatedActivity": "urn:li:share:7122658645678465024"
+    }
+  ]
+}

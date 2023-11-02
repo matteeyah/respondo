@@ -25,7 +25,7 @@ module Clients
       true
     end
 
-    def permalink(_external_uid)
+    def permalink(_link)
       'https://app.respondohub.com/tickets'
     end
   end

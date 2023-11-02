@@ -10,7 +10,7 @@ class TicketsHelperTest < ActionView::TestCase
       parent: parent_ticket, author: authors(:james), organization: organizations(:respondo),
       ticketable: internal_tickets(:x)
     )
-    author_link = link_to("@#{ticket.author.username}", ticket.author.external_link, class: 'text-decoration-none')
+    author_link = link_to("@#{ticket.author.username}", ticket.author[:external_link], class: 'text-decoration-none')
 
     assert_equal author_link, ticket_author_header(ticket)
   end
@@ -18,7 +18,7 @@ class TicketsHelperTest < ActionView::TestCase
   test '#ticket_author_header shows local author when ticket is from respondo' do
     ticket = tickets(:x)
     ticket.update!(creator: users(:john))
-    author_link = link_to("@#{ticket.author.username}", ticket.author.external_link, class: 'text-decoration-none')
+    author_link = link_to("@#{ticket.author.username}", ticket.author[:external_link], class: 'text-decoration-none')
 
     assert_equal "#{ticket.creator.name} as #{author_link}", ticket_author_header(ticket)
   end

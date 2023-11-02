@@ -22,7 +22,7 @@ module Clients
       send_request!(Net::HTTP::Delete.new(uri.path))
     end
 
-    def permalink(_external_uid)
+    def permalink(_link)
       @response_url
     end
 

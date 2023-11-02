@@ -6,7 +6,7 @@ class InboundMailbox < ApplicationMailbox
 
   def process # rubocop:disable Metrics/AbcSize
     organization.tickets.create!(
-      external_uid: mail.message_id, content: plain_body, created_at: mail.date, external_link: mail.message.link,
+      external_uid: mail.message_id, content: plain_body, created_at: mail.date,
       ticketable_attributes: { reply_to:, subject: mail.subject },
       ticketable_type: 'EmailTicket',
       parent: organization.tickets.find_by(ticketable_type: 'EmailTicket', external_uid: mail.in_reply_to),

@@ -14,7 +14,7 @@ module Clients
       raise NotImplementedError
     end
 
-    def permalink(_external_uid)
+    def permalink(_link)
       raise NotImplementedError
     end
   end

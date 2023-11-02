@@ -7,13 +7,12 @@ module Clients
     LI_USER_AUTHOR = 'https://linkedin.com/in'
     LI_COMPANY_AUTHOR = 'https://linkedin.com/company'
 
-    def initialize(client_id, client_secret, token, organization_account)
+    def initialize(client_id, client_secret, token)
       super()
 
       @client_id = client_id
       @client_secret = client_secret
       @token = token
-      @organization_account = organization_account
     end
 
     def new_mentions(last_ticket_id) # rubocop:disable Metrics/MethodLength, Metric/AbcSize
@@ -37,7 +36,7 @@ module Clients
           mention['author'].include? author['id']
         end
         mentions_to_tickets(mention, mention_author)
-      end
+      end.reverse
     end
 
     def reply(response_text, external_uid) # rubocop:disable Metrics/MethodLength, Metric/AbcSize
@@ -59,9 +58,14 @@ module Clients
     end
 
     def delete(id)
-      parent_ticket_link = @organization_account.tickets.find_by(external_uid: id).parent[:external_link]
       admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
-      http_delete("https://api.linkedin.com/v2/socialActions/#{parent_ticket_link}/comments/#{id}?actor=#{admin_organizations_urns}")
+      # since linkedin api startRange is inclusive (greater or equals), add +1 to exclude fetching last existing mention
+      basic_org_data = organization_notifications(admin_organizations_urns)
+      urn_element = basic_org_data['elements'].find do |element|
+        element['organizationalEntity'] == admin_organizations_urns
+      end
+      admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
+      http_delete("https://api.linkedin.com/v2/socialActions/#{urn_element['generatedActivity']}/comments/#{id}?actor=#{admin_organizations_urns}")
     end
 
     def permalink(link)
@@ -103,13 +107,15 @@ module Clients
     # get urns for fetching notifications
     def admin_orgs_urns
       organizations = admin_organizations
+      return if organizations.nil?
+
       organizations['elements'].map do |element| # rubocop:disable Rails/Pluck
         element['organizationalTarget']
       end
     end
 
     # get basic organizations data
-    def organization_notifications(admin_org_urns, time_range_start)
+    def organization_notifications(admin_org_urns, time_range_start = nil)
       url = if time_range_start
               "https://api.linkedin.com/v2/organizationalEntityNotifications?q=criteria&actions=List(SHARE_MENTION)&organizationalEntity=#{URI.encode_uri_component(admin_org_urns)}&timeRange=(start:#{time_range_start},end:#{Time.new.to_i}000)"
             else
