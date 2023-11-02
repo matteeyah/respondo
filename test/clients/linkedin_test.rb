@@ -123,7 +123,7 @@ class LinkedinTest < ActiveSupport::TestCase
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: file_fixture('li_organization_notifications.json')
     )
-    li_delete_request = stub_request(:delete, 'https://api.linkedin.com/v2/socialActions/urn:li:share:7122658645678465024/comments/1?actor=urn:li:organization:100702332 ')
+    li_delete_request = stub_request(:delete, 'https://api.linkedin.com/v2/socialActions/urn:li:share:7122658645678465024/comments/1?actor=urn:li:organization:100702332')
       .and_return(
         status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
         body: file_fixture('li_delete_comment.json').read
