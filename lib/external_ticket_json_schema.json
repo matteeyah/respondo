@@ -6,7 +6,8 @@
     "author",
     "created_at",
     "ticketable_attributes",
-    "personal_access_token"
+    "personal_access_token",
+    "external_link"
   ],
   "properties": {
     "external_uid": {
@@ -31,6 +32,7 @@
       "type": "object",
       "required": [
         "external_uid",
+        "external_link",
         "username"
       ],
       "properties": {
@@ -38,6 +40,12 @@
           "type": "string",
           "examples": [
             "external_ticket_author_id"
+          ]
+        },
+        "external_link": {
+          "type": "string",
+          "examples": [
+            "https://linkedin.com/company/test-1337"
           ]
         },
         "username": {
@@ -93,6 +101,12 @@
           ]
         }
       }
+    },
+    "external_link": {
+      "type": "string",
+      "examples": [
+        "https://www.linkedin.com/feed/update/urn:li:share:7122658645678465024"
+      ]
     }
   },
   "additionalProperties": false

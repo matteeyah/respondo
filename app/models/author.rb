@@ -3,6 +3,7 @@
 class Author < ApplicationRecord
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: :provider }
   validates :username, presence: { allow_blank: false }
+  validates :external_link, presence: { allow_blank: true }
   validates :provider, presence: true
 
   enum provider: { external: 0, twitter: 1, linkedin: 2, email: 3 }
@@ -12,20 +13,12 @@ class Author < ApplicationRecord
   def self.from_client!(author_hash, provider)
     find_or_initialize_by(external_uid: author_hash[:external_uid], provider:).tap do |author|
       author.username = author_hash[:username]
-
+      author.external_link = author_hash[:external_link]
       author.save!
     end
   end
 
   def external_link
-    prefix = case provider
-             when 'twitter'
-               'https://x.com'
-             when 'linkedin'
-               'https://linkedin.com/company'
-             end
-    return unless prefix
-
-    "#{prefix}/#{username}"
+    :external_link
   end
 end

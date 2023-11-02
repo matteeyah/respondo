@@ -1,6 +1,9 @@
 module Clients
   class Linkedin < Clients::ProviderClient
     RESTLI_V2 = { 'X-Restli-Protocol-Version' => '2.0.0' }.freeze
+    LI_POST = 'https://www.linkedin.com/feed/update'.freeze
+    LI_USER_AUTHOR = 'https://linkedin.com/in'.freeze
+    LI_COMPANY_AUTHOR = 'https://linkedin.com/company'.freeze
 
     def initialize(client_id, client_secret, token, organization_account)
       super()
@@ -47,8 +50,9 @@ module Clients
       {
         external_uid: comment['id'], content: comment['message']['text'], parent_uid: external_uid,
         created_at: DateTime.strptime((comment['lastModified']['time']).to_s, '%Q'),
-        author: { external_uid: organization_id, username: organization['vanityName'] },
-        external_link: "#{comment['object']}/?commentUrn=#{encoded_comment_urn}"
+        author: { external_uid: organization_id, username: organization['vanityName'],
+                  external_link: "#{LI_COMPANY_AUTHOR}/#{organization['vanityName']}" },
+        external_link: "#{LI_POST}/#{comment['object']}/?commentUrn=#{encoded_comment_urn}"
       }
     end
 
@@ -59,7 +63,7 @@ module Clients
     end
 
     def permalink(link)
-      "https://www.linkedin.com/feed/update/#{link}"
+      link
     end
 
     private
@@ -135,7 +139,9 @@ module Clients
       {
         external_uid: urn_to_id(post_from_api['id']), content: parsed_content, parent_uid:,
         created_at: DateTime.strptime((post_from_api['lastModifiedAt']).to_s, '%Q'),
-        author: { external_uid: author['id'], username: author['vanityName'] }, external_link: post_from_api['id']
+        author: { external_uid: author['id'], username: author['vanityName'],
+                  external_link: "#{LI_USER_AUTHOR}/#{author['vanityName']}" },
+        external_link: "#{LI_POST}/#{post_from_api['id']}"
       }
     end
 
