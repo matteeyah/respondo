@@ -34,7 +34,7 @@ module Organizations
 
     def ticket_params
       params.permit(
-        :external_uid, :content, :external_link,
+        :external_uid, :content,
         author: %i[external_uid username],
         ticketable_attributes: %i[response_url custom_provider]
       )
@@ -45,7 +45,7 @@ module Organizations
     end
 
     def author_params
-      params.require(:author).permit(:external_uid, :username, :external_link)
+      params.require(:author).permit(:external_uid, :username)
     end
 
     def token
