@@ -3,7 +3,7 @@
 class LoadNewTicketsJob < ApplicationJob
   queue_as :default
 
-  def perform(organization)
+  def perform(organization) # rubocop:disable Metrics/MethodLength
     organization.accounts.each do |account|
       account.new_mentions.each do |mention|
         organization.tickets.create!(

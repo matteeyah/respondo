@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module Clients
-  class Linkedin < Clients::ProviderClient
+  class Linkedin < Clients::ProviderClient # rubocop:disable Metrics/ClassLength
     RESTLI_V2 = { 'X-Restli-Protocol-Version' => '2.0.0' }.freeze
-    LI_POST = 'https://www.linkedin.com/feed/update'.freeze
-    LI_USER_AUTHOR = 'https://linkedin.com/in'.freeze
-    LI_COMPANY_AUTHOR = 'https://linkedin.com/company'.freeze
+    LI_POST = 'https://www.linkedin.com/feed/update'
+    LI_USER_AUTHOR = 'https://linkedin.com/in'
+    LI_COMPANY_AUTHOR = 'https://linkedin.com/company'
 
     def initialize(client_id, client_secret, token, organization_account)
       super()
