@@ -5,9 +5,11 @@ james:
   provider: twitter
 external:
   external_uid: 'uid_2'
+  external_link: 'https://external.com/james_is_cool'
   username: matt_is_cool
   provider: external
 email:
   external_uid: hello@example.com
+  external_link: 'https://mail.google.com/james_is_cool'
   username: hello@example.com
   provider: email
