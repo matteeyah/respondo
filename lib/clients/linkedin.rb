@@ -16,21 +16,21 @@ module Clients
     end
 
     def new_mentions(last_ticket_id) # rubocop:disable Metrics/MethodLength, Metric/AbcSize
-      unix_timestamp_id = formatted_timestamp(last_ticket_id)
+      # unix_timestamp_id = formatted_timestamp(last_ticket_id)
+      unix_timestamp_id = last_ticket_id ? "#{last_ticket_id.to_time.to_i + 1.second}000" : nil
       admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
       # since linkedin api startRange is inclusive (greater or equals), add +1 to exclude fetching last existing mention
       basic_org_data = organization_notifications(admin_organizations_urns,
                                                   unix_timestamp_id.nil? ? nil : unix_timestamp_id.to_i)
-      elements = basic_org_data['elements'] || []
-      return elements unless elements.length.positive?
+      elements = basic_org_data['elements']
+      return [] unless elements
 
-      # find all activities URNs
-      activities_urns = elements.pluck('generatedActivity')
+      activities_urns = elements.map do |element| # rubocop:disable Rails/Pluck
+        element['generatedActivity']
+      end
       fetched_posts = posts_with_content(activities_urns)
-      # go through all fetched mentions and find URNs of all authors
       author_urns = fetched_posts.pluck('author')
       authors = authors_by_urn(author_urns)
-      # parse all fetched posts to tickets
       fetched_posts.map do |mention|
         mention_author = authors.find do |author|
           mention['author'].include? author['id']
@@ -59,17 +59,12 @@ module Clients
 
     def delete(id)
       admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
-      # since linkedin api startRange is inclusive (greater or equals), add +1 to exclude fetching last existing mention
       basic_org_data = organization_notifications(admin_organizations_urns)
       urn_element = basic_org_data['elements'].find do |element|
         element['organizationalEntity'] == admin_organizations_urns
       end
       admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
       http_delete("https://api.linkedin.com/v2/socialActions/#{urn_element['generatedActivity']}/comments/#{id}?actor=#{admin_organizations_urns}")
-    end
-
-    def permalink(link)
-      link
     end
 
     private
@@ -162,33 +157,25 @@ module Clients
     end
 
     # get author by URN
-    def authors_by_urn(author_urns) # rubocop:disable Metrics/MethodLength
+    def authors_by_urn(author_urns)
       if author_urns.length == 1
         author_id = urn_to_id(author_urns[0])
         [http_get("https://api.linkedin.com/v2/people/(id:#{author_id})", RESTLI_V2)]
       else
-        author_ids_hash = author_urns.map do |urn|
-          urn_to_id(urn)
-        end
-        url = 'https://api.linkedin.com/v2/people?ids=List('
-        author_ids_hash.each do |id|
-          url += "(id: #{id})"
-        end
-        url += ')'
+        url = author_urns_to_list(author_urns)
         http_get(url, RESTLI_V2)
       end
     end
 
-    # get time stamp in linkedin format with 1 second added
-    def formatted_timestamp(datetime) # rubocop:disable Metrics/Metric/AbcSize
-      return nil if datetime.nil?
-
-      split_date = datetime.to_s.split
-      date = split_date[0].split('-')
-      time = split_date[1].split(':')
-      zone = split_date[2]
-      adjusted_timestamp = Time.new(date[0], date[1], date[2], time[0], time[1], time[2], zone).to_i + 1.second
-      date ? "#{adjusted_timestamp}000" : nil
+    def author_urns_to_list(author_urns)
+      author_ids_hash = author_urns.map do |urn|
+        urn_to_id(urn)
+      end
+      url = 'https://api.linkedin.com/v2/people?ids=List('
+      author_ids_hash.each do |id|
+        url += "(id: #{id})"
+      end
+      "#{url})"
     end
   end
 end

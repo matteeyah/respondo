@@ -6,13 +6,20 @@
     "author",
     "created_at",
     "ticketable_attributes",
-    "personal_access_token"
+    "personal_access_token",
+    "external_link"
   ],
   "properties": {
     "external_uid": {
       "type": "string",
       "examples": [
         "123hello321world"
+      ]
+    },
+    "external_link": {
+      "type": "string",
+      "examples": [
+        "https://external_link.com"
       ]
     },
     "content": {
@@ -56,14 +63,7 @@
     },
     "ticketable_attributes": {
       "type": "object",
-      "required": ["response_url"],
       "properties": {
-        "response_url": {
-          "type": "string",
-          "examples": [
-            "https://response_url.com"
-          ]
-        },
         "custom_provider": {
           "type": "string",
           "examples": [

@@ -2,10 +2,10 @@
 
 module Clients
   class External < Clients::ProviderClient
-    def initialize(response_url)
+    def initialize(external_link)
       super()
 
-      @response_url = response_url
+      @external_link = external_link
     end
 
     def reply(response_text, parent_external_post_id)
@@ -23,13 +23,13 @@ module Clients
     end
 
     def permalink(_link)
-      @response_url
+      @external_link
     end
 
     private
 
     def uri
-      @uri ||= URI(@response_url)
+      @uri ||= URI(@external_link)
     end
 
     def http_client

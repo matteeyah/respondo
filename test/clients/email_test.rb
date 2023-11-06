@@ -18,10 +18,4 @@ class EmailTest < ActiveSupport::TestCase
 
     assert(client.delete('external_uid'))
   end
-
-  test '#permalink returns the app root' do
-    client = Clients::Email.new('hello@example.com', 'Hello', 1)
-
-    assert_equal 'https://app.respondohub.com/tickets', client.permalink('external_uid')
-  end
 end

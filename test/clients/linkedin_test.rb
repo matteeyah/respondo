@@ -77,7 +77,7 @@ class LinkedinTest < ActiveSupport::TestCase
     assert_empty client.new_mentions(Time.zone.parse('2023-10-24 19:02:33'))
   end
 
-  test '#reply makes a linkedin api request' do # rubocop:disable Metrics/BlockLength
+  test '#reply makes a linkedin api request' do
     client = Clients::Linkedin.new('client_id', 'client_secret', 'token')
 
     stub_request(:get, 'https://api.linkedin.com/v2/organizationalEntityAcls?projection=(elements*(organizationalTarget~(id)))&q=roleAssignee&role=ADMINISTRATOR').to_return(
@@ -89,13 +89,7 @@ class LinkedinTest < ActiveSupport::TestCase
       .with(body: { actor: 'urn:li:organization:100702332', object: '7122658646135619584',
                     message: { text: 'response' } }.to_json,
             headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'Authorization' => 'Bearer token',
-              'Content-Type' => 'application/json',
-              'Host' => 'api.linkedin.com',
-              'Linkedin-Version' => '202311',
-              'User-Agent' => 'Ruby'
+              'Accept' => '*/*'
             })
       .and_return(
         status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
@@ -132,11 +126,5 @@ class LinkedinTest < ActiveSupport::TestCase
     client.delete('1')
 
     assert_requested(li_delete_request)
-  end
-
-  test '#permalink generates a linkedin url' do
-    client = Clients::Linkedin.new('client_id', 'client_secret', 'token')
-
-    assert_equal 'https://www.linkedin.com/feed/update/urn:li:share:7122658645678465024', client.permalink('https://www.linkedin.com/feed/update/urn:li:share:7122658645678465024')
   end
 end

@@ -3,8 +3,6 @@
 class ExternalTicket < ApplicationRecord
   has_one :base_ticket, class_name: 'Ticket', as: :ticketable, touch: true, dependent: :destroy
 
-  validates :response_url, presence: true
-
   def source
     base_ticket.organization
   end
@@ -14,6 +12,6 @@ class ExternalTicket < ApplicationRecord
   end
 
   def client
-    Clients::External.new(response_url)
+    Clients::External.new(base_ticket.external_link)
   end
 end

@@ -53,10 +53,6 @@ module Clients
       x_client.delete("tweets/#{tweet_id}")
     end
 
-    def permalink(link)
-      link
-    end
-
     private
 
     def x_client

@@ -13,9 +13,5 @@ module Clients
     def delete(_external_uid)
       raise NotImplementedError
     end
-
-    def permalink(_link)
-      raise NotImplementedError
-    end
   end
 end

@@ -76,12 +76,13 @@ module Organizations
     def external_ticket_payload
       { external_uid: '123hello321world', content: 'This is content from the external ticket example.',
         parent_uid: 'external_ticket_parent_external_uid', created_at: 1.day.ago.utc,
+        external_link: 'https://example.com',
         author: {
           external_uid: 'external_ticket_author_external_uid',
           username: 'best_username'
         },
         ticketable_attributes: {
-          response_url: 'https://respondohub.com/response'
+          custom_provider: 'external'
         } }
     end
   end
