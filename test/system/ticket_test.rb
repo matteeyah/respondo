@@ -62,7 +62,7 @@ class TicketTest < ApplicationSystemTestCase
       parent_uid: external_ticket.external_uid,
       content: response_text
     }
-    stub_request(:post)
+    stub_request(:post, external_ticket.external_link)
       .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
 
     within("#ticket_#{external_ticket.id}") do
