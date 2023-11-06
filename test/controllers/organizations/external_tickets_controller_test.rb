@@ -78,8 +78,7 @@ module Organizations
         parent_uid: 'external_ticket_parent_external_uid', created_at: 1.day.ago.utc,
         external_link: 'https://example.com',
         author: {
-          external_uid: 'external_ticket_author_external_uid',
-          username: 'best_username',
+          external_uid: 'external_ticket_author_external_uid', username: 'best_username',
           external_link: 'https://external.com/best_username_ever'
         },
         ticketable_attributes: {
