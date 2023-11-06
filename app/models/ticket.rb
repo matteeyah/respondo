@@ -4,7 +4,7 @@ class Ticket < ApplicationRecord
   include WithDescendants
 
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: %i[ticketable_type organization_id] }
-  validates :external_link, url: true
+  validates :external_link, presence: { allow_blank: false }, url: true
   validates :content, presence: { allow_blank: false }
 
   enum status: { open: 0, solved: 1 }

@@ -79,7 +79,8 @@ module Organizations
         external_link: 'https://example.com',
         author: {
           external_uid: 'external_ticket_author_external_uid',
-          username: 'best_username'
+          username: 'best_username',
+          external_link: 'https://external.com/best_username_ever'
         },
         ticketable_attributes: {
           custom_provider: 'external'

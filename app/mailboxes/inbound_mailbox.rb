@@ -7,10 +7,13 @@ class InboundMailbox < ApplicationMailbox
   def process # rubocop:disable Metrics/AbcSize
     organization.tickets.create!(
       external_uid: mail.message_id, content: plain_body, created_at: mail.date,
+      external_link: "https://mail.google.com/#{mail.message_id}",
       ticketable_attributes: { reply_to:, subject: mail.subject },
       ticketable_type: 'EmailTicket',
       parent: organization.tickets.find_by(ticketable_type: 'EmailTicket', external_uid: mail.in_reply_to),
-      author: Author.from_client!({ external_uid: mail.from.first, username: mail.from.first }, :email)
+      author: Author.from_client!({ external_uid: mail.from.first, username: mail.from.first,
+                                    external_link: "https://mail.google.com/mail/u/?authuser=#{mail.message_id}" },
+                                  :email)
     )
   end
 

@@ -3,7 +3,7 @@
 class Author < ApplicationRecord
   validates :external_uid, presence: { allow_blank: false }, uniqueness: { scope: :provider }
   validates :username, presence: { allow_blank: false }
-  validates :external_link, url: true
+  validates :external_link, presence: { allow_blank: false }, url: true
   validates :provider, presence: true
 
   enum provider: { external: 0, twitter: 1, linkedin: 2, email: 3 }

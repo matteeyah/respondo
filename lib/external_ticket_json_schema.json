@@ -52,6 +52,12 @@
           "examples": [
             "best_username_ever"
           ]
+        },
+        "external_lin": {
+          "type": "string",
+          "examples": [
+            "https://external.com/best_username_ever"
+          ]
         }
       }
     },

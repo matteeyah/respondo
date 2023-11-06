@@ -32,13 +32,13 @@ class AuthorTest < ActiveSupport::TestCase
   end
 
   test '.from_client! returns an author' do
-    author_hash = { external_uid: '1', username: 'hello' }
+    author_hash = { external_uid: '1', username: 'hello', external_link: 'https://external.com/james_is_cool' }
 
     assert_instance_of Author, Author.from_client!(author_hash, :twitter)
   end
 
   test '.from_client! creates an author when it does not exist' do
-    author_hash = { external_uid: '1', username: 'hello' }
+    author_hash = { external_uid: '1', username: 'hello', external_link: 'https://external.com/james_is_cool' }
 
     assert_difference -> { Author.count }, 1 do
       Author.from_client!(author_hash, :twitter)
@@ -46,7 +46,7 @@ class AuthorTest < ActiveSupport::TestCase
   end
 
   test '.from_client! finds an author when it exists' do
-    author_hash = { external_uid: 'uid_1', username: 'helloworld' }
+    author_hash = { external_uid: 'uid_1', username: 'helloworld', external_link: 'https://external.com/james_is_cool' }
 
     assert_no_difference -> { Author.count } do
       Author.from_client!(author_hash, :twitter)
@@ -54,7 +54,7 @@ class AuthorTest < ActiveSupport::TestCase
   end
 
   test '.from_client! updates username' do
-    author_hash = { external_uid: 'uid_1', username: 'helloworld' }
+    author_hash = { external_uid: 'uid_1', username: 'helloworld', external_link: 'https://external.com/james_is_cool' }
 
     assert_changes -> { authors(:james).reload.username }, from: 'james_is_cool', to: 'helloworld' do
       Author.from_client!(author_hash, :twitter)
@@ -65,11 +65,5 @@ class AuthorTest < ActiveSupport::TestCase
     author = authors(:james)
 
     assert_equal 'https://x.com/james_is_cool', author.external_link
-  end
-
-  test '#external_link returns nil for unsupported providers' do
-    author = authors(:external)
-
-    assert_nil author.external_link
   end
 end
