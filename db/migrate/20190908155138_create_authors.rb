@@ -6,6 +6,7 @@ class CreateAuthors < ActiveRecord::Migration[7.0]
       t.string :external_uid, null: false
       t.integer :provider, null: false
       t.string :username, null: false
+      t.string :external_link, null: false
 
       t.timestamps
     end

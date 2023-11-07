@@ -6,6 +6,7 @@ class CreateTickets < ActiveRecord::Migration[7.0]
       t.string :external_uid, null: false
       t.text :content, null: false
       t.integer :status, default: 0, null: false
+      t.string :external_link, null: false
 
       t.string :ticketable_type, null: false
       t.integer :ticketable_id, null: false
