@@ -1,0 +1,27 @@
+{
+  "actor": "urn:li:organization:100702332",
+  "agent": "urn:li:person:4yLx4nm8kl",
+  "created": {
+    "actor": "urn:li:organization:100702332",
+    "impersonator": "urn:li:member:421781312",
+    "time": 1698949890398
+  },
+  "lastModified": {
+    "actor": "urn:li:organization:100702332",
+    "impersonator": "urn:li:member:421781312",
+    "time": 1698949890398
+  },
+  "id": "7125912321092165632",
+  "$URN": "urn:li:comment:(urn:li:activity:7122658646135619584,7125912321092165632)",
+  "message": {
+    "attributes": [],
+    "text": "response"
+  },
+  "likesSummary": {
+    "selectedLikes": [],
+    "aggregatedTotalLikes": 0,
+    "likedByCurrentUser": false,
+    "totalLikes": 0
+  },
+  "object": "7122658646135619584"
+}

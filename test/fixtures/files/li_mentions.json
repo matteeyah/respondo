@@ -1,0 +1,18 @@
+{
+  "isReshareDisabledByAuthor": false,
+  "createdAt": 1698174153821,
+  "lifecycleState": "PUBLISHED",
+  "lastModifiedAt": 1698174153855,
+  "visibility": "PUBLIC",
+  "publishedAt": 1698174153821,
+  "author": "urn:li:person:yKLJdq-DtT",
+  "id": "urn:li:share:7122658645678465024",
+  "distribution": {
+    "feedDistribution": "MAIN_FEED",
+    "thirdPartyDistributionChannels": []
+  },
+  "commentary": "Hey @[Test 1337](urn:li:organization:100702332), your QuickGlow should really be cheaper!",
+  "lifecycleStateInfo": {
+    "isEditedByAuthor": false
+  }
+}

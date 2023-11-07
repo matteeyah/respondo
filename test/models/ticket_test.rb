@@ -27,7 +27,7 @@ class TicketTest < ActiveSupport::TestCase
   test '.root returnes tickets without a parent' do
     child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:x), content: 'hello',
                            author: authors(:james), organization: organizations(:respondo),
-                           ticketable: internal_tickets(:x))
+                           ticketable: internal_tickets(:x), external_link: 'https://x.com/twitter/status/uid_1')
 
     assert_not_includes Ticket.root, child
   end
@@ -35,12 +35,14 @@ class TicketTest < ActiveSupport::TestCase
   test '.with_descendants_hash' do
     first_child = Ticket.create!(
       external_uid: 'uid_10', parent: tickets(:x), content: 'hello',
-      author: authors(:james), organization: organizations(:respondo), ticketable: internal_tickets(:x)
+      author: authors(:james), organization: organizations(:respondo), ticketable: internal_tickets(:x),
+      external_link: 'https://x.com/twitter/status/uid_1'
     )
 
     second_child = Ticket.create!(
       external_uid: 'uid_11', parent: tickets(:external), content: 'hello',
-      author: authors(:james), organization: organizations(:respondo), ticketable: external_tickets(:default)
+      author: authors(:james), organization: organizations(:respondo), ticketable: external_tickets(:default),
+      external_link: 'https://x.com/twitter/status/uid_1'
     )
 
     expected_structure = {
@@ -55,7 +57,7 @@ class TicketTest < ActiveSupport::TestCase
   test '#with_descendants_hash' do
     child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:x), content: 'hello',
                            author: authors(:james), organization: organizations(:respondo),
-                           ticketable: internal_tickets(:x))
+                           ticketable: internal_tickets(:x), external_link: 'https://x.com/twitter/status/uid_1')
 
     expected_structure = {
       tickets(:x) => { child => {} }

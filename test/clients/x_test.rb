@@ -108,10 +108,4 @@ class XTest < ActiveSupport::TestCase
 
     assert_requested(x_delete_request)
   end
-
-  test '#permalink generates a x url' do
-    client = Clients::X.new('api_key', 'api_secret', 'token', 'secret')
-
-    assert_equal 'https://x.com/twitter/status/1', client.permalink(1)
-  end
 end

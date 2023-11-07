@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_17_164108) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_06_132722) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,6 +66,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_164108) do
     t.string "username", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "external_link", null: false
     t.index ["external_uid", "provider"], name: "index_authors_on_external_uid_and_provider", unique: true
   end
 
@@ -77,7 +78,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_164108) do
   end
 
   create_table "external_tickets", force: :cascade do |t|
-    t.string "response_url", null: false
     t.string "custom_provider"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -192,6 +192,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_164108) do
     t.bigint "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "external_link", null: false
     t.index ["author_id"], name: "index_tickets_on_author_id"
     t.index ["creator_id"], name: "index_tickets_on_creator_id"
     t.index ["external_uid", "ticketable_type", "organization_id"], name: "index_tickets_on_uid_and_ticketable_type_and_organization", unique: true

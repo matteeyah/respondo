@@ -7,6 +7,7 @@ x:
   organization: respondo
   creator:
   ticketable: x (InternalTicket)
+  external_link: 'https://x.com/twitter/status/uid_1'
 
 external:
   external_uid: 'uid_2'
@@ -17,6 +18,7 @@ external:
   organization: respondo
   creator:
   ticketable: default (ExternalTicket)
+  external_link: 'https://external.com/uid_1'
 
 email:
   external_uid: 'uid_3'
@@ -27,3 +29,4 @@ email:
   organization: respondo
   creator:
   ticketable: default (EmailTicket)
+  external_link: 'https://mail.google.com/uid_1'

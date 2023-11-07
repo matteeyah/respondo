@@ -1,2 +1,2 @@
 default:
-  response_url: https://respondohub.com/respond
+  custom_provider: external

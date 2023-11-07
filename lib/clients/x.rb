@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module Clients
+  X_HOME = 'https://x.com'
+  X_POST = "#{X_HOME}/twitter/status".freeze
+
   class X < Clients::ProviderClient
     TWEET_PARAMS = {
       'tweet.fields' => 'created_at',
@@ -50,10 +53,6 @@ module Clients
       x_client.delete("tweets/#{tweet_id}")
     end
 
-    def permalink(tweet_id)
-      "https://x.com/twitter/status/#{tweet_id}"
-    end
-
     private
 
     def x_client
@@ -81,13 +80,16 @@ module Clients
       }
     end
 
-    def parse_response(api_response, user_includes)
+    def parse_response(api_response, user_includes) # rubocop:disable Metrics/MethodLength
+      author_username = user_includes.find { |ui| ui['id'] == api_response['author_id'] }['username']
       {
         external_uid: api_response['id'], content: api_response['text'], created_at: api_response['created_at'],
         parent_uid: api_response['referenced_tweets']&.find { |ref| ref['type'] == 'replied_to' }&.dig('id'),
+        external_link: "#{X_POST}/#{api_response['id']}",
         author: {
           external_uid: api_response['author_id'],
-          username: user_includes.find { |ui| ui['id'] == api_response['author_id'] }['username']
+          username: author_username,
+          external_link: "#{X_HOME}/#{author_username}"
         }
       }
     end

@@ -1,0 +1,37 @@
+{
+  "localizedLastName": "undefined",
+  "profilePicture": {
+    "displayImage": "urn:li:digitalmediaAsset:D4D03AQFYrKd-jjKzTA"
+  },
+  "firstName": {
+    "localized": {
+      "en_US": "VukmirR"
+    },
+    "preferredLocale": {
+      "country": "US",
+      "language": "en"
+    }
+  },
+  "vanityName": "vukmirr-undefined-29a192297",
+  "lastName": {
+    "localized": {
+      "en_US": "undefined"
+    },
+    "preferredLocale": {
+      "country": "US",
+      "language": "en"
+    }
+  },
+  "localizedHeadline": "Executive Director at asdf asdf",
+  "id": "yKLJdq-DtT",
+  "headline": {
+    "localized": {
+      "en_US": "Executive Director at asdf asdf"
+    },
+    "preferredLocale": {
+      "country": "US",
+      "language": "en"
+    }
+  },
+  "localizedFirstName": "VukmirR"
+}

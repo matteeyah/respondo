@@ -24,10 +24,4 @@ class ExternalTest < ActiveSupport::TestCase
     assert_equal({ hello: 'world' }, client.delete('external_uid'))
     assert_requested(external_delete_request)
   end
-
-  test '#permalink makes an external get request' do
-    client = Clients::External.new('https://respondohub.com/')
-
-    assert_equal 'https://respondohub.com/', client.permalink('external_uid')
-  end
 end

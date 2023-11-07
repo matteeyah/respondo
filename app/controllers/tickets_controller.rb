@@ -56,7 +56,7 @@ class TicketsController < Tickets::ApplicationController
   end
 
   def permalink
-    redirect_to @ticket.client.permalink(@ticket.external_uid), allow_other_host: true
+    redirect_to @ticket.external_link, allow_other_host: true
   end
 
   private

@@ -30,13 +30,20 @@ format.
     "author",
     "created_at",
     "personal_access_token",
-    "ticketable_attributes"
+    "ticketable_attributes",
+    "external_link"
   ],
   "properties": {
     "external_uid": {
       "type": "string",
       "examples": [
         "123hello321world"
+      ]
+    },
+    "external_link": {
+      "type": "string",
+      "examples": [
+        "https://external_link.com"
       ]
     },
     "content": {
@@ -101,14 +108,7 @@ format.
     },
     "ticketable_attributes": {
       "type": "object",
-      "required": ["response_url"],
       "properties": {
-        "response_url": {
-          "type": "string",
-          "examples": [
-            "https://response_url.com"
-          ]
-        },
         "custom_provider": {
           "type": "string",
           "examples": [
@@ -133,6 +133,7 @@ format.
 {% highlight json %}
 {
   "external_uid": "external_ticket_uid_2",
+  "external_link": "https://example.com",
   "author": {
     "external_uid": "author_uid_1",
     "username": "author_username"
@@ -140,9 +141,6 @@ format.
   "parent_uid":"parent_uid_1",
   "content": "This is content from an example external ticket reply.",
   "created_at": "2019-01-01 23:35:27.632879 UTC",
-  "ticketable_attributes": {
-    "response_url": "https://example.com"
-  },
   "personal_access_token": {
     "name": "token_name",
     "token": "1234"

@@ -53,12 +53,16 @@ class TicketTest < ApplicationSystemTestCase
     external_ticket = tickets(:external)
     response = {
       external_uid: 123_456,
-      author: { external_uid: '123', username: @organization.screen_name },
-      ticketable_attributes: { response_url: external_ticket.ticketable.response_url },
+      external_link: external_ticket.external_link,
+      author: { external_uid: '123', username: @organization.screen_name,
+                external_link: 'https://external.com/matt_is_cool' },
+      ticketable_attributes: {
+        custom_provider: 'external'
+      },
       parent_uid: external_ticket.external_uid,
       content: response_text
     }
-    stub_request(:post, external_ticket.ticketable.response_url)
+    stub_request(:post, external_ticket.external_link)
       .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
 
     within("#ticket_#{external_ticket.id}") do

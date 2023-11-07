@@ -31,7 +31,8 @@ class InboundMailboxTest < ActionMailbox::TestCase
         to: "\"respondo\" <inbound+#{organizations(:respondo).id}@mail.respondohub.com>",
         from: '"someone" <someone@example.com>',
         subject: 'Hello world!',
-        body: 'Hello?'
+        body: 'Hello?',
+        external_link: 'https://external.com/james_is_cool'
     end
   end
 end

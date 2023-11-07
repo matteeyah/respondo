@@ -36,6 +36,8 @@ class OrganizationAccount < ApplicationRecord
     last_ticket_identifier = case provider
                              when 'twitter'
                                last_x_ticket_identifier
+                             when 'linkedin'
+                               last_li_ticket_identifier
                              end
 
     client.new_mentions(last_ticket_identifier)
@@ -56,12 +58,16 @@ class OrganizationAccount < ApplicationRecord
     tickets.last&.external_uid
   end
 
+  def last_li_ticket_identifier
+    tickets.last&.created_at
+  end
+
   def x_client
     @x_client ||= Clients::X.new(x_api_key, x_api_secret, token, secret)
   end
 
   def linkedin_client
-    @linkedin_client ||= Clients::Linkedin.new(linkedin_client_id, linkedin_client_secret)
+    @linkedin_client ||= Clients::Linkedin.new(linkedin_client_id, linkedin_client_secret, token, self)
   end
 
   def x_api_key

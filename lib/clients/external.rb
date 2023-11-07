@@ -2,10 +2,10 @@
 
 module Clients
   class External < Clients::ProviderClient
-    def initialize(response_url)
+    def initialize(external_link)
       super()
 
-      @response_url = response_url
+      @external_link = external_link
     end
 
     def reply(response_text, parent_external_post_id)
@@ -22,14 +22,10 @@ module Clients
       send_request!(Net::HTTP::Delete.new(uri.path))
     end
 
-    def permalink(_external_uid)
-      @response_url
-    end
-
     private
 
     def uri
-      @uri ||= URI(@response_url)
+      @uri ||= URI(@external_link)
     end
 
     def http_client
