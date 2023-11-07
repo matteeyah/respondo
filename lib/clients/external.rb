@@ -22,10 +22,6 @@ module Clients
       send_request!(Net::HTTP::Delete.new(uri.path))
     end
 
-    def permalink(_link)
-      @external_link
-    end
-
     private
 
     def uri
