@@ -22,6 +22,6 @@ class DashboardController < ApplicationController
   end
 
   def newest_tickets
-    current_user.organization.tickets.includes(:author, ticketable: :source).order(created_at: :desc).take(3)
+    current_user.organization.tickets.includes(:author, :source).order(created_at: :desc).take(3)
   end
 end

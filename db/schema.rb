@@ -70,19 +70,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_17_164108) do
     t.index ["external_uid", "provider"], name: "index_authors_on_external_uid_and_provider", unique: true
   end
 
-  create_table "email_tickets", force: :cascade do |t|
-    t.string "reply_to", null: false
-    t.string "subject", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "external_tickets", force: :cascade do |t|
-    t.string "custom_provider"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "flipper_features", force: :cascade do |t|
     t.string "key", null: false
     t.datetime "created_at", null: false
@@ -107,13 +94,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_17_164108) do
     t.datetime "updated_at", null: false
     t.index ["creator_id"], name: "index_internal_notes_on_creator_id"
     t.index ["ticket_id"], name: "index_internal_notes_on_ticket_id"
-  end
-
-  create_table "internal_tickets", force: :cascade do |t|
-    t.bigint "source_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["source_id"], name: "index_internal_tickets_on_source_id"
   end
 
   create_table "organization_accounts", force: :cascade do |t|
@@ -185,19 +165,18 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_17_164108) do
     t.text "content", null: false
     t.integer "status", default: 0, null: false
     t.string "external_link", null: false
-    t.string "ticketable_type", null: false
-    t.integer "ticketable_id", null: false
     t.bigint "organization_id", null: false
     t.bigint "author_id", null: false
     t.bigint "creator_id"
     t.bigint "parent_id"
+    t.bigint "source_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_tickets_on_author_id"
     t.index ["creator_id"], name: "index_tickets_on_creator_id"
-    t.index ["external_uid", "ticketable_type", "organization_id"], name: "index_tickets_on_uid_and_ticketable_type_and_organization", unique: true
     t.index ["organization_id"], name: "index_tickets_on_organization_id"
     t.index ["parent_id"], name: "index_tickets_on_parent_id"
+    t.index ["source_id"], name: "index_tickets_on_source_id"
   end
 
   create_table "user_accounts", force: :cascade do |t|

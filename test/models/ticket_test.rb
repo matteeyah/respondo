@@ -17,17 +17,10 @@ class TicketTest < ActiveSupport::TestCase
     assert_predicate ticket, :invalid?
   end
 
-  test 'validates uniqueness of external_uid scoped to ticketable_type and organization_id' do
-    ticket = tickets(:x).dup
-
-    assert_predicate ticket, :invalid?
-    ticket.errors.added?(:external_uid, :taken, value: 'uid_1')
-  end
-
   test '.root returnes tickets without a parent' do
     child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:x), content: 'hello',
                            author: authors(:james), organization: organizations(:respondo),
-                           ticketable: internal_tickets(:x), external_link: 'https://x.com/twitter/status/uid_1')
+                           external_link: 'https://x.com/twitter/status/uid_1')
 
     assert_not_includes Ticket.root, child
   end
@@ -35,13 +28,13 @@ class TicketTest < ActiveSupport::TestCase
   test '.with_descendants_hash' do
     first_child = Ticket.create!(
       external_uid: 'uid_10', parent: tickets(:x), content: 'hello',
-      author: authors(:james), organization: organizations(:respondo), ticketable: internal_tickets(:x),
+      author: authors(:james), organization: organizations(:respondo),
       external_link: 'https://x.com/twitter/status/uid_1'
     )
 
     second_child = Ticket.create!(
-      external_uid: 'uid_11', parent: tickets(:external), content: 'hello',
-      author: authors(:james), organization: organizations(:respondo), ticketable: external_tickets(:default),
+      external_uid: 'uid_11', parent: tickets(:linkedin), content: 'hello',
+      author: authors(:james), organization: organizations(:respondo),
       external_link: 'https://x.com/twitter/status/uid_1'
     )
 
@@ -57,7 +50,7 @@ class TicketTest < ActiveSupport::TestCase
   test '#with_descendants_hash' do
     child = Ticket.create!(external_uid: 'uid_10', parent: tickets(:x), content: 'hello',
                            author: authors(:james), organization: organizations(:respondo),
-                           ticketable: internal_tickets(:x), external_link: 'https://x.com/twitter/status/uid_1')
+                           external_link: 'https://x.com/twitter/status/uid_1')
 
     expected_structure = {
       tickets(:x) => { child => {} }

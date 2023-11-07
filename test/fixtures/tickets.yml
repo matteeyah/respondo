@@ -1,32 +1,19 @@
 x:
-  external_uid: 'uid_1'
+  external_uid: uid_1
   status: open
-  content: Internal x ticket content.
+  content: X ticket content.
   parent:
   author: james
   organization: respondo
   creator:
-  ticketable: x (InternalTicket)
-  external_link: 'https://x.com/twitter/status/uid_1'
+  external_link: https://x.com/twitter/status/uid_1
 
-external:
-  external_uid: 'uid_2'
+linkedin:
+  external_uid: uid_2
   status: open
-  content: External ticket content.
+  content: LinkedIn ticket content.
   parent:
-  author: external
+  author: james
   organization: respondo
   creator:
-  ticketable: default (ExternalTicket)
-  external_link: 'https://external.com/uid_1'
-
-email:
-  external_uid: 'uid_3'
-  status: open
-  content: Email ticket content.
-  parent:
-  author: email
-  organization: respondo
-  creator:
-  ticketable: default (EmailTicket)
-  external_link: 'https://mail.google.com/uid_1'
+  external_link: https://www.linkedin.com/posts/villi04_investment-associatesenior-associate-tsv-activity-7127751484665974785-Xp9Y
