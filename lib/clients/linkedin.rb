@@ -7,12 +7,13 @@ module Clients
     LI_USER_AUTHOR = 'https://linkedin.com/in'
     LI_COMPANY_AUTHOR = 'https://linkedin.com/company'
 
-    def initialize(client_id, client_secret, token)
+    def initialize(client_id, client_secret, token, organization_account)
       super()
 
       @client_id = client_id
       @client_secret = client_secret
       @token = token
+      @organization_account = organization_account
     end
 
     def new_mentions(last_ticket_id) # rubocop:disable Metrics/MethodLength, Metric/AbcSize
@@ -58,13 +59,10 @@ module Clients
     end
 
     def delete(id)
+      parent_ticket_link = @organization_account.tickets.find_by(external_uid: id).parent[:external_link]
+      urn = parent_ticket_link.split('/').last
       admin_organizations_urns = admin_orgs_urns[0]
-      basic_org_data = organization_notifications(admin_organizations_urns)
-      urn_element = basic_org_data['elements'].find do |element|
-        element['organizationalEntity'] == admin_organizations_urns
-      end
-      admin_organizations_urns = admin_orgs_urns[0]
-      http_delete("https://api.linkedin.com/v2/socialActions/#{urn_element['generatedActivity']}/comments/#{id}?actor=#{admin_organizations_urns}")
+      http_delete("https://api.linkedin.com/v2/socialActions/#{urn}/comments/#{id}?actor=#{admin_organizations_urns}")
     end
 
     private
