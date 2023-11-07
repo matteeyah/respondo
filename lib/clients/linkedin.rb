@@ -18,7 +18,7 @@ module Clients
     def new_mentions(last_ticket_id) # rubocop:disable Metrics/MethodLength, Metric/AbcSize
       # unix_timestamp_id = formatted_timestamp(last_ticket_id)
       unix_timestamp_id = last_ticket_id ? "#{last_ticket_id.to_time.to_i + 1.second}000" : nil
-      admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
+      admin_organizations_urns = admin_orgs_urns[0]
       # since linkedin api startRange is inclusive (greater or equals), add +1 to exclude fetching last existing mention
       basic_org_data = organization_notifications(admin_organizations_urns,
                                                   unix_timestamp_id.nil? ? nil : unix_timestamp_id.to_i)
@@ -40,7 +40,7 @@ module Clients
     end
 
     def reply(response_text, external_uid) # rubocop:disable Metrics/MethodLength, Metric/AbcSize
-      admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
+      admin_organizations_urns = admin_orgs_urns[0]
       body = { actor: admin_organizations_urns, object: external_uid, message: { text: response_text } }
       result = http_post("https://api.linkedin.com/v2/socialActions/#{id_to_urn(external_uid, 'share')}/comments",
                          body)
@@ -58,12 +58,12 @@ module Clients
     end
 
     def delete(id)
-      admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
+      admin_organizations_urns = admin_orgs_urns[0]
       basic_org_data = organization_notifications(admin_organizations_urns)
       urn_element = basic_org_data['elements'].find do |element|
         element['organizationalEntity'] == admin_organizations_urns
       end
-      admin_organizations_urns = admin_orgs_urns[0] # TODO: handle multiple organizations
+      admin_organizations_urns = admin_orgs_urns[0]
       http_delete("https://api.linkedin.com/v2/socialActions/#{urn_element['generatedActivity']}/comments/#{id}?actor=#{admin_organizations_urns}")
     end
 

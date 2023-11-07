@@ -2,6 +2,6 @@
 
 class AddExternalLinkToAuthors < ActiveRecord::Migration[7.1]
   def change
-    add_column :authors, :external_link, :string, null: false, default: 'https://respondohub.com'
+    add_column :authors, :external_link, :string, null: false # rubocop:disable Rails/NotNullColumn
   end
 end

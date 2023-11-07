@@ -2,6 +2,6 @@
 
 class AddExternalLinkToTickets < ActiveRecord::Migration[7.1]
   def change
-    add_column :tickets, :external_link, :string, null: false, default: 'https://respondohub.com'
+    add_column :tickets, :external_link, :string, null: false # rubocop:disable Rails/NotNullColumn
   end
 end
