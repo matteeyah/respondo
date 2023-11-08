@@ -77,8 +77,6 @@ GEM
       minitest (>= 5.1)
       mutex_m
       tzinfo (~> 2.0)
-    acts-as-taggable-on (10.0.0)
-      activerecord (>= 6.1, < 7.2)
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
@@ -473,7 +471,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
-  acts-as-taggable-on
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.2)
   capybara (>= 2.15)

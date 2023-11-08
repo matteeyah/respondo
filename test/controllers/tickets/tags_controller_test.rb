@@ -12,8 +12,7 @@ module Tickets
       sign_in(users(:john), user_accounts(:google_oauth2))
       organizations(:respondo).users << users(:john)
 
-      post "/tickets/#{tickets(:x).id}/tags",
-           params: { acts_as_taggable_on_tag: { name: 'awesome' } }
+      post "/tickets/#{tickets(:x).id}/tags", params: { tag: { name: 'awesome' } }
 
       assert_redirected_to tickets_path
     end
@@ -77,8 +76,7 @@ module Tickets
       tickets(:x).save!
 
       assert_no_changes -> { tickets(:x).reload.tag_list.size } do
-        post "/tickets/#{tickets(:x).id}/tags",
-             params: { acts_as_taggable_on_tag: { name: 'awesome' } }
+        post "/tickets/#{tickets(:x).id}/tags", params: { tag: { name: 'awesome' } }
       end
     end
   end

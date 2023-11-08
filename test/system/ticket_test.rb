@@ -114,7 +114,7 @@ class TicketTest < ApplicationSystemTestCase
     visit tickets_path
 
     within("#ticket_#{@ticket.id}") do
-      fill_in :'acts_as_taggable_on_tag[name]', with: "hello\n"
+      fill_in :'tag[name]', with: "hello\n"
     end
 
     within("#ticket_#{@ticket.id}") do
