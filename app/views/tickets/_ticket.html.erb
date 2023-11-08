@@ -14,7 +14,7 @@
           <div class="d-flex flex-wrap" id="<%= dom_id(ticket) %>_tags">
             <span class="d-flex order-last align-items-center me-1">
               <%= form_with url: ticket_tags_path(ticket),
-                            model: ActsAsTaggableOn::Tag.new, method: :post,
+                            model: Tag.new, method: :post,
                             html: { 'data-controller' => 'form', 'data-action' => 'turbo:submit-end->form#reset' } do |tag_form| %>
                 <span class="d-flex align-items-center me-1 text-white">
                   <%= tag_form.text_field :name, required: true, placeholder: 'add tag', class: 'form-control form-control-sm border-0 text-info w-50 opacity-75' %>

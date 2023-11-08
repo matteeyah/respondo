@@ -9,8 +9,6 @@ class Ticket < ApplicationRecord
 
   enum status: { open: 0, solved: 1 }
 
-  acts_as_taggable_on :tags
-
   scope :root, -> { where(parent: nil) }
 
   belongs_to :creator, class_name: 'User', optional: true
@@ -23,6 +21,8 @@ class Ticket < ApplicationRecord
 
   has_many :replies, class_name: 'Ticket', foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
   has_many :internal_notes, dependent: :destroy
+  has_many :ticket_tags, dependent: :destroy
+  has_many :tags, through: :ticket_tags
 
   delegate :provider, :client, to: :source
 

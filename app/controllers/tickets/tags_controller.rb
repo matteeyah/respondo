@@ -5,9 +5,8 @@ module Tickets
     before_action :set_tag, only: :destroy
 
     def create
-      @ticket.tag_list.add(tag_params[:name])
-      @ticket.save!
-      @tag = new_tag
+      @tag = Tag.find_or_create_by!(name: tag_name)
+      @ticket.tags << @tag unless @ticket.tags.include?(@tag)
 
       respond_to do |format|
         format.turbo_stream
@@ -26,12 +25,8 @@ module Tickets
 
     private
 
-    def tag_params
-      params.require(:acts_as_taggable_on_tag).permit(:name)
-    end
-
-    def new_tag
-      ActsAsTaggableOn::Tag.find_by(name: tag_params[:name])
+    def tag_name
+      params.require(:tag).require(:name)
     end
 
     def set_tag

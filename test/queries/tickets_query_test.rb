@@ -24,8 +24,7 @@ class TicketsQueryTest < ActiveSupport::TestCase
   end
 
   test 'filters by tag' do
-    tickets(:x).tag_list.add('hello')
-    tickets(:x).save!
+    tickets(:x).tags << Tag.create!(name: 'hello')
     query = TicketsQuery.new(Ticket.all, tag: 'hello')
 
     assert_equal [tickets(:x)], query.call

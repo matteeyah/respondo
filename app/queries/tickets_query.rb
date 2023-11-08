@@ -30,7 +30,7 @@ class TicketsQuery < ApplicationQuery
   def by_tag(items_relation, tag)
     return items_relation unless tag
 
-    items_relation.tagged_with(tag)
+    items_relation.includes(:tags).where(tags: { name: tag })
   end
 
   def by_author(items_relation, author)

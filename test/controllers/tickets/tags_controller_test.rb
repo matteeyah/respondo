@@ -12,8 +12,7 @@ module Tickets
       sign_in(users(:john), user_accounts(:google_oauth2))
       organizations(:respondo).users << users(:john)
 
-      post "/tickets/#{tickets(:x).id}/tags",
-           params: { acts_as_taggable_on_tag: { name: 'awesome' } }
+      post "/tickets/#{tickets(:x).id}/tags", params: { tag: { name: 'awesome' } }
 
       assert_redirected_to tickets_path
     end
@@ -36,8 +35,7 @@ module Tickets
       sign_in(users(:john), user_accounts(:google_oauth2))
       organizations(:respondo).users << users(:john)
 
-      tickets(:x).tag_list.add('awesome')
-      tickets(:x).save!
+      tickets(:x).tags << Tag.create!(name: 'awesome')
 
       delete <<~TAG_PATH.chomp
         /tickets/#{tickets(:x).id}/tags/#{tickets(:x).tags.first.id}
@@ -49,8 +47,7 @@ module Tickets
     test 'DELETE destroy when the user is not authorized redirects the user to root path' do
       sign_in(users(:john), user_accounts(:google_oauth2))
 
-      tickets(:x).tag_list.add('awesome')
-      tickets(:x).save!
+      tickets(:x).tags << Tag.create!(name: 'awesome')
 
       delete <<~TAG_PATH.chomp
         /tickets/#{tickets(:x).id}/tags/#{tickets(:x).tags.first.id}
@@ -60,8 +57,7 @@ module Tickets
     end
 
     test 'DELETE destroy when the user is not signed in redirects the user to login path' do
-      tickets(:x).tag_list.add('awesome')
-      tickets(:x).save!
+      tickets(:x).tags << Tag.create!(name: 'awesome')
 
       delete <<~TAG_PATH.chomp
         /tickets/#{tickets(:x).id}/tags/#{tickets(:x).tags.first.id}
@@ -73,12 +69,10 @@ module Tickets
     test 'POST create with duplicate tag name does not create a duplicate tag' do
       sign_in(users(:john), user_accounts(:google_oauth2))
       organizations(:respondo).users << users(:john)
-      tickets(:x).tag_list.add('awesome')
-      tickets(:x).save!
+      tickets(:x).tags << Tag.create!(name: 'awesome')
 
-      assert_no_changes -> { tickets(:x).reload.tag_list.size } do
-        post "/tickets/#{tickets(:x).id}/tags",
-             params: { acts_as_taggable_on_tag: { name: 'awesome' } }
+      assert_no_changes -> { tickets(:x).reload.tags.count } do
+        post "/tickets/#{tickets(:x).id}/tags", params: { tag: { name: 'awesome' } }
       end
     end
   end

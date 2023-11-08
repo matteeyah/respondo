@@ -114,7 +114,7 @@ class TicketTest < ApplicationSystemTestCase
     visit tickets_path
 
     within("#ticket_#{@ticket.id}") do
-      fill_in :'acts_as_taggable_on_tag[name]', with: "hello\n"
+      fill_in :'tag[name]', with: "hello\n"
     end
 
     within("#ticket_#{@ticket.id}") do
@@ -123,7 +123,7 @@ class TicketTest < ApplicationSystemTestCase
   end
 
   test 'allows removing ticket tags' do
-    @ticket.update(tag_list: 'first_tag, second_tag')
+    @ticket.tags << [Tag.create!(name: 'first_tag'), Tag.create!(name: 'second_tag')]
     visit tickets_path
 
     within("#ticket_#{@ticket.id}") do
