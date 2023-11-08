@@ -16,5 +16,7 @@ class CreateTickets < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
+
+    add_index :tickets, %i[external_uid source_id], unique: true
   end
 end

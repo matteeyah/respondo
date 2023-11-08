@@ -82,16 +82,6 @@ ActiveRecord::Schema[7.1].define(version: 2022_07_25_092130) do
     t.index ["domain"], name: "index_organizations_on_domain", unique: true
   end
 
-  create_table "personal_access_tokens", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "token_digest", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_personal_access_tokens_on_name", unique: true
-    t.index ["user_id"], name: "index_personal_access_tokens_on_user_id"
-  end
-
   create_table "taggings", force: :cascade do |t|
     t.bigint "tag_id"
     t.string "taggable_type"
@@ -137,6 +127,7 @@ ActiveRecord::Schema[7.1].define(version: 2022_07_25_092130) do
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_tickets_on_author_id"
     t.index ["creator_id"], name: "index_tickets_on_creator_id"
+    t.index ["external_uid", "source_id"], name: "index_tickets_on_external_uid_and_source_id", unique: true
     t.index ["organization_id"], name: "index_tickets_on_organization_id"
     t.index ["parent_id"], name: "index_tickets_on_parent_id"
     t.index ["source_id"], name: "index_tickets_on_source_id"
