@@ -6,7 +6,7 @@ module Tickets
 
     def create
       @tag = Tag.find_or_create_by!(name: tag_name)
-      @ticket.tags << @tag
+      @ticket.tags << @tag unless @ticket.tags.include?(@tag)
 
       respond_to do |format|
         format.turbo_stream
