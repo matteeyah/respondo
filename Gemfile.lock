@@ -95,7 +95,6 @@ GEM
     bindex (0.8.1)
     bootsnap (1.17.0)
       msgpack (~> 1.2)
-    brow (0.4.1)
     builder (3.2.4)
     capybara (3.39.2)
       addressable
@@ -122,7 +121,6 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     drb (2.2.0)
       ruby2_keywords
-    email_reply_parser (0.5.11)
     erb_lint (0.5.0)
       activesupport
       better_html (>= 2.0.1)
@@ -141,12 +139,6 @@ GEM
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
     faraday-net_http (3.0.2)
-    flipper (1.0.0)
-      brow (~> 0.4.1)
-      concurrent-ruby (< 2)
-    flipper-active_record (1.0.0)
-      activerecord (>= 4.2, < 8)
-      flipper (~> 1.0.0)
     fugit (1.9.0)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
@@ -486,10 +478,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   capybara (>= 2.15)
   debug
-  email_reply_parser
   erb_lint
-  flipper
-  flipper-active_record
   google-cloud-storage
   hashie
   hiredis
