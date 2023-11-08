@@ -10,46 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_06_132722) do
+ActiveRecord::Schema[7.1].define(version: 2022_07_25_092130) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "action_mailbox_inbound_emails", force: :cascade do |t|
-    t.integer "status", default: 0, null: false
-    t.string "message_id", null: false
-    t.string "message_checksum", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["message_id", "message_checksum"], name: "index_action_mailbox_inbound_emails_uniqueness", unique: true
-  end
-
-  create_table "active_storage_attachments", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
-    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
-  end
-
-  create_table "active_storage_blobs", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.string "service_name", null: false
-    t.bigint "byte_size", null: false
-    t.string "checksum"
-    t.datetime "created_at", null: false
-    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "active_storage_variant_records", force: :cascade do |t|
-    t.bigint "blob_id", null: false
-    t.string "variation_digest", null: false
-    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
 
   create_table "assignments", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -64,23 +27,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_06_132722) do
     t.string "external_uid", null: false
     t.integer "provider", null: false
     t.string "username", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "external_link", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["external_uid", "provider"], name: "index_authors_on_external_uid_and_provider", unique: true
-  end
-
-  create_table "email_tickets", force: :cascade do |t|
-    t.string "reply_to", null: false
-    t.string "subject", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "external_tickets", force: :cascade do |t|
-    t.string "custom_provider"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "flipper_features", force: :cascade do |t|
@@ -109,13 +59,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_06_132722) do
     t.index ["ticket_id"], name: "index_internal_notes_on_ticket_id"
   end
 
-  create_table "internal_tickets", force: :cascade do |t|
-    t.bigint "source_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["source_id"], name: "index_internal_tickets_on_source_id"
-  end
-
   create_table "organization_accounts", force: :cascade do |t|
     t.string "external_uid", null: false
     t.string "email"
@@ -137,16 +80,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_06_132722) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["domain"], name: "index_organizations_on_domain", unique: true
-  end
-
-  create_table "personal_access_tokens", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "token_digest", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_personal_access_tokens_on_name", unique: true
-    t.index ["user_id"], name: "index_personal_access_tokens_on_user_id"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -184,20 +117,20 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_06_132722) do
     t.string "external_uid", null: false
     t.text "content", null: false
     t.integer "status", default: 0, null: false
-    t.string "ticketable_type", null: false
-    t.integer "ticketable_id", null: false
+    t.string "external_link", null: false
     t.bigint "organization_id", null: false
     t.bigint "author_id", null: false
     t.bigint "creator_id"
     t.bigint "parent_id"
+    t.bigint "source_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "external_link", null: false
     t.index ["author_id"], name: "index_tickets_on_author_id"
     t.index ["creator_id"], name: "index_tickets_on_creator_id"
-    t.index ["external_uid", "ticketable_type", "organization_id"], name: "index_tickets_on_uid_and_ticketable_type_and_organization", unique: true
+    t.index ["external_uid", "source_id"], name: "index_tickets_on_external_uid_and_source_id", unique: true
     t.index ["organization_id"], name: "index_tickets_on_organization_id"
     t.index ["parent_id"], name: "index_tickets_on_parent_id"
+    t.index ["source_id"], name: "index_tickets_on_source_id"
   end
 
   create_table "user_accounts", force: :cascade do |t|
@@ -219,7 +152,5 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_06_132722) do
     t.index ["organization_id"], name: "index_users_on_organization_id"
   end
 
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "taggings", "tags"
 end

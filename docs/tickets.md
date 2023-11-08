@@ -120,18 +120,3 @@ You can delete tickets by clicking the dropdown toggler
 You can open the original social media post the ticket was created from by
 clicking the dropdown toggler (<i class="bi bi-three-dots"></i>) in the ticket
 header then clicking on "External View".
-
-## Email Tickets
-
-You can create tickets by sending an email. Just send an email to
-`inbound+{ORGANIZATION_ID}@mail.respondohub.com`. Your `ORGANIZATION_ID` is
-located in your organization settings page.
-
-## Webhook Integrations
-
-You can create tickets manually, just submit a POST request to
-`https://app.respondohub.com/organizations/{ORGANIZATION_ID}/external_tickets.json`
-using [this format](https://docs.respondohub.com/external_ticket_format).
-
-You need a `Personal Access Token` for creating external tickets. Please see the
-documentation for [managing personal access tokens](../users#personal-access-tokens).

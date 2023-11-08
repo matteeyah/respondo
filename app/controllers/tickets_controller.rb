@@ -5,8 +5,8 @@ class TicketsController < Tickets::ApplicationController
   include AuthorizesOrganizationMembership
 
   TICKET_RENDER_PRELOADS = [
-    :author, :creator, :tags, :assignment, :replies,
-    { organization: [:users], ticketable: %i[base_ticket source], internal_notes: [:creator] }
+    :author, :creator, :tags, :assignment, :replies, :source,
+    { organization: [:users], internal_notes: [:creator] }
   ].freeze
 
   before_action :set_ticket, only: %i[show update destroy permalink]

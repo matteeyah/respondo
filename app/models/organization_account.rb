@@ -10,9 +10,8 @@ class OrganizationAccount < ApplicationRecord
 
   belongs_to :organization
 
-  has_many :internal_tickets, class_name: 'InternalTicket', inverse_of: :source, foreign_key: :source_id,
-                              dependent: :destroy
-  has_many :tickets, through: :internal_tickets, source: :base_ticket
+  has_many :tickets, class_name: 'Ticket', inverse_of: :source, foreign_key: :source_id,
+                     dependent: :destroy
 
   encrypts :token
   encrypts :secret

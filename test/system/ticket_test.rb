@@ -46,34 +46,6 @@ class TicketTest < ApplicationSystemTestCase
     assert has_text?(response_text)
   end
 
-  test 'allows replying to external tickets' do
-    visit tickets_path
-
-    response_text = 'Hello from Respondo system tests'
-    external_ticket = tickets(:external)
-    response = {
-      external_uid: 123_456,
-      external_link: external_ticket.external_link,
-      author: { external_uid: '123', username: @organization.screen_name,
-                external_link: 'https://external.com/matt_is_cool' },
-      ticketable_attributes: {
-        custom_provider: 'external'
-      },
-      parent_uid: external_ticket.external_uid,
-      content: response_text
-    }
-    stub_request(:post, external_ticket.external_link)
-      .to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
-
-    within("#ticket_#{external_ticket.id}") do
-      fill_in 'ticket[content]', with: response_text
-      page.find(:css, 'i.bi-telegram').click
-    end
-
-    assert has_text?("#{@user.name} as @#{@organization.screen_name}")
-    assert has_text?(response_text)
-  end
-
   test 'allows asking the AI to answer' do
     visit tickets_path
 

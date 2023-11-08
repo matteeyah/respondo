@@ -14,11 +14,6 @@
                                  'data-bs-toggle' => 'tab', 'data-bs-target' => '#identity-tab-pane',
                                  'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true %>
     </li>
-    <li class="nav-item" id="access-tab" role="presentation">
-      <%= button_tag 'Access', class: 'nav-link', role: 'tab',
-                               'data-bs-toggle' => 'tab', 'data-bs-target' => '#access-tab-pane',
-                               'aria-controls' => 'user-settings-tab-pane', 'aria-selected' => false %>
-    </li>
   </ul>
   <div class="tab-content mt-4">
     <div aria-labelledby="identity-tab" class="tab-pane active"
@@ -40,38 +35,6 @@
         </div>
       </div>
       <%= render partial: 'shared/accounts', locals: { model: @user } %>
-    </div>
-    <div aria-labelledby="access-tab" class="tab-pane" id="access-tab-pane" role="tabpanel" tabindex="0">
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="card rounded-4">
-            <div class="card-body">
-              <div class="card-title mb-4">
-                <p class="fs-5 fw-bold">Personal Access Tokens</p>
-                <small class="text-muted">Create or delete personal access tokens used for API access.</small>
-              </div>
-              <div class="row">
-                <%= form_with url: user_personal_access_tokens_path,
-                              html: { autocomplete: 'off', 'data-controller' => 'form',
-                                      'data-action' => 'turbo:submit-end->form#reset' } do |create_token_form| %>
-                  <div class="row">
-                    <div class="col-8 col-lg-8">
-                      <%= create_token_form.text_field :name, required: true,
-                                                              placeholder: 'Enter token name', class: 'form-control form-control-sm' %>
-                    </div>
-                    <div class="col-4 col-lg-4">
-                      <%= create_token_form.submit 'Create', name: nil, class: 'btn btn-sm form-control btn-primary' %>
-                    </div>
-                  </div>
-                <% end %>
-                <div class="list-group list-group-flush" id="personal-access-tokens">
-                  <%= render partial: 'users/personal_access_token', collection: @user.personal_access_tokens %>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>

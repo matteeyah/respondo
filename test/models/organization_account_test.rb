@@ -121,7 +121,7 @@ class OrganizationAccountTest < ActiveSupport::TestCase
   test '#new_mentions asks for a full list of tickets when there are no tickets' do
     account = organization_accounts(:x)
     account.update!(token: 'hello', secret: 'world')
-    account.internal_tickets.destroy_all
+    account.tickets.destroy_all
 
     stub_request(:get, 'https://api.twitter.com/2/users/me').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },

@@ -7,13 +7,11 @@ class LinkedinTest < ActiveSupport::TestCase
     organization_account = organization_accounts(:linkedin)
     ticket1 = Ticket.create!(external_uid: 'li_uid_1', content: 'hello 1',
                              author: authors(:pierre), organization: organizations(:respondo),
-                             ticketable_type: 'InternalTicket',
-                             ticketable_attributes: { source: organization_accounts(:linkedin) },
+                             source: organization_accounts(:linkedin),
                              external_link: 'https://www.linkedin.com/feed/update/urn:li:share:7122658645678465024')
     Ticket.create!(external_uid: 'li_uid_2', parent: ticket1, content: 'hello2',
                    author: authors(:pierre), organization: organizations(:respondo),
-                   ticketable_type: 'InternalTicket',
-                   ticketable_attributes: { source: organization_accounts(:linkedin) },
+                   source: organization_accounts(:linkedin),
                    external_link: 'https://www.linkedin.com/feed/update/urn:li:share:7122658645678465024')
     @client = Clients::Linkedin.new('client_id', 'client_secret', 'token', organization_account)
 
