@@ -8,13 +8,3 @@ pierre:
   external_link: 'https://linkedin.com/in/pierre_is_cool'
   username: pierre_is_cool
   provider: linkedin
-external:
-  external_uid: 'uid_3'
-  external_link: 'https://external.com/matt_is_cool'
-  username: matt_is_cool
-  provider: external
-email:
-  external_uid: hello@example.com
-  external_link: 'https://mail.google.com/hello'
-  username: hello@example.com
-  provider: email

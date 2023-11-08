@@ -3,6 +3,7 @@
 class Ticket < ApplicationRecord
   include WithDescendants
 
+  validates :external_uid, uniqueness: { scope: :source_id }, presence: { allow_blank: false }
   validates :external_link, presence: { allow_blank: false }, url: true
   validates :content, presence: { allow_blank: false }
 

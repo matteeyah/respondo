@@ -5,6 +5,7 @@ x:
   parent:
   author: james
   organization: respondo
+  source: x
   creator:
   external_link: https://x.com/twitter/status/uid_1
 
@@ -13,7 +14,8 @@ linkedin:
   status: open
   content: LinkedIn ticket content.
   parent:
-  author: james
+  author: pierre
   organization: respondo
+  source: linkedin
   creator:
   external_link: https://www.linkedin.com/posts/villi04_investment-associatesenior-associate-tsv-activity-7127751484665974785-Xp9Y

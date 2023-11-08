@@ -8,6 +8,7 @@ class TicketsHelperTest < ActionView::TestCase
     ticket = Ticket.create!(
       external_uid: 'hello_world', status: :open, content: 'Lorem ipsum dolor sit amet',
       parent: parent_ticket, author: authors(:james), organization: organizations(:respondo),
+      source: organization_accounts(:x),
       external_link: 'https://x.com/twitter/status/uid_1'
     )
     author_link = link_to("@#{ticket.author.username}", ticket.author.external_link, class: 'text-decoration-none')

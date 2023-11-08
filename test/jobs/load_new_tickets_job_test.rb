@@ -36,7 +36,7 @@ class LoadNewTicketsJobTest < ActiveJob::TestCase
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: file_fixture('li_admin_organizations.json')
     )
-    stub_request(:get, 'https://api.linkedin.com/v2/organizationalEntityNotifications?actions=List(SHARE_MENTION)&organizationalEntity=urn:li:organization:100702332&q=criteria').to_return(
+    stub_request(:get, %r{https://api\.linkedin\.com/v2/organizationalEntityNotifications\?actions=List\(SHARE_MENTION\)&organizationalEntity=urn:li:organization:100702332&q=criteria&timeRange=\(start:\d+,end:\d+\)}).to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: file_fixture('li_organization_notifications.json')
     )
