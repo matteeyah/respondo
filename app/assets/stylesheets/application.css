@@ -103,13 +103,11 @@
     -webkit-background-clip: text; /* stylelint-disable-line property-no-vendor-prefix */
   }
 
-
   66% {
     background-color: var(--bs-danger);
     background-clip: text;
     -webkit-background-clip: text; /* stylelint-disable-line property-no-vendor-prefix */
   }
-
 
   100% {
     background-color: var(--bs-info);
@@ -167,4 +165,5 @@
     border-radius: var(--bs-border-radius-xl) 0 0 var(--bs-border-radius-xl) !important;
   }
 }
+
 /* -- Specific styles -- */
