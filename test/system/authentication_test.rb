@@ -37,7 +37,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     add_oauth_mock(:twitter, '123', { nickname: 'test_organization' }, {})
     visit root_path
-    page.find('#x-authorize-button').click
+    click_button(find_icon_link('x'))
 
     assert_enqueued_with(job: LoadNewTicketsJob)
 

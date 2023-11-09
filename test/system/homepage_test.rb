@@ -18,19 +18,19 @@ class HomepageTest < ApplicationSystemTestCase
 
   test 'guides user through the set-up process using x' do
     add_oauth_mock_for_organization(organizations(:respondo), organization_accounts(:x))
-    page.find('#x-authorize-button').click
-    handle_logout
+    click_button(find_icon_link('x'))
+    logout
   end
 
   test 'guides user through the set-up process using linkedin' do
     add_oauth_mock_for_organization(organizations(:respondo), organization_accounts(:linkedin))
-    page.find('#linkedin-authorize-button').click
-    handle_logout
+    click_button(find_icon_link('linkedin'))
+    logout
   end
 
   private
 
-  def handle_logout
+  def logout
     find_by_id('settings').click
     click_button('Sign Out')
 
