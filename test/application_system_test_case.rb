@@ -11,4 +11,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
       driver_options.add_argument('no-sandbox')
     end
   end
+
+  private
+
+  def find_icon_link(icon)
+    find(:xpath, %(.//i[contains(@class, "bi-#{icon}")]/..))
+  end
 end

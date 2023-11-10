@@ -3,7 +3,16 @@
   <h2>Woohoo, you're in!</h2>
   <p class="text-muted">The next step is to authorize a organization account.</p>
   <hr>
-  <%= auth_provider_link('twitter', { class: 'btn btn-primary rounded-pill px-5' }) do %>
-    <span>Authorize</span>
-  <% end %>
+  <div class="row gx-2">
+    <div class="col">
+      <%= auth_provider_link('twitter', { class: 'btn btn-lg bg-x px-3 float-end' }) do %>
+        <%= bi_icon('twitter', 'text-white') %>
+      <% end %>
+    </div>
+    <div class="col">
+      <%= auth_provider_link('linkedin', { class: 'btn btn-lg bg-linkedin px-3 float-start' }) do %>
+        <%= bi_icon('linkedin', 'text-white') %>
+      <% end %>
+    </div>
+  </div>
 </div>
