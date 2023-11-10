@@ -19,9 +19,9 @@ class MentionTest < ActiveSupport::TestCase
 
   test '.root returnes mentions without a parent' do
     child = Mention.create!(external_uid: 'uid_10', parent: mentions(:x), content: 'hello',
-                           author: authors(:james), organization: organizations(:respondo),
-                           source: organization_accounts(:x),
-                           external_link: 'https://x.com/twitter/status/uid_1')
+                            author: authors(:james), organization: organizations(:respondo),
+                            source: organization_accounts(:x),
+                            external_link: 'https://x.com/twitter/status/uid_1')
 
     assert_not_includes Mention.root, child
   end
@@ -51,9 +51,9 @@ class MentionTest < ActiveSupport::TestCase
 
   test '#with_descendants_hash' do
     child = Mention.create!(external_uid: 'uid_10', parent: mentions(:x), content: 'hello',
-                           author: authors(:james), organization: organizations(:respondo),
-                           source: organization_accounts(:x),
-                           external_link: 'https://x.com/twitter/status/uid_1')
+                            author: authors(:james), organization: organizations(:respondo),
+                            source: organization_accounts(:x),
+                            external_link: 'https://x.com/twitter/status/uid_1')
 
     expected_structure = {
       mentions(:x) => { child => {} }
