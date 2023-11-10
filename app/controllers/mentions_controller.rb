@@ -4,7 +4,7 @@ class MentionsController < Mentions::ApplicationController
   include Pagy::Backend
   include AuthorizesOrganizationMembership
 
-  TICKET_RENDER_PRELOADS = [
+  MENTION_RENDER_PRELOADS = [
     :author, :creator, :tags, :assignment, :replies, :source,
     { organization: [:users], internal_notes: [:creator] }
   ].freeze
@@ -13,11 +13,11 @@ class MentionsController < Mentions::ApplicationController
 
   def index
     @pagy, mentions_relation = pagy(mentions)
-    @mentions = mentions_relation.with_descendants_hash(TICKET_RENDER_PRELOADS)
+    @mentions = mentions_relation.with_descendants_hash(MENTION_RENDER_PRELOADS)
   end
 
   def show
-    @mention_hash = @mention.with_descendants_hash(TICKET_RENDER_PRELOADS)
+    @mention_hash = @mention.with_descendants_hash(MENTION_RENDER_PRELOADS)
     @reply_model = Mention.new(parent: @mention)
     @reply_model.content = @mention.generate_ai_response(params[:ai]) if params[:ai]
 

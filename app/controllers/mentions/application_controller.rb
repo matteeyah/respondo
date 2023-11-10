@@ -9,7 +9,7 @@ module Mentions
     private
 
     def set_mention
-      @mention = Mentions.find(params[:mention_id])
+      @mention = Mention.find(params[:mention_id])
     end
   end
 end

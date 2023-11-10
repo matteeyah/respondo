@@ -14,12 +14,12 @@ class Mention < ApplicationRecord
   belongs_to :creator, class_name: 'User', optional: true
   belongs_to :author
   belongs_to :organization
-  belongs_to :parent, class_name: 'Mentions', optional: true
+  belongs_to :parent, class_name: 'Mention', optional: true
   belongs_to :source, class_name: 'OrganizationAccount'
 
   has_one :assignment, dependent: :destroy
 
-  has_many :replies, class_name: 'Mentions', foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
+  has_many :replies, class_name: 'Mention', foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
   has_many :internal_notes, dependent: :destroy
   has_many :mention_tags, dependent: :destroy
   has_many :tags, through: :mention_tags
