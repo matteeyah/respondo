@@ -34,10 +34,10 @@
   --bs-light-rgb: 228, 231, 235;
   --bs-dark: #030235;
   --bs-dark-rgb: 3, 2, 53;
-  --bg-x: #1DA1F2;
-  --bg-x-rgb: 29, 161, 242;
-  --bg-linkedin: #0077b5;
-  --bg-linkedin-rgb: 0, 119, 181;
+  --adtz-x: #1DA1F2;
+  --adtz-x-rgb: 29, 161, 242;
+  --adtz-linkedin: #0077b5;
+  --adtz-linkedin-rgb: 0, 119, 181;
 }
 
 /* -- Bootstrap overrides -- */
@@ -130,20 +130,20 @@
   margin-top: -6.5rem;
 }
 
-.x-background {
-  background-color: var(--bg-x);
+.bg-x {
+  background-color: var(--adtz-x);
 }
 
-.x-background:hover {
-  background-color: rgba(var(--bg-x-rgb), 0.8);
+.bg-x:hover {
+  background-color: rgba(var(--adtz-x-rgb), 0.8);
 }
 
-.linkedin-background {
-  background-color: var(--bg-linkedin);
+.bg-linkedin {
+  background-color: var(--adtz-linkedin);
 }
 
-.linkedin-background:hover {
-  background-color: rgba(var(--bg-linkedin-rgb), 0.8);
+.bg-linkedin:hover {
+  background-color: rgba(var(--adtz-linkedin-rgb), 0.8);
 }
 
 @media (max-width: 991.98px) {

@@ -18,13 +18,13 @@ class HomepageTest < ApplicationSystemTestCase
 
   test 'guides user through the set-up process using x' do
     add_oauth_mock_for_organization(organizations(:respondo), organization_accounts(:x))
-    click_button(find_icon_link('twitter'))
+    find_icon_link('twitter').click
     logout
   end
 
   test 'guides user through the set-up process using linkedin' do
     add_oauth_mock_for_organization(organizations(:respondo), organization_accounts(:linkedin))
-    click_button(find_icon_link('linkedin'))
+    find_icon_link('linkedin').click
     logout
   end
 
