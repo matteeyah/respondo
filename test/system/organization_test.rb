@@ -14,52 +14,52 @@ class OrganizationTest < ApplicationSystemTestCase
     @user.update!(organization: @organization)
     sign_in(@user)
 
-    visit tickets_path
+    visit mentions_path
   end
 
-  test 'shows the tickets' do
-    assert has_text?(tickets(:x).content)
+  test 'shows the mentions' do
+    assert has_text?(mentions(:x).content)
   end
 
-  test 'allows navigating to tickets' do
-    target_ticket = tickets(:x)
+  test 'allows navigating to mentions' do
+    target_mention = mentions(:x)
 
-    within("#ticket_#{target_ticket.id}") do
+    within("#mention_#{target_mention.id}") do
       page.find(:css, 'i.bi-three-dots').click
       click_link 'View'
     end
 
-    assert has_text?(target_ticket.content)
+    assert has_text?(target_mention.content)
   end
 
-  test 'allows searching tickets by author name' do
-    fill_in 'query', with: "author:#{tickets(:x).author.username}"
+  test 'allows searching mentions by author name' do
+    fill_in 'query', with: "author:#{mentions(:x).author.username}"
     click_button :search
 
-    assert has_text?(tickets(:x).content)
-    assert has_no_text?(tickets(:linkedin).content)
+    assert has_text?(mentions(:x).content)
+    assert has_no_text?(mentions(:linkedin).content)
   end
 
-  test 'allows searching tickets by content' do
-    fill_in 'query', with: "content:#{tickets(:x).content}"
+  test 'allows searching mentions by content' do
+    fill_in 'query', with: "content:#{mentions(:x).content}"
     click_button :search
 
-    assert has_text?(tickets(:x).content)
-    assert has_no_text?(tickets(:linkedin).content)
+    assert has_text?(mentions(:x).content)
+    assert has_no_text?(mentions(:linkedin).content)
   end
 
-  test 'keeps ticket status context when searching' do
-    tickets(:linkedin).update!(status: :solved)
+  test 'keeps mention status context when searching' do
+    mentions(:linkedin).update!(status: :solved)
 
     click_link 'Solved'
 
     # This is a hack to make Capybara wait until the page is loaded after navigating
     find(:xpath, "//input[@type='hidden'][@value='solved']", visible: :hidden)
 
-    fill_in 'query', with: tickets(:linkedin).author.username
+    fill_in 'query', with: mentions(:linkedin).author.username
     click_button :search
 
-    assert has_no_text?(tickets(:x).author.username)
-    assert has_text?(tickets(:linkedin).author.username)
+    assert has_no_text?(mentions(:x).author.username)
+    assert has_text?(mentions(:linkedin).author.username)
   end
 end

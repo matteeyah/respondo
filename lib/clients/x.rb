@@ -19,18 +19,18 @@ module Clients
       @secret = secret
     end
 
-    def new_mentions(last_ticket_identifier) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    def new_mentions(last_mention_identifier) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       id = x_client.get('users/me')['data']['id']
       mentions = []
       users = []
 
-      new_mentions = list_mentions(id, last_ticket_identifier)
+      new_mentions = list_mentions(id, last_mention_identifier)
       return [] unless new_mentions
 
       while new_mentions[:pagination_token]
         mentions += new_mentions[:mentions]
         users += new_mentions[:users]
-        new_mentions = list_mentions(id, last_ticket_identifier, new_mentions[:pagination_token])
+        new_mentions = list_mentions(id, last_mention_identifier, new_mentions[:pagination_token])
       end
       mentions += new_mentions[:mentions]
       users += new_mentions[:users]
@@ -65,9 +65,9 @@ module Clients
         )
     end
 
-    def list_mentions(user_id, last_ticket_identifier = nil, pagination_token = nil)
+    def list_mentions(user_id, last_mention_identifier = nil, pagination_token = nil)
       tweet_params = TWEET_PARAMS.dup
-      tweet_params['since_id'] = last_ticket_identifier if last_ticket_identifier
+      tweet_params['since_id'] = last_mention_identifier if last_mention_identifier
       tweet_params['pagination_token'] = pagination_token if pagination_token
 
       api_response = x_client.get("users/#{user_id}/mentions?#{tweet_params.to_param}")

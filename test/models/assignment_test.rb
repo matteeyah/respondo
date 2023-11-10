@@ -3,10 +3,10 @@
 require 'test_helper'
 
 class AssignmentTest < ActiveSupport::TestCase
-  test 'validates ticket_id uniqueness' do
-    new_assignment = Assignment.new(ticket_id: tickets(:x).id, user: users(:john))
+  test 'validates mention_id uniqueness' do
+    new_assignment = Assignment.new(mention_id: mentions(:x).id, user: users(:john))
 
     assert_predicate new_assignment, :invalid?
-    assert new_assignment.errors.added?(:ticket_id, :taken, value: tickets(:x).id)
+    assert new_assignment.errors.added?(:mention_id, :taken, value: mentions(:x).id)
   end
 end

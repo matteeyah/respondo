@@ -4,24 +4,24 @@ class DashboardController < ApplicationController
   include AuthorizesOrganizationMembership
 
   def show
-    @newest_tickets = newest_tickets
-    @new_count = new_tickets.count
-    @open_count = current_user.organization.tickets.open.count
-    @solved_count = current_user.organization.tickets.solved.count
-    @unassigned_count = unassigned_tickets.count
+    @newest_mentions = newest_mentions
+    @new_count = new_mentions.count
+    @open_count = current_user.organization.mentions.open.count
+    @solved_count = current_user.organization.mentions.solved.count
+    @unassigned_count = unassigned_mentions.count
   end
 
   private
 
-  def new_tickets
-    current_user.organization.tickets.open.where(created_at: Time.zone.today)
+  def new_mentions
+    current_user.organization.mentions.open.where(created_at: Time.zone.today)
   end
 
-  def unassigned_tickets
-    current_user.organization.tickets.includes(:assignment).where(assignment: { ticket_id: nil })
+  def unassigned_mentions
+    current_user.organization.mentions.includes(:assignment).where(assignment: { mention_id: nil })
   end
 
-  def newest_tickets
-    current_user.organization.tickets.includes(:author, :source).order(created_at: :desc).take(3)
+  def newest_mentions
+    current_user.organization.mentions.includes(:author, :source).order(created_at: :desc).take(3)
   end
 end

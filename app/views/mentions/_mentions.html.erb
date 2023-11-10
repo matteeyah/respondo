@@ -1,0 +1,12 @@
+<ul class="list-group">
+  <% mentions.each do |mention, replies| %>
+    <li class="list-group-item bg-transparent py-0 rounded-0 border-0">
+      <%= turbo_frame_tag dom_id(mention) do %>
+        <%= render partial: 'mentions/mention', locals: { mention:, reply_model: Mention.new(parent: mention) } %>
+        <% if replies.any? %>
+          <%= render partial: 'mentions/mentions', locals: { mentions: replies } %>
+        <% end %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

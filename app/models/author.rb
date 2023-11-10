@@ -8,7 +8,7 @@ class Author < ApplicationRecord
 
   enum provider: { external: 0, twitter: 1, linkedin: 2, email: 3 }
 
-  has_many :tickets, dependent: :restrict_with_error
+  has_many :mentions, dependent: :restrict_with_error
 
   def self.from_client!(author_hash, provider)
     find_or_initialize_by(external_uid: author_hash[:external_uid], provider:).tap do |author|

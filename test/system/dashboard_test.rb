@@ -17,18 +17,18 @@ class DashboardTest < ApplicationSystemTestCase
     visit dashboard_path
   end
 
-  test 'shows the newest tickets' do
-    assert has_text?(tickets(:x).content)
+  test 'shows the newest mentions' do
+    assert has_text?(mentions(:x).content)
   end
 
-  test 'shows the tickets info widgets' do
-    assert has_text?('New Tickets')
+  test 'shows the mentions info widgets' do
+    assert has_text?('New Mentions')
     assert has_text?('Total Open')
   end
 
-  test 'allows show all tickets with home widget' do
-    click_link('New Tickets')
+  test 'allows show all mentions with home widget' do
+    click_link('New Mentions')
 
-    assert has_text?(tickets(:x).content)
+    assert has_text?(mentions(:x).content)
   end
 end

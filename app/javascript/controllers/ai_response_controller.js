@@ -4,10 +4,10 @@ export default class extends Controller {
   static targets = ['parameter']
 
   static values = {
-    ticketPath: String
+    mentionPath: String
   }
 
   addParam (event) {
-    event.target.parentNode.href = `${this.ticketPathValue}?ai=${this.parameterTarget.value || 'true'}`
+    event.target.parentNode.href = `${this.mentionPathValue}?ai=${this.parameterTarget.value || 'true'}`
   }
 }

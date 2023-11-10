@@ -4,20 +4,20 @@ require 'test_helper'
 
 class RecursiveCteQueryTest < ActiveSupport::TestCase
   test 'returns self and all descendants' do
-    child = Ticket.create!(
-      external_uid: 'uid_10', parent: tickets(:x), content: 'hello',
+    child = Mention.create!(
+      external_uid: 'uid_10', parent: mentions(:x), content: 'hello',
       author: authors(:james), organization: organizations(:respondo),
       source: organization_accounts(:x),
       external_link: 'https://x.com/twitter/status/uid_1'
     )
-    nested_child = Ticket.create!(
+    nested_child = Mention.create!(
       external_uid: 'uid_20', status: :open, content: 'Lorem', parent: child,
       author: authors(:james), organization: organizations(:respondo),
       source: organization_accounts(:x),
       external_link: 'https://x.com/twitter/status/uid_1'
     )
-    query = RecursiveCteQuery.new(Ticket.all, model_column: :parent_id, recursive_cte_column: :id)
+    query = RecursiveCteQuery.new(Mention.all, model_column: :parent_id, recursive_cte_column: :id)
 
-    assert_equal [tickets(:x), tickets(:linkedin), child, nested_child], query.call
+    assert_equal [mentions(:x), mentions(:linkedin), child, nested_child], query.call
   end
 end

@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   get :settings, to: 'organizations#edit'
   get :profile, to: 'users#edit'
 
-  resources :tickets, only: %i[index show update destroy] do
+  resources :mentions, only: %i[index show update destroy] do
     member do
       get :permalink
     end
@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       post :refresh
     end
 
-    scope module: :tickets do
+    scope module: :mentions do
       resources :tags, only: %i[create destroy]
       resources :internal_notes, only: :create
       resources :replies, only: :create
@@ -58,7 +58,7 @@ Rails.application.routes.draw do
 
   resources :organizations, only: [] do
     scope module: :organizations do
-      resources :external_tickets, constraints: { format: 'json' }, only: [:create]
+      resources :external_mentions, constraints: { format: 'json' }, only: [:create]
     end
   end
 

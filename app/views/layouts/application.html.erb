@@ -36,11 +36,11 @@
               <% end %>
             </li>
             <li class="nav-item">
-              <%= active_link_to tickets_path, { active: :exclusive,
+              <%= active_link_to mentions_path, { active: :exclusive,
                                                  class: 'nav-link d-flex align-items-center ps-4', 'data-turbo-frame' => :_top,
-                                                 :title => 'Tickets' } do %>
-                <%= bi_icon('ticket', 'fs-4 me-3') %>
-                <span>Tickets</span>
+                                                 :title => 'Mentions' } do %>
+                <%= bi_icon('mention', 'fs-4 me-3') %>
+                <span>Mentions</span>
               <% end %>
             </li>
           <% end %>

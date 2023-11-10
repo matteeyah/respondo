@@ -1,0 +1,21 @@
+x:
+  external_uid: uid_1
+  status: open
+  content: X mention content.
+  parent:
+  author: james
+  organization: respondo
+  source: x
+  creator:
+  external_link: https://x.com/twitter/status/uid_1
+
+linkedin:
+  external_uid: uid_2
+  status: open
+  content: LinkedIn mention content.
+  parent:
+  author: pierre
+  organization: respondo
+  source: linkedin
+  creator:
+  external_link: https://www.linkedin.com/posts/villi04_investment-associatesenior-associate-tsv-activity-7127751484665974785-Xp9Y

@@ -16,7 +16,7 @@ class OmniauthCallbacksController < ApplicationController
     account = OrganizationAccount.from_omniauth(auth_hash, current_user.organization)
 
     # This checks if the account was just created.
-    LoadNewTicketsJob.perform_later(account.organization) if account.id_previously_changed?
+    LoadNewMentionsJob.perform_later(account.organization) if account.id_previously_changed?
     current_user.update!(organization: account.organization) if account.persisted?
 
     redirect_to(auth_origin || root_path)

@@ -10,7 +10,7 @@
       <span class="text-black">
         <%= current_user.name %>
       </span>
-      , you're all set! Feel free to hop into the organization tickets!
+      , you're all set! Feel free to hop into the organization mentions!
     </p>
   </div>
 </div>
@@ -20,11 +20,11 @@
       <div class="col-lg-6">
         <div class="card border border-2 rounded-5 border-info p-2">
           <div class="card-body">
-            <%= link_to tickets_path, { class: 'text-decoration-none m-0 stretched-link' } do %>
+            <%= link_to mentions_path, { class: 'text-decoration-none m-0 stretched-link' } do %>
               <div class="card-title">
                 <%= bi_icon('magic', 'fs-5 bg-info bg-opacity-50 text-info p-3 rounded') %>
                 <div class="row">
-                  <small class="text-muted mt-3">New Tickets</small>
+                  <small class="text-muted mt-3">New Mentions</small>
                 </div>
               </div>
               <span class="fs-2">
@@ -38,7 +38,7 @@
       <div class="col-lg-6">
         <div class="card border border-2 rounded-5 border-primary p-2">
           <div class="card-body">
-            <%= link_to tickets_path(status: 'open'),
+            <%= link_to mentions_path(status: 'open'),
                         { class: 'text-decoration-none stretched-link' } do %>
               <div class="card-title">
                 <%= bi_icon('folder2-open', 'fs-5 bg-primary bg-opacity-50 text-primary p-3 rounded') %>
@@ -59,11 +59,11 @@
       <div class="col-lg-6">
         <div class="card border border-2 rounded-5 border-warning p-2">
           <div class="card-body">
-            <%= link_to tickets_path, { class: 'text-decoration-none stretched-link' } do %>
+            <%= link_to mentions_path, { class: 'text-decoration-none stretched-link' } do %>
               <div class="card-title">
                 <%= bi_icon('stopwatch-fill', 'fs-5 bg-warning bg-opacity-50 text-warning p-3 rounded') %>
                 <div class="row">
-                  <small class="text-muted mt-3">Unassigned Tickets</small>
+                  <small class="text-muted mt-3">Unassigned Mentions</small>
                 </div>
               </div>
               <span class="fs-2">
@@ -77,7 +77,7 @@
       <div class="col-lg-6">
         <div class="card border border-2 rounded-5 border-danger p-2">
           <div class="card-body">
-            <%= link_to tickets_path(status: 'solved'),
+            <%= link_to mentions_path(status: 'solved'),
                         { class: 'text-decoration-none stretched-link' } do %>
               <div class="card-title">
                 <%= bi_icon('folder2', 'fs-5 bg-danger bg-opacity-50 text-danger p-3 rounded') %>
@@ -100,13 +100,13 @@
       <div class="card-body">
         <div class="card-title d-flex justify-content-between align-items-center mb-2 text-light">
           <span class="fs-4">Newest</span>
-          <%= link_to tickets_path,
+          <%= link_to mentions_path,
                       { active: :exclusive, class: 'text-decoration-none', 'data-turbo-frame' => :_top } do %>
             <%= bi_icon('box-arrow-up-right text-light') %>
           <% end %>
         </div>
         <div class="list-group list-group-flush">
-          <%= render partial: 'ticket', collection: @newest_tickets %>
+          <%= render partial: 'mention', collection: @newest_mentions %>
         </div>
       </div>
     </div>
