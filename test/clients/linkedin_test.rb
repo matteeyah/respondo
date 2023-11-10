@@ -5,14 +5,14 @@ require 'test_helper'
 class LinkedinTest < ActiveSupport::TestCase
   setup do
     organization_account = organization_accounts(:linkedin)
-    ticket1 = Ticket.create!(external_uid: 'li_uid_1', content: 'hello 1',
-                             author: authors(:pierre), organization: organizations(:respondo),
-                             source: organization_accounts(:linkedin),
-                             external_link: 'https://www.linkedin.com/feed/update/urn:li:share:7122658645678465024')
-    Ticket.create!(external_uid: 'li_uid_2', parent: ticket1, content: 'hello2',
-                   author: authors(:pierre), organization: organizations(:respondo),
-                   source: organization_accounts(:linkedin),
-                   external_link: 'https://www.linkedin.com/feed/update/urn:li:share:7122658645678465024')
+    mention1 = Mention.create!(external_uid: 'li_uid_1', content: 'hello 1',
+                               author: authors(:pierre), organization: organizations(:respondo),
+                               source: organization_accounts(:linkedin),
+                               external_link: 'https://www.linkedin.com/feed/update/urn:li:share:7122658645678465024')
+    Mention.create!(external_uid: 'li_uid_2', parent: mention1, content: 'hello2',
+                    author: authors(:pierre), organization: organizations(:respondo),
+                    source: organization_accounts(:linkedin),
+                    external_link: 'https://www.linkedin.com/feed/update/urn:li:share:7122658645678465024')
     @client = Clients::Linkedin.new('client_id', 'client_secret', 'token', organization_account)
 
     stub_request(:get, 'https://api.linkedin.com/v2/organizationalEntityAcls?projection=(elements*(organizationalTarget~(id)))&q=roleAssignee&role=ADMINISTRATOR').to_return(
@@ -21,7 +21,7 @@ class LinkedinTest < ActiveSupport::TestCase
     )
   end
 
-  test '#new_mentions makes a linkedin api request for all posts when a ticket identifier is not provided' do
+  test '#new_mentions makes a linkedin api request for all posts when a mention identifier is not provided' do
     org_entity_notifications_stub
     li_new_mentions_request = new_mentions_stub
     authors_stub

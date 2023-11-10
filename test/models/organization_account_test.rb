@@ -118,10 +118,10 @@ class OrganizationAccountTest < ActiveSupport::TestCase
     end
   end
 
-  test '#new_mentions asks for a full list of tickets when there are no tickets' do
+  test '#new_mentions asks for a full list of mentions when there are no mentions' do
     account = organization_accounts(:x)
     account.update!(token: 'hello', secret: 'world')
-    account.tickets.destroy_all
+    account.mentions.destroy_all
 
     stub_request(:get, 'https://api.twitter.com/2/users/me').to_return(
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
@@ -136,7 +136,7 @@ class OrganizationAccountTest < ActiveSupport::TestCase
     assert_requested(stubbed_x_request)
   end
 
-  test '#new_mentions uses last ticket identifier when account has tickets' do
+  test '#new_mentions uses last mention identifier when account has mentions' do
     account = organization_accounts(:x)
     account.update!(token: 'hello', secret: 'world')
 

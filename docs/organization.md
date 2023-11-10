@@ -8,8 +8,8 @@ description: Documentation for managing organization.
 When you first sign in, you can click `Authorize` to connect your organization
 X account.
 
-When signed in, you can load new tickets associated with your Organization by
-pressing the `Reload` button in the tickets page.
+When signed in, you can load new mentions associated with your Organization by
+pressing the `Reload` button in the mentions page.
 
 ## Organization accounts
 
@@ -20,7 +20,7 @@ deauthorize these accounts.
 ## Organization members
 
 You can add or remove users from your organization. All associated users are
-able to respond to the related Organization tickets using the authorized
+able to respond to the related Organization mentions using the authorized
 Organization account on that social network.
 
 ## Organization domain
@@ -38,7 +38,7 @@ media posts, just like an employee would.
 Example:
 
 ```plain
-Respondo is an AI social media ticketing tool.
+Respondo is an AI social media mentioning tool.
 
 You always respond in a friendly tone.
 ```

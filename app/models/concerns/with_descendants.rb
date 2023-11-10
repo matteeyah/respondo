@@ -5,9 +5,9 @@ module WithDescendants
 
   class_methods do
     def with_descendants_hash(*included_relations)
-      ticket_ids = all.pluck(:id)
-      tickets = unscoped.where(id: ticket_ids).with_descendants.includes(included_relations)
-      convert_ticket_array_to_hash(tickets)
+      mention_ids = all.pluck(:id)
+      mentions = unscoped.where(id: mention_ids).with_descendants.includes(included_relations)
+      convert_mention_array_to_hash(mentions)
     end
 
     def with_descendants
@@ -16,19 +16,19 @@ module WithDescendants
 
     private
 
-    def convert_ticket_array_to_hash(tickets)
+    def convert_mention_array_to_hash(mentions)
       {}.extend(Hashie::Extensions::DeepFind).tap do |hash|
-        tickets.each do |ticket|
-          # This is used instead of ticket.parent to prevent an additional DB query
-          parent = tickets.find { |parent_ticket| parent_ticket.id == ticket.parent_id }
-          # Either add to the ticket hash key or create a root key for the ticket
-          (hash.deep_find(parent) || hash).merge!(ticket => {})
+        mentions.each do |mention|
+          # This is used instead of mention.parent to prevent an additional DB query
+          parent = mentions.find { |parent_mention| parent_mention.id == mention.parent_id }
+          # Either add to the mention hash key or create a root key for the mention
+          (hash.deep_find(parent) || hash).merge!(mention => {})
         end
       end
     end
   end
 
   def with_descendants_hash(*)
-    Ticket.where(id:).with_descendants_hash(*)
+    Mention.where(id:).with_descendants_hash(*)
   end
 end

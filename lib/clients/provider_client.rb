@@ -2,7 +2,7 @@
 
 module Clients
   class ProviderClient
-    def new_mentions(_last_ticket_identifier)
+    def new_mentions(_last_mention_identifier)
       raise NotImplementedError
     end
 

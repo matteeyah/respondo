@@ -1,0 +1,34 @@
+<div class="list-group-item list-group-item-action bg-secondary rounded-5">
+  <%= link_to mention_path(mention), class: 'text-decoration-none stretched-link' do %>
+    <div class="row">
+      <div class="col-lg-1 d-none d-lg-flex align-items-center">
+        <div class="social-icon">
+          <%= bi_icon(mention.provider, 'text-white text-opacity-75 fs-3') %>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="row">
+          <small class="m-0 text-white text-opacity-50">
+            <%= mention.author.username %>
+          </small>
+        </div>
+        <div class="row">
+          <small class="mx-0 my-1 fs-6 text-light">
+            <%= mention.content.first(100) %>
+          </small>
+        </div>
+        <div class="row">
+          <small class="m-0 text-white-50">
+            <%= mention.created_at.to_fs(:short) %>
+          </small>
+        </div>
+      </div>
+      <div class="col-lg-2 d-none d-lg-flex flex-column justify-content-center align-items-center">
+        <%= bi_icon('chat-dots-fill', 'text-white text-opacity-75 fs-4') %>
+        <small class="text-white text-opacity-50">
+          <%= mention.replies.count %> replies
+        </small>
+      </div>
+    </div>
+  <% end %>
+</div>

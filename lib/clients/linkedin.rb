@@ -16,9 +16,9 @@ module Clients
       @organization_account = organization_account
     end
 
-    def new_mentions(last_ticket_id) # rubocop:disable Metrics/MethodLength, Metric/AbcSize
-      # unix_timestamp_id = formatted_timestamp(last_ticket_id)
-      unix_timestamp_id = last_ticket_id ? "#{last_ticket_id.to_time.to_i + 1.second}000" : nil
+    def new_mentions(last_mention_id) # rubocop:disable Metrics/MethodLength, Metric/AbcSize
+      # unix_timestamp_id = formatted_timestamp(last_mention_id)
+      unix_timestamp_id = last_mention_id ? "#{last_mention_id.to_time.to_i + 1.second}000" : nil
       admin_organizations_urns = admin_orgs_urns[0]
       # since linkedin api startRange is inclusive (greater or equals), add +1 to exclude fetching last existing mention
       basic_org_data = organization_notifications(admin_organizations_urns,
@@ -36,7 +36,7 @@ module Clients
         mention_author = authors.find do |author|
           mention['author'].include? author['id']
         end
-        mentions_to_tickets(mention, mention_author)
+        mentions_to_mentions(mention, mention_author)
       end.reverse
     end
 
@@ -59,8 +59,8 @@ module Clients
     end
 
     def delete(id)
-      parent_ticket_link = @organization_account.tickets.find_by(external_uid: id).parent[:external_link]
-      urn = parent_ticket_link.split('/').last
+      parent_mention_link = @organization_account.mentions.find_by(external_uid: id).parent[:external_link]
+      urn = parent_mention_link.split('/').last
       admin_organizations_urns = admin_orgs_urns[0]
       http_delete("https://api.linkedin.com/v2/socialActions/#{urn}/comments/#{id}?actor=#{admin_organizations_urns}")
     end
@@ -131,8 +131,8 @@ module Clients
       end
     end
 
-    # convert a post to a ticket
-    def mentions_to_tickets(post_from_api, author, parent_uid = nil)
+    # convert a post to a mention
+    def mentions_to_mentions(post_from_api, author, parent_uid = nil)
       # cuts off the urn part: @[Test 1337](urn:li:organization:100702332)
       regex = /@\[(.*)\]\(.*\)/
       organization_name = post_from_api['commentary'].match(regex)[1] # "Test 1337"

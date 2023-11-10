@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class XTest < ActiveSupport::TestCase
-  test '#new_mentions makes a x api request for all posts when a ticket identifier is not provided' do
+  test '#new_mentions makes a x api request for all posts when a mention identifier is not provided' do
     client = Clients::X.new('api_key', 'api_secret', 'token', 'secret')
 
     stub_request(:get, 'https://api.twitter.com/2/users/me').to_return(

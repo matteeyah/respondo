@@ -29,7 +29,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     add_oauth_mock(:google_oauth2, '123', { name: 'Test User', email: 'test@example.com' }, {})
     click_button('Sign in with Google')
 
-    assert has_link?('Tickets')
+    assert has_link?('Mentions')
   end
 
   test 'allows organization creation' do
@@ -39,7 +39,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     visit root_path
     click_button('Authorize')
 
-    assert_enqueued_with(job: LoadNewTicketsJob)
+    assert_enqueued_with(job: LoadNewMentionsJob)
 
     find_by_id('settings').click
 

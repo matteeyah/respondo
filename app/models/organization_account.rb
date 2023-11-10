@@ -10,8 +10,8 @@ class OrganizationAccount < ApplicationRecord
 
   belongs_to :organization
 
-  has_many :tickets, class_name: 'Ticket', inverse_of: :source, foreign_key: :source_id,
-                     dependent: :destroy
+  has_many :mentions, class_name: 'Mention', inverse_of: :source, foreign_key: :source_id,
+                      dependent: :destroy
 
   encrypts :token
   encrypts :secret
@@ -32,14 +32,14 @@ class OrganizationAccount < ApplicationRecord
   end
 
   def new_mentions
-    last_ticket_identifier = case provider
-                             when 'twitter'
-                               last_x_ticket_identifier
-                             when 'linkedin'
-                               last_li_ticket_identifier
-                             end
+    last_mention_identifier = case provider
+                              when 'twitter'
+                                last_x_mention_identifier
+                              when 'linkedin'
+                                last_li_mention_identifier
+                              end
 
-    client.new_mentions(last_ticket_identifier)
+    client.new_mentions(last_mention_identifier)
   end
 
   def client
@@ -53,12 +53,12 @@ class OrganizationAccount < ApplicationRecord
 
   private
 
-  def last_x_ticket_identifier
-    tickets.last&.external_uid
+  def last_x_mention_identifier
+    mentions.last&.external_uid
   end
 
-  def last_li_ticket_identifier
-    tickets.last&.created_at
+  def last_li_mention_identifier
+    mentions.last&.created_at
   end
 
   def x_client

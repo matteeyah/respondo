@@ -6,7 +6,7 @@ class CreateInternalNotes < ActiveRecord::Migration[7.0]
       t.text :content, null: false
 
       t.references :creator, index: true, null: false
-      t.references :ticket, index: true, null: false
+      t.references :mention, index: true, null: false
 
       t.timestamps
     end
