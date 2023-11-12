@@ -108,4 +108,22 @@ class XTest < ActiveSupport::TestCase
 
     assert_requested(x_delete_request)
   end
+
+  test '#posts makes a x api request for 10 latest posts for a user' do
+    client = Clients::X.new('api_key', 'api_secret', 'token', 'secret')
+
+    stub_request(:get, 'https://api.twitter.com/2/users/me').to_return(
+      status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
+      body: file_fixture('x_users_me.json')
+    )
+    x_posts_request = stub_request(:get, 'https://api.twitter.com/2/users/1/tweets')
+      .and_return(
+        status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
+        body: file_fixture('x_delete_tweet.json').read
+      )
+
+    client.posts(1)
+
+    assert_requested(x_posts_request)
+  end
 end

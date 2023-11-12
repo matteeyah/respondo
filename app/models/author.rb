@@ -17,4 +17,9 @@ class Author < ApplicationRecord
       author.save!
     end
   end
+
+  def author_posts(author_id)
+    client = mentions[0].source.client
+    client.posts(author_id)
+  end
 end
