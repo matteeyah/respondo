@@ -1,0 +1,25 @@
+<ul class="nav nav-tabs" role="tablist">
+  <% OrganizationAccount.providers.keys.each_with_index do |provider, index| %>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link <%= 'active' if index.zero? %>" id="<%= provider %>-tab" data-bs-toggle="tab" data-bs-target="#<%= provider %>" type="button" role="tab" aria-controls="<%= provider %>" aria-selected="true"><%= provider_human_name(provider) %></button>
+    </li>
+  <% end %>
+</ul>
+
+<div class="tab-content mt-3">
+  <% OrganizationAccount.providers.keys.each_with_index do |provider, index| %>
+    <div class="tab-pane <%= 'active' if index.zero? %>" id="<%= provider %>" role="tabpanel" aria-labelledby="<%= provider %>-tab" tabindex="<%= index %>">
+      <%= form_with url: ads_path do |form| %>
+        <%= form.label :author_ids %>
+        <%= form.select :author_ids, Author.where(provider:, id: Mention.where(organization: current_user.organization).select(:author_id)).collect { |a| [a.username, a.id] }, { multiple: true }, class: 'form-control' %>
+
+        <%= form.label :product_description %>
+        <%= form.text_area :product_description, class: 'form-control' %>
+
+        <%= form.submit class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div id="ad-output"></div>
