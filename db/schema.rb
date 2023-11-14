@@ -43,6 +43,36 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_08_161259) do
     t.index ["mention_id"], name: "index_internal_notes_on_mention_id"
   end
 
+  create_table "mention_tags", force: :cascade do |t|
+    t.bigint "mention_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mention_id", "tag_id"], name: "index_mention_tags_on_mention_id_and_tag_id", unique: true
+    t.index ["mention_id"], name: "index_mention_tags_on_mention_id"
+    t.index ["tag_id"], name: "index_mention_tags_on_tag_id"
+  end
+
+  create_table "mentions", force: :cascade do |t|
+    t.string "external_uid", null: false
+    t.text "content", null: false
+    t.integer "status", default: 0, null: false
+    t.string "external_link", null: false
+    t.bigint "organization_id", null: false
+    t.bigint "author_id", null: false
+    t.bigint "creator_id"
+    t.bigint "parent_id"
+    t.bigint "source_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_mentions_on_author_id"
+    t.index ["creator_id"], name: "index_mentions_on_creator_id"
+    t.index ["external_uid", "source_id"], name: "index_mentions_on_external_uid_and_source_id", unique: true
+    t.index ["organization_id"], name: "index_mentions_on_organization_id"
+    t.index ["parent_id"], name: "index_mentions_on_parent_id"
+    t.index ["source_id"], name: "index_mentions_on_source_id"
+  end
+
   create_table "organization_accounts", force: :cascade do |t|
     t.string "external_uid", null: false
     t.string "email"
@@ -73,36 +103,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_08_161259) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "mention_tags", force: :cascade do |t|
-    t.bigint "mention_id", null: false
-    t.bigint "tag_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["tag_id"], name: "index_mention_tags_on_tag_id"
-    t.index ["mention_id", "tag_id"], name: "index_mention_tags_on_mention_id_and_tag_id", unique: true
-    t.index ["mention_id"], name: "index_mention_tags_on_mention_id"
-  end
-
-  create_table "mentions", force: :cascade do |t|
-    t.string "external_uid", null: false
-    t.text "content", null: false
-    t.integer "status", default: 0, null: false
-    t.string "external_link", null: false
-    t.bigint "organization_id", null: false
-    t.bigint "author_id", null: false
-    t.bigint "creator_id"
-    t.bigint "parent_id"
-    t.bigint "source_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["author_id"], name: "index_mentions_on_author_id"
-    t.index ["creator_id"], name: "index_mentions_on_creator_id"
-    t.index ["external_uid", "source_id"], name: "index_mentions_on_external_uid_and_source_id", unique: true
-    t.index ["organization_id"], name: "index_mentions_on_organization_id"
-    t.index ["parent_id"], name: "index_mentions_on_parent_id"
-    t.index ["source_id"], name: "index_mentions_on_source_id"
-  end
-
   create_table "user_accounts", force: :cascade do |t|
     t.string "external_uid", null: false
     t.string "email"
@@ -122,6 +122,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_08_161259) do
     t.index ["organization_id"], name: "index_users_on_organization_id"
   end
 
-  add_foreign_key "mention_tags", "tags"
   add_foreign_key "mention_tags", "mentions"
+  add_foreign_key "mention_tags", "tags"
 end
