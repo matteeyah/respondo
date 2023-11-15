@@ -42,6 +42,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :ads, only: %i[new create]
+
   resource :user, only: [] do
     scope module: :users do
       resources :user_accounts, only: [:destroy]
