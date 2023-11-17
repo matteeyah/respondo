@@ -54,7 +54,7 @@ module Clients
     end
 
     def posts(author_id)
-      x_client.get("users/#{author_id}/tweets")['data'] || []
+      x_client.get("users/#{author_id}/tweets") || []
     end
 
     private

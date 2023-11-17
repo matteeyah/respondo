@@ -116,13 +116,13 @@ class XTest < ActiveSupport::TestCase
       status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
       body: file_fixture('x_users_me.json')
     )
-    x_posts_request = stub_request(:get, 'https://api.twitter.com/2/users/1/tweets')
+    x_posts_request = stub_request(:get, 'https://api.twitter.com/2/users/uid_1/tweets')
       .and_return(
         status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-        body: file_fixture('x_delete_tweet.json').read
+        body: file_fixture('x_posts.json').read
       )
 
-    client.posts(1)
+    client.posts('uid_1')
 
     assert_requested(x_posts_request)
   end

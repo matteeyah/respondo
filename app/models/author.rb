@@ -20,6 +20,6 @@ class Author < ApplicationRecord
 
   def author_posts
     client = mentions[0].source.client
-    client.posts(external_uid)
+    client.posts(external_uid)['data']
   end
 end
