@@ -1,10 +1,4 @@
 <div class="row my-3">
     <span class="fs-2 me-2"><%= @author.username %></span>
 </div>
-<ul class="list-group list-group-flush">
-  <% @posts.each do |post| %>
-    <li class="list-group-item">
-      <%= post['text'] %>
-    </li>
-  <% end %>
-</ul>
+<%= render partial: 'authors/author_ads', locals: { posts: @posts } %>
