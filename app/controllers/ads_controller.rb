@@ -5,6 +5,6 @@ class AdsController < ApplicationController
 
   def create
     @guid = SecureRandom.uuid
-    GenerateAdJob.perform_later(@guid, params[:product_description], Author.find_by(id: params[:author_ids]))
+    GenerateAdJob.perform_later(@guid, params[:product_description], *Author.where(id: params[:author_ids]))
   end
 end

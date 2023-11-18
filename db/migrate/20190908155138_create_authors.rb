@@ -7,6 +7,7 @@ class CreateAuthors < ActiveRecord::Migration[7.0]
       t.integer :provider, null: false
       t.string :username, null: false
       t.string :external_link, null: false
+      t.references :organization, null: false, foreign_key: true
 
       t.timestamps
     end
