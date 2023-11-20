@@ -13,5 +13,9 @@ module Clients
     def delete(_external_uid)
       raise NotImplementedError
     end
+
+    def posts(author_id)
+      raise NotImplementedError
+    end
   end
 end

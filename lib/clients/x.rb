@@ -53,6 +53,10 @@ module Clients
       x_client.delete("tweets/#{tweet_id}")
     end
 
+    def posts(author_id)
+      x_client.get("users/#{author_id}/tweets")['data'] || []
+    end
+
     private
 
     def x_client

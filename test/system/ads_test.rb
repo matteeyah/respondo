@@ -23,6 +23,11 @@ class DashboardTest < ApplicationSystemTestCase
     select 'james_is_cool', from: :author_ids
     click_button 'Save'
 
+    stub_request(:get, 'https://api.twitter.com/2/users/uid_1/tweets')
+      .to_return(
+        status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
+        body: file_fixture('x_posts.json').read
+      )
     sleep 1 # Wait for job to enqueue
     perform_enqueued_jobs(only: GenerateAdJob)
 

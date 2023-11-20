@@ -3,8 +3,10 @@ james:
   external_link: 'https://x.com/james_is_cool'
   username: james_is_cool
   provider: twitter
+  organization: respondo
 pierre:
   external_uid: 'uid_2'
   external_link: 'https://linkedin.com/in/pierre_is_cool'
   username: pierre_is_cool
   provider: linkedin
+  organization: respondo
