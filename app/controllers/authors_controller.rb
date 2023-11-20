@@ -3,6 +3,6 @@
 class AuthorsController < ApplicationController
   def show
     @author = Author.find(params[:id])
-    @posts = @author.author_posts
+    @posts = @author.posts
   end
 end

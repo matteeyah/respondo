@@ -26,11 +26,11 @@ class Mention < ApplicationRecord
 
   delegate :provider, :client, to: :source
 
-  def respond_as(user, reply) # rubocop:disable Metrics/AbcSize
+  def respond_as(user, reply)
     client_response = client.reply(reply, external_uid)
     organization.mentions.create!(
       **client_response.except(:parent_uid, :author),
-      creator: user, author: Author.from_client!(client_response[:author], provider, organization[:id]),
+      creator: user, author: Author.from_client!(client_response[:author], provider, organization),
       parent: source.mentions.find_by(external_uid: client_response[:parent_uid]),
       source:
     )
