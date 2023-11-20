@@ -25,13 +25,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_08_161259) do
 
   create_table "authors", force: :cascade do |t|
     t.string "external_uid", null: false
-    t.integer "provider", null: false
     t.string "username", null: false
     t.string "external_link", null: false
+    t.integer "provider", null: false
     t.bigint "organization_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["external_uid", "provider"], name: "index_authors_on_external_uid_and_provider", unique: true
+    t.index ["external_uid", "provider", "organization_id"], name: "index_authors_on_external_uid_and_provider_and_organization_id", unique: true
     t.index ["organization_id"], name: "index_authors_on_organization_id"
   end
 
