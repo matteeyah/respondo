@@ -41,7 +41,7 @@ class Mention < ApplicationRecord
   def generate_ai_response(prompt = nil)
     OpenAI::Client.new.chat(
       parameters: {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
         messages: ai_messages(prompt), temperature: 0.7
       }
     ).dig('choices', 0, 'message', 'content').chomp.strip

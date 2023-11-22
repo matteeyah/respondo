@@ -9,6 +9,18 @@ class DashboardTest < ApplicationSystemTestCase
   include ActiveJob::TestHelper
 
   setup do
+    stub_request(:get, 'https://api.twitter.com/2/users/uid_1/tweets')
+      .to_return(
+        status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
+        body: file_fixture('x_posts.json').read
+      )
+
+    stub_request(:post, 'https://api.openai.com/v1/chat/completions')
+      .to_return(
+        status: 200, body: file_fixture('openai_chat.json'),
+        headers: { 'Content-Type' => 'application/json' }
+      )
+
     @user = users(:john)
     @organization = organizations(:respondo)
 
@@ -23,14 +35,9 @@ class DashboardTest < ApplicationSystemTestCase
     select 'james_is_cool', from: :author_ids
     click_button 'Save'
 
-    stub_request(:get, 'https://api.twitter.com/2/users/uid_1/tweets')
-      .to_return(
-        status: 200, headers: { 'Content-Type' => 'application/json; charset=utf-8' },
-        body: file_fixture('x_posts.json').read
-      )
     sleep 1 # Wait for job to enqueue
     perform_enqueued_jobs(only: GenerateAdJob)
 
-    assert_content 'A new product by james_is_cool'
+    assert_content 'You are amazing!'
   end
 end
