@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
   include AuthorizesOrganizationMembership
 
   def index
-    @products = Product.all
+    @products = Product.where(organization_id: current_user.organization_id)
   end
 
   def new
@@ -16,7 +16,7 @@ class ProductsController < ApplicationController
   end
 
   def create
-    @product = Product.new(**product_params, organization_id: current_user.organization.id)
+    @product = Product.new(**product_params, organization_id: current_user.organization_id)
 
     @product.save!
     redirect_to products_path
