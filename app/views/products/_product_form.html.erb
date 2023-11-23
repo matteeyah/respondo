@@ -1,0 +1,9 @@
+<%= form_with model: product do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name, class: 'form-control mb-2' %>
+
+  <%= form.label :description %>
+  <%= form.text_area :description, class: 'form-control mb-2' %>
+
+  <%= form.submit class: 'btn btn-primary' %>
+<% end %>
