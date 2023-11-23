@@ -20,10 +20,10 @@
           <p class="card-text">
             <%= product.description %>
           </p>
-          <%= link_to edit_product_path(product.id), class: "text-decoration-none" do %>
+          <%= link_to edit_product_path(product.id), class: 'text-decoration-none' do %>
             <button class="btn btn-primary">Edit</button>
           <% end %>
-          <%= link_to 'Delete', product, 'data-turbo-method' => :delete, class: "btn btn-danger text-decoration-none" %>
+          <%= link_to 'Delete', product, 'data-turbo-method' => :delete, class: 'btn btn-danger text-decoration-none' %>
         </div>
       </div>
     </div>
