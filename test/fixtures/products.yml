@@ -1,0 +1,5 @@
+test_product:
+  id: '1'
+  name: 'Test'
+  description: 'Test description'
+  organization: respondo
