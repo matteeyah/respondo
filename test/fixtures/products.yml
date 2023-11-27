@@ -1,5 +1,5 @@
-test_product:
+quick_glow:
   id: '1'
-  name: 'Test'
-  description: 'Test description'
+  name: 'Quick Glow'
+  description: 'The ultimate pocket-sized flashlight! Illuminate your way with this sleek, powerful LED torch'
   organization: respondo

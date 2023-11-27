@@ -33,13 +33,13 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET edit product with content' do
-    get "/products/#{products(:test_product).id}/edit"
+    get "/products/#{products(:quick_glow).id}/edit"
 
     assert_select 'label', 'Description'
   end
 
   test 'POST update product redirects to products root' do
-    patch "/products/#{products(:test_product).id}",
+    patch "/products/#{products(:quick_glow).id}",
           params: { product: { name: 'Test update', description: 'Test description update',
                                organization: organizations(:respondo) } }
 
@@ -47,7 +47,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'DELETE product redirects to products root' do
-    delete "/products/#{products(:test_product).id}"
+    delete "/products/#{products(:quick_glow).id}"
 
     assert_redirected_to products_path
   end

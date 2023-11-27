@@ -18,11 +18,11 @@ class HomepageTest < ApplicationSystemTestCase
   end
 
   test 'shows the products' do
-    assert has_text?(products(:test_product).name)
+    assert has_text?(products(:quick_glow).name)
   end
 
   test 'allows navigating to product' do
-    target_product = products(:test_product)
+    target_product = products(:quick_glow)
 
     within(page.find('h5', text: target_product.name).find(:xpath, '..')) do
       page.find(:button, 'Edit').click
