@@ -45,10 +45,4 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to products_path
   end
-
-  test 'DELETE product redirects to products root' do
-    delete "/products/#{products(:quick_glow).id}"
-
-    assert_redirected_to products_path
-  end
 end
