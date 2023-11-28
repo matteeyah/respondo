@@ -65,4 +65,6 @@ Rails.application.routes.draw do
   end
 
   resources :subscriptions, constraints: { format: 'json' }, only: [:create]
+
+  resources :products, only: %i[index new create edit update destroy]
 end
