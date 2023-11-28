@@ -48,7 +48,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 
   test 'DELETE product redirects to products root' do
     assert_changes -> { Product.count }, from: 1, to: 0 do
-      delete "/products/#{products(:quick_glow).id}", xhr: true
+      delete "/products/#{products(:quick_glow).id}.turbo_stream"
     end
   end
 end
