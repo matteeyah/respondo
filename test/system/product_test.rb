@@ -4,7 +4,7 @@ require 'application_system_test_case'
 
 require 'support/omniauth_helper'
 
-class HomepageTest < ApplicationSystemTestCase
+class ProductTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
   setup do
