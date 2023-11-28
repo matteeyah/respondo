@@ -8,11 +8,10 @@ class ProductTest < ApplicationSystemTestCase
   include AuthenticationHelper
 
   setup do
-    @user = users(:john)
-    @organization = organizations(:respondo)
+    user = users(:john)
+    user.update!(organization: organizations(:respondo))
 
-    @user.update!(organization: @organization)
-    sign_in(@user)
+    sign_in(user)
 
     visit products_path
   end
