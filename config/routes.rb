@@ -47,7 +47,6 @@ Rails.application.routes.draw do
   resource :user, only: [] do
     scope module: :users do
       resources :user_accounts, only: [:destroy]
-      resources :personal_access_tokens, only: %i[create destroy]
     end
   end
 
