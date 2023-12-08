@@ -16,12 +16,12 @@ class AdsControllerTest < ActionDispatch::IntegrationTest
   test 'GET new renders the new ad page' do
     get '/ads/new'
 
-    assert_select 'label', 'Product description'
+    assert_select 'label', 'Select your product'
   end
 
   test 'POST create responds with the loading output' do
     post '/ads', as: :turbo_stream, params: {
-      product_description: 'A new product', author_ids: [authors(:james).id]
+      product_id: products(:quick_glow).id, author_ids: [authors(:james).id]
     }
 
     assert_turbo_stream(action: :replace, target: 'ad-output')
@@ -30,7 +30,7 @@ class AdsControllerTest < ActionDispatch::IntegrationTest
   test 'POST create schedules the ad creation job' do
     assert_enqueued_jobs 1, only: GenerateAdJob do
       post '/ads', as: :turbo_stream, params: {
-        product_description: 'A new product', author_ids: [authors(:james).id]
+        product_id: products(:quick_glow).id, author_ids: [authors(:james).id]
       }
     end
   end
