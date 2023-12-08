@@ -10,13 +10,22 @@
   <% OrganizationAccount.providers.keys.each_with_index do |provider, index| %>
     <div class="tab-pane <%= 'active' if index.zero? %>" id="<%= provider %>" role="tabpanel" aria-labelledby="<%= provider %>-tab" tabindex="<%= index %>">
       <%= form_with url: ads_path do |form| %>
-        <%= form.label :author_ids %>
-        <%= form.select :author_ids, Author.where(provider:, id: Mention.where(organization: current_user.organization).select(:author_id)).collect { |a| [a.username, a.id] }, { multiple: true }, class: 'form-control' %>
+        <div class="row">
+          <div class="col">
+            <%= form.label :author_ids, 'Select lookalike authors (you can select multiple)' %>
+            <%= render partial: 'shared/searchable_select', locals: { field_name: :author_ids, option_list: Author.where(provider:, id: Mention.where(organization: current_user.organization).select(:author_id)).collect { |a| [a.username, a.id] }, form:, options: { multiple: true, required: true }, html: { class: 'form-control' } } %>
+          </div>
+        </div>
 
-        <%= form.label :product_description %>
-        <%= form.text_area :product_description, class: 'form-control' %>
-
-        <%= form.submit class: 'btn btn-primary' %>
+        <div class="row my-3">
+          <div class="col">
+            <%= form.label :product_id, 'Select your product' %>
+            <%= render partial: 'shared/searchable_select', locals: { field_name: :product_id, option_list: current_user.organization.products.collect { |a| [a.name, a.id] }, form:, options: { required: true }, html: { class: 'form-control' } } %>
+          </div>
+          <div class="col d-flex">
+            <%= form.submit 'Generate Ad', class: 'btn btn-primary mt-auto' %>
+          </div>
+        </div>
       <% end %>
     </div>
   <% end %>
