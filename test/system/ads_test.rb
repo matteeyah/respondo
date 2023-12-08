@@ -31,9 +31,9 @@ class DashboardTest < ApplicationSystemTestCase
   test 'creates an ad with parameters' do
     visit new_ad_path
 
-    fill_in :product_description, with: 'A new product'
+    select 'Quick Glow', from: :product_id
     select 'james_is_cool', from: :author_ids
-    click_button 'Save'
+    click_button 'Generate Ad'
 
     sleep 1 # Wait for job to enqueue
     perform_enqueued_jobs(only: GenerateAdJob)

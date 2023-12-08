@@ -1,0 +1,4 @@
+<% default_attributes = { data: { controller: 'searchable-select' }, autocomplete: 'off' } %>
+<% html_attributes = defined?(html) ? default_attributes.deep_merge(html) { |_, left, right| "#{left} #{right}" } : default_attributes %>
+
+<%= form.select field_name, option_list, defined?(options) ? options : {}, html_attributes %>

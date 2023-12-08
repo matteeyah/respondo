@@ -8,6 +8,7 @@ class Organization < ApplicationRecord
   has_many :accounts, class_name: 'OrganizationAccount', inverse_of: :organization, dependent: :destroy
   has_many :users, dependent: :nullify
   has_many :mentions, dependent: :restrict_with_error
+  has_many :products, dependent: :destroy
 
   def account_for_provider?(provider)
     accounts.exists?(provider:)
