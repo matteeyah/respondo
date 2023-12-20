@@ -38,8 +38,6 @@ gem 'mailgun-ruby' # Mailgun backend for ActionMailer
 gem 'pagy' # Pagination
 gem 'pg' # AR database adapter
 gem 'propshaft' # Rails assets
-gem 'resque' # Background job processing
-gem 'resque-scheduler' # Delayed and timed Resque jobs
 gem 'ruby-openai'
 gem 'solid_queue'
 gem 'x' # Twitter client
