@@ -29,7 +29,7 @@ class UserSettingsTest < ApplicationSystemTestCase
 
     within(page.find('p', text: 'Existing accounts').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
-        assert has_selector?(:link, 'Remove')
+        assert_selector(:link, 'Remove')
       end
     end
   end
@@ -44,7 +44,7 @@ class UserSettingsTest < ApplicationSystemTestCase
     end
 
     within(page.find(:css, 'div.list-group-item', text: 'Azure Active Directory')) do
-      assert has_selector?(:button, 'Connect')
+      assert_selector(:button, 'Connect')
     end
   end
 end

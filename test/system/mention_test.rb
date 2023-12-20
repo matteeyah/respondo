@@ -19,8 +19,8 @@ class MentionTest < ApplicationSystemTestCase
   test 'shows the mention' do
     visit mentions_path
 
-    assert has_text?(@mention.content)
-    assert has_text?(@mention.author.username)
+    assert_text(@mention.content)
+    assert_text(@mention.author.username)
   end
 
   test 'allows replying to mention' do
@@ -42,8 +42,8 @@ class MentionTest < ApplicationSystemTestCase
       page.find(:css, 'i.bi-telegram').click
     end
 
-    assert has_text?("#{@user.name} as @#{@organization.screen_name}")
-    assert has_text?(response_text)
+    assert_text("#{@user.name} as @#{@organization.screen_name}")
+    assert_text(response_text)
   end
 
   test 'allows asking the AI to answer' do
@@ -58,7 +58,7 @@ class MentionTest < ApplicationSystemTestCase
     within("#mention_#{@mention.id}") do
       page.find(:css, 'i.bi-lightning').click
 
-      assert has_text?('You are amazing!')
+      assert_text('You are amazing!')
     end
   end
 
@@ -75,7 +75,7 @@ class MentionTest < ApplicationSystemTestCase
       fill_in 'mention[content]', with: 'I am amazing!'
       page.find(:css, 'i.bi-lightning').click
 
-      assert has_text?('You are amazing!')
+      assert_text('You are amazing!')
     end
   end
 
@@ -92,8 +92,8 @@ class MentionTest < ApplicationSystemTestCase
     end
 
     within("#mention_#{@mention.id}_internal_notes") do
-      assert has_text?(@user.name)
-      assert has_text?(internal_note_text)
+      assert_text(@user.name)
+      assert_text(internal_note_text)
     end
   end
 
@@ -106,8 +106,8 @@ class MentionTest < ApplicationSystemTestCase
 
     click_link 'Solved'
 
-    assert has_text?(@mention.author.username)
-    assert has_text?(@mention.content)
+    assert_text(@mention.author.username)
+    assert_text(@mention.content)
   end
 
   test 'allows adding mention tags' do
@@ -118,7 +118,7 @@ class MentionTest < ApplicationSystemTestCase
     end
 
     within("#mention_#{@mention.id}") do
-      assert has_selector?(:css, 'span', text: 'hello')
+      assert_selector(:css, 'span', text: 'hello')
     end
   end
 
@@ -133,8 +133,8 @@ class MentionTest < ApplicationSystemTestCase
     end
 
     within("#mention_#{@mention.id}") do
-      assert has_no_selector?(:css, 'span', text: 'first_tag')
-      assert has_selector?(:css, 'span', text: 'second_tag')
+      assert_no_selector(:css, 'span', text: 'first_tag')
+      assert_selector(:css, 'span', text: 'second_tag')
     end
   end
 
@@ -145,7 +145,7 @@ class MentionTest < ApplicationSystemTestCase
       select @user.name, from: 'mention-assignment'
     end
 
-    assert has_text?(@user.name)
+    assert_text(@user.name)
   end
 
   test 'allows deleting mentions' do
@@ -164,7 +164,7 @@ class MentionTest < ApplicationSystemTestCase
       click_link 'Delete'
     end
 
-    assert has_no_text?(@mention.content)
+    assert_no_text(@mention.content)
   end
 
   test 'allows navigating to mentions externally' do

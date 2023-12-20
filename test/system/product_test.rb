@@ -3,6 +3,7 @@
 require 'application_system_test_case'
 
 require 'support/omniauth_helper'
+require 'support/authentication_helper'
 
 class ProductTest < ApplicationSystemTestCase
   include AuthenticationHelper
@@ -17,7 +18,7 @@ class ProductTest < ApplicationSystemTestCase
   end
 
   test 'shows the products' do
-    assert has_text?(products(:quick_glow).name)
+    assert_text products(:quick_glow).name
   end
 
   test 'allows navigating to product' do
@@ -27,6 +28,6 @@ class ProductTest < ApplicationSystemTestCase
       page.find(:button, 'Edit').click
     end
 
-    assert has_text?(target_product.name)
+    assert_text target_product.name
   end
 end

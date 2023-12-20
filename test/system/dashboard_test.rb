@@ -18,17 +18,17 @@ class DashboardTest < ApplicationSystemTestCase
   end
 
   test 'shows the newest mentions' do
-    assert has_text?(mentions(:x).content)
+    assert_text(mentions(:x).content)
   end
 
   test 'shows the mentions info widgets' do
-    assert has_text?('New Mentions')
-    assert has_text?('Total Open')
+    assert_text('New Mentions')
+    assert_text('Total Open')
   end
 
   test 'allows show all mentions with home widget' do
     click_link('New Mentions')
 
-    assert has_text?(mentions(:x).content)
+    assert_text(mentions(:x).content)
   end
 end
