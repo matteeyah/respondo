@@ -173,7 +173,6 @@ GEM
       signet (>= 0.16, < 2.a)
     hashdiff (1.0.1)
     hashie (5.0.0)
-    hiredis (0.6.3)
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
@@ -331,10 +330,6 @@ GEM
     rake (13.1.0)
     rdoc (6.6.1)
       psych (>= 4.0.0)
-    redis (5.0.8)
-      redis-client (>= 0.17.0)
-    redis-client (0.19.0)
-      connection_pool
     regexp_parser (2.8.3)
     reline (0.4.1)
       io-console (~> 0.5)
@@ -452,7 +447,6 @@ DEPENDENCIES
   erb_lint
   google-cloud-storage
   hashie
-  hiredis
   importmap-rails
   json-schema
   mailgun-ruby
@@ -466,7 +460,6 @@ DEPENDENCIES
   propshaft
   puma
   rails (~> 7.1.1)
-  redis
   rubocop
   rubocop-minitest
   rubocop-performance

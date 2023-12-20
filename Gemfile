@@ -18,8 +18,8 @@ gem 'turbo-rails' # Hotwire Turbo
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
-gem 'hiredis'
-gem 'redis'
+# gem 'hiredis'
+# gem 'redis'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
