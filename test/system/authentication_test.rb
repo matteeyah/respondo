@@ -18,7 +18,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     click_button('Sign in with Google')
     find_by_id('settings').click
 
-    assert has_link?('User profile')
+    assert_link('User profile')
   end
 
   test 'adds the user to the organization' do
@@ -29,7 +29,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     add_oauth_mock(:google_oauth2, '123', { name: 'Test User', email: 'test@example.com' }, {})
     click_button('Sign in with Google')
 
-    assert has_link?('Mentions')
+    assert_link('Mentions')
   end
 
   test 'allows organization creation' do
@@ -43,7 +43,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     find_by_id('settings').click
 
-    assert has_link?('Organization settings')
+    assert_link('Organization settings')
   end
 
   test 'allows signing out' do

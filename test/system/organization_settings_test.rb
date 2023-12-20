@@ -31,7 +31,7 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
     end
 
     within(page.find('p', text: 'Existing accounts').find(:xpath, '../..')) do
-      assert has_selector?(:css, 'div.list-group-item', text: 'LinkedIn', count: 2)
+      assert_selector(:css, 'div.list-group-item', text: 'LinkedIn', count: 2)
     end
   end
 
@@ -46,7 +46,7 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
 
     within(page.find('p', text: 'Add account').find(:xpath, '../..')) do
       within(page.find(:css, 'div.list-group-item', text: 'LinkedIn')) do
-        assert has_selector?(:button, 'Connect')
+        assert_selector(:button, 'Connect')
       end
     end
   end
@@ -62,7 +62,7 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
 
     within(page.find('p', text: 'Team').find(:xpath, '../..')) do
       within(page.find('span', text: external_user.name).find(:xpath, '../..')) do
-        assert has_selector?(:link, 'Remove')
+        assert_selector(:link, 'Remove')
       end
     end
   end
@@ -81,7 +81,7 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
     end
 
     within(page.find('p', text: 'Team').find(:xpath, '../..')) do
-      assert has_no_text?(existing_user.name)
+      assert_no_text(existing_user.name)
     end
   end
 
@@ -93,7 +93,7 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
     fill_in 'organization[domain]', with: 'example.com'
     click_button 'Update'
 
-    assert has_field?('organization[domain]', with: 'example.com')
+    assert_field('organization[domain]', with: 'example.com')
   end
 
   test 'prevents the user to update the organization with an invalid domain' do
@@ -104,7 +104,7 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
     fill_in 'organization[domain]', with: 'invalid!domain.com'
     click_button 'Update'
 
-    assert has_field?('organization[domain]', with: 'invalid!domain.com')
+    assert_field('organization[domain]', with: 'invalid!domain.com')
   end
 
   test 'allows the user to edit the organization ai guidelines' do
@@ -113,6 +113,6 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
     fill_in 'organization[ai_guidelines]', with: 'Respondo is nice'
     click_button 'Update'
 
-    assert has_field?('organization[ai_guidelines]', with: 'Respondo is nice')
+    assert_field('organization[ai_guidelines]', with: 'Respondo is nice')
   end
 end

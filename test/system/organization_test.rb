@@ -18,7 +18,7 @@ class OrganizationTest < ApplicationSystemTestCase
   end
 
   test 'shows the mentions' do
-    assert has_text?(mentions(:x).content)
+    assert_text(mentions(:x).content)
   end
 
   test 'allows navigating to mentions' do
@@ -29,23 +29,23 @@ class OrganizationTest < ApplicationSystemTestCase
       click_link 'View'
     end
 
-    assert has_text?(target_mention.content)
+    assert_text(target_mention.content)
   end
 
   test 'allows searching mentions by author name' do
     fill_in 'query', with: "author:#{mentions(:x).author.username}"
     click_button :search
 
-    assert has_text?(mentions(:x).content)
-    assert has_no_text?(mentions(:linkedin).content)
+    assert_text(mentions(:x).content)
+    assert_no_text(mentions(:linkedin).content)
   end
 
   test 'allows searching mentions by content' do
     fill_in 'query', with: "content:#{mentions(:x).content}"
     click_button :search
 
-    assert has_text?(mentions(:x).content)
-    assert has_no_text?(mentions(:linkedin).content)
+    assert_text(mentions(:x).content)
+    assert_no_text(mentions(:linkedin).content)
   end
 
   test 'keeps mention status context when searching' do
@@ -59,7 +59,7 @@ class OrganizationTest < ApplicationSystemTestCase
     fill_in 'query', with: mentions(:linkedin).author.username
     click_button :search
 
-    assert has_no_text?(mentions(:x).author.username)
-    assert has_text?(mentions(:linkedin).author.username)
+    assert_no_text(mentions(:x).author.username)
+    assert_text(mentions(:linkedin).author.username)
   end
 end

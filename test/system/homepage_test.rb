@@ -10,7 +10,7 @@ class HomepageTest < ApplicationSystemTestCase
   setup do
     visit login_path
 
-    assert has_button?('Sign in with Google')
+    assert_button('Sign in with Google')
 
     add_oauth_mock_for_user(users(:john), user_accounts(:google_oauth2))
     click_button('Sign in with Google')
@@ -34,6 +34,6 @@ class HomepageTest < ApplicationSystemTestCase
     find_by_id('settings').click
     click_button('Sign Out')
 
-    assert has_button?('Sign in with Google')
+    assert_button('Sign in with Google')
   end
 end
