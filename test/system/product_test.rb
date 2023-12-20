@@ -3,6 +3,7 @@
 require 'application_system_test_case'
 
 require 'support/omniauth_helper'
+require 'support/authentication_helper'
 
 class ProductTest < ApplicationSystemTestCase
   include AuthenticationHelper
