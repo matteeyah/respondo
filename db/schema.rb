@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_20_125304) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_20_132413) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -105,6 +105,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_20_125304) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_products_on_organization_id"
+  end
+
+  create_table "solid_cache_entries", force: :cascade do |t|
+    t.binary "key", null: false
+    t.binary "value", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_solid_cache_entries_on_key", unique: true
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|

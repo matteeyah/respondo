@@ -39,6 +39,7 @@ gem 'pagy' # Pagination
 gem 'pg' # AR database adapter
 gem 'propshaft' # Rails assets
 gem 'ruby-openai'
+gem 'solid_cache'
 gem 'solid_queue'
 gem 'x' # Twitter client
 
