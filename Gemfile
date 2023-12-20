@@ -18,8 +18,8 @@ gem 'turbo-rails' # Hotwire Turbo
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
-gem 'hiredis'
-gem 'redis'
+# gem 'hiredis'
+# gem 'redis'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
@@ -38,9 +38,9 @@ gem 'mailgun-ruby' # Mailgun backend for ActionMailer
 gem 'pagy' # Pagination
 gem 'pg' # AR database adapter
 gem 'propshaft' # Rails assets
-gem 'resque' # Background job processing
-gem 'resque-scheduler' # Delayed and timed Resque jobs
 gem 'ruby-openai'
+gem 'solid_cache'
+gem 'solid_queue'
 gem 'x' # Twitter client
 
 group :development, :test do
