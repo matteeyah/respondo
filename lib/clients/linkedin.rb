@@ -36,7 +36,7 @@ module Clients
         mention_author = authors.find do |author|
           mention['author'].include? author['id']
         end
-        mentions_to_mentions(mention, mention_author)
+        post_to_mention(mention, mention_author)
       end.reverse
     end
 
@@ -65,15 +65,19 @@ module Clients
       http_delete("https://api.linkedin.com/v2/socialActions/#{urn}/comments/#{id}?actor=#{admin_organizations_urns}")
     end
 
+    # https://github.com/matteeyah/respondo/issues/386
     def posts(author_id)
-      http_get("https://api.linkedin.com/rest/posts?author=#{URI.encode_uri_component('urn:li:person:')}#{author_id}&q=author&count=10",
-               { **RESTLI_V2, 'X-RestLi-Method' => 'FINDER' })
+      # http_get("https://api.linkedin.com/rest/posts?author=#{URI.encode_uri_component('urn:li:person:')}#{author_id}&q=author&count=10",
+      #          { **RESTLI_V2, 'X-RestLi-Method' => 'FINDER' })
+      localized_headline = authors_by_urn([author_id])[0]['localizedHeadline']
+      [{ 'text' => localized_headline }]
     end
 
     private
 
     def authorization_headers
-      { 'Authorization' => "Bearer #{@token}", 'LinkedIn-Version' => Time.zone.today.strftime('%Y%m').to_s }
+      { 'Authorization' => "Bearer #{@token}",
+        'LinkedIn-Version' => (Integer(Time.zone.today.strftime('%Y%m')) - 1).to_s }
     end
 
     def http_get(url, headers = nil)
@@ -137,7 +141,7 @@ module Clients
     end
 
     # convert a post to a mention
-    def mentions_to_mentions(post_from_api, author, parent_uid = nil)
+    def post_to_mention(post_from_api, author, parent_uid = nil)
       # cuts off the urn part: @[Test 1337](urn:li:organization:100702332)
       regex = /@\[(.*)\]\(.*\)/
       organization_name = post_from_api['commentary'].match(regex)[1] # "Test 1337"
