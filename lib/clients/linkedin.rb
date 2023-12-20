@@ -65,7 +65,7 @@ module Clients
       http_delete("https://api.linkedin.com/v2/socialActions/#{urn}/comments/#{id}?actor=#{admin_organizations_urns}")
     end
 
-    # NOTE: this should fetch posts once linkedin enables r_member_social permission
+    # https://github.com/matteeyah/respondo/issues/386
     def posts(author_id)
       # http_get("https://api.linkedin.com/rest/posts?author=#{URI.encode_uri_component('urn:li:person:')}#{author_id}&q=author&count=10",
       #          { **RESTLI_V2, 'X-RestLi-Method' => 'FINDER' })
