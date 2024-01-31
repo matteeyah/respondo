@@ -1,3 +1,3 @@
-<%= turbo_stream.append(:toasts, partial: 'shared/toast',
-                                 locals: { success: true, message: 'Mention status successfully changed.' }) %>
+<%= turbo_stream.append(:toasts, partial: "shared/toast",
+                                 locals: { success: true, message: "Mention status successfully changed." }) %>
 <%= turbo_stream.remove(@mention) %>
