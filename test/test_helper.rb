@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-ENV['RAILS_ENV'] ||= 'test'
-require_relative '../config/environment'
-require 'rails/test_help'
+ENV["RAILS_ENV"] ||= "test"
+require_relative "../config/environment"
+require "rails/test_help"
 
-require 'webmock/minitest'
+require "webmock/minitest"
 
 module ActiveSupport
   class TestCase
@@ -21,7 +21,7 @@ end
 # Disable external requests
 WebMock.disable_net_connect!(
   allow_localhost: true,
-  allow: ['https://googlechromelabs.github.io', 'https://edgedl.me.gvt1.com']
+  allow: [ "https://googlechromelabs.github.io", "https://edgedl.me.gvt1.com" ]
 )
 
 # Use OmniAuth in test mode

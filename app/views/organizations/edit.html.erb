@@ -2,7 +2,7 @@
   <div class="col d-flex align-items-center">
     <span class="fs-2 me-2 fw-bold">Organization</span>
     <span class="rounded-pill text-white bg-danger opacity-75 py-1 px-3">
-      <%= bi_icon('people-fill') %>
+      <%= bi_icon("people-fill") %>
       <%= @organization.screen_name %>
     </span>
   </div>
@@ -10,14 +10,14 @@
 <div class="row">
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item" id="identity-tab" role="presentation">
-      <%= button_tag 'Identity', class: 'nav-link active', role: 'tab',
-                                 'data-bs-toggle' => 'tab', 'data-bs-target' => '#identity-tab-pane',
-                                 'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true %>
+      <%= button_tag "Identity", class: "nav-link active", role: "tab",
+                                 "data-bs-toggle" => "tab", "data-bs-target" => "#identity-tab-pane",
+                                 "aria-controls" => "account-settings-tab-pane", "aria-selected" => true %>
     </li>
     <li class="nav-item" id="team-tab" role="presentation">
-      <%= button_tag 'Team', class: 'nav-link', role: 'tab',
-                             'data-bs-toggle' => 'tab', 'data-bs-target' => '#team-tab-pane',
-                             'aria-controls' => 'team-settings-tab-pane', 'aria-selected' => false %>
+      <%= button_tag "Team", class: "nav-link", role: "tab",
+                             "data-bs-toggle" => "tab", "data-bs-target" => "#team-tab-pane",
+                             "aria-controls" => "team-settings-tab-pane", "aria-selected" => false %>
     </li>
   </ul>
   <div class="tab-content mt-4">
@@ -30,7 +30,7 @@
                 <p class="fs-5 fw-bold">Add account</p>
               </div>
               <div class="list-group list-group-flush" id="account-providers">
-                <%= render partial: 'shared/account_provider', collection: OrganizationAccount.providers.keys,
+                <%= render partial: "shared/account_provider", collection: OrganizationAccount.providers.keys,
                            as: :account_provider %>
               </div>
             </div>
@@ -46,11 +46,11 @@
               <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
                 <div class="row">
                   <div class="col-8 col-lg-9">
-                    <%= update_organization_form.text_area :ai_guidelines, required: true, class: 'form-control',
-                                                                           placeholder: 'Respondo is an AI social media mentioning system. You should respond in a friendly tone.' %>
+                    <%= update_organization_form.text_area :ai_guidelines, required: true, class: "form-control",
+                                                                           placeholder: "Respondo is an AI social media mentioning system. You should respond in a friendly tone." %>
                   </div>
                   <div class="col-4 col-lg-3">
-                    <%= update_organization_form.submit 'Update', name: nil, class: 'btn form-control btn-primary' %>
+                    <%= update_organization_form.submit "Update", name: nil, class: "btn form-control btn-primary" %>
                   </div>
                 </div>
               <% end %>
@@ -58,7 +58,7 @@
           </div>
         </div>
       </div>
-      <%= render partial: 'shared/accounts', locals: { model: @organization } %>
+      <%= render partial: "shared/accounts", locals: { model: @organization } %>
     </div>
     <div aria-labelledby="team-tab" class="tab-pane" id="team-tab-pane" role="tabpanel" tabindex="0">
       <div class="row">
@@ -72,11 +72,11 @@
               <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
                 <div class="row">
                   <div class="col-8 col-lg-10">
-                    <%= update_organization_form.text_field :domain, required: true, placeholder: 'domain.com',
-                                                                     class: 'form-control form-control-sm' %>
+                    <%= update_organization_form.text_field :domain, required: true, placeholder: "domain.com",
+                                                                     class: "form-control form-control-sm" %>
                   </div>
                   <div class="col-4 col-lg-2">
-                    <%= update_organization_form.submit 'Update', name: nil, class: 'btn btn-sm form-control btn-primary' %>
+                    <%= update_organization_form.submit "Update", name: nil, class: "btn btn-sm form-control btn-primary" %>
                   </div>
                 </div>
               <% end %>
@@ -94,12 +94,12 @@
               </div>
               <div class="row">
                 <%= form_with url: organization_users_path, method: :post,
-                              html: { 'data-controller' => 'form',
-                                      'data-action' => 'turbo:submit-end->form#reset' } do |add_user_form| %>
+                              html: { "data-controller" => "form",
+                                      "data-action" => "turbo:submit-end->form#reset" } do |add_user_form| %>
                   <div class="row">
                     <div class="col-8 col-lg-4">
-                      <%= add_user_form.select :user_id, nil, { include_blank: 'Select user' },
-                                               { required: true, class: 'custom-select form-control form-control-sm', id: 'add-user' } do %>
+                      <%= add_user_form.select :user_id, nil, { include_blank: "Select user" },
+                                               { required: true, class: "custom-select form-control form-control-sm", id: "add-user" } do %>
                         <% unless add_users_dropdown_options_for.empty? %>
                           <% add_users_dropdown_options_for.each do |id, name| %>
                             <option value="<%= id %>">
@@ -110,7 +110,7 @@
                       <% end %>
                     </div>
                     <div class="col-4 col-lg-1">
-                      <%= add_user_form.submit 'Add', class: 'btn btn-sm form-control btn-primary' %>
+                      <%= add_user_form.submit "Add", class: "btn btn-sm form-control btn-primary" %>
                     </div>
                   </div>
                 <% end %>
@@ -119,7 +119,7 @@
                 <div class="col-12">
                   <hr class="my-3">
                   <div class="list-group list-group-flush mw-100 flex-wrap" id="users-in-organization">
-                    <%= render partial: 'organizations/user', collection: @organization_users %>
+                    <%= render partial: "organizations/user", collection: @organization_users %>
                   </div>
                   <div class="row mt-3">
                     <div class="d-flex justify-content-center">

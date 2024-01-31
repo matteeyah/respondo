@@ -25,10 +25,10 @@ class OmniauthCallbacksController < ApplicationController
   private
 
   def auth_hash
-    request.env['omniauth.auth']
+    request.env["omniauth.auth"]
   end
 
   def auth_origin
-    request.env['omniauth.origin']
+    request.env["omniauth.origin"]
   end
 end

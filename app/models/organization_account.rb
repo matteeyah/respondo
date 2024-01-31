@@ -10,7 +10,7 @@ class OrganizationAccount < ApplicationRecord
 
   belongs_to :organization
 
-  has_many :mentions, class_name: 'Mention', inverse_of: :source, foreign_key: :source_id,
+  has_many :mentions, class_name: "Mention", inverse_of: :source, foreign_key: :source_id,
                       dependent: :destroy
 
   encrypts :token
@@ -33,20 +33,20 @@ class OrganizationAccount < ApplicationRecord
 
   def new_mentions
     last_mention_identifier = case provider
-                              when 'twitter'
+    when "twitter"
                                 last_x_mention_identifier
-                              when 'linkedin'
+    when "linkedin"
                                 last_li_mention_identifier
-                              end
+    end
 
     client.new_mentions(last_mention_identifier)
   end
 
   def client
     case provider
-    when 'twitter'
+    when "twitter"
       x_client
-    when 'linkedin'
+    when "linkedin"
       linkedin_client
     end
   end

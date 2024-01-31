@@ -9,12 +9,12 @@ module OrganizationsHelper
 
   def subscription_badge_class(subscription_status)
     case subscription_status
-    when nil, 'deleted'
-      'danger'
-    when 'past_due'
-      'warning'
-    when 'trialing', 'active'
-      'success'
+    when nil, "deleted"
+      "danger"
+    when "past_due"
+      "warning"
+    when "trialing", "active"
+      "success"
     end
   end
 end

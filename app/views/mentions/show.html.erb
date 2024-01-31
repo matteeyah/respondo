@@ -1,5 +1,5 @@
 <% mention = @mention_hash.first.first %>
 <%= turbo_frame_tag dom_id(mention) do %>
-  <%= render partial: 'mention', locals: { mention:, reply_model: @reply_model } %>
-  <%= render partial: 'mentions', locals: { mentions: @mention_hash.first.second } %>
+  <%= render partial: "mention", locals: { mention:, reply_model: @reply_model } %>
+  <%= render partial: "mentions", locals: { mentions: @mention_hash.first.second } %>
 <% end %>

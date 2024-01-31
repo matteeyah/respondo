@@ -1,5 +1,5 @@
 <% mention = @mention_hash.first.first %>
 <%= turbo_stream.replace(dom_id(mention)) do %>
-  <%= render partial: 'mentions/mention', locals: { mention:, reply_model: @reply_model } %>
-  <%= render partial: 'mentions/mentions', locals: { mentions: @mention_hash.first.second } %>
+  <%= render partial: "mentions/mention", locals: { mention:, reply_model: @reply_model } %>
+  <%= render partial: "mentions/mentions", locals: { mentions: @mention_hash.first.second } %>
 <% end %>

@@ -6,7 +6,7 @@ class MentionsController < Mentions::ApplicationController
 
   MENTION_RENDER_PRELOADS = [
     :author, :creator, :tags, :assignment, :replies, :source,
-    { organization: [:users], internal_notes: [:creator] }
+    { organization: [ :users ], internal_notes: [ :creator ] }
   ].freeze
 
   before_action :set_mention, only: %i[show update destroy permalink]
@@ -69,7 +69,7 @@ class MentionsController < Mentions::ApplicationController
     query = params.slice(:status, :assignee, :tag)
 
     if params[:query]
-      key, value = params[:query].split(':')
+      key, value = params[:query].split(":")
       query = query.merge(key => value)
     end
 

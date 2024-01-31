@@ -15,7 +15,7 @@ module AuthenticationHelper
 
   def encrypt_and_sign_cookie(cookie) # rubocop:disable Metrics/AbcSize
     salt = Rails.application.config.action_dispatch.authenticated_encrypted_cookie_salt
-    encrypted_cookie_cipher = Rails.application.config.action_dispatch.encrypted_cookie_cipher || 'aes-256-gcm'
+    encrypted_cookie_cipher = Rails.application.config.action_dispatch.encrypted_cookie_cipher || "aes-256-gcm"
 
     key_generator = ActiveSupport::KeyGenerator.new(Rails.application.secret_key_base, iterations: 1000)
     secret = key_generator.generate_key(salt, ActiveSupport::MessageEncryptor.key_len(encrypted_cookie_cipher))

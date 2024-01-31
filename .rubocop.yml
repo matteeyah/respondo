@@ -1,7 +1,5 @@
-require:
-  - rubocop-performance
-  - rubocop-minitest
-  - rubocop-rails
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
 
 AllCops:
   Exclude:

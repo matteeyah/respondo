@@ -2,7 +2,7 @@
   <div class="col d-flex align-items-center">
     <span class="fs-2 me-2 fw-bold">User</span>
     <span class="rounded-pill text-white bg-info opacity-75 py-1 px-3">
-      <%= bi_icon('person-fill') %>
+      <%= bi_icon("person-fill") %>
       <%= @user.name %>
     </span>
   </div>
@@ -10,9 +10,9 @@
 <div class="row">
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item" id="identity-tab" role="presentation">
-      <%= button_tag 'Identity', class: 'nav-link active', role: 'tab',
-                                 'data-bs-toggle' => 'tab', 'data-bs-target' => '#identity-tab-pane',
-                                 'aria-controls' => 'account-settings-tab-pane', 'aria-selected' => true %>
+      <%= button_tag "Identity", class: "nav-link active", role: "tab",
+                                 "data-bs-toggle" => "tab", "data-bs-target" => "#identity-tab-pane",
+                                 "aria-controls" => "account-settings-tab-pane", "aria-selected" => true %>
     </li>
   </ul>
   <div class="tab-content mt-4">
@@ -26,7 +26,7 @@
                 <p class="fs-5 fw-bold">Add account</p>
               </div>
               <div class="list-group list-group-flush" id="account-providers">
-                <%= render partial: 'shared/account_provider',
+                <%= render partial: "shared/account_provider",
                            collection: (UserAccount.providers.keys - @user.accounts.map(&:provider)),
                            as: :account_provider %>
               </div>
@@ -34,7 +34,7 @@
           </div>
         </div>
       </div>
-      <%= render partial: 'shared/accounts', locals: { model: @user } %>
+      <%= render partial: "shared/accounts", locals: { model: @user } %>
     </div>
   </div>
 </div>

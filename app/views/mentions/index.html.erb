@@ -2,28 +2,28 @@
   <div class="col-lg-6 mb-2 mb-lg-0 d-flex align-items-center justify-content-start justify-content-lg-start">
     <span class="fs-2 me-2">Mentions</span>
     <span class="rounded-pill text-white bg-danger opacity-75 py-1 px-3">
-      <%= bi_icon('people-fill') %>
+      <%= bi_icon("people-fill") %>
       <%= current_user.organization.screen_name %>
     </span>
   </div>
   <div class="col-lg-6 mb-2 mb-lg-0 d-flex align-items-center justify-content-end">
-    <%= link_to refresh_mentions_path, class: 'btn btn-sm rounded btn-outline-primary',
-                                       'data-turbo-method' => :post, 'data-turbo-frame' => :_top do %>
-      <%= bi_icon('arrow-clockwise') %>
+    <%= link_to refresh_mentions_path, class: "btn btn-sm rounded btn-outline-primary",
+                                       "data-turbo-method" => :post, "data-turbo-frame" => :_top do %>
+      <%= bi_icon("arrow-clockwise") %>
       <span>Reload</span>
     <% end %>
     <%= form_with url: mentions_path, local: true, method: :get,
-                  class: 'flex-grow-1 ms-3', html: { autocomplete: 'off' } do |search_form| %>
+                  class: "flex-grow-1 ms-3", html: { autocomplete: "off" } do |search_form| %>
       <%= search_form.hidden_field :status, value: request.parameters[:status] %>
       <div class="input-group input-group-sm">
         <%= search_form.text_field :query, required: true, value: request.parameters[:query],
-                                           placeholder: 'Search by author:author_name OR content:mention_content', class: 'form-control' %>
+                                           placeholder: "Search by author:author_name OR content:mention_content", class: "form-control" %>
         <%= link_to mentions_path(status: request.parameters[:status]),
-                    class: 'btn btn-outline-secondary' do %>
-          <%= bi_icon('x-lg') %>
+                    class: "btn btn-outline-secondary" do %>
+          <%= bi_icon("x-lg") %>
         <% end %>
-        <%= search_form.button name: :search, class: 'btn btn-outline-secondary' do %>
-          <%= bi_icon('search') %>
+        <%= search_form.button name: :search, class: "btn btn-outline-secondary" do %>
+          <%= bi_icon("search") %>
         <% end %>
       </div>
     <% end %>
@@ -33,7 +33,7 @@
   <ul class="nav nav-tabs">
     <% Mention.statuses.each_key do |status| %>
       <li class="nav-item">
-        <%= active_link_to mentions_path(status:), active: { status: }, class: 'nav-link' do %>
+        <%= active_link_to mentions_path(status:), active: { status: }, class: "nav-link" do %>
           <span>
             <%= status.capitalize %>
           </span>
@@ -41,7 +41,7 @@
       </li>
     <% end %>
     <li class="nav-item">
-      <%= active_link_to mentions_path(assignee: current_user.id), active: { assignee: current_user.id }, class: 'nav-link' do %>
+      <%= active_link_to mentions_path(assignee: current_user.id), active: { assignee: current_user.id }, class: "nav-link" do %>
         <span>
           Assigned to me
         </span>
@@ -50,7 +50,7 @@
   </ul>
 </div>
 <div class="row my-2">
-  <%= render partial: 'mentions/mentions', locals: { mentions: @mentions } %>
+  <%= render partial: "mentions/mentions", locals: { mentions: @mentions } %>
 </div>
 <div class="row">
   <div class="col-12">

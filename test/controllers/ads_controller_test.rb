@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
-require 'support/authentication_request_helper'
+require "support/authentication_request_helper"
 
 class AdsControllerTest < ActionDispatch::IntegrationTest
   include AuthenticationRequestHelper
@@ -13,24 +13,24 @@ class AdsControllerTest < ActionDispatch::IntegrationTest
     organizations(:respondo).users << users(:john)
   end
 
-  test 'GET new renders the new ad page' do
-    get '/ads/new'
+  test "GET new renders the new ad page" do
+    get "/ads/new"
 
-    assert_select 'label', 'Select your product'
+    assert_select "label", "Select your product"
   end
 
-  test 'POST create responds with the loading output' do
-    post '/ads', as: :turbo_stream, params: {
-      product_id: products(:quick_glow).id, author_ids: [authors(:james).id]
+  test "POST create responds with the loading output" do
+    post "/ads", as: :turbo_stream, params: {
+      product_id: products(:quick_glow).id, author_ids: [ authors(:james).id ]
     }
 
-    assert_turbo_stream(action: :replace, target: 'ad-output')
+    assert_turbo_stream(action: :replace, target: "ad-output")
   end
 
-  test 'POST create schedules the ad creation job' do
+  test "POST create schedules the ad creation job" do
     assert_enqueued_jobs 1, only: GenerateAdJob do
-      post '/ads', as: :turbo_stream, params: {
-        product_id: products(:quick_glow).id, author_ids: [authors(:james).id]
+      post "/ads", as: :turbo_stream, params: {
+        product_id: products(:quick_glow).id, author_ids: [ authors(:james).id ]
       }
     end
   end

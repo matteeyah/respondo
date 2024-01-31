@@ -1,9 +1,9 @@
 <% toast_message = if @success
-                     'User was successfully removed from organization.'
-                   else
-                     'You can not remove the last user in the organization.'
-                   end %>
-<%= turbo_stream.append(:toasts, partial: 'shared/toast',
+                     "User was successfully removed from organization."
+   else
+                     "You can not remove the last user in the organization."
+   end %>
+<%= turbo_stream.append(:toasts, partial: "shared/toast",
                                  locals: { success: @success, message: toast_message }) %>
 <% if @success %>
   <%= turbo_stream.remove(@user) %>
