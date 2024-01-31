@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'application_system_test_case'
+require "application_system_test_case"
 
-require 'support/authentication_helper'
+require "support/authentication_helper"
 
 class DashboardTest < ApplicationSystemTestCase
   include AuthenticationHelper
@@ -17,17 +17,17 @@ class DashboardTest < ApplicationSystemTestCase
     visit dashboard_path
   end
 
-  test 'shows the newest mentions' do
+  test "shows the newest mentions" do
     assert_text(mentions(:x).content)
   end
 
-  test 'shows the mentions info widgets' do
-    assert_text('New Mentions')
-    assert_text('Total Open')
+  test "shows the mentions info widgets" do
+    assert_text("New Mentions")
+    assert_text("Total Open")
   end
 
-  test 'allows show all mentions with home widget' do
-    click_link('New Mentions')
+  test "allows show all mentions with home widget" do
+    click_link("New Mentions")
 
     assert_text(mentions(:x).content)
   end

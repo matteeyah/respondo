@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
 class InternalNoteTest < ActiveSupport::TestCase
-  test 'validates presence of content' do
+  test "validates presence of content" do
     internal_note = internal_notes(:default)
     internal_note.content = nil
 

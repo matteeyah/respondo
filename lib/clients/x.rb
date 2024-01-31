@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Clients
-  X_HOME = 'https://x.com'
+  X_HOME = "https://x.com"
   X_POST = "#{X_HOME}/twitter/status".freeze
 
   class X < Clients::ProviderClient
     TWEET_PARAMS = {
-      'tweet.fields' => 'created_at',
-      'expansions' => 'author_id,referenced_tweets.id'
+      "tweet.fields" => "created_at",
+      "expansions" => "author_id,referenced_tweets.id"
     }.freeze
 
     def initialize(api_key, api_secret, token, secret)
@@ -20,7 +20,7 @@ module Clients
     end
 
     def new_mentions(last_mention_identifier) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-      id = x_client.get('users/me')['data']['id']
+      id = x_client.get("users/me")["data"]["id"]
       mentions = []
       users = []
 
@@ -34,7 +34,7 @@ module Clients
       end
       mentions += new_mentions[:mentions]
       users += new_mentions[:users]
-      users.uniq! { |user| user['id'] }
+      users.uniq! { |user| user["id"] }
 
       mentions.map do |mention|
         parse_response(mention, users)
@@ -43,10 +43,10 @@ module Clients
 
     def reply(response_text, tweet_id)
       new_reply = x_client.post(
-        'tweets', { text: response_text, reply: { in_reply_to_tweet_id: tweet_id } }.to_json
+        "tweets", { text: response_text, reply: { in_reply_to_tweet_id: tweet_id } }.to_json
       )
       api_response = x_client.get("tweets/#{new_reply['data']['id']}?#{TWEET_PARAMS.to_query}")
-      parse_response(api_response['data'], api_response['includes']['users'])
+      parse_response(api_response["data"], api_response["includes"]["users"])
     end
 
     def delete(tweet_id)
@@ -54,7 +54,7 @@ module Clients
     end
 
     def posts(author_id)
-      x_client.get("users/#{author_id}/tweets")['data'] || []
+      x_client.get("users/#{author_id}/tweets")["data"] || []
     end
 
     private
@@ -71,27 +71,27 @@ module Clients
 
     def list_mentions(user_id, last_mention_identifier = nil, pagination_token = nil)
       tweet_params = TWEET_PARAMS.dup
-      tweet_params['since_id'] = last_mention_identifier if last_mention_identifier
-      tweet_params['pagination_token'] = pagination_token if pagination_token
+      tweet_params["since_id"] = last_mention_identifier if last_mention_identifier
+      tweet_params["pagination_token"] = pagination_token if pagination_token
 
       api_response = x_client.get("users/#{user_id}/mentions?#{tweet_params.to_param}")
-      return nil if api_response['meta']['result_count'].zero?
+      return nil if api_response["meta"]["result_count"].zero?
 
       {
-        mentions: api_response['data'],
-        users: api_response['includes']['users'],
-        pagination_token: api_response['meta']['next_token']
+        mentions: api_response["data"],
+        users: api_response["includes"]["users"],
+        pagination_token: api_response["meta"]["next_token"]
       }
     end
 
     def parse_response(api_response, user_includes) # rubocop:disable Metrics/MethodLength
-      author_username = user_includes.find { |ui| ui['id'] == api_response['author_id'] }['username']
+      author_username = user_includes.find { |ui| ui["id"] == api_response["author_id"] }["username"]
       {
-        external_uid: api_response['id'], content: api_response['text'], created_at: api_response['created_at'],
-        parent_uid: api_response['referenced_tweets']&.find { |ref| ref['type'] == 'replied_to' }&.dig('id'),
+        external_uid: api_response["id"], content: api_response["text"], created_at: api_response["created_at"],
+        parent_uid: api_response["referenced_tweets"]&.find { |ref| ref["type"] == "replied_to" }&.dig("id"),
         external_link: "#{X_POST}/#{api_response['id']}",
         author: {
-          external_uid: api_response['author_id'],
+          external_uid: api_response["author_id"],
           username: author_username,
           external_link: "#{X_HOME}/#{author_username}"
         }

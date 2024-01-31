@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MentionsQuery < ApplicationQuery
-  DEFAULT_STATUS = 'open'
+  DEFAULT_STATUS = "open"
 
   def call # rubocop:todo Metrics/AbcSize
     items = initial_relation

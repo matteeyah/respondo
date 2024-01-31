@@ -7,7 +7,7 @@ module Mentions
       @mention_hash = @mention.with_descendants_hash(::MentionsController::MENTION_RENDER_PRELOADS)
 
       respond_to do |format|
-        format.turbo_stream { render 'mentions/show' }
+        format.turbo_stream { render "mentions/show" }
         format.html { redirect_to mentions_path }
       end
     end

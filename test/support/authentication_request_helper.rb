@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'support/omniauth_helper'
+require "support/omniauth_helper"
 
 # This is an abstraction on top of OmniauthHelpers for controller type specs.
 module AuthenticationRequestHelper
@@ -16,7 +16,7 @@ module AuthenticationRequestHelper
   end
 
   def sign_out
-    delete '/sign_out'
+    delete "/sign_out"
     follow_redirect!
   end
 end

@@ -8,24 +8,24 @@ class GenerateAdJob < ApplicationJob
 
   def perform(guid, _description, *_authors)
     response = OpenAI::Client.new.chat(
-      parameters: { model: 'gpt-4', messages: ai_messages, temperature: 0.7 }
-    ).dig('choices', 0, 'message', 'content').chomp.strip
+      parameters: { model: "gpt-4", messages: ai_messages, temperature: 0.7 }
+    ).dig("choices", 0, "message", "content").chomp.strip
 
     Turbo::StreamsChannel.broadcast_replace_to(
-      guid, :ad, target: 'ad-output', partial: 'ads/ad', locals: { content: response }
+      guid, :ad, target: "ad-output", partial: "ads/ad", locals: { content: response }
     )
   end
 
   private
 
   def posts
-    @authors.map { |author| author.posts.pluck('text') }.flatten
+    @authors.map { |author| author.posts.pluck("text") }.flatten
   end
 
   def ai_messages # rubocop:disable Metrics/MethodLength
     [
       {
-        role: 'system',
+        role: "system",
         content: <<~AI_POSITION
           You are a marketing specialist at a startup.
           You are given a description of a product and a list of social media posts from the user.
@@ -34,9 +34,9 @@ class GenerateAdJob < ApplicationJob
         AI_POSITION
       },
       {
-        role: 'user',
+        role: "user",
         content: "Product description: #{@description}"
       }
-    ] + posts.map { |post| { role: 'user', content: post } }
+    ] + posts.map { |post| { role: "user", content: post } }
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
 class ApplicationHelperTest < ActionView::TestCase
   (UserAccount.providers.keys + OrganizationAccount.providers.keys).uniq.each do |account_provider|
@@ -11,7 +11,7 @@ class ApplicationHelperTest < ActionView::TestCase
       </form>
       }x
 
-      assert_match expected_auth_link, auth_provider_link(account_provider) { 'test' }
+      assert_match expected_auth_link, auth_provider_link(account_provider) { "test" }
     end
 
     test "#provider_human_name returns human name when provider is #{account_provider}" do
@@ -19,14 +19,14 @@ class ApplicationHelperTest < ActionView::TestCase
     end
   end
 
-  test '#safe_blank_link_to returns a safe blank link' do
+  test "#safe_blank_link_to returns a safe blank link" do
     expected_blank_link =
       '<a target="_blank" rel="noopener noreferrer" class="nav-link" href="https://example.com">Link Text</a>'
 
-    assert_equal expected_blank_link, safe_blank_link_to('Link Text', 'https://example.com', class: 'nav-link')
+    assert_equal expected_blank_link, safe_blank_link_to("Link Text", "https://example.com", class: "nav-link")
   end
 
-  test '#bi_icon returns i element with correct classes' do
-    assert_equal '<i class="bi bi-test "></i>', bi_icon('test')
+  test "#bi_icon returns i element with correct classes" do
+    assert_equal '<i class="bi bi-test "></i>', bi_icon("test")
   end
 end

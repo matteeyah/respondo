@@ -29,7 +29,7 @@ class UserAccount < ApplicationRecord
     def find_organization(user_email)
       return unless user_email
 
-      user_domain = user_email.split('@').last
+      user_domain = user_email.split("@").last
       Organization.find_by(domain: user_domain)
     end
   end
@@ -43,7 +43,7 @@ class UserAccount < ApplicationRecord
   def validate_not_last_account
     return if user.accounts.count > 1
 
-    errors.add(:base, 'You can not delete the last user account.')
+    errors.add(:base, "You can not delete the last user account.")
     throw(:abort)
   end
 end
