@@ -57,6 +57,4 @@ Rails.application.routes.draw do
       resources :external_mentions, constraints: { format: "json" }, only: [ :create ]
     end
   end
-
-  resources :subscriptions, constraints: { format: "json" }, only: [ :create ]
 end
