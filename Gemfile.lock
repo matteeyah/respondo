@@ -272,7 +272,7 @@ GEM
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
       rack-protection
-    omniauth-azure-activedirectory-v2 (2.4.0)
+    omniauth-entra-id (3.0.1)
       omniauth-oauth2 (~> 1.8)
     omniauth-google-oauth2 (1.2.1)
       jwt (>= 2.9.2)
@@ -508,7 +508,7 @@ DEPENDENCIES
   importmap-rails
   json-schema
   mailgun-ruby
-  omniauth-azure-activedirectory-v2
+  omniauth-entra-id
   omniauth-google-oauth2
   omniauth-linkedin-openid
   omniauth-rails_csrf_protection

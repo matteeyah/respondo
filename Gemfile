@@ -24,7 +24,7 @@ gem "turbo-rails" # Hotwire Turbo
 # gem 'image_processing', '~> 1.2'
 
 # Omniauth
-gem "omniauth-azure-activedirectory-v2"
+gem "omniauth-entra-id"
 gem "omniauth-google-oauth2"
 gem "omniauth-linkedin-openid"
 gem "omniauth-rails_csrf_protection"

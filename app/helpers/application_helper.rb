@@ -3,7 +3,7 @@
 module ApplicationHelper
   PROVIDER_HUMAN_NAMES = {
     "google_oauth2" => "Google",
-    "azure_activedirectory_v2" => "Azure Active Directory",
+    "entra_id" => "Microsoft Entra",
     "twitter" => "Twitter",
     "linkedin" => "LinkedIn"
   }.freeze

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   # OmniAuth routing
   get "auth/:provider/callback", to: "omniauth_callbacks#user",
-                                 constraints: { provider: /google_oauth2|azure_activedirectory_v2/ }
+                                 constraints: { provider: /google_oauth2|entra_id/ }
   get "auth/:provider/callback", to: "omniauth_callbacks#organization",
                                  constraints: { provider: /twitter|linkedin/ }
 
