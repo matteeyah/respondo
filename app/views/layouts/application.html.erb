@@ -44,13 +44,6 @@
               <% end %>
             </li>
             <li class="nav-item">
-              <%= active_link_to products_path, { class: "nav-link d-flex align-items-center ps-4",
-                                                  "data-turbo-frame" => :_top, :title => "Products" } do %>
-                <%= bi_icon("box-seam", "fs-4 me-3") %>
-                <span>Products</span>
-              <% end %>
-            </li>
-            <li class="nav-item">
               <%= active_link_to new_ad_path, { active: :exclusive,
                                                 class: "nav-link d-flex align-items-center ps-4", "data-turbo-frame" => :_top,
                                                 :title => "Ads" } do %>
