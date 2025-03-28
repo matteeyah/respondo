@@ -92,6 +92,8 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
+    brakeman (7.0.0)
+      racc
     builder (3.3.0)
     capybara (3.40.0)
       addressable
@@ -112,9 +114,6 @@ GEM
     debug (1.10.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
-    declarative (0.0.20)
-    digest-crc (0.7.0)
-      rake (>= 12.0.0, < 14.0.0)
     drb (2.2.1)
     erb_lint (0.9.0)
       activesupport
@@ -140,47 +139,8 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-apis-core (0.16.0)
-      addressable (~> 2.5, >= 2.5.1)
-      googleauth (~> 1.9)
-      httpclient (>= 2.8.3, < 3.a)
-      mini_mime (~> 1.0)
-      mutex_m
-      representable (~> 3.0)
-      retriable (>= 2.0, < 4.a)
-    google-apis-iamcredentials_v1 (0.22.0)
-      google-apis-core (>= 0.15.0, < 2.a)
-    google-apis-storage_v1 (0.50.0)
-      google-apis-core (>= 0.15.0, < 2.a)
-    google-cloud-core (1.8.0)
-      google-cloud-env (>= 1.0, < 3.a)
-      google-cloud-errors (~> 1.0)
-    google-cloud-env (2.2.2)
-      base64 (~> 0.2)
-      faraday (>= 1.0, < 3.a)
-    google-cloud-errors (1.5.0)
-    google-cloud-storage (1.55.0)
-      addressable (~> 2.8)
-      digest-crc (~> 0.4)
-      google-apis-core (~> 0.13)
-      google-apis-iamcredentials_v1 (~> 0.18)
-      google-apis-storage_v1 (>= 0.42)
-      google-cloud-core (~> 1.6)
-      googleauth (~> 1.9)
-      mini_mime (~> 1.0)
-    google-logging-utils (0.1.0)
-    googleauth (1.14.0)
-      faraday (>= 1.0, < 3.a)
-      google-cloud-env (~> 2.2)
-      google-logging-utils (~> 0.1)
-      jwt (>= 1.4, < 3.0)
-      multi_json (~> 1.11)
-      os (>= 0.9, < 2.0)
-      signet (>= 0.16, < 2.a)
     hashdiff (1.1.2)
     hashie (5.0.0)
-    httpclient (2.9.0)
-      mutex_m
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.1.0)
@@ -209,24 +169,14 @@ GEM
       net-imap
       net-pop
       net-smtp
-    mailgun-ruby (1.3.3)
-      faraday (~> 2.1)
-      faraday-multipart (~> 1.1.0)
-      mime-types
     marcel (1.0.4)
     matrix (0.4.2)
-    mime-types (3.6.2)
-      logger
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2025.0325)
     mini_mime (1.1.5)
     minitest (5.25.5)
     msgpack (1.8.0)
-    multi_json (1.15.0)
     multi_xml (0.7.1)
       bigdecimal (~> 3.1)
     multipart-post (2.4.1)
-    mutex_m (0.3.0)
     net-http (0.6.0)
       uri
     net-imap (0.5.6)
@@ -296,13 +246,11 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
-    os (1.1.4)
     pagy (9.3.4)
     parallel (1.26.3)
     parser (3.3.7.3)
       ast (~> 2.4.1)
       racc
-    pg (1.5.9)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -363,18 +311,11 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.2.1)
-    rbs (3.9.1)
-      logger
     rdoc (6.13.0)
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
-    representable (3.2.0)
-      declarative (< 0.1.0)
-      trailblazer-option (>= 0.1.1, < 0.2.0)
-      uber (< 0.2.0)
-    retriable (3.1.2)
     rexml (3.4.1)
     rubocop (1.75.1)
       json (~> 2.3)
@@ -408,13 +349,6 @@ GEM
       rubocop (>= 1.72)
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
-    ruby-lsp (0.23.12)
-      language_server-protocol (~> 3.17.0)
-      prism (>= 1.2, < 2.0)
-      rbs (>= 3, < 4)
-      sorbet-runtime (>= 0.5.10782)
-    ruby-lsp-rails (0.4.0)
-      ruby-lsp (>= 0.23.0, < 0.24.0)
     ruby-openai (8.0.0)
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
@@ -428,15 +362,15 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    signet (0.19.0)
-      addressable (~> 2.8)
-      faraday (>= 0.17.5, < 3.a)
-      jwt (>= 1.5, < 3.0)
-      multi_json (~> 1.10)
     smart_properties (1.17.0)
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
+    solid_cable (3.0.7)
+      actioncable (>= 7.2)
+      activejob (>= 7.2)
+      activerecord (>= 7.2)
+      railties (>= 7.2)
     solid_cache (1.0.7)
       activejob (>= 7.2)
       activerecord (>= 7.2)
@@ -448,19 +382,29 @@ GEM
       fugit (~> 1.11.0)
       railties (>= 7.1)
       thor (~> 1.3.1)
-    sorbet-runtime (0.5.11965)
+    sqlite3 (2.6.0-aarch64-linux-gnu)
+    sqlite3 (2.6.0-aarch64-linux-musl)
+    sqlite3 (2.6.0-arm-linux-gnu)
+    sqlite3 (2.6.0-arm-linux-musl)
+    sqlite3 (2.6.0-arm64-darwin)
+    sqlite3 (2.6.0-x86_64-darwin)
+    sqlite3 (2.6.0-x86_64-linux-gnu)
+    sqlite3 (2.6.0-x86_64-linux-musl)
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     stringio (3.1.6)
     thor (1.3.2)
+    thruster (0.1.12)
+    thruster (0.1.12-aarch64-linux)
+    thruster (0.1.12-arm64-darwin)
+    thruster (0.1.12-x86_64-darwin)
+    thruster (0.1.12-x86_64-linux)
     timeout (0.4.3)
-    trailblazer-option (0.1.2)
     turbo-rails (2.0.13)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    uber (0.1.0)
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
@@ -499,39 +443,39 @@ PLATFORMS
 DEPENDENCIES
   active_link_to
   bcrypt
-  bootsnap (>= 1.4.2)
-  capybara (>= 2.15)
+  bootsnap
+  brakeman
+  capybara
   debug
   erb_lint
-  google-cloud-storage
   hashie
   importmap-rails
   json-schema
-  mailgun-ruby
   omniauth-entra-id
   omniauth-google-oauth2
   omniauth-linkedin-openid
   omniauth-rails_csrf_protection
   omniauth-twitter
   pagy
-  pg
   propshaft
-  puma
-  rails
+  puma (>= 5.0)
+  rails (~> 8.0.0)
   rubocop
   rubocop-minitest
   rubocop-performance
   rubocop-rails
   rubocop-rails-omakase
-  ruby-lsp-rails
   ruby-openai
   selenium-webdriver
+  solid_cable
   solid_cache
   solid_queue
+  sqlite3 (>= 2.1)
   stimulus-rails
+  thruster
   turbo-rails
   tzinfo-data
-  web-console (>= 3.3.0)
+  web-console
   webmock
   x
 
