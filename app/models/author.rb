@@ -6,7 +6,7 @@ class Author < ApplicationRecord
   validates :external_link, presence: { allow_blank: false }, url: true
   validates :provider, presence: true
 
-  enum provider: { external: 0, twitter: 1, linkedin: 2, email: 3 }
+  enum :provider, { external: 0, twitter: 1, linkedin: 2, email: 3 }
 
   belongs_to :organization
 
