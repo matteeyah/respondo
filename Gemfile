@@ -3,14 +3,14 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.2"
+ruby "3.4.2"
 
 # Core
-gem "bcrypt", "~> 3.1.7" # Use Active Model has_secure_password
+gem "bcrypt" # Use Active Model has_secure_password
 gem "bootsnap", ">= 1.4.2", require: false # Reduces boot times through caching; required in config/boot.rb
 gem "importmap-rails"
 gem "puma" # Use Puma as the application server
-gem "rails", "~> 7.1.1"
+gem "rails"
 gem "stimulus-rails" # Hotwire Stimulus
 gem "turbo-rails" # Hotwire Turbo
 
@@ -67,7 +67,7 @@ group :test do
   gem "capybara", ">= 2.15"
   gem "selenium-webdriver"
   # Other
-  gem "webmock", "~> 3.18" # Stubs and expectations for HTTP requests
+  gem "webmock"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
