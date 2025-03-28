@@ -22,13 +22,13 @@ class UserSettingsTest < ApplicationSystemTestCase
     account = Struct.new(:provider, :external_uid, :name, :email).new(:entra_id, "uid_20")
     add_oauth_mock_for_user(@user, account)
     within(page.find("p", text: "Add account").find(:xpath, "../..")) do
-      within(page.find(:css, "div.list-group-item", text: "Azure Active Directory")) do
+      within(page.find(:css, "div.list-group-item", text: "Microsoft Entra")) do
         page.find(:button, text: "Connect").click
       end
     end
 
     within(page.find("p", text: "Existing accounts").find(:xpath, "../..")) do
-      within(page.find(:css, "div.list-group-item", text: "Azure Active Directory")) do
+      within(page.find(:css, "div.list-group-item", text: "Microsoft Entra")) do
         assert_selector(:link, "Remove")
       end
     end
@@ -38,12 +38,12 @@ class UserSettingsTest < ApplicationSystemTestCase
     visit profile_path
 
     within(page.find("p", text: "Existing accounts").find(:xpath, "../..")) do
-      within(page.find(:css, "div.list-group-item", text: "Azure Active Directory")) do
+      within(page.find(:css, "div.list-group-item", text: "Microsoft Entra")) do
         page.find(:link, "Remove").click
       end
     end
 
-    within(page.find(:css, "div.list-group-item", text: "Azure Active Directory")) do
+    within(page.find(:css, "div.list-group-item", text: "Microsoft Entra")) do
       assert_selector(:button, "Connect")
     end
   end
