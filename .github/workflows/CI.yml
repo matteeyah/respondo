@@ -56,24 +56,17 @@ jobs:
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: RAILS_ENV=test bundle exec rails test:system
-  lint:
-    if: ${{ github.ref != 'refs/heads/master' }}
+  rubocop:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
         with:
-          fetch-depth: 0
-      - uses: github/super-linter/slim@v7
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Run rubocop
         env:
-          VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: master
-          VALIDATE_RUBY: true
-          VALIDATE_CSS: true
-          VALIDATE_JAVASCRIPT_STANDARD: true
-          VALIDATE_MARKDOWN: true
-          LINTER_RULES_PATH: ./
-          RUBY_CONFIG_FILE: .rubocop.yml
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: bundle exec rubocop
   erblint:
     runs-on: ubuntu-latest
     steps:
@@ -83,6 +76,13 @@ jobs:
           bundler-cache: true
       - name: Run erb-lint
         run: bundle exec erblint '**/*.erb'
+  standardjs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm install standard
+      - run: npx standard
   vale:
     runs-on: ubuntu-latest
     steps:
