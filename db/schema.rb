@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2023_11_23_102041) do
+ActiveRecord::Schema[8.0].define(version: 2023_11_08_161259) do
   create_table "assignments", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "mention_id", null: false
@@ -93,15 +93,6 @@ ActiveRecord::Schema[8.0].define(version: 2023_11_23_102041) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["domain"], name: "index_organizations_on_domain", unique: true
-  end
-
-  create_table "products", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description", null: false
-    t.integer "organization_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["organization_id"], name: "index_products_on_organization_id"
   end
 
   create_table "tags", force: :cascade do |t|
