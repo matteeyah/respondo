@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15-alpine
+        image: postgres:17-alpine
         env:
           POSTGRES_DB: respondo_test
           POSTGRES_USER: respondo
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15-alpine
+        image: postgres:17-alpine
         env:
           POSTGRES_DB: respondo_test
           POSTGRES_USER: respondo
