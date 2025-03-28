@@ -3,8 +3,6 @@
 require "test_helper"
 
 class GenerateAdJobTest < ActiveJob::TestCase
-  include Turbo::Broadcastable::TestHelper
-
   setup do
     @guid = SecureRandom.uuid
 
