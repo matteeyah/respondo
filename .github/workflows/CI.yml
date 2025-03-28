@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15-alpine
+        image: postgres:17-alpine
         env:
           POSTGRES_DB: respondo_test
           POSTGRES_USER: respondo
@@ -20,7 +20,7 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15-alpine
+        image: postgres:17-alpine
         env:
           POSTGRES_DB: respondo_test
           POSTGRES_USER: respondo
@@ -48,7 +48,7 @@ jobs:
       - uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: 'stable'
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
@@ -56,37 +56,35 @@ jobs:
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: RAILS_ENV=test bundle exec rails test:system
-  lint:
-    if: ${{ github.ref != 'refs/heads/master' }}
+  rubocop:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
         with:
-          fetch-depth: 0
-      - uses: github/super-linter/slim@v4
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Run rubocop
         env:
-          VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: master
-          VALIDATE_RUBY: true
-          VALIDATE_CSS: true
-          VALIDATE_JAVASCRIPT_STANDARD: true
-          VALIDATE_MARKDOWN: true
-          LINTER_RULES_PATH: ./
-          RUBY_CONFIG_FILE: .rubocop.yml
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: bundle exec rubocop
   erblint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
       - name: Run erb-lint
         run: bundle exec erblint '**/*.erb'
+  standardjs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm install standard
+      - run: npx standard
   vale:
     runs-on: ubuntu-latest
-    container: jdkato/vale:v2.18.0
     steps:
-      - uses: actions/checkout@v3
-      - name: Run vale
-        run: vale "docs/*.md"
+      - uses: actions/checkout@v4
+      - uses: errata-ai/vale-action@v2.1.1

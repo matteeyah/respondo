@@ -5,6 +5,7 @@ module Mentions
     def create
       @mention.respond_as(current_user, reply_params[:content])
       @mention_hash = @mention.with_descendants_hash(::MentionsController::MENTION_RENDER_PRELOADS)
+      @reply_model = Mention.new(parent: @mention)
 
       respond_to do |format|
         format.turbo_stream { render "mentions/show" }

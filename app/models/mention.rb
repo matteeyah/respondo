@@ -7,7 +7,7 @@ class Mention < ApplicationRecord
   validates :external_link, presence: { allow_blank: false }, url: true
   validates :content, presence: { allow_blank: false }
 
-  enum status: { open: 0, solved: 1 }
+  enum :status, { open: 0, solved: 1 }
 
   scope :root, -> { where(parent: nil) }
 

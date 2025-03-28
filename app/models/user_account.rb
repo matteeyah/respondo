@@ -5,7 +5,7 @@ class UserAccount < ApplicationRecord
   validates :provider, presence: true, uniqueness: { scope: :user_id }
   validates :email, presence: { allow_blank: false, allow_nil: true }
 
-  enum provider: { google_oauth2: 0, azure_activedirectory_v2: 1 }
+  enum :provider, { google_oauth2: 0, entra_id: 1 }
 
   belongs_to :user
 
