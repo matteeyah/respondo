@@ -20,7 +20,7 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
@@ -48,7 +48,7 @@ jobs:
       - uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: 'stable'
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
@@ -60,10 +60,10 @@ jobs:
     if: ${{ github.ref != 'refs/heads/master' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: github/super-linter/slim@v4
+      - uses: github/super-linter/slim@v7
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: master
@@ -77,7 +77,7 @@ jobs:
   erblint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
@@ -85,8 +85,6 @@ jobs:
         run: bundle exec erblint '**/*.erb'
   vale:
     runs-on: ubuntu-latest
-    container: jdkato/vale:v2.18.0
     steps:
-      - uses: actions/checkout@v3
-      - name: Run vale
-        run: vale "docs/*.md"
+      - uses: actions/checkout@v4
+      - uses: errata-ai/vale-action@v2.1.1
