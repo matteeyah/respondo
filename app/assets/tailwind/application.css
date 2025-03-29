@@ -1,90 +1,96 @@
 @import "tailwindcss";
 
-/* Navbar */
-.nav-link {
-  @apply flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold;
-}
+@theme {
+  --animate-color-switch: color-switch 5s linear infinite;
+  --animate-slide-in-from-left: slide-in-from-left 200ms forwards ease-in-out;
+  --animate-slide-out-to-left: slide-out-to-left 200ms forwards ease-in-out;
 
-.nav-link.group > svg {
-  @apply size-6 shrink-0;
-}
+  @keyframes slide-in-from-left{
+    from {
+      transform: translateX(-100%);
+    }
+  }
 
-.nav-link.group:not(.active) > svg {
-  @apply text-gray-400 group-hover:text-indigo-600;
-}
+  @keyframes slide-out-to-left{
+    to {
+      transform: translateX(-100%);
+    }
+  }
 
-.nav-link:not(.active) {
-  @apply text-gray-700 hover:text-indigo-600 hover:bg-gray-50;
-}
+  @keyframes color-switch {
+    0% {
+      background-color: var(--color-purple-400);
+      background-clip: text;
+    }
 
-.nav-link.active {
-  @apply bg-gray-50 text-indigo-600;
-}
+    33% {
+      background-color: var(--color-orange-400);
+      background-clip: text;
+    }
 
-.menu-link {
-  @apply block px-3 py-1 text-sm/6 text-gray-900;
-}
+    66% {
+      background-color: var(--color-red-400);
+      background-clip: text;
+    }
 
-.menu-link.active {
-  @apply bg-gray-50 outline-hidden;
-}
-
-/* Off-canvas */
-dialog.slideover[open] {
-  animation: slide-in-from-left 200ms forwards ease-in-out;
-}
-
-dialog.slideover[closing] {
-  pointer-events: none;
-  animation: slide-out-to-left 200ms forwards ease-in-out;
-}
-
-@keyframes slide-in-from-left{
-  from {
-    transform: translateX(-100%);
+    100% {
+      background-color: var(--color-sky-400);
+      background-clip: text;
+    }
   }
 }
 
-@keyframes slide-out-to-left{
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-/* Login */
-
-.text-switch {
+@utility text-switch {
   color: transparent;
-  animation: color-switch 5s linear infinite;
+
+  @apply animate-color-switch;
 }
 
-@keyframes color-switch {
-  0% {
-    background-color: var(--color-purple-400);
-    background-clip: text;
-  }
-
-  33% {
-    background-color: var(--color-orange-400);
-    background-clip: text;
-  }
-
-  66% {
-    background-color: var(--color-red-400);
-    background-clip: text;
-  }
-
-  100% {
-    background-color: var(--color-sky-400);
-    background-clip: text;
-  }
-}
-
-.shadow-login {
+@utility shadow-login {
   box-shadow: 10px 10px 0 var(--color-orange-400);
 }
 
-/* Components */
-.button {
-  @apply rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 cursor-pointer;
+@layer components {
+  .button {
+    @apply rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 cursor-pointer;
+  }
+
+  .nav-link {
+    @apply flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold;
+
+    &:not(.active) {
+      @apply text-gray-700 hover:text-indigo-600 hover:bg-gray-50;
+    }
+
+    &.active {
+      @apply bg-gray-50 text-indigo-600;
+    }
+
+    &.group > svg {
+      @apply size-6 shrink-0;
+    }
+
+    &.group:not(.active) > svg {
+      @apply text-gray-400 group-hover:text-indigo-600;
+    }
+  }
+
+  .menu-link {
+    @apply block px-3 py-1 text-sm/6 text-gray-900;
+
+    &.active {
+      @apply bg-gray-50 outline-hidden;
+    }
+  }
+
+  dialog.slideover {
+    &[open] {
+      @apply animate-slide-in-from-left;
+    }
+
+    &[closing] {
+      pointer-events: none;
+      @apply animate-slide-out-to-left;
+    }
+  }
 }
