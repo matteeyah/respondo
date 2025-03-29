@@ -1,15 +1,9 @@
-<div class="list-group-item border-0" id="<%= account_provider %>">
-  <div class="row">
-    <div class="col-8 d-flex align-items-center">
-      <%= bi_icon(account_provider, "fs-4 me-2") %>
-      <span class="fw-bold my-0">
-        <%= provider_human_name(account_provider) %>
-      </span>
-    </div>
-    <div class="col-4 d-flex justify-content-end">
-      <%= auth_provider_link(account_provider, { class: "btn btn-sm btn-outline-primary" }) do %>
-        Connect
-      <% end %>
-    </div>
-  </div>
+<div class="flex items-center justify-between px-10 flex-grow-1" id="<%= account_provider %>">
+  <span>
+    <%= provider_human_name(account_provider) %>
+  </span>
+
+  <%= auth_provider_link(account_provider, { class: "button" }) do %>
+    Connect
+  <% end %>
 </div>
