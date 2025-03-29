@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* Navbar */
 .nav-link {
   @apply flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold;
 }
@@ -26,4 +27,26 @@
 
 .menu-link.active {
   @apply bg-gray-50 outline-hidden;
+}
+
+/* Off-canvas */
+dialog.slideover[open] {
+  animation: slide-in-from-left 200ms forwards ease-in-out;
+}
+
+dialog.slideover[closing] {
+  pointer-events: none;
+  animation: slide-out-to-left 200ms forwards ease-in-out;
+}
+
+@keyframes slide-in-from-left{
+  from {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slide-out-to-left{
+  to {
+    transform: translateX(-100%);
+  }
 }

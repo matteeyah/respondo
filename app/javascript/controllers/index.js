@@ -10,5 +10,6 @@ eagerLoadControllersFrom('controllers', application)
 // import { lazyLoadControllersFrom } from "@hotwired/stimulus-loading"
 // lazyLoadControllersFrom("controllers", application)
 
-import { Dropdown } from "tailwindcss-stimulus-components"
+import { Dropdown, Slideover } from "tailwindcss-stimulus-components"
 Stimulus.register("dropdown", Dropdown)
+Stimulus.register("slideover", Slideover)

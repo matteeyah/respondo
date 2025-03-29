@@ -13,10 +13,10 @@
 
   <%= javascript_importmap_tags %>
 </head>
-<body class="h-full">
+<body class="h-full" data-controller="slideover">
 <div>
   <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
-  <div class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
+  <dialog class="slideover h-full max-h-full m-0 w-96 p-8 backdrop:bg-gray-900/80" role="dialog" aria-modal="true" data-slideover-target="dialog">
     <!--
       Off-canvas menu backdrop, show/hide based on off-canvas menu state.
 
@@ -27,7 +27,7 @@
         From: "opacity-100"
         To: "opacity-0"
     -->
-    <div class="fixed inset-0 bg-gray-900/80" aria-hidden="true"></div>
+    <div class="fixed inset-0 bg-gray-900/80" aria-hidden="true" ></div>
 
     <div class="fixed inset-0 flex">
       <!--
@@ -52,7 +52,7 @@
             To: "opacity-0"
         -->
         <div class="absolute top-0 left-full flex w-16 justify-center pt-5">
-          <button type="button" class="-m-2.5 p-2.5">
+          <button type="button" class="-m-2.5 p-2.5 cursor-pointer" data-action="slideover#close">
             <span class="sr-only">Close sidebar</span>
             <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -64,6 +64,7 @@
         <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
           <div class="flex h-16 shrink-0 items-center">
             <%= image_tag("logo_circle_white.svg", class: "h-8 w-auto", alt: "OpTonal logo") %>
+            <span class="text-lg text-purple-400 font-bold ">Respondo</span>
           </div>
           <nav class="flex flex-1 flex-col">
             <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -97,7 +98,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
@@ -140,7 +141,7 @@
 
   <div class="lg:pl-72">
     <div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8">
-      <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden">
+      <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden cursor-pointer" data-action="slideover#open">
         <span class="sr-only">Open sidebar</span>
         <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
