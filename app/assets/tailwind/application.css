@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+.nav-link {
+  @apply flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold;
+}
+
+.nav-link.group > svg {
+  @apply size-6 shrink-0;
+}
+
+.nav-link.group:not(.active) > svg {
+  @apply text-gray-400 group-hover:text-indigo-600;
+}
+
+.nav-link:not(.active) {
+  @apply text-gray-700 hover:text-indigo-600 hover:bg-gray-50;
+}
+
+.nav-link.active {
+  @apply bg-gray-50 text-indigo-600;
+}
+
+.menu-link {
+  @apply block px-3 py-1 text-sm/6 text-gray-900;
+}
+
+.menu-link.active {
+  @apply bg-gray-50 outline-hidden;
+}

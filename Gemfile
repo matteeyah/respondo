@@ -46,6 +46,7 @@ gem "thruster", require: false
 
 # Use Tailwind for styling.
 gem "tailwindcss-rails"
+gem "heroicon"
 
 # Omniauth
 gem "omniauth-entra-id"
