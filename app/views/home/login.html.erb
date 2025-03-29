@@ -12,54 +12,32 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
   </head>
   <body>
-    <div class="container-fluid d-flex flex-column">
-      <div class="row min-vh-100">
-        <div class="col-lg-6 d-flex align-items-center justify-content-center">
-          <div class="card shadow-warning px-3 px-lg-4 py-5" id="login-card">
-            <div class="card-body">
-              <div class="border border-2 rounded-circle mx-auto mb-4">
-                <%= image_tag("logo_circle_white.svg", class: "img-fluid") %>
-              </div>
-              <div class="card-title text-center fs-3 fw-bold">
-                Sign in to
-                <span class="text-color-switch">Respondo</span>
-              </div>
-              <hr>
-              <p class="card-text text-center text-muted">
-                <small>Sign in is only available with a Google or Microsoft AD account.</small>
-              </p>
+    <div class="grid grid-cols-2">
+      <main class="h-screen flex items-center justify-center">
+        <div class="border-1 border-gray-600 p-6 shadow-login w-75">
+          <%= image_tag("logo_circle_white.svg") %>
 
-              <div class="d-grid gap-3 mt-3">
-                <%= auth_provider_link("google_oauth2",
-                                       { class: "btn form-control btn-outline-dark" }, origin: "/") do %>
-                  <div class="row">
-                    <div class="col-2 text-end">
-                      <i class="bi bi-google text-warning"></i>
-                    </div>
-                    <div class="col-10 text-start">
-                      <small>Sign in with Google</small>
-                    </div>
-                  </div>
-                <% end %>
-                <%= auth_provider_link("entra_id",
-                                       { class: "btn form-control btn-outline-dark" }, origin: "/") do %>
-                  <div class="row">
-                    <div class="col-2 text-end">
-                      <i class="bi bi-microsoft text-primary"></i>
-                    </div>
-                    <div class="col-10 text-start">
-                      <small>Sign in with Microsoft AD</small>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            </div>
+          <div class="text-center text-lg font-bold mt-5">
+            Sign in to <span class="text-switch">Respondo</span>
+          </div>
+          <hr/>
+          <p class="mt-5">
+            Sign in is only available with a Google or Microsoft AD account.
+          </p>
+          <div class="flex flex-col gap-3 mt-5">
+            <%= auth_provider_link("google_oauth2", { class: "button", form_class: "m-auto" }, origin: "/") do %>
+              Sign in with Google
+            <% end %>
+            <%= auth_provider_link("entra_id", { class: "button", form_class: "m-auto" }, origin: "/") do %>
+              Sign in with Microsoft AD
+            <% end %>
           </div>
         </div>
-        <div class="col-lg-6 d-lg-flex d-none justify-content-end pe-0">
-          <%= image_tag("login_shapes.svg", class: "vw-50 vh-100") %>
-        </div>
-      </div>
+      </main>
+
+      <aside class="flex justify-end">
+        <%= image_tag("login_shapes.svg", class: "h-screen") %>
+      </aside>
     </div>
   </body>
 </html>

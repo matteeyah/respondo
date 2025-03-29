@@ -50,3 +50,41 @@ dialog.slideover[closing] {
     transform: translateX(-100%);
   }
 }
+
+/* Login */
+
+.text-switch {
+  color: transparent;
+  animation: color-switch 5s linear infinite;
+}
+
+@keyframes color-switch {
+  0% {
+    background-color: var(--color-purple-400);
+    background-clip: text;
+  }
+
+  33% {
+    background-color: var(--color-orange-400);
+    background-clip: text;
+  }
+
+  66% {
+    background-color: var(--color-red-400);
+    background-clip: text;
+  }
+
+  100% {
+    background-color: var(--color-sky-400);
+    background-clip: text;
+  }
+}
+
+.shadow-login {
+  box-shadow: 10px 10px 0 var(--color-orange-400);
+}
+
+/* Components */
+.button {
+  @apply rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 cursor-pointer;
+}
