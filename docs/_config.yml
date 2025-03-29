@@ -1,9 +1,0 @@
-title: Respondo Documentation
-exclude:
-  - styles/
-theme: minima
-header_pages:
-  - index.md
-  - user.md
-  - organization.md
-  - mentions.md

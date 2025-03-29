@@ -55,8 +55,3 @@ jobs:
       - uses: actions/setup-node@v4
       - run: npm install standard
       - run: npx standard
-  vale:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: errata-ai/vale-action@v2.1.1
