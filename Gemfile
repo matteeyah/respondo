@@ -44,6 +44,9 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# Use Tailwind for styling.
+gem "tailwindcss-rails"
+
 # Omniauth
 gem "omniauth-entra-id"
 gem "omniauth-google-oauth2"
