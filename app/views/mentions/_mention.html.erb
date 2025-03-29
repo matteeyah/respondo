@@ -76,7 +76,7 @@
               <%= assignment_form.fields_for :assignment, mention.assignment do |assignee_field| %>
                 <%= assignee_field.collection_select :user_id, mention.organization.users, :id, :name,
                                                      { include_blank: "Unassigned" },
-                                                     { required: false, class: "custom-select form-control form-control-sm text-muted text-center", id: "mention-assignment",
+                                                     { required: false, class: "form-control form-control-sm text-muted text-center", id: "mention-assignment",
                                                        data: { controller: "form", action: "change->form#submit" } } %>
               <% end %>
             </div>
@@ -87,7 +87,7 @@
                         model: mention, method: :patch do |status_form| %>
             <div class="input-group input-group-sm">
               <%= status_form.select :status, options_for_select(Mention.statuses.keys, mention.status),
-                                     { include_blank: "Select status" }, { id: "mention-status", required: true, class: "custom-select form-control text-center rounded", data: { controller: "form", action: "change->form#submit" } } %>
+                                     { include_blank: "Select status" }, { id: "mention-status", required: true, class: "form-control text-center rounded", data: { controller: "form", action: "change->form#submit" } } %>
             </div>
           <% end %>
         </div>

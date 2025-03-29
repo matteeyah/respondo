@@ -99,7 +99,7 @@
                   <div class="row">
                     <div class="col-8 col-lg-4">
                       <%= add_user_form.select :user_id, nil, { include_blank: "Select user" },
-                                               { required: true, class: "custom-select form-control form-control-sm", id: "add-user" } do %>
+                                               { required: true, class: "form-control form-control-sm", id: "add-user" } do %>
                         <% unless add_users_dropdown_options_for.empty? %>
                           <% add_users_dropdown_options_for.each do |id, name| %>
                             <option value="<%= id %>">
