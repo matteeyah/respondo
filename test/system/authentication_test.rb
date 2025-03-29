@@ -16,9 +16,9 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     add_oauth_mock(:google_oauth2, "123", { name: "Test User", email: "test@example.com" }, {})
     click_button("Sign in with Google")
-    find_by_id("settings").click
+    find_by_id("user-menu-button").click
 
-    assert_link("User profile")
+    assert_link("Your profile")
   end
 
   test "adds the user to the organization" do
@@ -41,17 +41,15 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     assert_enqueued_with(job: LoadNewMentionsJob)
 
-    find_by_id("settings").click
-
-    assert_link("Organization settings")
+    assert_link("Settings")
   end
 
   test "allows signing out" do
     sign_in(users(:john))
     visit root_path
 
-    find_by_id("settings").click
-    click_button "Sign Out"
+    find_by_id("user-menu-button").click
+    click_button "Sign out"
 
     assert_current_path(login_path)
   end

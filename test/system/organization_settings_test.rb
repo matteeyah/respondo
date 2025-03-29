@@ -20,8 +20,6 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
   end
 
   test "allows the user to authorize an account" do
-    click_link "Organization settings"
-
     account = Struct.new(:provider, :external_uid, :token, :secret).new(:linkedin, "uid_20")
     add_oauth_mock_for_organization(@organization, account)
     within(page.find("p", text: "Add account").find(:xpath, "../..")) do
@@ -36,8 +34,6 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
   end
 
   test "allows the user to remove an account" do
-    click_link "Organization settings"
-
     within(page.find("p", text: "Existing accounts").find(:xpath, "../..")) do
       within(page.find(:css, "div.list-group-item", text: "LinkedIn")) do
         page.find(:link, "Remove").click
@@ -53,8 +49,8 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
 
   test "allows the user to add users to organization" do
     external_user = users(:other)
-    click_link "Organization settings"
 
+    visit settings_path
     click_button "Team"
 
     select external_user.name, from: "add-user"
@@ -70,7 +66,7 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
   test "allows the user to remove users from organization" do
     existing_user = users(:other)
     existing_user.update!(organization: @organization)
-    click_link "Organization settings"
+    visit settings_path
 
     click_button "Team"
 
@@ -86,8 +82,6 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
   end
 
   test "allows the user to edit the organization domain" do
-    click_link "Organization settings"
-
     click_button "Team"
 
     fill_in "organization[domain]", with: "example.com"
@@ -97,8 +91,6 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
   end
 
   test "prevents the user to update the organization with an invalid domain" do
-    click_link "Organization settings"
-
     click_button "Team"
 
     fill_in "organization[domain]", with: "invalid!domain.com"
@@ -108,8 +100,6 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
   end
 
   test "allows the user to edit the organization ai guidelines" do
-    click_link "Organization settings"
-
     fill_in "organization[ai_guidelines]", with: "Respondo is nice"
     click_button "Update"
 
