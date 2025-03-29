@@ -1,6 +1,6 @@
-<% toast_message = @success ? "User account was successfully deleted." : @account.errors.full_messages.join(",") %>
-<%= turbo_stream.append(:toasts, partial: "shared/toast",
-                                 locals: { success: @success, message: toast_message }) %>
+<% alert_message = @success ? "User account was successfully deleted." : @account.errors.full_messages.join(",") %>
+<%= turbo_stream.append(:alerts, partial: "shared/alert",
+                                 locals: { success: @success, message: alert_message }) %>
 
 <% if @success %>
   <%= turbo_stream.remove(@account) %>
