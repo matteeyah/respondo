@@ -5,7 +5,7 @@ class OrganizationsController < ApplicationController
   include Pagy::Backend
 
   def edit
-    @pagy, @organization_users = pagy(current_user.organization.users)
+    set_page_and_extract_portion_from(current_user.organization.users)
     @organization = current_user.organization
   end
 

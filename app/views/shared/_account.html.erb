@@ -1,13 +1,12 @@
 <% klass = model.class.name.underscore.to_sym %>
 <div class="flex items-center justify-between px-10 flex-grow-1" id="<%= dom_id(account) %>">
-    <span>
-      <%= provider_human_name(account.provider) %>
-    </span>
-    <span class="mx-4">
-      <%= account.screen_name %>
-    </span>
-    <%= link_to [ klass, account ], "data-turbo-method" => :delete, class: "button" do %>
-      <span>Remove</span>
-    <% end %>
-  </div>
+  <span>
+    <%= provider_human_name(account.provider) %>
+  </span>
+  <span class="mx-4">
+    <%= account.screen_name %>
+  </span>
+  <%= link_to [ klass, account ], "data-turbo-method" => :delete, class: "button" do %>
+    <span>Remove</span>
+  <% end %>
 </div>
