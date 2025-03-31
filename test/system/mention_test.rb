@@ -23,6 +23,54 @@ class MentionTest < ApplicationSystemTestCase
     assert_text(@mention.author.username)
   end
 
+  test "allows navigating to mentions" do
+    visit mentions_path
+    target_mention = mentions(:x)
+
+    within("#mention_#{target_mention.id}") do
+      page.find(:css, "i.bi-three-dots").click
+      click_link "View"
+    end
+
+    assert_text(target_mention.content)
+  end
+
+  test "allows searching mentions by author name" do
+    visit mentions_path
+
+    fill_in "query", with: "author:#{mentions(:x).author.username}"
+    click_button :search
+
+    assert_text(mentions(:x).content)
+    assert_no_text(mentions(:linkedin).content)
+  end
+
+  test "allows searching mentions by content" do
+    visit mentions_path
+
+    fill_in "query", with: "content:#{mentions(:x).content}"
+    click_button :search
+
+    assert_text(mentions(:x).content)
+    assert_no_text(mentions(:linkedin).content)
+  end
+
+  test "keeps mention status context when searching" do
+    visit mentions_path
+    mentions(:linkedin).update!(status: :solved)
+
+    click_link "Solved"
+
+    # This is a hack to make Capybara wait until the page is loaded after navigating
+    find(:xpath, "//input[@type='hidden'][@value='solved']", visible: :hidden)
+
+    fill_in "query", with: mentions(:linkedin).author.username
+    click_button :search
+
+    assert_no_text(mentions(:x).author.username)
+    assert_text(mentions(:linkedin).author.username)
+  end
+
   test "allows replying to mention" do
     visit mentions_path
 
