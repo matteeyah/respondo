@@ -150,8 +150,16 @@
       <!-- Separator -->
       <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true"></div>
 
+      <span class="font-semibold text-gray-900"><%= @page_title %></span>
+
       <div class="flex flex-1 gap-x-4 self-stretch justify-end lg:gap-x-6">
         <div class="flex items-center gap-x-4 lg:gap-x-6">
+          <% if current_user.organization %>
+            <!-- Separator -->
+            <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true"></div>
+            <span><%= current_user.organization.screen_name %></span>
+          <% end %>
+
           <!-- Separator -->
           <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true"></div>
 

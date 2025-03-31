@@ -1,6 +1,8 @@
-<div class="grid grid-cols-2">
-  <div class="border-1 p-5">
-    <span>Add accounts</span>
+<% @page_title = "Profile" %>
+
+<div class="grid lg:grid-cols-2 gap-5">
+  <div class="card">
+    <span class="font-medium">Add accounts</span>
 
     <div class="flex flex-col gap-3" id="account-providers">
       <%= render partial: "shared/account_provider",
@@ -8,8 +10,8 @@
                   as: :account_provider %>
     </div>
   </div>
-  <div class="border-1 p-5">
-    <span>Existing accounts</span>
+  <div class="card">
+    <span class="font-medium">Existing accounts</span>
 
     <%= render partial: "shared/accounts", locals: { model: @user } %>
   </div>

@@ -50,9 +50,74 @@
   box-shadow: 10px 10px 0 var(--color-orange-400);
 }
 
+@layer base {
+  input {
+    @apply rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300;
+
+    &:focus {
+      @apply outline-2 -outline-offset-2 outline-indigo-600;
+    }
+
+    &::placeholder {
+      @apply text-gray-400;
+    }
+  }
+
+  select {
+    @apply appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300;
+
+    &:focus {
+      @apply outline-2 -outline-offset-2 outline-indigo-600;
+    }
+  }
+
+  textarea {
+    @apply block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300;
+
+    &:focus {
+      @apply outline-2 -outline-offset-2 outline-indigo-600;
+    }
+
+    &::placeholder {
+      @apply text-gray-400;
+    }
+
+    &.flush {
+      @apply outline-none resize-none;
+
+      &:focus {
+        @apply outline-none;
+      }
+    }
+  }
+}
+
 @layer components {
   .button {
     @apply rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 cursor-pointer;
+  }
+
+  .card {
+    @apply rounded-lg shadow-lg p-5;
+  }
+
+  dialog.slideover {
+    &[open] {
+      @apply animate-slide-in-from-left;
+    }
+
+    &[closing] {
+      pointer-events: none;
+      @apply animate-slide-out-to-left;
+    }
+  }
+
+  .menu-link {
+    @apply block px-3 py-1 text-sm/6 text-gray-900;
+
+    &.active {
+      @apply bg-gray-50 outline-hidden;
+    }
   }
 
   .nav-link {
@@ -75,22 +140,27 @@
     }
   }
 
-  .menu-link {
-    @apply block px-3 py-1 text-sm/6 text-gray-900;
+  .tablist {
+    @apply flex border-b border-stone-200;
 
-    &.active {
-      @apply bg-gray-50 outline-hidden;
-    }
-  }
+    & > li {
+      @apply mr-1;
 
-  dialog.slideover {
-    &[open] {
-      @apply animate-slide-in-from-left;
-    }
+      &:first {
+        @apply -mb-px;
+      }
 
-    &[closing] {
-      pointer-events: none;
-      @apply animate-slide-out-to-left;
+      & > a {
+        @apply inline-block py-2 px-4 font-medium no-underline;
+
+        &:hover {
+          @apply text-blue-700;
+        }
+      }
+
+      &.active {
+        @apply border-b-2 text-blue-700 border-blue-700;
+      }
     }
   }
 }

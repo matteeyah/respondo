@@ -1,71 +1,78 @@
-<span class="font-bold"><%= @organization.screen_name %></span>
+<% @page_title = "Settings" %>
 
-<div data-controller="tabs" data-tabs-active-tab-class="-mb-px border-l border-t border-r rounded-t">
-  <ul class="list-reset flex border-b">
-    <li class="-mb-px mr-1" data-tabs-target="tab" data-action="click->tabs#change:prevent">
-      <a class="bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-700 font-semibold no-underline" href="#">Identity</a>
+<div data-controller="tabs" data-tabs-active-tab-class="active">
+  <ul class="tablist">
+    <li data-tabs-target="tab" data-action="click->tabs#change:prevent">
+      <a href="#">Identity</a>
     </li>
-    <li class="mr-1" data-tabs-target="tab" data-action="click->tabs#change:prevent">
-      <a class="bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-700 font-semibold no-underline" href="#">Team</a>
+    <li data-tabs-target="tab" data-action="click->tabs#change:prevent">
+      <a href="#">Team</a>
     </li>
   </ul>
 
-  <div class="hidden py-4 px-4 border-l border-b border-r" data-tabs-target="panel">
-    <div class="grid grid-cols-2">
-      <div>
-        <p class="font-bold">Add account</p>
-        <div class="flex flex-col gap-3" id="account-providers">
-          <%= render partial: "shared/account_provider", collection: OrganizationAccount.providers.keys,
-                      as: :account_provider %>
-        </div>
-      </div>
-      <div>
-        <p class="font-bold">Existing accounts</p>
-        <%= render partial: "shared/accounts", locals: { model: @organization } %>
+  <div class="hidden py-4 px-4 grid lg:grid-cols-2 gap-5" data-tabs-target="panel">
+    <div class="card">
+      <p class="font-medium">Add account</p>
+      <div class="flex flex-col gap-3" id="account-providers">
+        <%= render partial: "shared/account_provider", collection: OrganizationAccount.providers.keys,
+          as: :account_provider %>
       </div>
     </div>
 
-    <hr>
-    <p class="font-bold">AI Guidelines</p>
-    <p>Explain what your company does and the tone you want the AI to respond with.</p>
-    <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
-      <%= update_organization_form.text_area :ai_guidelines, required: true, class: "form-control",
-                                                              placeholder: "Respondo is an AI social media mentioning system. You should respond in a friendly tone." %>
-      <%= update_organization_form.submit "Update", name: nil, class: "button" %>
-    <% end %>
+    <div class="card">
+      <p class="font-medium">Existing accounts</p>
+      <%= render partial: "shared/accounts", locals: { model: @organization } %>
+    </div>
+
+    <div class="card">
+      <p class="font-medium">AI Guidelines</p>
+      <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
+        <%= update_organization_form.label :ai_guidelines, "Explain what your company does and the tone you want the AI to respond with." %>
+
+        <div class="border-b border-gray-200 pb-px focus-within:border-b-2 focus-within:border-indigo-600 focus-within:pb-0 mt-5">
+          <%= update_organization_form.text_area :ai_guidelines, required: true, rows: 3, class: "flush", placeholder: "Respondo is an AI social media mentioning system. You should respond in a friendly tone." %>
+        </div>
+        <div class="flex justify-end pt-2">
+          <%= update_organization_form.submit "Update", name: nil, class: "button" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
-  <div class="hidden py-4 px-4 border-l border-b border-r" data-tabs-target="panel">
-    <p class="font-bold">Domain</p>
-    <p>Add users from your email domain automatially to your team.</p>
-    <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
-      <%= update_organization_form.text_field :domain, required: true, placeholder: "domain.com" %>
-      <%= update_organization_form.submit "Update", name: nil, class: "button" %>
-    <% end %>
+  <div class="hidden py-4 px-4 grid lg:grid-cols-2 gap-5" data-tabs-target="panel">
+    <div class="card lg:col-span-2">
+      <p class="font-medium">Domain</p>
+      <p>Add users from your email domain automatially to your team.</p>
+      <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
+        <%= update_organization_form.text_field :domain, required: true, placeholder: "domain.com" %>
+        <%= update_organization_form.submit "Update", name: nil, class: "button" %>
+      <% end %>
+    </div>
 
-    <hr>
-
-    <%= form_with url: organization_users_path, method: :post, html: { "data-controller" => "form", "data-action" => "turbo:submit-end->form#reset" } do |add_user_form| %>
-      <%= add_user_form.select :user_id, nil, { include_blank: "Select user" }, { required: true, class: "form-control form-control-sm", id: "add-user" } do %>
-        <% unless add_users_dropdown_options_for.empty? %>
-          <% add_users_dropdown_options_for.each do |id, name| %>
-            <option value="<%= id %>">
+    <div class="card">
+      <p class="font-medium">Add users</p>
+      <%= form_with url: organization_users_path, method: :post, html: { "data-controller" => "form", "data-action" => "turbo:submit-end->form#reset" } do |add_user_form| %>
+        <%= add_user_form.select :user_id, nil, { include_blank: "Select user" }, { required: true, id: "add-user" } do %>
+          <% unless add_users_dropdown_options_for.empty? %>
+            <% add_users_dropdown_options_for.each do |id, name| %>
+              <option value="<%= id %>">
               <%= name %>
-            </option>
+              </option>
+            <% end %>
           <% end %>
         <% end %>
+        <%= add_user_form.submit "Add", class: "button" %>
       <% end %>
-      <%= add_user_form.submit "Add", class: "button" %>
-    <% end %>
-
-    <hr>
-
-    <div class="flex flex-col gap-3" id="users-in-organization">
-      <%= render partial: "organizations/user", collection: @page.records %>
     </div>
-    <nav class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6" aria-label="Pagination">
-      <div class="hidden sm:block">
-        <p class="text-sm text-gray-700">
+
+    <div class="card">
+      <p class="font-medium">Remove users</p>
+      <div class="flex flex-col gap-3" id="users-in-organization">
+        <%= render partial: "organizations/user", collection: @page.records %>
+      </div>
+      <nav class="flex items-center justify-between border-t border-gray-200 bg-white mt-5 px-4 py-3 sm:px-6" aria-label="Pagination">
+        <div class="hidden sm:block">
+          <p class="text-sm text-gray-700">
           Showing page
           <span class="font-medium"><%= @page.number %></span>
           of
@@ -73,15 +80,16 @@
           (
           <span class="font-medium"><%= @page.recordset.records_count %></span>
           total results)
-        </p>
-      </div>
-      <div class="flex flex-1 justify-between sm:justify-end">
-        <% unless @page.last? %>
-          <%= link_to settings_path(page: @page.next_param), class: "button" do %>
-            Next
+          </p>
+        </div>
+        <div class="flex flex-1 justify-between sm:justify-end">
+          <% unless @page.last? %>
+            <%= link_to settings_path(page: @page.next_param), class: "button" do %>
+              Next
+            <% end %>
           <% end %>
-        <% end %>
-      </div>
-    </nav>
+        </div>
+      </nav>
+    </div>
   </div>
 </div>

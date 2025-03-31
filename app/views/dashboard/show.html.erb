@@ -1,27 +1,28 @@
-<h3>Overview</h3>
+<% @page_title = "Overview" %>
+
 <p>Welcome <%= current_user.name %>, you're all set! Feel free to hop into the organization mentions!</p>
 
 <div class="grid lg:grid-cols-2 mt-5 gap-5">
   <div class="grid lg:grid-cols-2 gap-10">
-    <%= link_to mentions_path, class: "flex flex-col gap-3 rounded-2xl border-3 border-purple-400 hover:bg-purple-200 p-5 pb-10" do %>
+    <%= link_to mentions_path, class: "flex flex-col gap-3 card hover:bg-purple-200" do %>
       <%= heroicon("question-mark-circle", options: { class: "w-20 bg-purple-200 rounded-lg" }) %>
       <span>New Mentions</span>
       <span class="text-3xl font-bold"><%= @new_count %></span>
       <hr>
     <% end %>
-    <%= link_to mentions_path(status: "open"), class: "flex flex-col gap-3 rounded-2xl border-3 border-blue-400 hover:bg-blue-200 p-5 pb-10" do %>
+    <%= link_to mentions_path(status: "open"), class: "flex flex-col gap-3 card hover:bg-blue-200" do %>
       <%= heroicon("folder", options: { class: "w-20 bg-blue-200 rounded-lg" }) %>
       <span>Total Open</span>
       <span class="text-3xl font-bold"><%= @open_count %></span>
       <hr>
     <% end %>
-    <%= link_to mentions_path, class: "flex flex-col gap-3 rounded-2xl border-3 border-yellow-400 hover:bg-yellow-200 p-5 pb-10" do %>
+    <%= link_to mentions_path, class: "flex flex-col gap-3 card hover:bg-yellow-200" do %>
       <%= heroicon("clock", options: { class: "w-20 bg-yellow-200 rounded-lg" }) %>
       <span>Unassigned Mentions</span>
       <span class="text-3xl font-bold"><%= @unassigned_count %></span>
       <hr>
     <% end %>
-    <%= link_to mentions_path(status: "solved"), class: "flex flex-col gap-3 rounded-2xl border-3 border-red-400 hover:bg-red-200 p-5 pb-10" do %>
+    <%= link_to mentions_path(status: "solved"), class: "flex flex-col gap-3 card hover:bg-red-200" do %>
       <%= heroicon("check", options: { class: "w-20 bg-red-200 rounded-lg" }) %>
       <span>Тotal Solved</span>
       <span class="text-3xl font-bold"><%= @solved_count %></span>
