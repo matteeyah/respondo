@@ -2,7 +2,6 @@
 
 class OrganizationsController < ApplicationController
   include AuthorizesOrganizationMembership
-  include Pagy::Backend
 
   def edit
     set_page_and_extract_portion_from(current_user.organization.users)

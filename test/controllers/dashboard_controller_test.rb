@@ -13,7 +13,7 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
 
     get "/dashboard"
 
-    assert_select "h3", "Overview"
+    assert_select "h2", "Overview"
   end
 
   test "GET show when the user is not authorized redirects the user to root path" do

@@ -2,7 +2,7 @@
 
 <div class="grid lg:grid-cols-2 gap-5">
   <div class="card">
-    <span class="font-medium">Add accounts</span>
+    <h3>Add accounts</h3>
 
     <div class="flex flex-col gap-3" id="account-providers">
       <%= render partial: "shared/account_provider",
@@ -11,7 +11,7 @@
     </div>
   </div>
   <div class="card">
-    <span class="font-medium">Existing accounts</span>
+    <h3>Existing accounts</h3>
 
     <%= render partial: "shared/accounts", locals: { model: @user } %>
   </div>

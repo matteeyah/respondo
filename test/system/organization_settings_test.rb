@@ -22,25 +22,25 @@ class OrganizationSettingsTest < ApplicationSystemTestCase
   test "allows the user to authorize an account" do
     account = Struct.new(:provider, :external_uid, :token, :secret).new(:linkedin, "uid_20")
     add_oauth_mock_for_organization(@organization, account)
-    within(page.find("p", text: "Add account").find(:xpath, "./..")) do
+    within(page.find("h3", text: "Add account").find(:xpath, "./..")) do
       within(page.find(:css, "div.flex.justify-between", text: "LinkedIn")) do
         page.find(:button, "Connect").click
       end
     end
 
-    within(page.find("p", text: "Existing accounts").find(:xpath, "./..")) do
+    within(page.find("h3", text: "Existing accounts").find(:xpath, "./..")) do
       assert_selector(:css, "div.flex.justify-between", text: "LinkedIn", count: 2)
     end
   end
 
   test "allows the user to remove an account" do
-    within(page.find("p", text: "Existing accounts").find(:xpath, "./..")) do
+    within(page.find("h3", text: "Existing accounts").find(:xpath, "./..")) do
       within(page.find(:css, "div.flex.justify-between", text: "LinkedIn")) do
         page.find(:link, "Remove").click
       end
     end
 
-    within(page.find("p", text: "Add account").find(:xpath, "./..")) do
+    within(page.find("h3", text: "Add account").find(:xpath, "./..")) do
       within(page.find(:css, "div.flex.justify-between", text: "LinkedIn")) do
         assert_selector(:button, "Connect")
       end

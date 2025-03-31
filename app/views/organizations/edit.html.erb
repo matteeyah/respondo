@@ -12,7 +12,7 @@
 
   <div class="hidden py-4 px-4 grid lg:grid-cols-2 gap-5" data-tabs-target="panel">
     <div class="card">
-      <p class="font-medium">Add account</p>
+      <h3>Add account</h3>
       <div class="flex flex-col gap-3" id="account-providers">
         <%= render partial: "shared/account_provider", collection: OrganizationAccount.providers.keys,
           as: :account_provider %>
@@ -20,12 +20,12 @@
     </div>
 
     <div class="card">
-      <p class="font-medium">Existing accounts</p>
+      <h3>Existing accounts</h3>
       <%= render partial: "shared/accounts", locals: { model: @organization } %>
     </div>
 
     <div class="card">
-      <p class="font-medium">AI Guidelines</p>
+      <h3>AI Guidelines</h3>
       <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
         <%= update_organization_form.label :ai_guidelines, "Explain what your company does and the tone you want the AI to respond with." %>
 
@@ -41,7 +41,7 @@
 
   <div class="hidden py-4 px-4 grid lg:grid-cols-2 gap-5" data-tabs-target="panel">
     <div class="card lg:col-span-2">
-      <p class="font-medium">Domain</p>
+      <h3>Domain</h3>
       <p>Add users from your email domain automatially to your team.</p>
       <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
         <%= update_organization_form.text_field :domain, required: true, placeholder: "domain.com" %>
@@ -50,7 +50,7 @@
     </div>
 
     <div class="card">
-      <p class="font-medium">Add users</p>
+      <h3>Add users</h3>
       <%= form_with url: organization_users_path, method: :post, html: { "data-controller" => "form", "data-action" => "turbo:submit-end->form#reset" } do |add_user_form| %>
         <%= add_user_form.select :user_id, nil, { include_blank: "Select user" }, { required: true, id: "add-user" } do %>
           <% unless add_users_dropdown_options_for.empty? %>
@@ -66,7 +66,7 @@
     </div>
 
     <div class="card">
-      <p class="font-medium">Remove users</p>
+      <h3>Remove users</h3>
       <div class="flex flex-col gap-3" id="users-in-organization">
         <%= render partial: "organizations/user", collection: @page.records %>
       </div>

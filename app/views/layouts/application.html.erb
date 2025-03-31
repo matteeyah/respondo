@@ -107,34 +107,35 @@
         <%= image_tag("logo_circle_white.svg", class: "h-8 w-auto", alt: "OpTonal logo") %>
         <span class="text-lg text-switch font-bold">Respondo</span>
       <% end %>
-      <nav class="flex flex-1 flex-col">
-        <ul role="list" class="flex flex-1 flex-col gap-y-7">
-          <li>
-            <ul role="list" class="-mx-2 space-y-1">
-              <li>
-                <!-- Current: "bg-gray-50 text-indigo-600", Default: "text-gray-700 hover:text-indigo-600 hover:bg-gray-50" -->
-
-                <%= active_link_to dashboard_path, { active: :exclusive, class: "group nav-link", "data-turbo-frame" => :_top } do %>
-                  <%= heroicon("table-cells") %>
-                  Dashboard
-                <% end %>
-              </li>
-              <li>
-                <%= active_link_to mentions_path, { active: :exclusive, class: "group nav-link", "data-turbo-frame" => :_top } do %>
-                  <%= heroicon("ticket") %>
-                  Mentions
-                <% end %>
-              </li>
-            </ul>
-          </li>
-          <li class="mt-auto">
-            <%= active_link_to settings_path, class: "group -mx-2 nav-link" do %>
-              <%= heroicon("cog-6-tooth") %>
-              Settings
-            <% end %>
-          </li>
-        </ul>
-      </nav>
+      <% if current_user.organization %>
+        <nav class="flex flex-1 flex-col">
+          <ul role="list" class="flex flex-1 flex-col gap-y-7">
+            <li>
+              <ul role="list" class="-mx-2 space-y-1">
+                <li>
+                  <!-- Current: "bg-gray-50 text-indigo-600", Default: "text-gray-700 hover:text-indigo-600 hover:bg-gray-50" -->
+                  <%= active_link_to dashboard_path, { active: :exclusive, class: "group nav-link", "data-turbo-frame" => :_top } do %>
+                    <%= heroicon("table-cells") %>
+                    Dashboard
+                  <% end %>
+                </li>
+                <li>
+                  <%= active_link_to mentions_path, { active: :exclusive, class: "group nav-link", "data-turbo-frame" => :_top } do %>
+                    <%= heroicon("ticket") %>
+                    Mentions
+                  <% end %>
+                </li>
+              </ul>
+            </li>
+            <li class="mt-auto">
+              <%= active_link_to settings_path, class: "group -mx-2 nav-link" do %>
+                <%= heroicon("cog-6-tooth") %>
+                Settings
+              <% end %>
+            </li>
+          </ul>
+        </nav>
+      <% end %>
     </div>
   </div>
 
@@ -150,7 +151,7 @@
       <!-- Separator -->
       <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true"></div>
 
-      <span class="font-semibold text-gray-900"><%= @page_title %></span>
+      <h2><%= @page_title %></h2>
 
       <div class="flex flex-1 gap-x-4 self-stretch justify-end lg:gap-x-6">
         <div class="flex items-center gap-x-4 lg:gap-x-6">

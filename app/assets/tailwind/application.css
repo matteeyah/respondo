@@ -51,6 +51,14 @@
 }
 
 @layer base {
+  h2 {
+    @apply text-2xl/7 font-bold text-gray-900;
+  }
+
+  h3 {
+    @apply text-base font-semibold text-gray-900
+  }
+
   input {
     @apply rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300;
 
