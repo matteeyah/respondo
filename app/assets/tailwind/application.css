@@ -101,6 +101,10 @@
 }
 
 @layer components {
+  .badge {
+    @apply inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600;
+  }
+
   .button {
     @apply rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 cursor-pointer;
   }
@@ -125,6 +129,10 @@
 
     &.active {
       @apply bg-gray-50 outline-hidden;
+    }
+
+    &:hover {
+      @apply bg-gray-50;
     }
   }
 
