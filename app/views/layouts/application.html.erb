@@ -150,10 +150,17 @@
 
       <!-- Separator -->
       <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true"></div>
+      <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
+        <h2 class="self-center <%= "flex-1" unless @search %>"><%= @page_title %></h2>
 
-      <h2><%= @page_title %></h2>
+        <% if @search %>
+          <%= form_with url: mentions_path, local: true, method: :get, class: "grid flex-1 grid-cols-1", html: { autocomplete: "off" } do |search_form| %>
+            <%= search_form.hidden_field :status, value: request.parameters[:status] %>
+            <%= search_form.text_field :query, required: true, value: request.parameters[:query], placeholder: "Search by author:author_name OR content:mention_content", class: "col-start-1 row-start-1 size-full pl-8 outline-hidden" %>
 
-      <div class="flex flex-1 gap-x-4 self-stretch justify-end lg:gap-x-6">
+            <%= heroicon("magnifying-glass", options: { class: "pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400" }) %>
+          <% end %>
+        <% end %>
         <div class="flex items-center gap-x-4 lg:gap-x-6">
           <% if current_user.organization %>
             <!-- Separator -->
