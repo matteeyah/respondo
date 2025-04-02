@@ -59,8 +59,7 @@ gem "omniauth-twitter"
 gem "active_link_to" # View helper for adding active class
 gem "hashie" # Hash utilities
 gem "json-schema" # JSON schema validation
-gem "pagy" # Pagination
-gem "geared_pagination"
+gem "geared_pagination" # Pagination
 gem "ruby-openai"
 gem "x" # Twitter client
 

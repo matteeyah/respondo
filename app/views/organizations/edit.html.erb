@@ -70,26 +70,8 @@
       <div class="flex flex-col gap-3" id="users-in-organization">
         <%= render partial: "organizations/user", collection: @page.records %>
       </div>
-      <nav class="flex items-center justify-between border-t border-gray-200 bg-white mt-5 px-4 py-3 sm:px-6" aria-label="Pagination">
-        <div class="hidden sm:block">
-          <p class="text-sm text-gray-700">
-          Showing page
-          <span class="font-medium"><%= @page.number %></span>
-          of
-          <span class="font-medium"><%= @page.recordset.page_count %></span>
-          (
-          <span class="font-medium"><%= @page.recordset.records_count %></span>
-          total results)
-          </p>
-        </div>
-        <div class="flex flex-1 justify-between sm:justify-end">
-          <% unless @page.last? %>
-            <%= link_to settings_path(page: @page.next_param), class: "button" do %>
-              Next
-            <% end %>
-          <% end %>
-        </div>
-      </nav>
+
+      <%= render partial: "shared/pagination", locals: { page: @page } %>
     </div>
   </div>
 </div>
