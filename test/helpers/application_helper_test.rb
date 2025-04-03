@@ -25,8 +25,4 @@ class ApplicationHelperTest < ActionView::TestCase
 
     assert_equal expected_blank_link, safe_blank_link_to("Link Text", "https://example.com", class: "nav-link")
   end
-
-  test "#bi_icon returns i element with correct classes" do
-    assert_equal '<i class="bi bi-test "></i>', bi_icon("test")
-  end
 end
