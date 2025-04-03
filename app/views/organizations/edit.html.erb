@@ -24,7 +24,7 @@
       <%= render partial: "shared/accounts", locals: { model: @organization } %>
     </div>
 
-    <div class="card">
+    <div class="card lg:col-span-2">
       <h3>AI Guidelines</h3>
       <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
         <%= update_organization_form.label :ai_guidelines, "Explain what your company does and the tone you want the AI to respond with." %>
