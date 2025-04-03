@@ -3,7 +3,7 @@
 import { application } from 'controllers/application'
 
 // Load custom controllers.
-import { Alert, Dropdown, Slideover, Tabs } from 'tailwindcss-stimulus-components'
+import { Alert, Dropdown, Slideover, Tabs, Toggle } from 'tailwindcss-stimulus-components'
 
 // Eager load all controllers defined in the import map under controllers/**/*_controller
 import { eagerLoadControllersFrom } from '@hotwired/stimulus-loading'
@@ -18,3 +18,4 @@ application.register('alert', Alert)
 application.register('dropdown', Dropdown)
 application.register('slideover', Slideover)
 application.register('tabs', Tabs)
+application.register('toggle', Toggle)

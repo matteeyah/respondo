@@ -26,7 +26,7 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-col px-5 my-5">
+  <div class="flex flex-col px-5 mt-5" data-controller="toggle">
     <span class="self-start badge"><%= raw(mention_author_header(mention)) %></span>
     <p class="my-3"><%= mention.content %></p>
     <%= link_to "#{time_ago_in_words(mention.created_at)} ago at #{mention.created_at.to_fs(:short)}", mention_path(mention), class: "text-sm text-stone-600", "data-turbo-frame" => "_top" %>
@@ -36,7 +36,7 @@
         <%= heroicon("chat-bubble-bottom-center", options: { class: "inline size-5" }) %>
         <%= mention.replies.size %>
       </span>
-      <%= link_to "##{dom_id(mention)}_internal_notes_dropdown", role: "button", aria: { expanded: "false", controls: "#{dom_id(mention)}_internal_notes_dropdown" }, class: "text-stone-600 me-3" do %>
+      <%= link_to "##{dom_id(mention)}_internal_notes_dropdown", role: "button", aria: { expanded: "false", controls: "#{dom_id(mention)}_internal_notes_dropdown" }, class: "text-stone-600 me-3", data: { action: "click->toggle#toggle:prevent" } do %>
         <%= heroicon("square-2-stack", options: { class: "inline size-5" }) %>
         <span><%= mention.internal_notes.size %></span>
       <% end %>
@@ -54,30 +54,25 @@
       <% end %>
     </div>
 
-    <div class="row collapse" id="<%= dom_id(mention) %>_internal_notes_dropdown">
-      <ul class="list-group list-group-flush p-0" id="<%= dom_id(mention) %>_internal_notes">
-        <li class="order-last list-group-item list-group-item-warning border-top">
-          <span class="small">
-          <%= bi_icon("sticky") %>
-          </span>
-          <span class="small me-1"><%= current_user.name %>:</span>
-          <small>
-            <%= form_with url: mention_internal_notes_path(mention),
-                          model: InternalNote.new, method: :post,
-                          html: { autocomplete: "off",
-                                  "data-controller" => "form",
-                                  "data-action" => "turbo:submit-end->form#reset" } do |internal_note_form| %>
-                      <div class="input-group input-group-sm mb-3">
-                        <%= internal_note_form.text_area :content, required: true, placeholder: "Write a note...", class: "form-control form-control-sm border-0 border-bottom" %>
-                        <%= internal_note_form.submit "Create Note", class: "btn btn-sm btn-primary opacity-75" %>
-                      </div>
-            <% end %>
-          </small>
+    <div class="hidden bg-yellow-100 -mx-5 p-5" id="<%= dom_id(mention) %>_internal_notes_dropdown" data-toggle-target="toggleable" data-toggle-target="toggleable" data-transition-enter="transition-all ease-linear duration-300" data-transition-enter-from="opacity-0 h-0" data-transition-enter-to="opacity-100" data-transition-leave="transition-all ease-linear duration-300" data-transition-leave-from="opacity-100" data-transition-leave-to="opacity-0">
+      <ul class="flex flex-col" id="<%= dom_id(mention) %>_internal_notes">
+        <li class="order-last">
+          <%= heroicon("square-2-stack", options: { class: "inline size-5" }) %>
+          <span class="text-sm"><%= current_user.name %>:</span>
+          <%= form_with url: mention_internal_notes_path(mention),
+                        model: InternalNote.new, method: :post,
+                        html: { autocomplete: "off",
+                                "data-controller" => "form",
+                                "data-action" => "turbo:submit-end->form#reset" } do |internal_note_form| %>
+            <%= internal_note_form.text_area :content, required: true, placeholder: "Write a note...", class: "bg-white" %>
+            <%= internal_note_form.submit "Create Note", class: "button" %>
+          <% end %>
         </li>
         <%= render partial: "mentions/internal_note", collection: mention.internal_notes %>
       </ul>
     </div>
   </div>
+
   <% if mention.status == 'open' %>
     <div class="bg-gray-50 px-5 py-3">
       <%= form_with url: mention_replies_path(mention),
