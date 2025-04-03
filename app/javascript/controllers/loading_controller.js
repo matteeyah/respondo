@@ -1,12 +1,12 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['spinner']
+  static targets = ['replacement', 'element']
 
   start () {
-    const spinner = document.createElement('div')
-    spinner.classList.add('spinner-grow', 'text-primary')
+    const replacement = this.replacementTarget
+    replacement.classList.remove('hidden')
 
-    this.spinnerTarget.replaceWith(spinner)
+    this.elementTarget.replaceWith(replacement)
   }
 }
