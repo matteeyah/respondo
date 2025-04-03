@@ -11,7 +11,7 @@
     </div>
 
     <div class="relative ms-auto" data-controller="dropdown">
-      <button type="button" class="-m-1.5 flex items-center p-1.5 cursor-pointer" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle:stop click@window->dropdown#hide">
+      <button type="button" class="-m-1.5 flex items-center p-1.5 cursor-pointer" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle:stop click@window->dropdown#hide" id="<%= dom_id(mention) %>-menu-button">
         <span class="sr-only">Open mention menu</span>
         <%= heroicon("ellipsis-horizontal", options: { class: "ml-2 size-5 text-gray-400" }) %>
       </button>
@@ -27,7 +27,15 @@
     </div>
   </div>
   <div class="flex flex-col px-5 mt-5" data-controller="toggle">
-    <span class="self-start badge"><%= raw(mention_author_header(mention)) %></span>
+    <span class="self-start badge">
+      <%= link_to mention.author.external_link do %>
+        <% if mention.creator %>
+          <%= "#{mention.creator.name} as @#{mention.author.username}" %>
+        <% else %>
+          <%= mention.author.username %>
+        <% end %>
+      <% end %>
+    </span>
     <p class="my-3"><%= mention.content %></p>
     <%= link_to "#{time_ago_in_words(mention.created_at)} ago at #{mention.created_at.to_fs(:short)}", mention_path(mention), class: "text-sm text-stone-600", "data-turbo-frame" => "_top" %>
 
@@ -36,7 +44,7 @@
         <%= heroicon("chat-bubble-bottom-center", options: { class: "inline size-5" }) %>
         <%= mention.replies.size %>
       </span>
-      <%= link_to "##{dom_id(mention)}_internal_notes_dropdown", role: "button", aria: { expanded: "false", controls: "#{dom_id(mention)}_internal_notes_dropdown" }, class: "text-stone-600 me-3", data: { action: "click->toggle#toggle:prevent" } do %>
+      <%= link_to "#", role: "button", aria: { expanded: "false", controls: "#{dom_id(mention)}_internal_notes_dropdown" }, class: "text-stone-600 me-3", data: { action: "click->toggle#toggle:prevent" } do %>
         <%= heroicon("square-2-stack", options: { class: "inline size-5" }) %>
         <span><%= mention.internal_notes.size %></span>
       <% end %>
@@ -83,7 +91,7 @@
         <%= link_to mention_path(mention, format: :turbo_stream), class: "button rounded-full self-center", data: { action: "click->ai-response#addParam click->loading#start", turbo_prefetch: "false" } do %>
           <%= heroicon("bolt", options: { class: "size-5" }) %>
         <% end %>
-        <%= reply_form.button class: "button rounded-full self-center" do %>
+        <%= reply_form.button class: "button rounded-full self-center", id: "#{dom_id(mention)}-reply-button" do %>
           <%= heroicon("paper-airplane", options: { class: "size-5" }) %>
         <% end %>
       <% end %>

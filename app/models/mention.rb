@@ -45,7 +45,7 @@ class Mention < ApplicationRecord
         instructions: ai_instructions(prompt),
         input: "#{author.username}: #{content}"
       }
-    ).dig("choices", 0, "message", "content").chomp.strip
+    )["output"].find { |o| o["type"] == "message" }["content"].first["text"]
   end
 
   private

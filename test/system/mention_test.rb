@@ -28,7 +28,7 @@ class MentionTest < ApplicationSystemTestCase
     target_mention = mentions(:x)
 
     within("#mention_#{target_mention.id}") do
-      page.find(:css, "i.bi-three-dots").click
+      click_button "mention_#{@mention.id}-menu-button"
       click_link "View"
     end
 
@@ -39,7 +39,7 @@ class MentionTest < ApplicationSystemTestCase
     visit mentions_path
 
     fill_in "query", with: "author:#{mentions(:x).author.username}"
-    click_button :search
+    find_field("query").native.send_keys(:return)
 
     assert_text(mentions(:x).content)
     assert_no_text(mentions(:linkedin).content)
@@ -49,7 +49,7 @@ class MentionTest < ApplicationSystemTestCase
     visit mentions_path
 
     fill_in "query", with: "content:#{mentions(:x).content}"
-    click_button :search
+    find_field("query").native.send_keys(:return)
 
     assert_text(mentions(:x).content)
     assert_no_text(mentions(:linkedin).content)
@@ -65,7 +65,7 @@ class MentionTest < ApplicationSystemTestCase
     find(:xpath, "//input[@type='hidden'][@value='solved']", visible: :hidden)
 
     fill_in "query", with: mentions(:linkedin).author.username
-    click_button :search
+    find_field("query").native.send_keys(:return)
 
     assert_no_text(mentions(:x).author.username)
     assert_text(mentions(:linkedin).author.username)
@@ -87,7 +87,7 @@ class MentionTest < ApplicationSystemTestCase
 
     within("#mention_#{@mention.id}") do
       fill_in "mention[content]", with: response_text
-      page.find(:css, "i.bi-telegram").click
+      click_button "mention_#{@mention.id}-reply-button"
     end
 
     assert_text("#{@user.name} as @#{@organization.screen_name}")
@@ -97,33 +97,33 @@ class MentionTest < ApplicationSystemTestCase
   test "allows asking the AI to answer" do
     visit mentions_path
 
-    stub_request(:post, "https://api.openai.com/v1/chat/completions")
+    stub_request(:post, "https://api.openai.com/v1/responses")
       .to_return(
-        status: 200, body: file_fixture("openai_chat.json"),
+        status: 200, body: file_fixture("openai_response.json"),
         headers: { "Content-Type" => "application/json" }
       )
 
     within("#mention_#{@mention.id}") do
-      page.find(:css, "i.bi-lightning").click
+      click_link href: "/mentions/#{@mention.id}.turbo_stream"
 
-      assert_text("You are amazing!")
+      assert_text("In a peaceful grove beneath a silver moon")
     end
   end
 
   test "allows asking the AI to answer with a prompt" do
     visit mentions_path
 
-    stub_request(:post, "https://api.openai.com/v1/chat/completions")
+    stub_request(:post, "https://api.openai.com/v1/responses")
       .to_return(
-        status: 200, body: file_fixture("openai_chat.json"),
+        status: 200, body: file_fixture("openai_response.json"),
         headers: { "Content-Type" => "application/json" }
       )
 
     within("#mention_#{@mention.id}") do
       fill_in "mention[content]", with: "I am amazing!"
-      page.find(:css, "i.bi-lightning").click
+      click_link href: "/mentions/#{@mention.id}.turbo_stream"
 
-      assert_text("You are amazing!")
+      assert_text("In a peaceful grove beneath a silver moon")
     end
   end
 
@@ -133,7 +133,7 @@ class MentionTest < ApplicationSystemTestCase
     internal_note_text = "Internal note from Respondo system tests."
 
     within("#mention_#{@mention.id}") do
-      page.find(:css, "i.bi-sticky").click
+      click_link "1"
 
       fill_in "internal_note[content]", with: internal_note_text
       click_button "Create Note"
@@ -171,12 +171,13 @@ class MentionTest < ApplicationSystemTestCase
   end
 
   test "allows removing mention tags" do
-    @mention.tags << [ Tag.create!(name: "first_tag"), Tag.create!(name: "second_tag") ]
+    first_tag = Tag.create!(name: "first_tag")
+    @mention.tags << [ first_tag, Tag.create!(name: "second_tag") ]
     visit mentions_path
 
     within("#mention_#{@mention.id}") do
       within("span", text: "first_tag") do
-        page.find(:css, "i.bi-x").click
+        click_link href: "/mentions/#{@mention.id}/tags/#{first_tag.id}"
       end
     end
 
@@ -208,7 +209,7 @@ class MentionTest < ApplicationSystemTestCase
       )
 
     within("#mention_#{@mention.id}") do
-      page.find(:css, "i.bi-three-dots").click
+      click_button "mention_#{@mention.id}-menu-button"
       click_link "Delete"
     end
 
@@ -220,7 +221,7 @@ class MentionTest < ApplicationSystemTestCase
     visit mentions_path
 
     within("#mention_#{@mention.id}") do
-      page.find(:css, "i.bi-three-dots").click
+      click_button "mention_#{@mention.id}-menu-button"
 
       assert_link "External View"
     end
