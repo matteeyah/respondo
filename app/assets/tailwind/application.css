@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+@theme {
+  --animate-color-switch: color-switch 5s linear infinite;
+  --animate-slide-in-from-left: slide-in-from-left 200ms forwards ease-in-out;
+  --animate-slide-out-to-left: slide-out-to-left 200ms forwards ease-in-out;
+
+  @keyframes slide-in-from-left{
+    from {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes slide-out-to-left{
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes color-switch {
+    0% {
+      background-color: var(--color-purple-400);
+      background-clip: text;
+    }
+
+    33% {
+      background-color: var(--color-orange-400);
+      background-clip: text;
+    }
+
+    66% {
+      background-color: var(--color-red-400);
+      background-clip: text;
+    }
+
+    100% {
+      background-color: var(--color-sky-400);
+      background-clip: text;
+    }
+  }
+}
+
+@utility text-switch {
+  color: transparent;
+
+  @apply animate-color-switch;
+}
+
+@utility shadow-login {
+  box-shadow: 10px 10px 0 var(--color-orange-400);
+}
+
+@layer base {
+  h2 {
+    @apply text-2xl/7 font-bold text-gray-900;
+  }
+
+  h3 {
+    @apply text-base font-semibold text-gray-900
+  }
+
+  input {
+    @apply rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300;
+
+    &:focus {
+      @apply outline-2 -outline-offset-2 outline-indigo-600;
+    }
+
+    &::placeholder {
+      @apply text-gray-400;
+    }
+  }
+
+  select {
+    @apply appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300;
+
+    &:focus {
+      @apply outline-2 -outline-offset-2 outline-indigo-600;
+    }
+  }
+
+  textarea {
+    @apply block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300;
+
+    &:focus {
+      @apply outline-2 -outline-offset-2 outline-indigo-600;
+    }
+
+    &::placeholder {
+      @apply text-gray-400;
+    }
+
+    &.flush {
+      @apply outline-none resize-none;
+
+      &:focus {
+        @apply outline-none;
+      }
+    }
+  }
+}
+
+@layer components {
+  .badge {
+    @apply inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600;
+  }
+
+  .button {
+    @apply rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 cursor-pointer;
+  }
+
+  .card {
+    @apply rounded-lg shadow-lg p-5;
+  }
+
+  dialog.slideover {
+    &[open] {
+      @apply animate-slide-in-from-left;
+    }
+
+    &[closing] {
+      pointer-events: none;
+      @apply animate-slide-out-to-left;
+    }
+  }
+
+  .menu-link {
+    @apply block px-3 py-1 text-sm/6 text-gray-900;
+
+    &.active {
+      @apply bg-gray-50 outline-hidden;
+    }
+
+    &:hover {
+      @apply bg-gray-50;
+    }
+  }
+
+  .nav-link {
+    @apply flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold;
+
+    &:not(.active) {
+      @apply text-gray-700 hover:text-indigo-600 hover:bg-gray-50;
+    }
+
+    &.active {
+      @apply bg-gray-50 text-indigo-600;
+    }
+
+    &.group > svg {
+      @apply size-6 shrink-0;
+    }
+
+    &.group:not(.active) > svg {
+      @apply text-gray-400 group-hover:text-indigo-600;
+    }
+  }
+
+  .tablist {
+    @apply flex border-b border-stone-200;
+
+    & > li {
+      @apply mr-1;
+
+      &:first {
+        @apply -mb-px;
+      }
+
+      & > a {
+        @apply inline-block py-2 px-4 font-medium no-underline;
+
+        &:hover {
+          @apply text-blue-700;
+        }
+      }
+
+      &.active {
+        @apply border-b-2 text-blue-700 border-blue-700;
+      }
+    }
+  }
+}

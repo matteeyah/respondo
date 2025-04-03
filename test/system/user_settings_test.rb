@@ -21,14 +21,12 @@ class UserSettingsTest < ApplicationSystemTestCase
 
     account = Struct.new(:provider, :external_uid, :name, :email).new(:entra_id, "uid_20")
     add_oauth_mock_for_user(@user, account)
-    within(page.find("p", text: "Add account").find(:xpath, "../..")) do
-      within(page.find(:css, "div.list-group-item", text: "Microsoft Entra")) do
-        page.find(:button, text: "Connect").click
-      end
+    within(page.find("h3", text: "Add accounts").find(:xpath, "../..")) do
+      find(:button, "Connect").click
     end
 
-    within(page.find("p", text: "Existing accounts").find(:xpath, "../..")) do
-      within(page.find(:css, "div.list-group-item", text: "Microsoft Entra")) do
+    within(page.find("h3", text: "Existing accounts").find(:xpath, "../..")) do
+      within(page.find(:css, "div.flex.justify-between", text: "Microsoft Entra")) do
         assert_selector(:link, "Remove")
       end
     end
@@ -37,14 +35,16 @@ class UserSettingsTest < ApplicationSystemTestCase
   test "allows the user to remove an account" do
     visit profile_path
 
-    within(page.find("p", text: "Existing accounts").find(:xpath, "../..")) do
-      within(page.find(:css, "div.list-group-item", text: "Microsoft Entra")) do
+    within(page.find("h3", text: "Existing accounts").find(:xpath, "../..")) do
+      within(page.find(:css, "div.flex.justify-between", text: "Microsoft Entra")) do
         page.find(:link, "Remove").click
       end
     end
 
-    within(page.find(:css, "div.list-group-item", text: "Microsoft Entra")) do
-      assert_selector(:button, "Connect")
+    within(page.find("h3", text: "Add accounts").find(:xpath, "../..")) do
+      within(page.find(:css, "div.flex.justify-between", text: "Microsoft Entra")) do
+        assert_selector(:button, "Connect")
+      end
     end
   end
 end

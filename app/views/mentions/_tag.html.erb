@@ -1,6 +1,6 @@
-<span class="d-flex align-items-center badge bg-info opacity-75 me-2" id="<%= dom_id(tag, dom_id(mention)) %>">
-  <%= link_to tag.name, mentions_path(tag: tag.name), class: "link-light", 'data-turbo-frame': "_top" %>
-  <%= link_to mention_tag_path(mention, tag), 'data-turbo-method': :delete do %>
-    <%= bi_icon("x", "fs-5 text-white") %>
+<span class="badge" id="<%= dom_id(tag, dom_id(mention)) %>">
+  <%= link_to tag.name, mentions_path(tag: tag.name), 'data-turbo-frame': "_top" %>
+  <%= link_to mention_tag_path(mention, tag), 'data-turbo-method': :delete, class: "hover:bg-gray-50" do %>
+    <%= heroicon("x-mark", options: { class: "size-4" }) %>
   <% end %>
 </span>

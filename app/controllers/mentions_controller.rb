@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class MentionsController < Mentions::ApplicationController
-  include Pagy::Backend
   include AuthorizesOrganizationMembership
 
   MENTION_RENDER_PRELOADS = [
@@ -12,8 +11,8 @@ class MentionsController < Mentions::ApplicationController
   before_action :set_mention, only: %i[show update destroy permalink]
 
   def index
-    @pagy, mentions_relation = pagy(mentions)
-    @mentions = mentions_relation.with_descendants_hash(MENTION_RENDER_PRELOADS)
+    set_page_and_extract_portion_from(mentions)
+    @mentions = @page.records.with_descendants_hash(MENTION_RENDER_PRELOADS)
   end
 
   def show

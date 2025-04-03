@@ -1,142 +1,100 @@
-<div class="col-12">
-  <div class="card">
-    <div class="card-header border-0">
-      <div class="row">
-        <div class="col-lg-2 d-flex align-items-center justify-content-start justify-content-lg-start mb-2 mb-lg-0">
-          <% if mention.parent_id.nil? %>
-            <span class="badge text-bg-primary rounded opacity-75 fs-6 me-1">
-              <%= bi_icon(mention.provider) %>
-              <%= mention.source.screen_name %>
-            </span>
-          <% end %>
-        </div>
-        <div class="col-lg-9 mb-2 mb-lg-0 d-flex align-items-center">
-          <div class="d-flex flex-wrap" id="<%= dom_id(mention) %>_tags">
-            <span class="d-flex order-last align-items-center me-1">
-              <%= form_with url: mention_tags_path(mention),
-                            model: Tag.new, method: :post,
-                            html: { "data-controller" => "form", "data-action" => "turbo:submit-end->form#reset" } do |tag_form| %>
-                <span class="d-flex align-items-center me-1 text-white">
-                  <%= tag_form.text_field :name, required: true, placeholder: "add tag", class: "form-control form-control-sm border-0 text-info w-50 opacity-75" %>
-                </span>
-              <% end %>
-            </span>
-            <%= render partial: "mentions/tag", collection: mention.tags, as: :tag, locals: { mention: } %>
-          </div>
-        </div>
-        <div class="col-lg-1 d-flex justify-content-start justify-content-lg-end align-items-center">
-          <div class="dropdown">
-            <div class="text-muted" type="button" id="actionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-              <%= bi_icon("three-dots", "fs-4") %>
-            </div>
-            <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
-              <% if mention.parent_id.nil? %>
-                <li><%= link_to "View", mention_path(mention), class: "dropdown-item", "data-turbo-frame" => :_top %></li>
-              <% end %>
-              <li>
-                <%= link_to "External View", permalink_mention_path(mention), "data-turbo-frame" => :_top, id: "permalink-#{mention.id}", class: "dropdown-item", target: :_blank, rel: "noopener" %>
-              </li>
-              <% if mention.creator.present? %>
-                <li>
-                  <%= link_to "Delete", mention_path(mention), "data-turbo-method" => :delete, id: "delete-#{mention.id}", class: "dropdown-item" %>
-                </li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-      </div>
+<div class="card flex flex-col p-0">
+  <div class="flex items-center bg-gray-50 px-5 py-3">
+    <% if mention.parent_id.nil? %>
+      <span class="badge"><%= mention.source.screen_name %></span>
+    <% end %>
+    <div class="flex ms-10 gap-3" id="<%= dom_id(mention) %>_tags">
+      <%= form_with url: mention_tags_path(mention), model: Tag.new, method: :post, html: { "data-controller" => "form", "data-action" => "turbo:submit-end->form#reset" } do |tag_form| %>
+        <%= tag_form.text_field :name, required: true, placeholder: "add tag" %>
+      <% end %>
+      <%= render partial: "mentions/tag", collection: mention.tags, as: :tag, locals: { mention: } %>
     </div>
-    <div class="card-body">
-      <div class="row">
-        <span class="fw-bold">
-          <span class="m-0"><%= raw(mention_author_header(mention)) %></span>
-        </span>
-      </div>
-      <div class="row my-3">
-        <span><%= mention.content %></span>
-      </div>
-      <div class="row my-1">
-        <small>
-        <%= link_to "#{time_ago_in_words(mention.created_at)} ago at #{mention.created_at.to_fs(:short)}", mention_path(mention), class: "link-secondary text-decoration-none", "data-turbo-frame" => "_top" %>
-        </small>
-      </div>
-      <div class="row mb-2">
-        <div class="col-lg-6 d-flex align-items-center justify-content-start">
-          <span class="text-muted me-3">
-            <%= bi_icon("chat", "text-info") %>
-            <%= mention.replies.size %>
-          </span>
-          <%= link_to "##{dom_id(mention)}_internal_notes_dropdown", role: "button", aria: { expanded: "false", controls: "#{dom_id(mention)}_internal_notes_dropdown" }, "data-bs-toggle" => "collapse", class: "text-muted text-decoration-none" do %>
-            <%= bi_icon("sticky", "text-warning") %>
-            <span><%= mention.internal_notes.size %></span>
-          <% end %>
-          <%= form_with url: mention_assignments_path(mention),
-                        model: mention, method: :post do |assignment_form| %>
-            <div class="input-group input-group-sm ms-3">
-              <%= assignment_form.fields_for :assignment, mention.assignment do |assignee_field| %>
-                <%= assignee_field.collection_select :user_id, mention.organization.users, :id, :name,
-                                                     { include_blank: "Unassigned" },
-                                                     { required: false, class: "form-control form-control-sm text-muted text-center", id: "mention-assignment",
-                                                       data: { controller: "form", action: "change->form#submit" } } %>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-        <div class="col-lg-6 d-flex align-items-center justify-content-end">
-          <%= form_with url: mention_path(mention),
-                        model: mention, method: :patch do |status_form| %>
-            <div class="input-group input-group-sm">
-              <%= status_form.select :status, options_for_select(Mention.statuses.keys, mention.status),
-                                     { include_blank: "Select status" }, { id: "mention-status", required: true, class: "form-control text-center rounded", data: { controller: "form", action: "change->form#submit" } } %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-      <div class="row collapse" id="<%= dom_id(mention) %>_internal_notes_dropdown">
-        <ul class="list-group list-group-flush p-0" id="<%= dom_id(mention) %>_internal_notes">
-          <li class="order-last list-group-item list-group-item-warning border-top">
-            <span class="small">
-            <%= bi_icon("sticky") %>
-            </span>
-            <span class="small me-1"><%= current_user.name %>:</span>
-            <small>
-              <%= form_with url: mention_internal_notes_path(mention),
-                            model: InternalNote.new, method: :post,
-                            html: { autocomplete: "off",
-                                    "data-controller" => "form",
-                                    "data-action" => "turbo:submit-end->form#reset" } do |internal_note_form| %>
-                        <div class="input-group input-group-sm mb-3">
-                          <%= internal_note_form.text_area :content, required: true, placeholder: "Write a note...", class: "form-control form-control-sm border-0 border-bottom" %>
-                          <%= internal_note_form.submit "Create Note", class: "btn btn-sm btn-primary opacity-75" %>
-                        </div>
-              <% end %>
-            </small>
-          </li>
-          <%= render partial: "mentions/internal_note", collection: mention.internal_notes %>
-        </ul>
-      </div>
-    </div>
-    <% if mention.status == 'open' %>
-      <div class="card-footer border-0">
-        <%= form_with url: mention_replies_path(mention),
-                      model: reply_model, method: :post,
-                      html: { autocomplete: "off", data: { controller: "loading ai-response", ai_response_mention_path_value: mention_path(mention) } } do |reply_form| %>
-          <div class="row">
-            <div class="col-10 d-flex align-items-center">
-              <%= reply_form.text_area :content, required: true, placeholder: "Reply", class: "form-control border-0",
-                                                 data: { loading_target: "spinner", ai_response_target: "parameter" } %>
-            </div>
-            <div class="col-2 d-flex justify-content-end align-items-center">
-              <%= link_to "#", class: "btn btn-link", data: { action: "click->ai-response#addParam click->loading#start" } do %>
-                <%= bi_icon("lightning", "fs-2") %>
-              <% end %>
-              <%= reply_form.button class: "border-0 bg-transparent btn btn-link rounded-circle" do %>
-                <%= bi_icon("telegram", "fs-2") %>
-              <% end %>
-            </div>
-          </div>
+
+    <div class="relative ms-auto" data-controller="dropdown">
+      <button type="button" class="-m-1.5 flex items-center p-1.5 cursor-pointer" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle:stop click@window->dropdown#hide" id="<%= dom_id(mention) %>-menu-button">
+        <span class="sr-only">Open mention menu</span>
+        <%= heroicon("ellipsis-horizontal", options: { class: "ml-2 size-5 text-gray-400" }) %>
+      </button>
+      <div class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 ring-1 shadow-lg ring-gray-900/5 focus:outline-hidden hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" data-dropdown-target="menu">
+        <% if mention.parent_id.nil? %>
+          <%= link_to "View", mention_path(mention), class: "menu-link", "data-turbo-frame" => :_top %>
+        <% end %>
+        <%= link_to "External View", permalink_mention_path(mention), "data-turbo-frame" => :_top, id: "permalink-#{mention.id}", class: "menu-link", target: :_blank, rel: "noopener" %>
+        <% if mention.creator.present? %>
+          <%= link_to "Delete", mention_path(mention), "data-turbo-method" => :delete, id: "delete-#{mention.id}", class: "menu-link" %>
         <% end %>
       </div>
-    <% end %>
+    </div>
   </div>
+  <div class="flex flex-col px-5 mt-5" data-controller="toggle">
+    <span class="self-start badge">
+      <%= link_to mention.author.external_link do %>
+        <% if mention.creator %>
+          <%= "#{mention.creator.name} as @#{mention.author.username}" %>
+        <% else %>
+          <%= mention.author.username %>
+        <% end %>
+      <% end %>
+    </span>
+    <p class="my-3"><%= mention.content %></p>
+    <%= link_to "#{time_ago_in_words(mention.created_at)} ago at #{mention.created_at.to_fs(:short)}", mention_path(mention), class: "text-sm text-stone-600", "data-turbo-frame" => "_top" %>
+
+    <div class="flex items-center my-5">
+      <span class="text-stone-600">
+        <%= heroicon("chat-bubble-bottom-center", options: { class: "inline size-5" }) %>
+        <%= mention.replies.size %>
+      </span>
+      <%= link_to "#", role: "button", aria: { expanded: "false", controls: "#{dom_id(mention)}_internal_notes_dropdown" }, class: "text-stone-600 me-3", data: { action: "click->toggle#toggle:prevent" } do %>
+        <%= heroicon("square-2-stack", options: { class: "inline size-5" }) %>
+        <span><%= mention.internal_notes.size %></span>
+      <% end %>
+      <%= form_with url: mention_assignments_path(mention), model: mention, method: :post do |assignment_form| %>
+        <%= assignment_form.fields_for :assignment, mention.assignment do |assignee_field| %>
+          <%= assignee_field.collection_select :user_id, mention.organization.users, :id, :name,
+                                                { include_blank: "Unassigned" },
+                                                { required: false, id: "mention-assignment",
+                                                  data: { controller: "form", action: "change->form#submit" } } %>
+        <% end %>
+      <% end %>
+      <%= form_with url: mention_path(mention), model: mention, method: :patch, class: "ms-auto" do |status_form| %>
+        <%= status_form.select :status, options_for_select(Mention.statuses.keys, mention.status),
+                                { include_blank: "Select status" }, { id: "mention-status", required: true, data: { controller: "form", action: "change->form#submit" } } %>
+      <% end %>
+    </div>
+
+    <div class="hidden bg-yellow-100 -mx-5 p-5" id="<%= dom_id(mention) %>_internal_notes_dropdown" data-toggle-target="toggleable" data-toggle-target="toggleable" data-transition-enter="transition-all ease-linear duration-300" data-transition-enter-from="opacity-0 h-0" data-transition-enter-to="opacity-100" data-transition-leave="transition-all ease-linear duration-300" data-transition-leave-from="opacity-100" data-transition-leave-to="opacity-0">
+      <ul class="flex flex-col" id="<%= dom_id(mention) %>_internal_notes">
+        <li class="order-last">
+          <%= heroicon("square-2-stack", options: { class: "inline size-5" }) %>
+          <span class="text-sm"><%= current_user.name %>:</span>
+          <%= form_with url: mention_internal_notes_path(mention),
+                        model: InternalNote.new, method: :post,
+                        html: { autocomplete: "off",
+                                "data-controller" => "form",
+                                "data-action" => "turbo:submit-end->form#reset" } do |internal_note_form| %>
+            <%= internal_note_form.text_area :content, required: true, placeholder: "Write a note...", class: "bg-white" %>
+            <%= internal_note_form.submit "Create Note", class: "button" %>
+          <% end %>
+        </li>
+        <%= render partial: "mentions/internal_note", collection: mention.internal_notes %>
+      </ul>
+    </div>
+  </div>
+
+  <% if mention.status == 'open' %>
+    <div class="bg-gray-50 px-5 py-3">
+      <%= form_with url: mention_replies_path(mention),
+                    model: reply_model, method: :post,
+                    html: { autocomplete: "off", data: { controller: "loading ai-response", ai_response_mention_path_value: mention_path(mention) }, class: "flex gap-5" } do |reply_form| %>
+        <%= reply_form.text_area :content, required: true, placeholder: "Reply", data: { loading_target: "element", ai_response_target: "parameter" } %>
+        <%= render partial: "shared/spinner" %>
+        <%= link_to mention_path(mention, format: :turbo_stream), class: "button rounded-full self-center", data: { action: "click->ai-response#addParam click->loading#start", turbo_prefetch: "false" } do %>
+          <%= heroicon("bolt", options: { class: "size-5" }) %>
+        <% end %>
+        <%= reply_form.button class: "button rounded-full self-center", id: "#{dom_id(mention)}-reply-button" do %>
+          <%= heroicon("paper-airplane", options: { class: "size-5" }) %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
 </div>

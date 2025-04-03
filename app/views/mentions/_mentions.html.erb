@@ -1,6 +1,6 @@
-<ul class="list-group">
+<ul class="flex flex-col gap-5">
   <% mentions.each do |mention, replies| %>
-    <li class="list-group-item bg-transparent py-0 rounded-0 border-0">
+    <li>
       <%= turbo_frame_tag dom_id(mention) do %>
         <%= render partial: "mentions/mention", locals: { mention:, reply_model: Mention.new(parent: mention) } %>
         <% if replies.any? %>

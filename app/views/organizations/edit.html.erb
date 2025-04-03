@@ -1,138 +1,77 @@
-<div class="row my-3">
-  <div class="col d-flex align-items-center">
-    <span class="fs-2 me-2 fw-bold">Organization</span>
-    <span class="rounded-pill text-white bg-danger opacity-75 py-1 px-3">
-      <%= bi_icon("people-fill") %>
-      <%= @organization.screen_name %>
-    </span>
-  </div>
-</div>
-<div class="row">
-  <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item" id="identity-tab" role="presentation">
-      <%= button_tag "Identity", class: "nav-link active", role: "tab",
-                                 "data-bs-toggle" => "tab", "data-bs-target" => "#identity-tab-pane",
-                                 "aria-controls" => "account-settings-tab-pane", "aria-selected" => true %>
+<% @page_title = "Settings" %>
+
+<div data-controller="tabs" data-tabs-active-tab-class="active">
+  <ul class="tablist">
+    <li data-tabs-target="tab" data-action="click->tabs#change:prevent">
+      <a href="#">Identity</a>
     </li>
-    <li class="nav-item" id="team-tab" role="presentation">
-      <%= button_tag "Team", class: "nav-link", role: "tab",
-                             "data-bs-toggle" => "tab", "data-bs-target" => "#team-tab-pane",
-                             "aria-controls" => "team-settings-tab-pane", "aria-selected" => false %>
+    <li data-tabs-target="tab" data-action="click->tabs#change:prevent">
+      <a href="#">Team</a>
     </li>
   </ul>
-  <div class="tab-content mt-4">
-    <div aria-labelledby="identity-tab" class="tab-pane active" id="identity-tab-pane" role="tabpanel" tabindex="0">
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="card rounded-4">
-            <div class="card-body">
-              <div class="card-title mb-4">
-                <p class="fs-5 fw-bold">Add account</p>
-              </div>
-              <div class="list-group list-group-flush" id="account-providers">
-                <%= render partial: "shared/account_provider", collection: OrganizationAccount.providers.keys,
-                           as: :account_provider %>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="card rounded-4">
-            <div class="card-body">
-              <div class="card-title">
-                <p class="fs-5 fw-bold">AI Guidelines</p>
-              </div>
-              <p class="card-text">Explain what your company does and the tone you want the AI to respond with.</p>
-              <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
-                <div class="row">
-                  <div class="col-8 col-lg-9">
-                    <%= update_organization_form.text_area :ai_guidelines, required: true, class: "form-control",
-                                                                           placeholder: "Respondo is an AI social media mentioning system. You should respond in a friendly tone." %>
-                  </div>
-                  <div class="col-4 col-lg-3">
-                    <%= update_organization_form.submit "Update", name: nil, class: "btn form-control btn-primary" %>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
+
+  <div class="hidden py-4 px-4 grid lg:grid-cols-2 gap-5" data-tabs-target="panel">
+    <div class="card">
+      <h3>Add account</h3>
+      <div class="flex flex-col gap-3" id="account-providers">
+        <%= render partial: "shared/account_provider", collection: OrganizationAccount.providers.keys,
+          as: :account_provider %>
       </div>
+    </div>
+
+    <div class="card">
+      <h3>Existing accounts</h3>
       <%= render partial: "shared/accounts", locals: { model: @organization } %>
     </div>
-    <div aria-labelledby="team-tab" class="tab-pane" id="team-tab-pane" role="tabpanel" tabindex="0">
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="card h-100 rounded-4">
-            <div class="card-body">
-              <div class="card-title mb-4">
-                <p class="fs-5 fw-bold">Domain</p>
-                <small class="text-muted">Add users from your email domain automatially to your team.</small>
-              </div>
-              <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
-                <div class="row">
-                  <div class="col-8 col-lg-10">
-                    <%= update_organization_form.text_field :domain, required: true, placeholder: "domain.com",
-                                                                     class: "form-control form-control-sm" %>
-                  </div>
-                  <div class="col-4 col-lg-2">
-                    <%= update_organization_form.submit "Update", name: nil, class: "btn btn-sm form-control btn-primary" %>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6"></div>
-      </div>
-      <div class="row mt-4">
-        <div class="col-12">
-          <div class="card rounded-4">
-            <div class="card-body">
-              <div class="card-title mb-4">
-                <p class="fs-5 fw-bold">Team</p>
-              </div>
-              <div class="row">
-                <%= form_with url: organization_users_path, method: :post,
-                              html: { "data-controller" => "form",
-                                      "data-action" => "turbo:submit-end->form#reset" } do |add_user_form| %>
-                  <div class="row">
-                    <div class="col-8 col-lg-4">
-                      <%= add_user_form.select :user_id, nil, { include_blank: "Select user" },
-                                               { required: true, class: "form-control form-control-sm", id: "add-user" } do %>
-                        <% unless add_users_dropdown_options_for.empty? %>
-                          <% add_users_dropdown_options_for.each do |id, name| %>
-                            <option value="<%= id %>">
-                              <%= name %>
-                            </option>
-                          <% end %>
-                        <% end %>
-                      <% end %>
-                    </div>
-                    <div class="col-4 col-lg-1">
-                      <%= add_user_form.submit "Add", class: "btn btn-sm form-control btn-primary" %>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-              <div class="row mt-3">
-                <div class="col-12">
-                  <hr class="my-3">
-                  <div class="list-group list-group-flush mw-100 flex-wrap" id="users-in-organization">
-                    <%= render partial: "organizations/user", collection: @organization_users %>
-                  </div>
-                  <div class="row mt-3">
-                    <div class="d-flex justify-content-center">
-                      <%= raw(pagy_bootstrap_nav(@pagy)) %>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
+    <div class="card lg:col-span-2">
+      <h3>AI Guidelines</h3>
+      <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
+        <%= update_organization_form.label :ai_guidelines, "Explain what your company does and the tone you want the AI to respond with." %>
+
+        <div class="border-b border-gray-200 pb-px focus-within:border-b-2 focus-within:border-indigo-600 focus-within:pb-0 mt-5">
+          <%= update_organization_form.text_area :ai_guidelines, required: true, rows: 3, class: "flush", placeholder: "Respondo is an AI social media mentioning system. You should respond in a friendly tone." %>
         </div>
+        <div class="flex justify-end pt-2">
+          <%= update_organization_form.submit "Update", name: nil, class: "button" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="hidden py-4 px-4 grid lg:grid-cols-2 gap-5" data-tabs-target="panel">
+    <div class="card lg:col-span-2">
+      <h3>Domain</h3>
+      <p>Add users from your email domain automatially to your team.</p>
+      <%= form_with model: @organization, url: organization_path, method: :patch do |update_organization_form| %>
+        <%= update_organization_form.text_field :domain, required: true, placeholder: "domain.com" %>
+        <%= update_organization_form.submit "Update", name: nil, class: "button" %>
+      <% end %>
+    </div>
+
+    <div class="card">
+      <h3>Add users</h3>
+      <%= form_with url: organization_users_path, method: :post, html: { "data-controller" => "form", "data-action" => "turbo:submit-end->form#reset" } do |add_user_form| %>
+        <%= add_user_form.select :user_id, nil, { include_blank: "Select user" }, { required: true, id: "add-user" } do %>
+          <% unless add_users_dropdown_options_for.empty? %>
+            <% add_users_dropdown_options_for.each do |id, name| %>
+              <option value="<%= id %>">
+              <%= name %>
+              </option>
+            <% end %>
+          <% end %>
+        <% end %>
+        <%= add_user_form.submit "Add", class: "button" %>
+      <% end %>
+    </div>
+
+    <div class="card">
+      <h3>Remove users</h3>
+      <div class="flex flex-col gap-3" id="users-in-organization">
+        <%= render partial: "organizations/user", collection: @page.records %>
       </div>
+
+      <%= render partial: "shared/pagination", locals: { page: @page } %>
     </div>
   </div>
 </div>

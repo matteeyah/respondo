@@ -44,6 +44,10 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# Use Tailwind for styling.
+gem "tailwindcss-rails"
+gem "heroicon"
+
 # Omniauth
 gem "omniauth-entra-id"
 gem "omniauth-google-oauth2"
@@ -55,7 +59,7 @@ gem "omniauth-twitter"
 gem "active_link_to" # View helper for adding active class
 gem "hashie" # Hash utilities
 gem "json-schema" # JSON schema validation
-gem "pagy" # Pagination
+gem "geared_pagination" # Pagination
 gem "ruby-openai"
 gem "x" # Twitter client
 

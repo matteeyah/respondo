@@ -39,39 +39,31 @@ class Mention < ApplicationRecord
   end
 
   def generate_ai_response(prompt = nil)
-    OpenAI::Client.new.chat(
+    OpenAI::Client.new.responses.create(
       parameters: {
-        model: "gpt-4",
-        messages: ai_messages(prompt), temperature: 0.7
+        model: "gpt-4o",
+        instructions: ai_instructions(prompt),
+        input: "#{author.username}: #{content}"
       }
-    ).dig("choices", 0, "message", "content").chomp.strip
+    )["output"].find { |o| o["type"] == "message" }["content"].first["text"]
   end
 
   private
 
-  def ai_messages(prompt) # rubocop:disable Metrics/MethodLength
-    [
-      {
-        role: "system", content: <<~AI_WORKPLACE
-          You work at a company called #{organization.screen_name}.
-          #{organization.ai_guidelines}
-        AI_WORKPLACE
-      },
-      {
-        role: "system", content: <<~AI_POSITION
-          You are a social media manager and a support representative.
-          Messages from the user are social media posts where someone mentions the company that you work for.
-          You respond to those posts with a message.
-        AI_POSITION
-      },
-      { role: "user", content: "#{author.username}: #{content}" }
-    ].tap do |messages|
-      if prompt != "true"
-        messages.insert(
-          2,
-          { role: "system", content: "Generate a response using this prompt: #{prompt}" }
-        )
-      end
+  def ai_instructions(prompt)
+    instructions = <<~INSTRUCTIONS
+      You work at a company called #{organization.screen_name}.
+
+      #{organization.ai_guidelines}
+
+      You are a social media manager and a support representative.
+      Messages from the user are social media posts where someone mentions the company that you work for.
+
+      You respond to those posts with a message.
+    INSTRUCTIONS
+
+    instructions.tap do |instr|
+      instr << "Generate a response using this prompt: #{prompt}" if prompt != "true"
     end
   end
 end

@@ -6,7 +6,9 @@ module Mentions
 
     def create
       @tag = Tag.find_or_create_by!(name: tag_name)
-      @mention.tags << @tag unless @mention.tags.include?(@tag)
+      return head :ok if @mention.tags.include?(@tag)
+
+      @mention.tags << @tag
 
       respond_to do |format|
         format.turbo_stream

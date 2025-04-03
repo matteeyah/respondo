@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-white">
 <head>
   <title>Respondo</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
@@ -8,117 +8,212 @@
   <meta content="IE=edge" http-equiv="X-UA-Compatible">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-  <%= stylesheet_link_tag "application", media: "all" %>
+
+  <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+
   <%= javascript_importmap_tags %>
 </head>
-<body>
-<div class="d-flex flex-column flex-lg-row vh-100 bg-light">
-  <div class="navbar navbar-expand-lg overflow-auto m-3 rounded-4 bg-white">
-    <div class="container-fluid ps-0 pe-0 d-flex flex-lg-column flex-grow-1 h-100">
-      <div class="navbar-brand">
-        <%= link_to root_path, class: "nav-link text-primary fs-3 fw-bold" do %>
-          <%= image_tag("logo_circle_white.svg", class: "img-fluid") %>
-          <span>Respondo</span>
-        <% end %>
-      </div>
-      <button class="navbar-toggler me-3" data-bs-target="#main-nav" data-bs-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="flex-column collapse navbar-collapse w-100 mt-5" id="main-nav">
-        <ul class="flex-column align-items-start navbar-nav w-100">
-          <% if current_user.organization %>
-            <li class="nav-item">
-              <%= active_link_to dashboard_path, { active: :exclusive,
-                                                   class: "nav-link d-flex align-items-center ps-4", "data-turbo-frame" => :_top,
-                                                   :title => "Dashboard" } do %>
-                <%= bi_icon("grid-1x2", "fs-4 me-3") %>
-                <span>Dashboard</span>
-              <% end %>
-            </li>
-            <li class="nav-item">
-              <%= active_link_to mentions_path, { active: :exclusive,
-                                                  class: "nav-link d-flex align-items-center ps-4", "data-turbo-frame" => :_top,
-                                                  :title => "Mentions" } do %>
-                <%= bi_icon("ticket", "fs-4 me-3") %>
-                <span>Mentions</span>
-              <% end %>
-            </li>
-            <li class="nav-item">
-              <%= active_link_to new_ad_path, { active: :exclusive,
-                                                class: "nav-link d-flex align-items-center ps-4", "data-turbo-frame" => :_top,
-                                                :title => "Ads" } do %>
-                <%= bi_icon("badge-ad", "fs-4 me-3") %>
-                <span>Ads</span>
-              <% end %>
-            </li>
-          <% end %>
-          <li class="nav-item">
-            <%= link_to "#", class: "nav-link d-flex align-items-center ps-4", id: "help", title: "Help",
-                             "data-bs-toggle" => "collapse", "data-bs-target" => "#help-menu", "aria-expanded" => false do %>
-              <%= bi_icon("question-square", "fs-4 me-3") %>
-              <span>Help</span>
-            <% end %>
-            <li class="nav-item"></li>
-            <ul aria-labelledby="help" class="text-center text-lg-start collapse list-group list-group-flush w-100"
-                id="help-menu">
-              <li class="list-group-item list-group-item-action border-0">
-                <%= safe_blank_link_to "Documentation", "https://docs.respondohub.com", class: "nav-link" %>
+<body class="h-full" data-controller="slideover">
+  <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
+  <dialog class="slideover h-full max-h-full m-0 w-96 p-8 backdrop:bg-gray-900/80" role="dialog" aria-modal="true" data-slideover-target="dialog">
+    <!--
+      Off-canvas menu backdrop, show/hide based on off-canvas menu state.
+
+      Entering: "transition-opacity ease-linear duration-300"
+        From: "opacity-0"
+        To: "opacity-100"
+      Leaving: "transition-opacity ease-linear duration-300"
+        From: "opacity-100"
+        To: "opacity-0"
+    -->
+    <div class="fixed inset-0 bg-gray-900/80" aria-hidden="true"></div>
+
+    <div class="fixed inset-0 flex">
+      <!--
+        Off-canvas menu, show/hide based on off-canvas menu state.
+
+        Entering: "transition ease-in-out duration-300 transform"
+          From: "-translate-x-full"
+          To: "translate-x-0"
+        Leaving: "transition ease-in-out duration-300 transform"
+          From: "translate-x-0"
+          To: "-translate-x-full"
+      -->
+      <div class="relative mr-16 flex w-full max-w-xs flex-1">
+        <!--
+          Close button, show/hide based on off-canvas menu state.
+
+          Entering: "ease-in-out duration-300"
+            From: "opacity-0"
+            To: "opacity-100"
+          Leaving: "ease-in-out duration-300"
+            From: "opacity-100"
+            To: "opacity-0"
+        -->
+        <div class="absolute top-0 left-full flex w-16 justify-center pt-5">
+          <button type="button" class="-m-2.5 p-2.5 cursor-pointer" data-action="slideover#close">
+            <span class="sr-only">Close sidebar</span>
+            <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Sidebar component, swap this element with another sidebar if you like -->
+        <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
+          <div class="flex h-16 shrink-0 items-center">
+            <%= image_tag("logo_circle_white.svg", class: "h-8 w-auto", alt: "OpTonal logo") %>
+            <span class="text-lg text-switch font-bold">Respondo</span>
+          </div>
+          <nav class="flex flex-1 flex-col">
+            <ul role="list" class="flex flex-1 flex-col gap-y-7">
+              <li>
+                <ul role="list" class="-mx-2 space-y-1">
+                  <li>
+                    <!-- Current: "bg-gray-50 text-indigo-600", Default: "text-gray-700 hover:text-indigo-600 hover:bg-gray-50" -->
+
+                    <%= active_link_to dashboard_path, { active: :exclusive, class: "group nav-link", "data-turbo-frame" => :_top } do %>
+                      <%= heroicon("table-cells") %>
+                      Dashboard
+                    <% end %>
+                  </li>
+                  <li>
+
+                    <%= active_link_to mentions_path, { active: :exclusive, class: "group nav-link", "data-turbo-frame" => :_top } do %>
+                      <%= heroicon("ticket") %>
+                      Mentions
+                    <% end %>
+                  </li>
+                </ul>
               </li>
-              <li class="list-group-item list-group-item-action border-0">
-                <%= safe_blank_link_to "Support", "mailto:support@respondohub.com", class: "nav-link" %>
-              </li>
-              <li class="list-group-item"></li>
-              <li class="list-group-item list-group-item-action border-0">
-                <%= safe_blank_link_to "Terms and conditions", "https://respondohub.com/terms_and_conditions",
-                                       class: "nav-link" %>
-              </li>
-              <li class="list-group-item list-group-item-action border-0">
-                <%= safe_blank_link_to "Privacy policy", "https://respondohub.com/privacy_policy",
-                                       class: "nav-link" %>
-              </li>
-            </ul>
-            </ul>
-        <ul class="flex-column align-items-start navbar-nav mt-auto w-100">
-          <% if current_user %>
-            <li class="nav-item">
-              <%= link_to "#", class: "nav-link d-flex align-items-center ps-4", id: "settings", title: "Settings",
-                               "data-bs-toggle" => "collapse", "data-bs-target" => "#settings-menu", "aria-expanded" => false do %>
-                <%= bi_icon("gear-wide", "fs-4 me-3") %>
-                <span>Settings</span>
-              <% end %>
-            </li>
-            <% class_list = [ "text-start", "collapse", "list-group", "list-group-flush", "w-100",
-                             ("show" if show_settings_collapse?) ].join(" ") %>
-            <ul aria-labelledby="#settings-menu" class="<%= class_list %>" id="settings-menu">
-              <% if current_user.organization %>
-                <li class="nav-item list-group-item list-group-item-action ps-0">
-                  <%= active_link_to "Organization settings", settings_path,
-                                     class: "nav-link ps-4", "data-turbo-frame" => :_top %>
-                </li>
-              <% end %>
-              <li class="nav-item list-group-item list-group-item-action ps-0">
-                <%= active_link_to "User profile", profile_path,
-                                   class: "nav-link ps-4", "data-turbo-frame" => :_top %>
+              <li class="mt-auto">
+                <%= active_link_to settings_path, class: "group -mx-2 nav-link" do %>
+                  <%= heroicon("cog-6-tooth") %>
+                  Settings
+                <% end %>
               </li>
             </ul>
-            <li class="nav-item">
-              <%= button_to sign_out_path, method: :delete, "data-turbo" => false,
-                                           class: "btn btn-link nav-link d-flex align-items-center ps-4" do %>
-                <%= bi_icon("box-arrow-left", "fs-4 me-3") %>
-                <span>Sign Out</span>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
+          </nav>
+        </div>
       </div>
     </div>
+  </dialog>
+
+  <!-- Static sidebar for desktop -->
+  <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+    <!-- Sidebar component, swap this element with another sidebar if you like -->
+    <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
+      <%= link_to root_path, class: "flex h-16 shrink-0 items-center" do %>
+        <%= image_tag("logo_circle_white.svg", class: "h-8 w-auto", alt: "OpTonal logo") %>
+        <span class="text-lg text-switch font-bold">Respondo</span>
+      <% end %>
+      <% if current_user.organization %>
+        <nav class="flex flex-1 flex-col">
+          <ul role="list" class="flex flex-1 flex-col gap-y-7">
+            <li>
+              <ul role="list" class="-mx-2 space-y-1">
+                <li>
+                  <!-- Current: "bg-gray-50 text-indigo-600", Default: "text-gray-700 hover:text-indigo-600 hover:bg-gray-50" -->
+                  <%= active_link_to dashboard_path, { active: :exclusive, class: "group nav-link", "data-turbo-frame" => :_top } do %>
+                    <%= heroicon("table-cells") %>
+                    Dashboard
+                  <% end %>
+                </li>
+                <li>
+                  <%= active_link_to mentions_path, { active: :exclusive, class: "group nav-link", "data-turbo-frame" => :_top } do %>
+                    <%= heroicon("ticket") %>
+                    Mentions
+                  <% end %>
+                </li>
+              </ul>
+            </li>
+            <li class="mt-auto">
+              <%= active_link_to settings_path, class: "group -mx-2 nav-link" do %>
+                <%= heroicon("cog-6-tooth") %>
+                Settings
+              <% end %>
+            </li>
+          </ul>
+        </nav>
+      <% end %>
+    </div>
   </div>
-  <div class="h-100 flex-grow-1 overflow-auto bg-white" id="main-content">
-    <main class="container p-4" role="main">
-      <%= yield %>
-      <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toasts"></div>
+
+  <div class="lg:pl-72">
+    <div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8">
+      <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden cursor-pointer" data-action="slideover#open">
+        <span class="sr-only">Open sidebar</span>
+        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+
+      <!-- Separator -->
+      <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true"></div>
+      <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
+        <h2 class="self-center <%= "flex-1" unless @search %>"><%= @page_title %></h2>
+
+        <% if @search %>
+          <%= form_with url: mentions_path, local: true, method: :get, class: "grid flex-1 grid-cols-1", html: { autocomplete: "off" } do |search_form| %>
+            <%= search_form.hidden_field :status, value: request.parameters[:status] %>
+            <%= search_form.text_field :query, required: true, value: request.parameters[:query], placeholder: "Search by author:author_name OR content:mention_content", class: "col-start-1 row-start-1 size-full pl-8 outline-hidden" %>
+
+            <%= heroicon("magnifying-glass", options: { class: "pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400" }) %>
+          <% end %>
+        <% end %>
+        <div class="flex items-center gap-x-4 lg:gap-x-6">
+          <% if current_user.organization %>
+            <!-- Separator -->
+            <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true"></div>
+            <span><%= current_user.organization.screen_name %></span>
+          <% end %>
+
+          <!-- Separator -->
+          <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true"></div>
+
+          <!-- Profile dropdown -->
+          <div class="relative" data-controller="dropdown">
+            <button type="button" class="-m-1.5 flex items-center p-1.5 cursor-pointer" id="user-menu-button" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle:stop click@window->dropdown#hide">
+              <span class="sr-only">Open user menu</span>
+              <img class="size-8 rounded-full bg-gray-50" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+              <span class="hidden lg:flex lg:items-center">
+                <span class="ml-4 text-sm/6 font-semibold text-gray-900" aria-hidden="true"><%= current_user.name %></span>
+                <%= heroicon("chevron-down", options: { class: "ml-2 size-5 text-gray-400" }) %>
+              </span>
+            </button>
+
+            <!--
+              Dropdown menu, show/hide based on menu state.
+
+              Entering: "transition ease-out duration-100"
+                From: "transform opacity-0 scale-95"
+                To: "transform opacity-100 scale-100"
+              Leaving: "transition ease-in duration-75"
+                From: "transform opacity-100 scale-100"
+                To: "transform opacity-0 scale-95"
+            -->
+            <div class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 ring-1 shadow-lg ring-gray-900/5 focus:outline-hidden hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" data-dropdown-target="menu">
+              <!-- Active: "bg-gray-50 outline-hidden", Not Active: "" -->
+
+              <%= active_link_to "Your profile", profile_path, class: "menu-link", "data-turbo-frame" => :_top %>
+
+              <%= button_to sign_out_path, method: :delete, "data-turbo" => false, class: "menu-link w-full text-left cursor-pointer" do %>
+                Sign out
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main class="py-10">
+      <div class="px-4 sm:px-6 lg:px-8">
+        <%= yield %>
+      </div>
     </main>
   </div>
-</div>
+
+  <aside class="fixed inset-x-0 top-15 flex items-end justify-right px-4 py-6 sm:p-6 justify-end z-30 pointer-events-none" id="alerts">
+  </aside>
 </body>
 </html>
