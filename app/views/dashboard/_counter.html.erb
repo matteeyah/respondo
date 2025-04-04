@@ -1,0 +1,7 @@
+<%# locals: (path:, color:, icon:, title:, count:) -%>
+
+<%= link_to path, class: "flex flex-col gap-3 card hover:bg-#{color}-200" do %>
+  <%= heroicon(icon, options: { class: "w-20 text-stone-700 bg-#{color}-200 rounded-2xl" }) %>
+  <span class="text-stone-700"><%= title %></span>
+  <span class="text-stone-700 text-3xl font-bold"><%= count %></span>
+<% end %>

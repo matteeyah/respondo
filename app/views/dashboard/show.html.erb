@@ -4,30 +4,10 @@
 
 <div class="grid lg:grid-cols-2 mt-5 gap-5">
   <div class="grid lg:grid-cols-2 gap-10">
-    <%= link_to mentions_path, class: "flex flex-col gap-3 card hover:bg-purple-200" do %>
-      <%= heroicon("question-mark-circle", options: { class: "w-20 bg-purple-200 rounded-lg" }) %>
-      <span>New Mentions</span>
-      <span class="text-3xl font-bold"><%= @new_count %></span>
-      <hr>
-    <% end %>
-    <%= link_to mentions_path(status: "open"), class: "flex flex-col gap-3 card hover:bg-blue-200" do %>
-      <%= heroicon("folder", options: { class: "w-20 bg-blue-200 rounded-lg" }) %>
-      <span>Total Open</span>
-      <span class="text-3xl font-bold"><%= @open_count %></span>
-      <hr>
-    <% end %>
-    <%= link_to mentions_path, class: "flex flex-col gap-3 card hover:bg-yellow-200" do %>
-      <%= heroicon("clock", options: { class: "w-20 bg-yellow-200 rounded-lg" }) %>
-      <span>Unassigned Mentions</span>
-      <span class="text-3xl font-bold"><%= @unassigned_count %></span>
-      <hr>
-    <% end %>
-    <%= link_to mentions_path(status: "solved"), class: "flex flex-col gap-3 card hover:bg-red-200" do %>
-      <%= heroicon("check", options: { class: "w-20 bg-red-200 rounded-lg" }) %>
-      <span>Тotal Solved</span>
-      <span class="text-3xl font-bold"><%= @solved_count %></span>
-      <hr>
-    <% end %>
+    <%= render partial: "counter", locals: { path: mentions_path, color: "purple", icon: "question-mark-circle", title: "New Mentions", count: @new_count } %>
+    <%= render partial: "counter", locals: { path: mentions_path(status: "open"), color: "blue", icon: "folder", title: "Total Open", count: @open_count } %>
+    <%= render partial: "counter", locals: { path: mentions_path, color: "yellow", icon: "clock", title: "Unassigned Mentions", count: @unassigned_count } %>
+    <%= render partial: "counter", locals: { path: mentions_path(status: "solved"), color: "red", icon: "check", title: "Total Solved", count: @solved_count } %>
   </div>
   <div class="rounded-2xl bg-blue-600">
     <div class="flex justify-between items-center text-white p-5">
