@@ -1,7 +1,9 @@
-<div class="card flex flex-col p-0">
-  <div class="flex items-center bg-gray-50 px-5 py-3">
+<%# locals: (mention:, reply_model:) -%>
+
+<div class="card flex flex-col p-0 bg-gray-100 rounded-t-xl shadow-none">
+  <div class="flex items-center px-5 py-3">
     <% if mention.parent_id.nil? %>
-      <span class="badge"><%= mention.source.screen_name %></span>
+      <span class="badge bg-white"><%= mention.source.screen_name %></span>
     <% end %>
     <div class="flex ms-10 gap-3" id="<%= dom_id(mention) %>_tags">
       <%= form_with url: mention_tags_path(mention), model: Tag.new, method: :post, html: { "data-controller" => "form", "data-action" => "turbo:submit-end->form#reset" } do |tag_form| %>
@@ -11,7 +13,7 @@
     </div>
 
     <div class="relative ms-auto" data-controller="dropdown">
-      <button type="button" class="-m-1.5 flex items-center p-1.5 cursor-pointer" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle:stop click@window->dropdown#hide" id="<%= dom_id(mention) %>-menu-button">
+      <button type="button" class="-m-1.5 flex items-center p-1.5" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle:stop click@window->dropdown#hide" id="<%= dom_id(mention) %>-menu-button">
         <span class="sr-only">Open mention menu</span>
         <%= heroicon("ellipsis-horizontal", options: { class: "ml-2 size-5 text-gray-400" }) %>
       </button>
@@ -26,7 +28,7 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-col px-5 mt-5" data-controller="toggle">
+  <div class="flex flex-col bg-white px-5 pt-5 shadow-lg" data-controller="toggle">
     <span class="self-start badge">
       <%= link_to mention.author.external_link do %>
         <% if mention.creator %>
@@ -82,7 +84,7 @@
   </div>
 
   <% if mention.status == 'open' %>
-    <div class="bg-gray-50 px-5 py-3">
+    <div class="bg-gray-100 px-5 py-3 <%= "rounded-b-xl" unless mention.replies.any? %>">
       <%= form_with url: mention_replies_path(mention),
                     model: reply_model, method: :post,
                     html: { autocomplete: "off", data: { controller: "loading ai-response", ai_response_mention_path_value: mention_path(mention) }, class: "flex gap-5" } do |reply_form| %>

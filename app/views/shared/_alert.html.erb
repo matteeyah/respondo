@@ -1,6 +1,8 @@
-<% color_class = success ? "green" : "red " %>
+<%# locals: (message:, success:) -%>
 
-<div data-controller="alert" class="max-w-sm w-full shadow-lg rounded px-4 py-3 rounded relative bg-<%= color_class %>-400 border-l-4 border-green-700 text-white pointer-events-auto">
+<% color_class = success ? "bg-green-600" : "bg-red-600" %>
+
+<div data-controller="alert" class="max-w-sm w-full shadow-lg rounded px-4 py-3 rounded relative <%= color_class %> border-l-4 border-green-700 text-stone-200 pointer-events-auto">
   <div class="p-2">
     <div class="flex items-start">
       <div class="ml-3 w-0 flex-1 pt-0.5">
@@ -9,7 +11,7 @@
         </p>
       </div>
       <div class="ml-4 flex-shrink-0 flex">
-        <button data-action="alert#close" class="inline-flex text-white focus:outline-none focus:text-gray-300 transition ease-in-out duration-150">
+        <button data-action="alert#close" class="inline-flex text-white hover:text-red-600 focus:outline-none focus:text-gray-300 hover:bg-stone-200 rounded-lg transition ease-in-out duration-150">
           <%= heroicon("x-mark", options: { class: "h-5 w-5" }) %>
         </button>
       </div>

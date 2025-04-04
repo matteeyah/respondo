@@ -4,7 +4,9 @@
       <%= turbo_frame_tag dom_id(mention) do %>
         <%= render partial: "mentions/mention", locals: { mention:, reply_model: Mention.new(parent: mention) } %>
         <% if replies.any? %>
-          <%= render partial: "mentions/mentions", locals: { mentions: replies } %>
+          <div class="pl-5 bg-gray-100 rounded-b-xl border-l border-stone-300">
+            <%= render partial: "mentions/mentions", locals: { mentions: replies } %>
+          </div>
         <% end %>
       <% end %>
     </li>

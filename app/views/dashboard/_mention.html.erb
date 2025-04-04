@@ -1,11 +1,11 @@
-<%= link_to mention_path(mention), class: "flex justify-between grow text-white p-5 m-5 rounded-2xl hover:bg-blue-400" do %>
+<%= link_to mention_path(mention), class: "flex justify-between grow text-white p-5 mx-5 rounded-2xl hover:bg-blue-400" do %>
   <div class="flex flex-col">
     <span class="text-stone-300"><%= mention.author.username %></span>
     <p><%= mention.content.first(100) %></p>
     <span class="text-stone-300"><%= mention.created_at.to_fs(:short) %></span>
   </div>
-  <div class="flex flex-col items-center">
-    <%= heroicon("chat-bubble-oval-left-ellipsis", options: { class: "size-12" }) %>
-    <span><%= mention.replies.count %> replies</span>
+  <div class="flex flex-col justify-center items-center">
+    <%= heroicon("chat-bubble-oval-left-ellipsis", options: { class: "size-8" }) %>
+    <span class="text-nowrap"><%= mention.replies.count %> replies</span>
   </div>
 <% end %>
