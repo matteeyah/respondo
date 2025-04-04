@@ -51,6 +51,10 @@
 }
 
 @layer base {
+  button {
+    @apply cursor-pointer;
+  }
+
   h2 {
     @apply text-2xl/7 font-bold text-gray-900;
   }
@@ -60,7 +64,7 @@
   }
 
   input {
-    @apply rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300;
+    @apply rounded-md px-3 py-1.5 bg-white text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300;
 
     &:focus {
       @apply outline-2 -outline-offset-2 outline-indigo-600;
@@ -80,7 +84,7 @@
   }
 
   textarea {
-    @apply block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300;
+    @apply block w-full rounded-md px-3 py-1.5 bg-white text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300;
 
     &:focus {
       @apply outline-2 -outline-offset-2 outline-indigo-600;
@@ -106,7 +110,7 @@
   }
 
   .button {
-    @apply rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 cursor-pointer;
+    @apply rounded-md px-3 py-2 bg-white text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50;
   }
 
   .card {

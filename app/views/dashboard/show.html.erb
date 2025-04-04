@@ -4,10 +4,10 @@
 
 <div class="grid lg:grid-cols-2 mt-5 gap-5">
   <div class="grid lg:grid-cols-2 gap-10">
-    <%= render partial: "counter", locals: { path: mentions_path, color: "purple", icon: "question-mark-circle", title: "New Mentions", count: @new_count } %>
-    <%= render partial: "counter", locals: { path: mentions_path(status: "open"), color: "blue", icon: "folder", title: "Total Open", count: @open_count } %>
-    <%= render partial: "counter", locals: { path: mentions_path, color: "yellow", icon: "clock", title: "Unassigned Mentions", count: @unassigned_count } %>
-    <%= render partial: "counter", locals: { path: mentions_path(status: "solved"), color: "red", icon: "check", title: "Total Solved", count: @solved_count } %>
+    <%= render partial: "counter", locals: { path: mentions_path, color: "bg-purple-200", hover_color: "hover:bg-purple-200", icon: "question-mark-circle", title: "New Mentions", count: @new_count } %>
+    <%= render partial: "counter", locals: { path: mentions_path(status: "open"), color: "bg-blue-200", hover_color: "hover:bg-blue-200", icon: "folder", title: "Total Open", count: @open_count } %>
+    <%= render partial: "counter", locals: { path: mentions_path, color: "bg-yellow-200", hover_color: "hover:bg-yellow-200", icon: "clock", title: "Unassigned Mentions", count: @unassigned_count } %>
+    <%= render partial: "counter", locals: { path: mentions_path(status: "solved"), color: "bg-red-200", hover_color: "hover:bg-red-200", icon: "check", title: "Total Solved", count: @solved_count } %>
   </div>
   <div class="rounded-2xl bg-blue-600">
     <div class="flex justify-between items-center text-white p-5">

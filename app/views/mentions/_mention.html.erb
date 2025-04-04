@@ -11,7 +11,7 @@
     </div>
 
     <div class="relative ms-auto" data-controller="dropdown">
-      <button type="button" class="-m-1.5 flex items-center p-1.5 cursor-pointer" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle:stop click@window->dropdown#hide" id="<%= dom_id(mention) %>-menu-button">
+      <button type="button" class="-m-1.5 flex items-center p-1.5" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle:stop click@window->dropdown#hide" id="<%= dom_id(mention) %>-menu-button">
         <span class="sr-only">Open mention menu</span>
         <%= heroicon("ellipsis-horizontal", options: { class: "ml-2 size-5 text-gray-400" }) %>
       </button>
