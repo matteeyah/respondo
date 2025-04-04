@@ -51,8 +51,8 @@
 
     <div class="card">
       <h3>Add users</h3>
-      <%= form_with url: organization_users_path, method: :post, html: { "data-controller" => "form", "data-action" => "turbo:submit-end->form#reset" } do |add_user_form| %>
-        <%= add_user_form.select :user_id, nil, { include_blank: "Select user" }, { required: true, id: "add-user" } do %>
+      <%= form_with url: organization_users_path, method: :post, html: { "data-controller" => "form", "data-action" => "turbo:submit-end->form#reset", class: "flex gap-3 mt-5" } do |add_user_form| %>
+        <%= add_user_form.select :user_id, nil, { include_blank: "Select user" }, { required: true, id: "add-user", class: "flex-grow-1" } do %>
           <% unless add_users_dropdown_options_for.empty? %>
             <% add_users_dropdown_options_for.each do |id, name| %>
               <option value="<%= id %>">
