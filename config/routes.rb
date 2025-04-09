@@ -20,10 +20,7 @@ Rails.application.routes.draw do
   get :profile, to: "users#edit"
 
   resources :mentions, only: %i[index show update destroy] do
-    member do
-      get :permalink
-    end
-
+    get "/permalink", to: "mentions/permalinks#show"
     post "/sync", to: "mentions/sync#create", on: :collection
 
     scope module: :mentions do

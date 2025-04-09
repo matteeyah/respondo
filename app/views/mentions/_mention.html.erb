@@ -21,7 +21,7 @@
         <% if mention.parent_id.nil? %>
           <%= link_to "View", mention_path(mention), class: "menu-link", "data-turbo-frame" => :_top %>
         <% end %>
-        <%= link_to "External View", permalink_mention_path(mention), "data-turbo-frame" => :_top, id: "permalink-#{mention.id}", class: "menu-link", target: :_blank, rel: "noopener" %>
+        <%= link_to "External View", mention_permalink_path(mention), "data-turbo-frame" => :_top, id: "permalink-#{mention.id}", class: "menu-link", target: :_blank, rel: "noopener" %>
         <% if mention.creator.present? %>
           <%= link_to "Delete", mention_path(mention), "data-turbo-method" => :delete, id: "delete-#{mention.id}", class: "menu-link" %>
         <% end %>

@@ -45,10 +45,6 @@ class MentionsController < Mentions::ApplicationController
     end
   end
 
-  def permalink
-    redirect_to @mention.external_link, allow_other_host: true
-  end
-
   private
 
   def set_mention
