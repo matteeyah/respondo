@@ -8,7 +8,7 @@ class MentionsController < Mentions::ApplicationController
     { organization: [ :users ], internal_notes: [ :creator ] }
   ].freeze
 
-  before_action :set_mention, only: %i[show update destroy permalink]
+  before_action :set_mention, only: %i[show update destroy]
 
   def index
     set_page_and_extract_portion_from(mentions)
@@ -43,19 +43,6 @@ class MentionsController < Mentions::ApplicationController
       format.turbo_stream
       format.html { redirect_to mentions_path }
     end
-  end
-
-  def refresh
-    LoadNewMentionsJob.perform_later(current_user.organization)
-
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to mentions_path }
-    end
-  end
-
-  def permalink
-    redirect_to @mention.external_link, allow_other_host: true
   end
 
   private

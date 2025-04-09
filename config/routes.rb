@@ -3,8 +3,8 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  root to: "home#index"
-  get "login", controller: :home, action: :login
+  root to: "dashboard#show"
+  get "login", to: "sessions#new", as: :login
 
   # OmniAuth routing
   get "auth/:provider/callback", to: "omniauth_callbacks#user",
@@ -19,14 +19,11 @@ Rails.application.routes.draw do
   get :settings, to: "organizations#edit"
   get :profile, to: "users#edit"
 
-  resources :mentions, only: %i[index show update destroy] do
-    member do
-      get :permalink
-    end
+  resources :onboardings, only: %i[new]
 
-    collection do
-      post :refresh
-    end
+  resources :mentions, only: %i[index show update destroy] do
+    get "/permalink", to: "mentions/permalinks#show"
+    post "/sync", to: "mentions/sync#create", on: :collection
 
     scope module: :mentions do
       resources :tags, only: %i[create destroy]
@@ -36,8 +33,6 @@ Rails.application.routes.draw do
       resource :assignments, only: :create
     end
   end
-
-  resources :ads, only: %i[new create]
 
   resource :user, only: [] do
     scope module: :users do

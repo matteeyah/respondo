@@ -16,12 +16,12 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     assert_select "h2", "Overview"
   end
 
-  test "GET show when the user is not authorized redirects the user to root path" do
+  test "GET show when the user is not authorized redirects the user to onboarding path" do
     sign_in(users(:john), user_accounts(:google_oauth2))
 
     get "/dashboard"
 
-    assert_redirected_to root_path
+    assert_redirected_to new_onboarding_path
   end
 
   test "GET show when the user is not signed in redirects the user to login path" do
