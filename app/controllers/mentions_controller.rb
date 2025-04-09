@@ -8,7 +8,7 @@ class MentionsController < Mentions::ApplicationController
     { organization: [ :users ], internal_notes: [ :creator ] }
   ].freeze
 
-  before_action :set_mention, only: %i[show update destroy permalink]
+  before_action :set_mention, only: %i[show update destroy]
 
   def index
     set_page_and_extract_portion_from(mentions)
