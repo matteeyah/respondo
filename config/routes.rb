@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  root to: "home#index"
+  root to: "dashboard#show"
   get "login", to: "sessions#new", as: :login
 
   # OmniAuth routing
@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   get :dashboard, to: "dashboard#show"
   get :settings, to: "organizations#edit"
   get :profile, to: "users#edit"
+
+  resources :onboardings, only: %i[new]
 
   resources :mentions, only: %i[index show update destroy] do
     get "/permalink", to: "mentions/permalinks#show"

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class DashboardController < ApplicationController
-  include AuthorizesOrganizationMembership
-
   def show
+    return redirect_to new_onboarding_path unless current_user.organization
+
     @newest_mentions = newest_mentions
     @new_count = new_mentions.count
     @open_count = current_user.organization.mentions.open.count
