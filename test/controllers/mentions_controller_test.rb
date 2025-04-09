@@ -108,29 +108,6 @@ class MentionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_path
   end
 
-  test "POST refresh when the user is authorized redirects the user to organization mentions" do
-    sign_in(users(:john), user_accounts(:google_oauth2))
-    organizations(:respondo).users << users(:john)
-
-    post "/mentions/refresh"
-
-    assert_redirected_to mentions_path
-  end
-
-  test "POST refresh when the user is not authorized redirects the user to root path" do
-    sign_in(users(:john), user_accounts(:google_oauth2))
-
-    post "/mentions/refresh"
-
-    assert_redirected_to root_path
-  end
-
-  test "POST refresh when the user is not signed in redirects the user to login path" do
-    post "/mentions/refresh"
-
-    assert_redirected_to login_path
-  end
-
   test "GET permalink when the user is authorized redirects to external mention" do
     sign_in(users(:john), user_accounts(:google_oauth2))
     organizations(:respondo).users << users(:john)

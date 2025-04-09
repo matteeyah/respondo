@@ -24,9 +24,7 @@ Rails.application.routes.draw do
       get :permalink
     end
 
-    collection do
-      post :refresh
-    end
+    post "/sync", to: "mentions/sync#create", on: :collection
 
     scope module: :mentions do
       resources :tags, only: %i[create destroy]
@@ -36,8 +34,6 @@ Rails.application.routes.draw do
       resource :assignments, only: :create
     end
   end
-
-  resources :ads, only: %i[new create]
 
   resource :user, only: [] do
     scope module: :users do

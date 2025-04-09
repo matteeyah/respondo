@@ -45,15 +45,6 @@ class MentionsController < Mentions::ApplicationController
     end
   end
 
-  def refresh
-    LoadNewMentionsJob.perform_later(current_user.organization)
-
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to mentions_path }
-    end
-  end
-
   def permalink
     redirect_to @mention.external_link, allow_other_host: true
   end
