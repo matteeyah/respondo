@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   root to: "home#index"
-  get "login", controller: :home, action: :login
+  get "login", to: "sessions#new", as: :login
 
   # OmniAuth routing
   get "auth/:provider/callback", to: "omniauth_callbacks#user",
