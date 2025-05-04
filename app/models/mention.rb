@@ -3,6 +3,8 @@
 class Mention < ApplicationRecord
   include WithDescendants
 
+  DEFAULT_STATUS = "open"
+
   validates :external_uid, uniqueness: { scope: :source_id }, presence: { allow_blank: false }
   validates :external_link, presence: { allow_blank: false }, url: true
   validates :content, presence: { allow_blank: false }
@@ -25,6 +27,12 @@ class Mention < ApplicationRecord
   has_many :tags, through: :mention_tags
 
   delegate :provider, :client, to: :source
+
+  scope :by_status, ->(status) { where(status: status || DEFAULT_STATUS) }
+  scope :by_assignee, ->(assignee) { includes(:assignment).where(assignment: { user_id: assignee }) }
+  scope :by_tag, ->(tag) { includes(:tags).where(tags: { name: tag }) }
+  scope :by_author, ->(author) { includes(:author).where(author: { username: author }) }
+  scope :by_content, ->(content) { where('"content" LIKE ?', "%#{content}%") }
 
   def respond_as(user, reply)
     client_response = client.reply(reply, external_uid)
