@@ -59,7 +59,14 @@ class MentionsController < Mentions::ApplicationController
       query = query.merge(key => value)
     end
 
-    MentionsQuery.new(current_user.organization.mentions, query).call
+    mentions = current_user.organization.mentions
+    mentions = mentions.by_status(query[:status]) if query[:status]
+    mentions = mentions.by_assignee(query[:assignee]) if query[:assignee]
+    mentions = mentions.by_tag(query[:tag]) if query[:tag]
+    mentions = mentions.by_author(query[:author]) if query[:author]
+    mentions = mentions.by_content(query[:content]) if query[:content]
+
+    mentions.root
   end
 
   def update_params
