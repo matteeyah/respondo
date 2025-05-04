@@ -3,7 +3,7 @@
 module Mentions
   class InternalNotesController < ApplicationController
     def create
-      @internal_note = @mention.internal_notes.create(creator: current_user, **note_params)
+      @internal_note = @mention.internal_notes.create(creator: Current.user, **note_params)
 
       respond_to do |format|
         format.turbo_stream

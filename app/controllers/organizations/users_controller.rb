@@ -8,7 +8,7 @@ module Organizations
     before_action :set_organization_user, only: :destroy
 
     def create
-      current_user.organization.users << @user
+      Current.user.organization.users << @user
 
       respond_to do |format|
         format.turbo_stream
@@ -32,12 +32,12 @@ module Organizations
     end
 
     def set_organization_user
-      @user = current_user.organization.users.find(params[:id])
+      @user = Current.user.organization.users.find(params[:id])
     end
 
     def remove_user!
-      if current_user.organization.users.count > 1
-        current_user.organization.users.delete(@user)
+      if Current.user.organization.users.count > 1
+        Current.user.organization.users.delete(@user)
       else
         false
       end
@@ -46,7 +46,7 @@ module Organizations
     def redirect_path
       # If user is removing self from organization, redirecting back results in
       # a redirect loop.
-      @user == current_user ? root_path : settings_path
+      @user == Current.user ? root_path : settings_path
     end
   end
 end

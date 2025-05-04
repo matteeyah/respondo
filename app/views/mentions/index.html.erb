@@ -10,7 +10,7 @@
     </li>
   <% end %>
   <li>
-    <%= active_link_to mentions_path(assignee: current_user.id), active: { assignee: current_user.id }, class: "nav-link" do %>
+    <%= active_link_to mentions_path(assignee: Current.user.id), active: { assignee: Current.user.id }, class: "nav-link" do %>
       Assigned to me
     <% end %>
   </li>

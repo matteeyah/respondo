@@ -68,7 +68,7 @@
       <ul class="flex flex-col" id="<%= dom_id(mention) %>_internal_notes">
         <li class="order-last">
           <%= heroicon("square-2-stack", options: { class: "inline size-5" }) %>
-          <span class="text-sm"><%= current_user.name %>:</span>
+          <span class="text-sm"><%= Current.user.name %>:</span>
           <%= form_with url: mention_internal_notes_path(mention),
                         model: InternalNote.new, method: :post,
                         html: { autocomplete: "off",

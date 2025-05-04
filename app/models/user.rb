@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :accounts, class_name: "UserAccount", inverse_of: :user, dependent: :destroy
   has_many :internal_notes, inverse_of: :creator, foreign_key: :creator_id, dependent: :restrict_with_error
   has_many :assignments, dependent: :destroy
+  has_many :sessions, dependent: :destroy
 
   def account_for_provider?(provider)
     accounts.exists?(provider:)

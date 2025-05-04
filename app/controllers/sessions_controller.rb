@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
-  skip_before_action :authenticate_user!, only: :new
+  allow_unauthenticated_access only: %i[ new ]
 
   def new
     render layout: false
   end
 
   def destroy
-    reset_session
+    terminate_session
 
     redirect_to login_path
   end
