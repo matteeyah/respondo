@@ -5,7 +5,7 @@ module Mentions
     include AuthorizesOrganizationMembership
 
     def create
-      LoadNewMentionsJob.perform_later(current_user.organization)
+      LoadNewMentionsJob.perform_later(Current.user.organization)
 
       respond_to do |format|
         format.turbo_stream

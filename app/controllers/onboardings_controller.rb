@@ -2,6 +2,6 @@
 
 class OnboardingsController < ApplicationController
   def new
-    @user = current_user
+    @user = Current.user
   end
 end

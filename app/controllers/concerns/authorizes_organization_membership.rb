@@ -8,7 +8,7 @@ module AuthorizesOrganizationMembership
   end
 
   def authorize_organization_membership!
-    return if current_user.organization
+    return if Current.user.organization
 
     redirect_to root_url
   end

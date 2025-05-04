@@ -59,7 +59,7 @@ class MentionsController < Mentions::ApplicationController
       query = query.merge(key => value)
     end
 
-    mentions = current_user.organization.mentions
+    mentions = Current.user.organization.mentions
     mentions = mentions.by_status(query[:status]) if query[:status]
     mentions = mentions.by_assignee(query[:assignee]) if query[:assignee]
     mentions = mentions.by_tag(query[:tag]) if query[:tag]

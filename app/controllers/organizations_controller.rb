@@ -4,12 +4,12 @@ class OrganizationsController < ApplicationController
   include AuthorizesOrganizationMembership
 
   def edit
-    set_page_and_extract_portion_from(current_user.organization.users)
-    @organization = current_user.organization
+    set_page_and_extract_portion_from(Current.user.organization.users)
+    @organization = Current.user.organization
   end
 
   def update
-    @success = current_user.organization.update(update_params)
+    @success = Current.user.organization.update(update_params)
 
     respond_to do |format|
       format.turbo_stream

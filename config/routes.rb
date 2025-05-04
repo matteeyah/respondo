@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get :settings, to: "organizations#edit"
   get :profile, to: "users#edit"
 
+  resource :session, only: [ :new, :destroy ]
   resources :onboardings, only: %i[new]
 
   resources :mentions, only: %i[index show update destroy] do

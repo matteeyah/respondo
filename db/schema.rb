@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2023_11_08_161259) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_04_171029) do
   create_table "assignments", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "mention_id", null: false
@@ -95,6 +95,15 @@ ActiveRecord::Schema[8.0].define(version: 2023_11_08_161259) do
     t.index ["domain"], name: "index_organizations_on_domain", unique: true
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "ip_address"
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -124,4 +133,5 @@ ActiveRecord::Schema[8.0].define(version: 2023_11_08_161259) do
   add_foreign_key "authors", "organizations"
   add_foreign_key "mention_tags", "mentions"
   add_foreign_key "mention_tags", "tags"
+  add_foreign_key "sessions", "users"
 end
