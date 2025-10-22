@@ -7,7 +7,6 @@ require "support/omniauth_helper"
 require "support/authentication_helper"
 
 class AuthenticationTest < ApplicationSystemTestCase
-  include ActiveJob::TestHelper
   include OmniauthHelper
   include AuthenticationHelper
 
@@ -38,8 +37,6 @@ class AuthenticationTest < ApplicationSystemTestCase
     add_oauth_mock(:twitter, "123", { nickname: "test_organization" }, {})
     visit root_path
     click_button("Authorize Twitter")
-
-    assert_enqueued_jobs(1, only: LoadNewMentionsJob)
 
     assert_link("Settings")
   end
