@@ -2,10 +2,10 @@
 
 source "https://rubygems.org"
 
-ruby "3.4.6"
+ruby "3.4.7"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.0"
+gem "rails", "~> 8.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use sqlite3 as the database for Active Record
@@ -96,3 +96,9 @@ group :test do
   # Mock HTTP requests
   gem "webmock"
 end
+
+# This is needed until ruby 3.4.8 ships. There's a bug in OpenSSL 3.6.0. Recent
+# rubies package openssl gem version 3.3.0. The workaround for the OpenSSL bug
+# is included in openssl gem version 3.3.1. ruby 3.4.8 will package openssl gem
+# version 3.3.1.
+gem "openssl"
