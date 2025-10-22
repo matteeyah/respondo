@@ -96,3 +96,9 @@ group :test do
   # Mock HTTP requests
   gem "webmock"
 end
+
+# This is needed until ruby 3.4.8 ships. There's a bug in OpenSSL 3.6.0. Recent
+# rubies package openssl gem version 3.3.0. The workaround for the OpenSSL bug
+# is included in openssl gem version 3.3.1. ruby 3.4.8 will package openssl gem
+# version 3.3.1.
+gem "openssl"
